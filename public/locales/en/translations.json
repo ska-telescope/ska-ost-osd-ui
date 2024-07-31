@@ -9,21 +9,68 @@
       "telescopeToggle": "Telescope Toggle"
     },
     "number": "Number Label",
-    "text": "Text Label"
+    "text": "Text Label",
+    "appTitle": "Shift Log Tool",
+    "searchById": "Search by ID",
+    "searchByDates": "Search by dates",
+    "last7days": "Last 7 days",
+    "today": "Today",
+    "startDate": "Start Date",
+    "endDate": "End Date",
+    "shiftStart": "Shift Start",
+    "submit": "Submit",
+    "operatorName": "Operator Name",
+    "shiftEnd": "Shift End",
+    "currentStatus": "Status",
+    "logMessage": "Log Message",
+    "comments": "Comments",
+    "images": "Images",
+    "created_on": "Created Date",
+    "created_by": "Created By",
+    "last_modified_by": "Last modified By",
+    "last_modified_on": "Last modified on",
+    "view": "View",
+    "search": "Search",
+    "close": "Close"
   },
-  "text": {
-    "row1": "It is hoped that this is used as a basis for new REACT applications for the SKAO",
-    "row2": "A few basic components have been added as examples, as well as the MUI grid which can be used for component layout",
-    "row3": "For information on the available gui-components, click on the documentation link in the header",
-    "title": "Shift Log Tool"
+  "ariaLabel": {
+    "date": "Select Date",
+    "dateDescription": "DatePicker to select date when clicked",
+    "searchButtonDescription": "Button that will add a record to the list when clicked",
+    "searchButton": "Search Button",
+    "text": "Add Text",
+    "textDescription": "Text field to enter text",
+    "gridTableDescription": "Grid Table to display list of records.",
+    "gridTable": "Display Table",
+    "viewDescription": "Grid Table to display list of records.",
+    "view": "Display Table",
+    "editDescription": "Edit icon to update record",
+    "edit": "Edit record",
+    "dialog": "Open dialog"
+  },
+  "msg": {
+    "last7days": "Showing records for last 7 days",
+    "today": "Showing records for today",
+    "statusHistory": "Showing records for status history",
+    "selectedDates": "Showing records for selected dates",
+    "fuzzySearchById": "Showing records for ID pattern",
+    "errFutureDate": "Selected date is greater than current date",
+    "errInvalidDate": "Start date is greater than End date",
+    "requiredStartDate": "Please enter  start date",
+    "requiredEndDate": "Please enter end date",
+    "shiftStartMessage": "Shift Started",
+    "shiftEndMessage": "Shift Ended"
   },
   "toolTip": {
     "button": {
-      "docs": "Click here for SKA-GUI-Components documentation",
-      "docsURL": "https://developer.skao.int/projects/ska-oso-slt-ui/en/latest/?badge=latest",
+      "docs": "Click here for PTT documentation",
+      "docsURL": "https://developer.skao.int/projects/ska-oso-ptt/en/latest/?badge=latest",
       "mode": "Colour Mode Toggle",
       "skao": "SKAO WebSite",
-      "telescopeToggle": "Switch between available telescopes"
+      "telescopeToggle": "Switch between available telescopes",
+      "dateSearch": "Search by dates",
+      "idSearch": "Search by ID",
+      "statusUpdate": "Update status"
     }
   }
 }
