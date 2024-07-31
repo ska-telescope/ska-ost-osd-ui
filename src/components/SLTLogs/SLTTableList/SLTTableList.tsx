@@ -9,7 +9,6 @@ import SLTLogDataModel from '../../Models/SLTLogs';
 
 interface EntryFieldProps {
   data: SLTLogDataModel[];
-  updatedList: any;
 }
 
 const SLTLogTableList = ({ data }: EntryFieldProps) => {
@@ -69,7 +68,7 @@ const SLTLogTableList = ({ data }: EntryFieldProps) => {
         data-testid={data}
         columns={columns}
         rows={data}
-        testId="sltHistoryTable"
+        testId="sltLogTable"
       />
     </Box>
   );

@@ -13,6 +13,7 @@ export const tableHeight = () =>
 
 export const ENTITY = {
   shift: 'shift',
+  shiftHistory: 'history'
 };
 
 export const ENTITY_ID = {

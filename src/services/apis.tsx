@@ -28,16 +28,34 @@ function handleAxiosError(error: object) {
 const apiService = {
   baseURL: () => "192.168.0.1:5000",
 
-  saveStatusEntity: async (path, statusData: any): Promise<customAxiosResponse> => {
+  postShiftData: async (path, shiftData: any): Promise<customAxiosResponse> => {
     const baseUrl = apiService.baseURL();
     const url = `${baseUrl}/${path}`;
+
     try {
-      const result = await axios.put<JSON>(url, statusData);
+      const result = await axios.post<JSON>(url, shiftData);
       return { data: result, status: 200, error: null };
     } catch (err) {
       const errorResponse = handleAxiosError(err);
       return { data: null, status: errorResponse.status, error: errorResponse.error };
     }
+
+
+  }, 
+
+  putShiftData: async (path, shiftData: any): Promise<customAxiosResponse> => {
+    const baseUrl = apiService.baseURL();
+    const url = `${baseUrl}/${path}`;
+
+    try {
+      const result = await axios.put<JSON>(url, shiftData);
+      return { data: result, status: 200, error: null };
+    } catch (err) {
+      const errorResponse = handleAxiosError(err);
+      return { data: null, status: errorResponse.status, error: errorResponse.error };
+    }
+
+
   },
 
   getSltData: async (path: string): Promise<any> => {
@@ -52,7 +70,7 @@ const apiService = {
     }
   },
 
- 
+
 };
 
 export default apiService;
