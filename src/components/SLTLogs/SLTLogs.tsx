@@ -4,7 +4,7 @@ import { Box, Grid } from '@mui/material';
 import SearchIcon  from '@mui/icons-material/Search';
 import { TextField, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import Filters from '../Filters';
 import Navigation from '../navigation';
 import {
@@ -121,7 +121,8 @@ function SLTLogs() {
     <Box>
       <Grid container paddingTop={2} direction="row" justifyContent="space-evenly">
 
-      <Grid item xs={6} sm={12} md={2}>
+      <Grid item paddingTop={3} xs={6} sm={12} md={2}>
+      <Link to="/history">
         <Button
             ariaDescription="Button for history tab"
             label={t('label.history')}
@@ -133,6 +134,7 @@ function SLTLogs() {
             }
             variant={ButtonVariantTypes.Contained}
             />
+          </Link>
         </Grid>
 
       <Grid item xs={12} sm={12} md={2}>
