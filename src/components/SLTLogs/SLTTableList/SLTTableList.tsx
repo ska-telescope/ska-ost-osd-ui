@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Box } from '@mui/material';
+import { Box, Container } from '@mui/material';
 import { DataGrid } from '@ska-telescope/ska-gui-components';
 import moment from 'moment';
 import React from 'react';
@@ -14,60 +14,58 @@ interface EntryFieldProps {
 const SLTLogTableList = ({ data }: EntryFieldProps) => {
   const { t } = useTranslation('translations');
   let id = 1;
-  data.map(row => {
+  data.map((row) => {
     row.id = id++;
     return row;
   });
   const columns = [
-    { field: 'shift_start', headerName: t('label.shiftStart'), width: 220, 
-    renderCell: params => moment(params.row.shift_start).format('DD-MM-YYYY')
+    {
+      field: 'shift_start',
+      headerName: t('label.shiftStart'),
+      width: 150,
+      renderCell: (params) => moment(params.row.shift_start).format('DD-MM-YYYY hh:MM:SS')
     },
     {
       field: 'shift_end',
       headerName: t('label.shiftEnd'),
-      width: 220,
-      renderCell: params => moment(params.row.shift_end).format('DD-MM-YYYY')
+      width: 150,
+      renderCell: (params) => moment(params.row.shift_end).format('DD-MM-YYYY hh:MM:SS')
     },
     {
-      field: 'operator_name',
-      headerName: t('label.operatorName'),
-      width: 220,
-      renderCell: params => params.row.shift_operator
-      
-    },
-    {
-      field: 'log_message',
-      headerName: t('label.logMessage'),
+      field: 'source',
+      headerName: t('label.source'),
       width: 100,
-      renderCell: params => params.row.logs
+      renderCell: (params) => params.row.shift_operator
     },
     {
-      field: 'status',
+      field: 'info.eb_id',
+      headerName: t('label.info'),
+      width: 220,
+
+      renderCell: (params) => params.row.info.eb_id
+    },
+    {
+      field: 'sbi_status',
       headerName: t('label.currentStatus'),
       width: 100,
-      renderCell: params => params.row.status
+      renderCell: (params) => params.row.info.sbi_status
     },
     {
-      field: 'comments',
-      headerName: t('label.comments'),
-      width: 100,
-      renderCell: params => params.row.comments
-    },
-    {
-      field: 'images',
-      headerName: t('label.images'),
-      width: 150,
-      renderCell: params => params.row.status
+      field: 'log_time',
+      headerName: t('label.logTime'),
+      width: 220,
+      renderCell: (params) => params.row.info.log_time
     }
   ];
   return (
-    <Box data-testid="availableData" m={1}>
+    <Box data-testid="availableData" >
       <DataGrid
         ariaDescription={t('ariaLabel.gridTableDescription')}
         ariaTitle={t('ariaLabel.gridTable')}
         data-testid={data}
         columns={columns}
         rows={data}
+        showBorder
         testId="sltLogTable"
       />
     </Box>

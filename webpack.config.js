@@ -82,14 +82,18 @@ module.exports = () => {
             eager: true,
             singleton: true,
             requiredVersion: deps['react-dom'],
-
+          },
+          'react-json-view': {
+            eager: true,
+            singleton: true,
+            requiredVersion: deps['react-json-view'],
           },
           'react-router-dom': {
             eager: true,
             singleton: true,
-            requiredVersion: deps['react-router-dom']
+            requiredVersion: deps['react-router-dom'],
           },
-          
+
           // i18n
           i18next: {
             eager: true,

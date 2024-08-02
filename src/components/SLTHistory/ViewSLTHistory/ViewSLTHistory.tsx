@@ -2,62 +2,65 @@
 import ReactJson from 'react-json-view';
 import { Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import React, { useState } from 'react';
+import { DataGrid , Button, ButtonColorTypes, ButtonVariantTypes } from '@ska-telescope/ska-gui-components';
 import { useTranslation } from 'react-i18next';
-import { Button, ButtonColorTypes, ButtonVariantTypes } from '@ska-telescope/ska-gui-components';
 import PreviewIcon from '@mui/icons-material/Preview';
 import { useNavigate } from 'react-router-dom';
 import apiService from '../../../services/apis';
-import SLTHistoryDataModel from '../../Models/SLTHistory';
+import SLTDataModel from '../../Models/SLTHistory';
 
 interface EntryFieldProps {
-  shiftId: string;
-  shiftData: SLTHistoryDataModel;
+  shiftData: SLTDataModel[];
 }
 
-const ViewSLTHistory = ({ shiftId, shiftData }: EntryFieldProps) => {
+const ViewSLTHistory = ({ shiftData }: EntryFieldProps) => {
   const { t } = useTranslation('translations');
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [data, setData] = useState(null);
   const handleClose = () => setOpen(false);
 
-  const fetchData = async () => {
-    const baseURL = `${ENTITY.shift}/${shiftId}`;
-    if (shiftId && shiftData === null) {
-      const response = await apiService.getSltData(baseURL);
-      setData(response.data);
-      setOpen(true);
+  // console.log('shiftData', shiftData);
+
+  let id = 1;
+  shiftData.map((row) => {
+    row.id = id++;
+    return row;
+  });
+
+  const columns = [
+    {
+      field: 'info.eb_id',
+      headerName: t('label.info'),
+      width: 220,
+
+      renderCell: (params) => params.row.eb_id
+    },
+    {
+      field: 'sbi_status',
+      headerName: t('label.currentStatus'),
+      width: 100,
+      renderCell: (params) => params.row.sbi_status
+    },
+    {
+      field: 'sbi_ref',
+      headerName: t('label.logTime'),
+      width: 220,
+      renderCell: (params) => params.row.sbi_ref
     }
-  };
-  const getEbDetails = () => {
-    if (shiftId && shiftData === null) {
-      fetchData();
-    } else {
-      setData(shiftData);
-      setOpen(true);
-    }
-  };
-  const loadEntityPage = value => {
-    navigate('/ebs', { state: { value } });
+  ];
+  const loadInfoPage = () => {
+    setOpen(true);
   };
   return (
     <div>
-      {shiftId && shiftId !== '' && shiftData === null ? (
-        <span
-          id="shiftId"
-          style={{ cursor: 'pointer', textDecoration: 'underline' }}
-          onClick={() => loadEntityPage(shiftId)}
-        >
-          {shiftId}
-        </span>
-      ) : (
-        <PreviewIcon
-          aria-label={t('ariaLabel.view')}
-          id="iconViewEB"
-          style={{ cursor: 'pointer', marginTop: '14px' }}
-          onClick={getEbDetails}
-        />
-      )}
+      <span
+        id="ebId"
+        style={{ cursor: 'pointer', textDecoration: 'underline' }}
+        onClick={() => loadInfoPage()}
+      >
+        View Logs
+      </span>
       <Dialog
         aria-label={t('ariaLabel.dialog')}
         data-testid="dialogEb"
@@ -68,21 +71,27 @@ const ViewSLTHistory = ({ shiftId, shiftData }: EntryFieldProps) => {
               maxWidth: '1100px' // Set your width here
             }
           }
-    
         }}
         open={open}
         onClose={handleClose}
         aria-labelledby="responsive-dialog-title"
       >
-        <DialogTitle id="ebDialogTitle">{t('label.eb_info')}</DialogTitle>
+        <DialogTitle id="historyDialogTitle">{t('label.logMessage')}</DialogTitle>
         <DialogContent dividers>
-          <ReactJson enableClipboard={false} src={data} />
+          <DataGrid
+            ariaDescription={t('ariaLabel.gridTableDescription')}
+            ariaTitle={t('ariaLabel.gridTable')}
+            data-testid={data}
+            columns={columns}
+            rows={shiftData}
+            testId="sltHistoryTable"
+          />
         </DialogContent>
         <DialogActions>
           <Button
             color={ButtonColorTypes.Inherit}
             variant={ButtonVariantTypes.Contained}
-            testId="ebClose"
+            testId="historyClose"
             label={t('label.close')}
             onClick={handleClose}
             toolTip={t('label.close')}

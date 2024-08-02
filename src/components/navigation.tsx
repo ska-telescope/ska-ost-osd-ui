@@ -13,26 +13,24 @@ const Navigation = () => {
     <Box>
       <Grid container justifyContent="left">
         <Grid item xs={12} sm={12} md={2}>
-        <Button
+          <Button
             icon={<SearchIcon />}
             ariaDescription="Button for starting shift"
             label={t('label.shiftStart')}
             testId="shiftStartButton"
             variant={ButtonVariantTypes.Contained}
-            />
+          />
         </Grid>
 
         <Grid item xs={12} sm={12} md={4}>
-        <Button
+          <Button
             icon={<SearchIcon />}
             ariaDescription="Button for ending shift"
             label={t('label.shiftEnd')}
             testId="shiftEndButton"
             variant={ButtonVariantTypes.Contained}
-            />
+          />
         </Grid>
-        
-        
       </Grid>
     </Box>
   );

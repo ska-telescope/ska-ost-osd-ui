@@ -13,13 +13,12 @@
     "appTitle": "Shift Log Tool",
     "searchById": "Search",
     "searchByDates": "Search by dates",
-    "last7days": "Last 7 days",
-    "today": "Today",
     "startDate": "Start Date",
     "endDate": "End Date",
     "shiftStart": "Shift Start",
-    "history": "History",
-    "logButton": "Log",
+    "history": "Shift History",
+    "logTime": "Log Time",
+    "logButton": "Home",
     "submit": "Submit",
     "operatorName": "Operator Name",
     "shiftEnd": "Shift End",
@@ -27,11 +26,10 @@
     "logMessage": "Log Message",
     "comments": "Comments",
     "images": "Images",
+    "source": "Source",
+    "info": "Info",
     "created_on": "Created Date",
     "created_by": "Created By",
-    "last_modified_by": "Last modified By",
-    "last_modified_on": "Last modified on",
-    "view": "View",
     "search": "Search",
     "close": "Close"
   },
@@ -53,15 +51,14 @@
   "msg": {
     "last7days": "Showing records for last 7 days",
     "today": "Showing records for today",
-    "requiredEntityId": "Please enter ID",
     "selectedDates": "Showing records for selected dates",
-    "fuzzySearchById": "Showing records for ID pattern",
     "errFutureDate": "Selected date is greater than current date",
     "errInvalidDate": "Start date is greater than End date",
     "requiredStartDate": "Please enter  start date",
     "requiredEndDate": "Please enter end date",
     "shiftStartMessage": "Shift Started",
-    "shiftEndMessage": "Shift Ended"
+    "shiftEndMessage": "Shift Ended",
+    "noLogsFound": "No Logs Found"
   },
   "toolTip": {
     "button": {
@@ -71,7 +68,7 @@
       "skao": "SKAO WebSite",
       "telescopeToggle": "Switch between available telescopes",
       "dateSearch": "Search by dates",
-      "idSearch": "Search by ID",
+      "idSearch": "Search",
       "statusUpdate": "Update status"
     }
   }

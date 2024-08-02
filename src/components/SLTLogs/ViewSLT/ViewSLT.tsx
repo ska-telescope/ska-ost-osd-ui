@@ -38,7 +38,7 @@ const ViewEB = ({ shiftId, info }: EntryFieldProps) => {
       setOpen(true);
     }
   };
-  const loadEntityPage = value => {
+  const loadEntityPage = (value) => {
     navigate('/ebs', { state: { value } });
   };
   return (

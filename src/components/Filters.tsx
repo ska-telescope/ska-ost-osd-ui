@@ -53,8 +53,8 @@ const Filters = ({ filterstate, onData }: EntryFieldProps) => {
     }
     return '';
   };
-  
-  const searchById = type => {
+
+  const searchById = (type) => {
     setSearchType(type);
     const filterStates = {
       id
@@ -62,7 +62,7 @@ const Filters = ({ filterstate, onData }: EntryFieldProps) => {
     onData(filterStates);
   };
 
-  const searchByLast7Days = type => {
+  const searchByLast7Days = (type) => {
     setSearchType(type);
     const filterStates = {
       createdAfter: createdAfterDate,
@@ -71,7 +71,7 @@ const Filters = ({ filterstate, onData }: EntryFieldProps) => {
     onData(filterStates);
   };
 
-  const searchByToday = type => {
+  const searchByToday = (type) => {
     setSearchType(type);
     const filterStates = {
       createdAfter: today,
@@ -80,7 +80,7 @@ const Filters = ({ filterstate, onData }: EntryFieldProps) => {
     onData(filterStates);
   };
 
-  const searchByDates = type => {
+  const searchByDates = (type) => {
     setSearchType(type);
     const filterStates = {
       createdAfter,

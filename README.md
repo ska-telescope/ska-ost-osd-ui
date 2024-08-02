@@ -5,7 +5,6 @@ The UI communicates with the SLT Services backend, which connects to the ODA. Se
 
 ## Quickstart
 
-
 To clone this repository, run
 
 ```
@@ -47,7 +46,6 @@ Run `yarn test:headless` to execute the Cypress tests.
 
 Run `yarn lint` to lint the code.
 
-
 ## Deploying to Kubernetes
 
 The full production system will consist of the SLT UI using the SLT Services, which are
@@ -74,7 +72,6 @@ Once installed, the UI should then be available externally at http://<MINIKUBE_I
 
 If using minikube, run `minikube ip` to find the host IP. `KUBE_NAMESPACE` is set to `ska-oso-slt-ui` by default.  
 The backend component will also be deployed to a separate pod, which the web application will make requests to.
-
 
 ### Including an unpublished Helm chart for an SLT UI dependency
 

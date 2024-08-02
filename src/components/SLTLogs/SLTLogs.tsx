@@ -1,187 +1,168 @@
 import React, { useEffect, useState } from 'react';
-import { Button, ButtonVariantTypes, DropDown, TextEntry, FileUpload, ButtonColorTypes} from '@ska-telescope/ska-gui-components';
-import { Box, Grid } from '@mui/material';
-import SearchIcon  from '@mui/icons-material/Search';
-import { TextField, Typography } from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { Link, useLocation } from 'react-router-dom';
-import Filters from '../Filters';
-import Navigation from '../navigation';
 import {
-  ENTITY,
-  ENTITY_ID,
-  makeUrlPath
-} from '../../utils/constants';
+  Button,
+  ButtonVariantTypes,
+  DropDown,
+  FileUpload,
+  ButtonColorTypes
+} from '@ska-telescope/ska-gui-components';
+import { Box, Grid, Paper , TextField } from '@mui/material';
+import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
+import moment from 'moment';
+import SLTLogMockList from '../../mockData/SLTLogMock';
+import { ENTITY, operatorName, makeUrlPath } from '../../utils/constants';
 
 import apiService from '../../services/apis';
 import SLTLogTableList from './SLTTableList/SLTTableList';
 
-interface OperatorName {
-  label: string;
-  value: string;
-}
+
 
 const CHARACTER_LIMIT = 200;
-
-const operatorName: OperatorName[] = [
-  { label: 'Chandler Bing', value: 'Chandler Bing' },
-  { label: 'Jake Peralta', value: 'Jake Peralta' },
-  { label: 'Ross Geller', value: 'Ross Geller' },
-  { label: 'Monica Geller', value: 'Monica Geller' },
-];
+const COMMENT_PADDING = 10;
 
 
 function SLTLogs() {
-
   const [shiftStartTime, setShiftStartTime] = useState(null);
   const [startShift, setStartShift] = useState(false);
-  const [shiftEndTime, setShiftEndTime] = useState(null);
+  const [shiftEndTime, setShiftEndTime] = useState('-------------------');
   const [operator, setOperator] = useState(null);
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState('');
   const { t } = useTranslation('translations');
 
   const getShiftStartTime = () => {
-
     setStartShift(true);
+
     const shiftData = {
+      shift_operator: operator
+    };
 
-      shift_operator: operator,
-
-    }
-    console.log(shiftData);
+    setShiftStartTime(moment(new Date()).format('DD/MM/YYYY hh:MM:SS'));
 
     // const baseURL = `/shift`;
     // const response = await apiService.postShiftData(baseURL, shiftData);
     // setShiftStartTime(response.shift_start);
+  };
 
-  
-  }
-  
-  
   const getShiftEndTime = () => {
-
     const shiftData = {
-
       shift_operator: operator,
       comments: value
+    };
 
-    }
-    console.log(shiftData);
-  
-    // const baseURL = `/shift`;
-    // const response = await apiService.putShiftData(baseURL, shiftData);
-    // setShiftEndTime(response.shift_end);
-  
-  }
-
-  const getSubmit = () => {
-
-    const shiftData = {
-
-      shift_operator: operator,
-      comments: value
-
-    }
-    console.log(shiftData);
-  
-    // const baseURL = `/shift`;
-    // const response = await apiService.putShiftData(baseURL, shiftData);
+    setShiftEndTime(moment(new Date()).format('DD/MM/YYYY hh:MM:SS'));
 
     setStartShift(false);
 
-  }
+    // const baseURL = `/shift`;
+    // const response = await apiService.putShiftData(baseURL, shiftData);
+    // setShiftEndTime(response.shift_end);
+  };
+
+  const getSubmit = () => {
+    const shiftData = {
+      shift_operator: operator,
+      comments: value
+    };
+    // console.log(shiftData);
+
+    setValue('');
+
+    // const baseURL = `/shift`;
+    // const response = await apiService.putShiftData(baseURL, shiftData);
+
+  };
 
   const handleChange = (event) => {
     setValue(event.target.value);
   };
 
   const disableStartShift = () => {
-
-    if (startShift === true){
+    if (startShift === true) {
       return true;
-    }
-    else {
+    } 
       return false;
-    }
-  }
+    
+  };
 
   const disableButtons = () => {
+    // console.log(startShift);
 
-    console.log(startShift);
-
-    if (startShift === false){
+    if (startShift === false) {
       return true;
-    }
-    else {
+    } 
       return false;
-    }
-  }
+    
+  };
 
   return (
     <Box>
-      <Grid container paddingTop={2} direction="row" justifyContent="space-evenly">
-
-      <Grid item paddingTop={3} xs={6} sm={12} md={2}>
-      <Link to="/history">
-        <Button
-            ariaDescription="Button for history tab"
-            label={t('label.history')}
-            testId="historyButton"
-            color={
-              location.pathname === `/${ENTITY.shiftHistory}`
-                ? ButtonColorTypes.Secondary
-                : ButtonColorTypes.Inherit
-            }
-            variant={ButtonVariantTypes.Contained}
+    <Paper elevation={12} sx={{"border":1, "margin": 1}}>
+      <Grid container background-color="blue" paddingTop={2} direction="row" justifyContent="space-evenly">
+        <Grid item paddingTop={3} xs={6} sm={12} md={2}>
+          <Link to="/history">
+            <Button
+              ariaDescription="Button for history tab"
+              label={t('label.history')}
+              testId="historyButton"
+              color={
+                location.pathname === `/${ENTITY.shiftHistory}`
+                  ? ButtonColorTypes.Secondary
+                  : ButtonColorTypes.Inherit
+              }
+              variant={ButtonVariantTypes.Contained}
             />
           </Link>
         </Grid>
 
-      <Grid item xs={12} sm={12} md={2}>
-        <DropDown
-          options={operatorName}
-          testId="operatorNameId"
-          value={operator}
-          setValue={setOperator}
-          label={t('label.operatorName')}
-          labelBold
-          required
-                />
+        <Grid item xs={4} sm={12} md={2}>
+          <DropDown
+            options={operatorName}
+            testId="operatorNameId"
+            value={operator}
+            setValue={setOperator}
+            label={t('label.operatorName')}
+            labelBold
+            required
+          />
         </Grid>
 
-        <Grid item xs={12} sm={12} md={2}>
-        <Button
-          disabled={disableStartShift()}
+        <Grid item xs={4} sm={12} md={2}>
+          <Button
+            disabled={disableStartShift()}
             ariaDescription="Button for starting shift"
             label={t('label.shiftStart')}
             testId="shiftStartButton"
             onClick={getShiftStartTime}
             variant={ButtonVariantTypes.Contained}
-            />
+          />
         </Grid>
 
-        <Grid item xs={12} sm={12} md={2}>
-        <Button
-          disabled={disableButtons()}
+        <Grid item xs={4} sm={12} md={2}>
+          <Button
+            disabled={disableButtons()}
             ariaDescription="Button for ending shift"
             label={t('label.shiftEnd')}
             testId="shiftEndButton"
             onClick={getShiftEndTime}
             variant={ButtonVariantTypes.Contained}
             color={ButtonColorTypes.Error}
-            />
+          />
         </Grid>
 
-        <Grid item xs={12} sm={12} md={2}>
+        <Grid item xs={4} sm={12} md={2}>
           <p>Shift Start: {shiftStartTime} </p>
-          <p>Shift End: --------------- </p>
+          <p>Shift End: {shiftEndTime} </p>
         </Grid>
       </Grid>
+      
+      <Grid container paddingTop={2} direction="row" justifyContent="space-evenly" />
+      </Paper>
 
-      <Grid container paddingTop={30} paddingLeft={10} alignItems="flex-start">
-
-      <Grid item xs={12} sm={12} md={4}>
-        <TextField
+      <Paper elevation={12} sx={{"border":1, "margin": 1}}>
+      <Grid container paddingLeft={COMMENT_PADDING} paddingTop={1} alignItems="flex-start">
+        <Grid item xs={12} sm={12} md={6}>
+          <TextField
               sx={{ width: 400,alignContent:'flex-end' }}
               id="outlined-multiline-static"
               label="Please enter comments..."
@@ -193,42 +174,37 @@ function SLTLogs() {
               helperText={`${value.length}/${CHARACTER_LIMIT}`}
               onChange={handleChange}
             />
-        </Grid>
-        </Grid>
-
-        <Grid container paddingLeft={10} alignItems="flex-start">
-
-        <Grid item >
-        <FileUpload
-            chooseDisabled={disableButtons()}
-            testId="fileId"
-            />
-        </Grid>
-
-        <Grid item >
-        <Button
+      <Grid item paddingBottom={1} xs={12} sm={12} md={6}>
+          <Button
             disabled={disableButtons()}
             ariaDescription="Button for submitting comment"
             label={t('label.submit')}
             testId="commentButton"
             onClick={getSubmit}
             variant={ButtonVariantTypes.Contained}
-            />
-        </Grid> 
-
+          />
+        </Grid>
+        </Grid>
+ 
+        <Grid item paddingTop={1} xs={12} sm={12} md={6}>
+          <FileUpload chooseDisabled={disableButtons()} testId="fileId" />
+        </Grid>
 
       </Grid>
 
-    </Box>
+      </Paper>
+      <Paper elevation={12} sx={{"border":1, "margin": 1}}>
+      
+        {SLTLogMockList && Array.isArray(SLTLogMockList) && SLTLogMockList.length > 0 ? (
+          <SLTLogTableList data={SLTLogMockList} />
+        ) : (
+          <p id="logNotFound">{t('msg.noLogsFound')}</p>
+        )}
+      
+      </Paper>
+      </Box>
+     
   );
 }
 
 export default SLTLogs;
-
-
-
-
-
-
-
-

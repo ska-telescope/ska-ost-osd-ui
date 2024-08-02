@@ -26,7 +26,7 @@ function handleAxiosError(error: object) {
 }
 
 const apiService = {
-  baseURL: () => "192.168.0.1:5000",
+  baseURL: () => '192.168.0.1:5000',
 
   postShiftData: async (path, shiftData: any): Promise<customAxiosResponse> => {
     const baseUrl = apiService.baseURL();
@@ -39,9 +39,7 @@ const apiService = {
       const errorResponse = handleAxiosError(err);
       return { data: null, status: errorResponse.status, error: errorResponse.error };
     }
-
-
-  }, 
+  },
 
   putShiftData: async (path, shiftData: any): Promise<customAxiosResponse> => {
     const baseUrl = apiService.baseURL();
@@ -54,8 +52,6 @@ const apiService = {
       const errorResponse = handleAxiosError(err);
       return { data: null, status: errorResponse.status, error: errorResponse.error };
     }
-
-
   },
 
   getSltData: async (path: string): Promise<any> => {
@@ -68,9 +64,7 @@ const apiService = {
       const errorResponse = handleAxiosError(err);
       return { data: null, status: errorResponse.status, error: errorResponse.error };
     }
-  },
-
-
+  }
 };
 
 export default apiService;

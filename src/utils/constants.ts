@@ -18,8 +18,7 @@ export const ENTITY = {
 };
 
 export const ENTITY_ID = {
-  shift: 'shift_id',
-
+  shift: 'shift_id'
 };
 
 export const SEARCH_TYPE = {
@@ -44,41 +43,24 @@ export const makeUrlPath = (
   return baseURL;
 };
 
-export const today = moment()
-  .utc()
-  .toISOString()
-  .substring(0, 10);
-export const nextdate = moment()
-  .utc()
-  .add(1, 'days')
-  .toISOString()
-  .substring(0, 10);
-export const createdAfterDate = moment()
-  .utc()
-  .subtract(7, 'days')
-  .toISOString()
-  .substring(0, 10);
-export const createdBeforeDate = moment()
-  .utc()
-  .toISOString()
-  .substring(0, 10);
+export const today = moment().utc().toISOString().substring(0, 10);
+export const nextdate = moment().utc().add(1, 'days').toISOString().substring(0, 10);
+export const createdAfterDate = moment().utc().subtract(7, 'days').toISOString().substring(0, 10);
+export const createdBeforeDate = moment().utc().toISOString().substring(0, 10);
 
 export const last7days = {
   createdBefore: createdBeforeDate,
   createdAfter: createdAfterDate
 };
 
+interface OperatorName {
+  label: string;
+  value: string;
+}
 
-export const SBIStatus = [
-  { label: 'Created', value: 'created' },
-  { label: 'Executing', value: 'executing' },
-  { label: 'Observed', value: 'observed' },
-  { label: 'Failed', value: 'failed' }
+export const operatorName: OperatorName[] = [
+  { label: 'Chandler Bing', value: 'Chandler Bing' },
+  { label: 'Jake Peralta', value: 'Jake Peralta' },
+  { label: 'Ross Geller', value: 'Ross Geller' },
+  { label: 'Monica Geller', value: 'Monica Geller' }
 ];
-
-
-export const getStatusValue = (key: string): string | undefined => {
-  const MergedStatus = [...SBIStatus];
-  const status = MergedStatus.find(item => item.value === key);
-  return status ? status.value : 'NA';
-};
