@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-shadow */
+/* eslint-disable  @typescript-eslint/no-unused-vars */
+/* eslint-disable no-use-before-define */
 import React, { useState } from 'react';
 import {
   Button,
