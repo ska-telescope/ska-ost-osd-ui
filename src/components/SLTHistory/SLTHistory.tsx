@@ -9,19 +9,14 @@ import {
   DateEntry,
   DropDown
 } from '@ska-telescope/ska-gui-components';
-import SLTHistoryMockList from '../../mockData/SLTHistoryMock';
-import {
-  ENTITY,
-  operatorName,
-  today,
-  makeUrlPath
-} from '../../utils/constants';
+import { today, operatorName, makeUrlPath } from '../../utils/constants';
 
 import apiService from '../../services/apis';
 import SLTHistoryTableList from './SLTHistoryTableList/SLTHistoryTable';
 
 function SLTHistory() {
   const { t } = useTranslation('translations');
+  const [dataDetails, setSltHistory] = useState([]);
   const [createdAfter, setCreatedAfter] = useState<string>('');
   const [createdBefore, setCreatedBefore] = useState<string>('');
   const [operator, setOperator] = useState('');
@@ -40,108 +35,93 @@ function SLTHistory() {
   };
 
   const disableSearch = () => {
-    if (operator !== '') {
+    if (operator !== '' || createdBefore !== '') {
       return false;
     }
     return true;
   };
 
-  const searchShiftHistory = () => {
-
-    const shiftSearchData = {
-      shift_operator: operator,
-      start_time: createdAfter,
-      end_time: createdBefore
-    };
-
-    // console.log('shiftSearchData', shiftSearchData);
-    // const baseURL = `/shift`;
-    // const response = apiService.getShiftData(baseURL);
-
+  const fetchSltHistory = async () => {
+    const path = makeUrlPath('shifts', createdAfter, createdBefore);
+    const result = await apiService.getSltData(path);
+    setSltHistory(result.data);
   };
-
 
   return (
     <>
-    <Paper elevation={12} sx={{"border":1, "margin": 1}}>
-      <Grid container paddingTop={2} direction="row" justifyContent="space-evenly">
-        <Grid item paddingTop={4} xs={12} sm={12} md={2}>
-          <Link to="/">
-            <Button
-              ariaDescription="Button for log tab"
-              label={t('label.logButton')}
-              testId="logButton"
-              color={
-                location.pathname === `/${ENTITY.shiftLog}`
-                  ? ButtonColorTypes.Secondary
-                  : ButtonColorTypes.Inherit
-              }
-              variant={ButtonVariantTypes.Contained}
-            />
-          </Link>
-        </Grid>
-
-        <Grid item xs={12} sm={12} md={2}>
-          <DateEntry
-            ariaDescription={t('ariaLabel.dateDescription')}
-            ariaTitle={t('ariaLabel.date')}
-            helperText={t('msg.requiredStartDate')}
-            testId="dateEntryStart"
-            errorText={validateDates()}
-            label={t('label.startDate')}
-            value={createdAfter}
-            setValue={setCreatedAfter}
-          />
-        </Grid>
-
-        <Grid item xs={12} sm={12} md={2}>
-          <DateEntry
-            ariaDescription={t('ariaLabel.dateDescription')}
-            ariaTitle={t('ariaLabel.date')}
-            helperText={t('msg.requiredEndDate')}
-            testId="dateEntryEnd"
-            errorText={validateDates()}
-            label={t('label.endDate')}
-            value={createdBefore}
-            setValue={setCreatedBefore}
-          />
-        </Grid>
-
-        <Grid paddingTop={2} item xs={12} sm={12} md={2}>
-        <DropDown
-            options={operatorName}
-            testId="operatorNameId"
-            value={operator}
-            setValue={setOperator}
-            label={t('label.operatorName')}
-            labelBold
-            required
-          />
-        </Grid>
-
-        <Grid item xs={12} sm={6} md={2} sx={{ marginTop: '25px' }}>
+      <Grid item paddingLeft={2} xs={12} sm={12} md={2}>
+        <Link to="/">
           <Button
-            ariaDescription={t('ariaLabel.searchButtonDescription')}
-            disabled={disableSearch()}
+            ariaDescription="Button for log tab"
+            label={t('label.logButton')}
+            testId="logButton"
             color={ButtonColorTypes.Secondary}
             variant={ButtonVariantTypes.Contained}
-            testId="nameSearch"
-            label={t('label.searchById')}
-            onClick={searchShiftHistory}
-            toolTip={t('toolTip.button.idSearch')}
           />
-        </Grid>
+        </Link>
       </Grid>
+      <Paper elevation={12} sx={{ border: 1, margin: 1 }}>
+        <Grid container paddingTop={2} direction="row" justifyContent="space-evenly">
+          <Grid item xs={12} sm={12} md={2}>
+            <DateEntry
+              ariaDescription={t('ariaLabel.dateDescription')}
+              ariaTitle={t('ariaLabel.date')}
+              helperText={t('msg.requiredStartDate')}
+              testId="dateEntryStart"
+              errorText={validateDates()}
+              label={t('label.startDate')}
+              value={createdAfter}
+              setValue={setCreatedAfter}
+            />
+          </Grid>
+
+          <Grid item xs={12} sm={12} md={2}>
+            <DateEntry
+              ariaDescription={t('ariaLabel.dateDescription')}
+              ariaTitle={t('ariaLabel.date')}
+              helperText={t('msg.requiredEndDate')}
+              testId="dateEntryEnd"
+              errorText={validateDates()}
+              label={t('label.endDate')}
+              value={createdBefore}
+              setValue={setCreatedBefore}
+            />
+          </Grid>
+
+          <Grid paddingTop={2} item xs={12} sm={12} md={2}>
+            <DropDown
+              options={operatorName}
+              testId="operatorNameId"
+              value={operator}
+              setValue={setOperator}
+              label={t('label.operatorName')}
+              labelBold
+              required
+            />
+          </Grid>
+
+          <Grid item xs={12} sm={6} md={2} sx={{ marginTop: '25px' }}>
+            <Button
+              ariaDescription={t('ariaLabel.searchButtonDescription')}
+              disabled={disableSearch()}
+              color={ButtonColorTypes.Secondary}
+              variant={ButtonVariantTypes.Contained}
+              testId="nameSearch"
+              label={t('label.searchById')}
+              onClick={fetchSltHistory}
+              toolTip={t('toolTip.button.idSearch')}
+            />
+          </Grid>
+        </Grid>
       </Paper>
 
-      <Paper elevation={12} sx={{"border":1, "margin": 1}}>
-
-        {SLTHistoryMockList &&
-        Array.isArray(SLTHistoryMockList) &&
-        SLTHistoryMockList.length > 0 ? (
-          <SLTHistoryTableList data={SLTHistoryMockList} />
+      <Paper elevation={12} sx={{ border: 1, margin: 1 }}>
+        {dataDetails && Array.isArray(dataDetails) && dataDetails.length > 0 ? (
+          <SLTHistoryTableList data={dataDetails} />
         ) : (
-          <p id="logNotFound">{t('msg.noLogsFound')}</p>
+          <p style={{ fontWeight: 'bold', marginLeft: 15, alignItems: 'center' }} id="logNotFound">
+            {t('msg.noLogsFound')}
+          </p>
         )}
       </Paper>
     </>

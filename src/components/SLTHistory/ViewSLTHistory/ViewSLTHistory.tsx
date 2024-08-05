@@ -1,12 +1,13 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import ReactJson from 'react-json-view';
 import { Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import React, { useState } from 'react';
-import { DataGrid , Button, ButtonColorTypes, ButtonVariantTypes } from '@ska-telescope/ska-gui-components';
+import {
+  DataGrid,
+  Button,
+  ButtonColorTypes,
+  ButtonVariantTypes
+} from '@ska-telescope/ska-gui-components';
 import { useTranslation } from 'react-i18next';
-import PreviewIcon from '@mui/icons-material/Preview';
-import { useNavigate } from 'react-router-dom';
-import apiService from '../../../services/apis';
 import SLTDataModel from '../../Models/SLTHistory';
 
 interface EntryFieldProps {
@@ -15,12 +16,9 @@ interface EntryFieldProps {
 
 const ViewSLTHistory = ({ shiftData }: EntryFieldProps) => {
   const { t } = useTranslation('translations');
-  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [data, setData] = useState(null);
   const handleClose = () => setOpen(false);
-
-  // console.log('shiftData', shiftData);
 
   let id = 1;
   shiftData.map((row) => {
@@ -41,13 +39,13 @@ const ViewSLTHistory = ({ shiftData }: EntryFieldProps) => {
       headerName: t('label.currentStatus'),
       width: 100,
       renderCell: (params) => params.row.sbi_status
-    },
-    {
-      field: 'sbi_ref',
-      headerName: t('label.logTime'),
-      width: 220,
-      renderCell: (params) => params.row.sbi_ref
     }
+    // {
+    //   field: 'sbi_ref',
+    //   headerName: t('label.logTime'),
+    //   width: 220,
+    //   renderCell: (params) => params.row.sbi_ref
+    // }
   ];
   const loadInfoPage = () => {
     setOpen(true);

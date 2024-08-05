@@ -2,11 +2,8 @@
 import { Box } from '@mui/material';
 import { DataGrid } from '@ska-telescope/ska-gui-components';
 import moment from 'moment';
-import React, { useState } from 'react';
-import ReactJson from 'react-json-view';
-import { Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
-import ViewSLTHistory from '../ViewSLTHistory/ViewSLTHistory';
 import SLTHistoryDataModel from '../../Models/SLTHistory';
 
 interface EntryFieldProps {
@@ -15,7 +12,7 @@ interface EntryFieldProps {
 
 const SLTHistoryTableList = ({ data }: EntryFieldProps) => {
   const { t } = useTranslation('translations');
-  const [open, setOpen] = useState(false);
+
   let id = 1;
   data.map((row) => {
     row.id = id++;
@@ -38,14 +35,14 @@ const SLTHistoryTableList = ({ data }: EntryFieldProps) => {
       field: 'operator_name',
       headerName: t('label.operatorName'),
       width: 180,
-      renderCell: (params) => params.row.operator_name
+      renderCell: (params) => params.row.shift_operator.name
     },
-    {
-      field: 'log_message',
-      headerName: t('label.logMessage'),
-      width: 220,
-      renderCell: (params) => <ViewSLTHistory shiftData={params.row.info} />
-    },
+    // {
+    //   field: 'log_message',
+    //   headerName: t('label.logMessage'),
+    //   width: 220,
+    //   renderCell: (params) => <ViewSLTHistory shiftData={params.row} />
+    // },
     {
       field: 'comments',
       headerName: t('label.comments'),
@@ -61,9 +58,8 @@ const SLTHistoryTableList = ({ data }: EntryFieldProps) => {
   ];
   return (
     <Box data-testid="availableData" m={1}>
-      <DataGrid 
+      <DataGrid
         height={500}
-        getRowHeight={() => 'auto'}
         ariaDescription={t('ariaLabel.gridTableDescription')}
         ariaTitle={t('ariaLabel.gridTable')}
         data-testid={data}
@@ -76,4 +72,3 @@ const SLTHistoryTableList = ({ data }: EntryFieldProps) => {
 };
 
 export default SLTHistoryTableList;
-

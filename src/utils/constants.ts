@@ -5,6 +5,9 @@ export const SPACER_HEADER = 70;
 export const SPACER_FOOTER = 70;
 export const DATA_STORE_BOX_HEIGHT = 70;
 export const SPACER = 50;
+export const CHARACTER_LIMIT = 1000;
+export const COMMENT_PADDING = 10;
+export const DEFAULT_TIME = '-------------------';
 
 export const fucreatedBeforeDatellHeight = () =>
   `calc(100vh - ${SPACER_HEADER + SPACER_FOOTER + SPACER}px)`;
@@ -18,40 +21,19 @@ export const ENTITY = {
 };
 
 export const ENTITY_ID = {
-  shift: 'shift_id'
+  shift: 'shift_id',
+  today: 'today'
 };
 
-export const SEARCH_TYPE = {
-  last7days: 'last 7 days',
-  today: 'today',
-  dates: 'dates',
-  id: 'id'
-};
+export const makeUrlPath = (urlPath: string, createdBefore: string, createdAfter: string) => {
+  const baseURL = `${urlPath}?shift_start=${createdBefore}&shift_end=${createdAfter}`;
 
-export const makeUrlPath = (
-  id: string,
-  createdBefore: string,
-  createdAfter: string,
-  slt_entity: string
-) => {
-  let baseURL: string;
-  if (id && id !== '') {
-    baseURL = `${slt_entity}?match_type=contains&entity_id=${id}`;
-  } else {
-    baseURL = `${slt_entity}?created_before=${createdBefore}&created_after=${createdAfter}`;
-  }
   return baseURL;
 };
 
 export const today = moment().utc().toISOString().substring(0, 10);
-export const nextdate = moment().utc().add(1, 'days').toISOString().substring(0, 10);
 export const createdAfterDate = moment().utc().subtract(7, 'days').toISOString().substring(0, 10);
 export const createdBeforeDate = moment().utc().toISOString().substring(0, 10);
-
-export const last7days = {
-  createdBefore: createdBeforeDate,
-  createdAfter: createdAfterDate
-};
 
 interface OperatorName {
   label: string;

@@ -26,9 +26,9 @@ function handleAxiosError(error: object) {
 }
 
 const apiService = {
-  baseURL: () => '192.168.0.1:5000',
+  baseURL: () => 'http://192.168.1.9:5000/ska-oso-slt-services/slt/api/v1',
 
-  postShiftData: async (path, shiftData: any): Promise<customAxiosResponse> => {
+  postShiftData: async (path, shiftData: any): Promise<any> => {
     const baseUrl = apiService.baseURL();
     const url = `${baseUrl}/${path}`;
 
@@ -41,7 +41,7 @@ const apiService = {
     }
   },
 
-  putShiftData: async (path, shiftData: any): Promise<customAxiosResponse> => {
+  putShiftData: async (path, shiftData: any): Promise<any> => {
     const baseUrl = apiService.baseURL();
     const url = `${baseUrl}/${path}`;
 
@@ -57,6 +57,18 @@ const apiService = {
   getSltData: async (path: string): Promise<any> => {
     const baseUrl = apiService.baseURL();
     const url = `${baseUrl}/${path}`;
+    try {
+      const result = await axios.get(url);
+      return { data: result.data, status: 200, error: null };
+    } catch (err) {
+      const errorResponse = handleAxiosError(err);
+      return { data: null, status: errorResponse.status, error: errorResponse.error };
+    }
+  },
+
+  getSltLogs: async (): Promise<any> => {
+    const baseUrl = apiService.baseURL();
+    const url = `${baseUrl}/`;
     try {
       const result = await axios.get(url);
       return { data: result.data, status: 200, error: null };

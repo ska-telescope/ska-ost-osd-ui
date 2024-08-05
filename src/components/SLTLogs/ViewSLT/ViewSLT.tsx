@@ -1,64 +1,64 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import ReactJson from 'react-json-view';
 import { Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, ButtonColorTypes, ButtonVariantTypes } from '@ska-telescope/ska-gui-components';
-import PreviewIcon from '@mui/icons-material/Preview';
-import { useNavigate } from 'react-router-dom';
-import { ENTITY } from '../../../utils/constants';
-import apiService from '../../../services/apis';
+import {
+  DataGrid,
+  Button,
+  ButtonColorTypes,
+  ButtonVariantTypes
+} from '@ska-telescope/ska-gui-components';
 import SLTDataModel from '../../Models/SLTLogs';
 
 interface EntryFieldProps {
-  shiftId: string;
-  info: SLTDataModel;
+  shiftData: SLTDataModel[];
 }
 
-const ViewEB = ({ shiftId, info }: EntryFieldProps) => {
+const ViewSLT = ({ shiftData }: EntryFieldProps) => {
   const { t } = useTranslation('translations');
-  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [data, setData] = useState(null);
   const handleClose = () => setOpen(false);
 
-  const fetchData = async () => {
-    const baseURL = `${ENTITY.shift}/${shiftId}`;
-    if (shiftId && info === null) {
-      const response = await apiService.getEntityData(baseURL);
-      setData(response.data);
-      setOpen(true);
+  let id = 1;
+  shiftData.map((row) => {
+    row.id = id++;
+    return row;
+  });
+
+  const columns = [
+    {
+      field: 'info.eb_id',
+      headerName: t('label.info'),
+      width: 220,
+
+      renderCell: (params) => params.row.eb_id
+    },
+    {
+      field: 'sbi_status',
+      headerName: t('label.currentStatus'),
+      width: 100,
+      renderCell: (params) => params.row.sbi_status
     }
-  };
-  const getEbDetails = () => {
-    if (shiftId && info === null) {
-      fetchData();
-    } else {
-      setData(info);
-      setOpen(true);
-    }
-  };
-  const loadEntityPage = (value) => {
-    navigate('/ebs', { state: { value } });
+    // {
+    //   field: 'sbi_ref',
+    //   headerName: t('label.logTime'),
+    //   width: 220,
+    //   renderCell: (params) => params.row.sbi_ref
+    // }
+  ];
+  const loadInfoPage = () => {
+    setOpen(true);
   };
   return (
     <div>
-      {shiftId && shiftId !== '' && info === null ? (
-        <span
-          id="shiftId"
-          style={{ cursor: 'pointer', textDecoration: 'underline' }}
-          onClick={() => loadEntityPage(shiftId)}
-        >
-          {shiftId}
-        </span>
-      ) : (
-        <PreviewIcon
-          aria-label={t('ariaLabel.view')}
-          id="iconViewEB"
-          style={{ cursor: 'pointer', marginTop: '14px' }}
-          onClick={getEbDetails}
-        />
-      )}
+      <span
+        id="ebId"
+        style={{ cursor: 'pointer', textDecoration: 'underline' }}
+        onClick={() => loadInfoPage()}
+      >
+        View Logs
+      </span>
       <Dialog
         aria-label={t('ariaLabel.dialog')}
         data-testid="dialogEb"
@@ -74,15 +74,22 @@ const ViewEB = ({ shiftId, info }: EntryFieldProps) => {
         onClose={handleClose}
         aria-labelledby="responsive-dialog-title"
       >
-        <DialogTitle id="ebDialogTitle">{t('label.eb_info')}</DialogTitle>
+        <DialogTitle id="historyDialogTitle">{t('label.logMessage')}</DialogTitle>
         <DialogContent dividers>
-          <ReactJson enableClipboard={false} src={data} />
+          <DataGrid
+            ariaDescription={t('ariaLabel.gridTableDescription')}
+            ariaTitle={t('ariaLabel.gridTable')}
+            data-testid={data}
+            columns={columns}
+            rows={shiftData}
+            testId="sltHistoryTable"
+          />
         </DialogContent>
         <DialogActions>
           <Button
             color={ButtonColorTypes.Inherit}
             variant={ButtonVariantTypes.Contained}
-            testId="ebClose"
+            testId="historyClose"
             label={t('label.close')}
             onClick={handleClose}
             toolTip={t('label.close')}
@@ -93,4 +100,4 @@ const ViewEB = ({ shiftId, info }: EntryFieldProps) => {
   );
 };
 
-export default ViewEB;
+export default ViewSLT;

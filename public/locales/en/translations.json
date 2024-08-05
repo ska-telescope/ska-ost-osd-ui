@@ -5,14 +5,10 @@
   "dummy": "I am in ENGLISH translation file only",
   "intlNumber": "{{val, number}}",
   "label": {
-    "button": {
-      "telescopeToggle": "Telescope Toggle"
-    },
     "number": "Number Label",
     "text": "Text Label",
     "appTitle": "Shift Log Tool",
     "searchById": "Search",
-    "searchByDates": "Search by dates",
     "startDate": "Start Date",
     "endDate": "End Date",
     "shiftStart": "Shift Start",
@@ -49,12 +45,10 @@
     "dialog": "Open dialog"
   },
   "msg": {
-    "last7days": "Showing records for last 7 days",
-    "today": "Showing records for today",
     "selectedDates": "Showing records for selected dates",
     "errFutureDate": "Selected date is greater than current date",
     "errInvalidDate": "Start date is greater than End date",
-    "requiredStartDate": "Please enter  start date",
+    "requiredStartDate": "Please enter start date",
     "requiredEndDate": "Please enter end date",
     "shiftStartMessage": "Shift Started",
     "shiftEndMessage": "Shift Ended",
@@ -66,10 +60,8 @@
       "docsURL": "https://developer.skao.int/projects/ska-oso-ptt/en/latest/?badge=latest",
       "mode": "Colour Mode Toggle",
       "skao": "SKAO WebSite",
-      "telescopeToggle": "Switch between available telescopes",
       "dateSearch": "Search by dates",
-      "idSearch": "Search",
-      "statusUpdate": "Update status"
+      "idSearch": "Search"
     }
   }
 }

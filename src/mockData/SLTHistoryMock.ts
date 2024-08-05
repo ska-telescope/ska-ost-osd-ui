@@ -3,8 +3,8 @@ const SLTHistoryMockList = [
     shift_start: '2024-08-02T02:48:58.228541',
     shift_end: '2024-08-02T02:48:58.228541',
     operator_name: 'Chandler Bing',
-    comments: "Test is a test for Comment view on SLT UI History Page",
-    annotation: "Test Annotation",
+    comments: 'Test is a test for Comment view on SLT UI History Page',
+    annotation: 'Test Annotation',
     info: [
       {
         eb_id: 'eb-t0001-20240801-00004',
@@ -115,8 +115,8 @@ const SLTHistoryMockList = [
     shift_start: '2024-08-02T02:48:58.228541',
     shift_end: '2024-08-02T02:48:58.228541',
     operator_name: 'Chandler Bing',
-    comments: "Test is a test for Comment view on SLT UI History Page",
-    annotation: "Test Annotation",
+    comments: 'Test is a test for Comment view on SLT UI History Page',
+    annotation: 'Test Annotation',
     info: [
       {
         eb_id: 'eb-t0001-20240801-00004',
