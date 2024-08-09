@@ -21,28 +21,28 @@ const SLTLogTableList = ({ data }: EntryFieldProps) => {
       field: 'source',
       headerName: t('label.source'),
       width: 100,
-      renderCell: (params) => params.row.shift_operator
+      renderCell: (params) => params.row.shift_operator,
     },
     {
       field: 'info.eb_id',
       headerName: t('label.info'),
       width: 220,
 
-      renderCell: (params) => params.row.info.eb_id
+      renderCell: (params) => params.row.info.eb_id,
     },
     {
       field: 'info.sbi_status',
       headerName: t('label.currentStatus'),
       width: 220,
 
-      renderCell: (params) => params.row.info.sbi_status
+      renderCell: (params) => params.row.info.sbi_status,
     },
     {
       field: 'log_time',
       headerName: t('label.logTime'),
       width: 220,
-      renderCell: (params) => params.row.info.log_time
-    }
+      renderCell: (params) => params.row.info.log_time,
+    },
   ];
   return (
     <Box data-testid="availableData">

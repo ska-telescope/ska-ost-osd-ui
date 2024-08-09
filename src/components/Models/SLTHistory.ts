@@ -11,7 +11,7 @@ interface ShiftLogs {
 
 export default interface SLTDataModel {
   id: number;
-  shift_id: string;
+  shift_id: number;
   shift_operator: string;
   comments: string;
   annotation: string;

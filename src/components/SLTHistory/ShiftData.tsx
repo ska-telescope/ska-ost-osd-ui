@@ -11,38 +11,34 @@ interface EntryFieldProps {
   data: SLTHistoryDataModel[];
 }
 
-const SLTHistoryTableList = ({ data }: EntryFieldProps) => {
+const ShiftData = ({ data }: EntryFieldProps) => {
   const { t } = useTranslation('translations');
 
-  // let shift_id = 1;
-  // data.map((row) => {
-  //   row.shift_id = shift_id++;
-  //   return row;
-  // });
+  console.log('data', data);
   const columns = [
     {
       field: 'shift_id',
       headerName: t('label.shiftId'),
       width: 150,
-      renderCell: (params) => <ViewSLTHistory shiftData={params.row} />,
+      renderCell: (params) => data.id,
     },
     {
       field: 'shift_start',
       headerName: t('label.shiftStart'),
       width: 150,
-      renderCell: (params) => moment(params.row.shift_start).format('DD-MM-YYYY hh:MM:SS'),
+      renderCell: (params) => moment(data.shift_start).format('DD-MM-YYYY hh:MM:SS'),
     },
     {
       field: 'shift_end',
       headerName: t('label.shiftEnd'),
       width: 150,
-      renderCell: (params) => moment(params.row.shift_end).format('DD-MM-YYYY hh:MM:SS'),
+      renderCell: (params) => moment(data.shift_end).format('DD-MM-YYYY hh:MM:SS'),
     },
     {
       field: 'operator_name',
       headerName: t('label.operatorName'),
       width: 180,
-      renderCell: (params) => params.row.shift_operator.name,
+      renderCell: (params) => data.shift_operator.name,
     },
   ];
   return (
@@ -60,4 +56,4 @@ const SLTHistoryTableList = ({ data }: EntryFieldProps) => {
   );
 };
 
-export default SLTHistoryTableList;
+export default ShiftData;

@@ -14,7 +14,7 @@ describe('<Components />', () => {
         <ThemeProvider theme={theme(theTheme)}>
           <CssBaseline />
           <App />
-        </ThemeProvider>
+        </ThemeProvider>,
       );
     });
   }

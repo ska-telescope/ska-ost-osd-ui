@@ -10,7 +10,7 @@ i18n
   .use(initReactI18next)
   .init({
     backend: {
-      loadPath: './locales/{{lng}}/{{ns}}.json'
+      loadPath: './locales/{{lng}}/{{ns}}.json',
     },
     fallbackLng: 'en',
     lng: 'en',
@@ -29,8 +29,8 @@ i18n
           return new Intl.NumberFormat().format(value);
         }
         return typeof value;
-      }
-    }
+      },
+    },
   });
 
 export default i18n;

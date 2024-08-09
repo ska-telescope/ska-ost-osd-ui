@@ -5,20 +5,27 @@ import { Link } from 'react-router-dom';
 import {
   Button,
   ButtonColorTypes,
+  ButtonSizeTypes,
   ButtonVariantTypes,
   DateEntry,
-  DropDown
+  DropDown,
 } from '@ska-telescope/ska-gui-components';
-import { today, operatorName, makeUrlPath } from '../../utils/constants';
+import { ENTITY, today, operatorName, makeUrlPath } from '../../utils/constants';
 
 import apiService from '../../services/apis';
 import SLTHistoryTableList from './SLTHistoryTableList/SLTHistoryTable';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { DemoContainer, DemoItem } from '@mui/x-date-pickers/internals/demo';
+import { Label } from '@mui/icons-material';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import moment from 'moment';
 
 function SLTHistory() {
   const { t } = useTranslation('translations');
   const [dataDetails, setSltHistory] = useState([]);
-  const [createdAfter, setCreatedAfter] = useState<string>('');
-  const [createdBefore, setCreatedBefore] = useState<string>('');
+  const [createdAfter, setCreatedAfter] = useState(null);
+  const [createdBefore, setCreatedBefore] = useState(null);
   const [operator, setOperator] = useState('');
 
   const validateDates = () => {
@@ -42,50 +49,71 @@ function SLTHistory() {
   };
 
   const fetchSltHistory = async () => {
+
+    console.log('createdAfter', createdAfter);
+    console.log('createdBefore', createdBefore);
     const path = makeUrlPath('shifts', createdAfter, createdBefore);
     const result = await apiService.getSltData(path);
     setSltHistory(result.data);
   };
 
+
   return (
     <>
-      <Grid item paddingLeft={2} xs={12} sm={12} md={2}>
-        <Link to="/">
-          <Button
-            ariaDescription="Button for log tab"
-            label={t('label.logButton')}
-            testId="logButton"
-            color={ButtonColorTypes.Secondary}
-            variant={ButtonVariantTypes.Contained}
-          />
-        </Link>
+      <Grid container paddingTop={2} paddingLeft={2} justifyContent="left">
+        <Grid item xs={12} sm={12} md={1}>
+          <Link to="/">
+            <Button
+              size={ButtonSizeTypes.Large}
+              ariaDescription="Button for log tab"
+              label={t('label.logButton')}
+              testId="logButton"
+              color={
+                location.pathname === `/` ? ButtonColorTypes.Secondary : ButtonColorTypes.Inherit
+              }
+              variant={ButtonVariantTypes.Contained}
+            />
+          </Link>
+        </Grid>
+        <Grid item xs={12} sm={12} md={1}>
+          <Link to="/history">
+            <Button
+              size={ButtonSizeTypes.Large}
+              ariaDescription="Button for history tab"
+              label={t('label.history')}
+              testId="historyButton"
+              color={
+                location.pathname === `/${ENTITY.shiftHistory}`
+                  ? ButtonColorTypes.Secondary
+                  : ButtonColorTypes.Inherit
+              }
+              variant={ButtonVariantTypes.Contained}
+            />
+          </Link>
+        </Grid>
       </Grid>
       <Paper elevation={12} sx={{ border: 1, margin: 1 }}>
-        <Grid container paddingTop={2} direction="row" justifyContent="space-evenly">
+        <Grid
+          container
+          paddingTop={2}
+          paddingBottom={2}
+          direction="row"
+          justifyContent="space-evenly"
+        >
           <Grid item xs={12} sm={12} md={2}>
-            <DateEntry
-              ariaDescription={t('ariaLabel.dateDescription')}
-              ariaTitle={t('ariaLabel.date')}
-              helperText={t('msg.requiredStartDate')}
-              testId="dateEntryStart"
-              errorText={validateDates()}
-              label={t('label.startDate')}
-              value={createdAfter}
-              setValue={setCreatedAfter}
-            />
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DemoItem label="Start Time">
+                <DateTimePicker value={createdAfter} onChange={setCreatedAfter} format={"YYYY-MM-DD hh:mm"}/>
+              </DemoItem>
+            </LocalizationProvider>
           </Grid>
 
           <Grid item xs={12} sm={12} md={2}>
-            <DateEntry
-              ariaDescription={t('ariaLabel.dateDescription')}
-              ariaTitle={t('ariaLabel.date')}
-              helperText={t('msg.requiredEndDate')}
-              testId="dateEntryEnd"
-              errorText={validateDates()}
-              label={t('label.endDate')}
-              value={createdBefore}
-              setValue={setCreatedBefore}
-            />
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DemoItem label="End Time">
+                <DateTimePicker value={createdBefore} onChange={setCreatedBefore} format={"YYYY-MM-DD hh:mm"}/>
+              </DemoItem>
+            </LocalizationProvider>
           </Grid>
 
           <Grid paddingTop={2} item xs={12} sm={12} md={2}>
@@ -129,3 +157,13 @@ function SLTHistory() {
 }
 
 export default SLTHistory;
+
+
+
+// show log messages from ODA in every 5 seconds. (Add API)
+// add time filter in shift history page for searching shift wise data.
+// add new page for showing Shift details on new page when clicked on shift ID (in Table).
+// discuss about Shift ID format.
+// make navigation buttons in tab form and show which page we are on.
+// add header on comments section.
+// show images in preview and when clicked it should show full image.

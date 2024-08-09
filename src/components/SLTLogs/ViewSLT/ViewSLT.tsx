@@ -9,7 +9,7 @@ import {
   DataGrid,
   Button,
   ButtonColorTypes,
-  ButtonVariantTypes
+  ButtonVariantTypes,
 } from '@ska-telescope/ska-gui-components';
 import SLTDataModel from '../../Models/SLTLogs';
 
@@ -35,14 +35,14 @@ const ViewSLT = ({ shiftData }: EntryFieldProps) => {
       headerName: t('label.info'),
       width: 220,
 
-      renderCell: (params) => params.row.eb_id
+      renderCell: (params) => params.row.eb_id,
     },
     {
       field: 'sbi_status',
       headerName: t('label.currentStatus'),
       width: 100,
-      renderCell: (params) => params.row.sbi_status
-    }
+      renderCell: (params) => params.row.sbi_status,
+    },
     // {
     //   field: 'sbi_ref',
     //   headerName: t('label.logTime'),
@@ -69,9 +69,9 @@ const ViewSLT = ({ shiftData }: EntryFieldProps) => {
           '& .MuiDialog-container': {
             '& .MuiPaper-root': {
               width: '100%',
-              maxWidth: '1100px' // Set your width here
-            }
-          }
+              maxWidth: '1100px', // Set your width here
+            },
+          },
         }}
         open={open}
         onClose={handleClose}
