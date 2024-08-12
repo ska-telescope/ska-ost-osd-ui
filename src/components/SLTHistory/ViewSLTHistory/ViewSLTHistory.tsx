@@ -16,15 +16,15 @@ import moment from 'moment';
 import { Box, Grid, Paper, TextField } from '@mui/material';
 
 interface EntryFieldProps {
-  shiftData: SLTDataModel[];
+  shiftData: SLTDataModel;
+  updateStatus;
 }
 
-const ViewSLTHistory = ({ shiftData }: EntryFieldProps) => {
+const ViewSLTHistory = ({ shiftData, updateStatus }: EntryFieldProps) => {
   const { t } = useTranslation('translations');
   const navigate = useNavigate();
   // const [data, setData] = useState(null);
   // const handleClose = () => setOpen(false);
-  console.log('shiftData', shiftData);
 
   const columns = [
     {
@@ -58,15 +58,15 @@ const ViewSLTHistory = ({ shiftData }: EntryFieldProps) => {
     //   renderCell: (params) => shiftData.sbi_ref
     // }
   ];
-  const loadInfoPage = (value) => {
-    navigate('/shifts', { state: { value } });
+  const loadInfoPage = () => {
+    updateStatus();
   };
   return (
     <div>
       <span
         id="shiftId"
         style={{ cursor: 'pointer', textDecoration: 'underline' }}
-        onClick={() => loadInfoPage(shiftData.id)}
+        onClick={() => loadInfoPage()}
       >
         {shiftData.id}
       </span>

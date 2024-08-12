@@ -46,14 +46,17 @@
     "dialog": "Open dialog"
   },
   "msg": {
+    "shiftStarted": "Shift started successfully",
+    "shiftEnd": "Shift ended successfully",
+    "commentSubmit": "Comment submitted successfully",
     "selectedDates": "Showing records for selected dates",
+    "selectOperator": "Please Select Operator Name",
     "errFutureDate": "Selected date is greater than current date",
     "errInvalidDate": "Start date is greater than End date",
     "requiredStartDate": "Please enter start date",
     "requiredEndDate": "Please enter end date",
     "shiftStartMessage": "Shift Started",
-    "shiftEndMessage": "Shift Ended",
-    "noLogsFound": "No Logs Found"
+    "shiftEndMessage": "Shift Ended"
   },
   "toolTip": {
     "button": {

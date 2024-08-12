@@ -5,13 +5,29 @@ import moment from 'moment';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import SLTHistoryDataModel from '../../Models/SLTHistory';
-import ViewSLTHistory from '../ViewSLTHistory/ViewSLTHistory';
+// import ViewSLTHistory from '../ViewSLTHistory/ViewSLTHistory';
+
+const ViewSLTHistory = ({ shiftData, updatedList }) => {
+  const loadInfoPage = (shiftData) => {
+    updatedList(shiftData);
+  };
+  return (
+    <span
+      id="shiftId"
+      style={{ cursor: 'pointer', textDecoration: 'underline' }}
+      onClick={() => loadInfoPage(shiftData)}
+    >
+      {shiftData.id}
+    </span>
+  );
+};
 
 interface EntryFieldProps {
   data: SLTHistoryDataModel[];
+  updateList: any;
 }
 
-const SLTHistoryTableList = ({ data }: EntryFieldProps) => {
+const SLTHistoryTableList = ({ data, updateList }: EntryFieldProps) => {
   const { t } = useTranslation('translations');
 
   // let shift_id = 1;
@@ -19,12 +35,18 @@ const SLTHistoryTableList = ({ data }: EntryFieldProps) => {
   //   row.shift_id = shift_id++;
   //   return row;
   // });
+
+  const onTriggerFunction = (data) => {
+    updateList(data);
+  };
   const columns = [
     {
       field: 'shift_id',
       headerName: t('label.shiftId'),
       width: 150,
-      renderCell: (params) => <ViewSLTHistory shiftData={params.row} />,
+      renderCell: (params) => (
+        <ViewSLTHistory updatedList={onTriggerFunction} shiftData={params.row} />
+      ),
     },
     {
       field: 'shift_start',

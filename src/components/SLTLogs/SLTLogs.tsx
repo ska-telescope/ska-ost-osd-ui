@@ -7,6 +7,8 @@ import {
   ButtonVariantTypes,
   DropDown,
   FileUpload,
+  InfoCard,
+  InfoCardColorTypes,
   ButtonColorTypes,
   ButtonSizeTypes,
 } from '@ska-telescope/ska-gui-components';
@@ -27,18 +29,35 @@ import moment from 'moment';
 
 function SLTLogs() {
   const [shiftStartTime, setShiftStartTime] = useState(DEFAULT_TIME);
+  const [statusMessage, setStatusMessage] = useState(null);
   const [shiftShow, setShiftShow] = useState(DEFAULT_TIME);
   const [dataDetails, setSltLogs] = useState([]);
   const [startShift, setStartShift] = useState(false);
   const [shiftEndTime, setShiftEndTime] = useState(DEFAULT_TIME);
+  const [showElement, setShowElement] = useState(false);
+  const [responseCode, setMessageCode] = useState(null);
   const [operator, setOperator] = useState('');
   const [shiftId, setShiftId] = useState('');
   const [value, setValue] = useState('');
   const { t } = useTranslation('translations');
   const [interval, setTime] = useState(null);
 
+  const selectOperatorName = () => {
+    if (value === '') {
+      return t('msg.selectOperator');
+    } else {
+      return '';
+    }
+  };
+
   const getShiftStartTime = async () => {
+    // selectOperatorName();
     if (operator === '') return;
+    //  { setStatusMessage('msg.selectOperator')
+    //   setShowElement(true);
+    //   setTimeout(() => {
+    //     setShowElement(false);
+    //   }, 3000);}
 
     setStartShift(true);
 
@@ -48,6 +67,12 @@ function SLTLogs() {
 
     const path = `shifts`;
     const response = await apiService.postShiftData(path, shiftData);
+    setMessageCode(response.status);
+    setStatusMessage('msg.shiftStarted');
+    setShowElement(true);
+    setTimeout(() => {
+      setShowElement(false);
+    }, 3000);
 
     setShiftShow(moment(response.data.data.shift_start).format('DD-MM-YYYY HH:mm:ss'));
     setShiftStartTime(response.data.data.shift_start);
@@ -60,11 +85,9 @@ function SLTLogs() {
   };
 
   const getShiftEndTime = () => {
-
     let shiftData;
 
-    if (value !== ''){
-
+    if (value !== '') {
       shiftData = {
         shift_operator: { name: operator },
         shift_start: shiftStartTime,
@@ -72,21 +95,23 @@ function SLTLogs() {
         id: shiftId,
         comments: value,
       };
-    }
-
-    else {
-
-     shiftData = {
+    } else {
+      shiftData = {
         shift_operator: { name: operator },
         shift_start: shiftStartTime,
         shift_end: moment().utc().toISOString(),
         id: shiftId,
       };
-
     }
 
     const path = `shifts/${shiftId}`;
     const response = apiService.putShiftData(path, shiftData);
+    setMessageCode(response.status);
+    setStatusMessage('msg.shiftEnd');
+    setShowElement(true);
+    setTimeout(() => {
+      setShowElement(false);
+    }, 3000);
 
     setStartShift(false);
     setOperator('');
@@ -109,6 +134,12 @@ function SLTLogs() {
 
     const path = `shifts/${shiftId}`;
     const response = await apiService.putShiftData(path, shiftData);
+    setMessageCode(response.status);
+    setStatusMessage('msg.commentSubmit');
+    setShowElement(true);
+    setTimeout(() => {
+      setShowElement(false);
+    }, 3000);
     setValue('');
   };
 
@@ -131,10 +162,24 @@ function SLTLogs() {
   };
 
   const updateLogs = async (shiftId: number) => {
-    const path = `shifts/${shiftId}/logs_update`;
+    const path = `shifts/${shiftId}`;
     const result = await apiService.getSltLogs(path);
     setSltLogs(result.data);
-    console.log('result', result);
+    console.log('result.data', result.data)
+  };
+
+  const renderMessageResponse = () => {
+    if (responseCode === 200) {
+      return (
+        <InfoCard
+          fontSize={20}
+          color={InfoCardColorTypes.Success}
+          message={t(statusMessage)}
+          testId="successStatusMsg"
+        />
+      );
+    }
+    return false;
   };
 
   return (
@@ -170,6 +215,10 @@ function SLTLogs() {
             />
           </Link>
         </Grid>
+        <Grid item xs={12} sm={12} md={2}></Grid>
+        <Grid item xs={12} sm={12} md={2}>
+          {showElement ? renderMessageResponse() : ''}
+        </Grid>
       </Grid>
 
       <Paper elevation={12} sx={{ border: 1, margin: 1 }}>
@@ -180,6 +229,7 @@ function SLTLogs() {
               testId="operatorNameId"
               value={operator}
               setValue={setOperator}
+              // errorText={selectOperatorName}
               label={t('label.operatorName')}
               labelBold
               required
@@ -268,16 +318,10 @@ function SLTLogs() {
       </Paper>
 
       <Paper elevation={12} sx={{ border: 1, margin: 1 }}>
-        <p style={{ fontWeight: 'bold', marginLeft: 15, alignItems: 'center' }}>Log Summary</p>
+        <p style={{ fontWeight: 'bold', textAlign: 'center', alignItems: 'center' }}>Log Summary</p>
         <hr />
 
-        {dataDetails && Array.isArray(dataDetails) && dataDetails.length > 0 ? (
-          <SLTLogTableList data={dataDetails} />
-        ) : (
-          <p style={{ fontWeight: 'bold', marginLeft: 15, alignItems: 'center' }} id="logNotFound">
-            {t('msg.noLogsFound')}
-          </p>
-        )}
+        <SLTLogTableList data={dataDetails} />
       </Paper>
     </Box>
   );
@@ -285,3 +329,13 @@ function SLTLogs() {
 
 export default SLTLogs;
 
+// <p style={{ fontWeight: 'bold', marginLeft: 15, alignItems: 'center' }}>Log Summary</p>
+//         <hr />
+
+//         {dataDetails && Array.isArray(dataDetails) && dataDetails.length > 0 ? (
+//           <SLTLogTableList data={dataDetails} />
+//         ) : (
+//           <p style={{ fontWeight: 'bold', marginLeft: 15, alignItems: 'center' }} id="logNotFound">
+//             {t('msg.noLogsFound')}
+//           </p>
+//         )}
