@@ -1,9 +1,78 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Box } from '@mui/material';
+import { Box, Dialog, DialogContent, DialogTitle } from '@mui/material';
 import { DataGrid } from '@ska-telescope/ska-gui-components';
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import SLTLogDataModel from '../../Models/SLTLogs';
+
+const ViewEB = ({ ebId }) => {
+  const { t } = useTranslation('translations');
+
+  const [openModal, setOpenModal] = useState(false);
+
+  const handleClose = () => {
+    setOpenModal(false);
+  };
+
+  const handleOpen = () => {
+    setOpenModal(true);
+  };
+
+  const RequestResponseDisplay = ({ responseArray }) => (
+    <div>
+      {responseArray.map((data) => (
+        <>
+          <p>
+            <b>Command Name:</b> {data.request}
+          </p>
+          <p>
+            <b>Status:</b> {data.status}
+          </p>
+          <p>
+            <b>Request Sent at:</b> {data.request_sent_at}
+          </p>
+          <p>
+            <b>Details:</b> {data.status == 'OK' ? data.response.result : data.error.detail}
+          </p>
+          <hr />
+        </>
+      ))}
+    </div>
+  );
+
+  return (
+    <>
+      {' '}
+      <span
+        id="shiftId"
+        style={{ cursor: 'pointer', textDecoration: 'underline' }}
+        onClick={() => handleOpen()}
+      >
+        {ebId.eb_id}
+      </span>
+      <Dialog
+        aria-label={t('ariaLabel.dialog')}
+        data-testid="dialogStatus"
+        sx={{
+          '& .MuiDialog-container': {
+            '& .MuiPaper-root': {
+              width: '100%',
+              maxWidth: '1000px', // Set your width here
+            },
+          },
+        }}
+        open={openModal}
+        onClose={handleClose}
+        aria-labelledby="responsive-dialog-title"
+      >
+        <DialogTitle>EB Request Response</DialogTitle>
+        <DialogContent dividers>
+          <RequestResponseDisplay responseArray={ebId.request_responses} />
+        </DialogContent>
+      </Dialog>
+    </>
+  );
+};
 
 interface EntryFieldProps {
   data: SLTLogDataModel[];
@@ -11,11 +80,13 @@ interface EntryFieldProps {
 
 const SLTLogTableList = ({ data }: EntryFieldProps) => {
   const { t } = useTranslation('translations');
+
   let id = 1;
-  data.map((row) => {
-    row.id = id++;
-    return row;
-  });
+  data &&
+    data.map((row) => {
+      row.id = id++;
+      return row;
+    });
   const columns = [
     {
       field: 'source',
@@ -28,7 +99,7 @@ const SLTLogTableList = ({ data }: EntryFieldProps) => {
       headerName: t('label.info'),
       width: 220,
 
-      renderCell: (params) => params.row.info.eb_id,
+      renderCell: (params) => <ViewEB ebId={params.row.info} />,
     },
     {
       field: 'info.sbi_status',
@@ -37,6 +108,13 @@ const SLTLogTableList = ({ data }: EntryFieldProps) => {
 
       renderCell: (params) => params.row.info.sbi_status,
     },
+    // {
+    //   field: 'info.sbi_status',
+    //   headerName: t('label.currentStatus'),
+    //   width: 220,
+
+    //   renderCell: (params) => params.row.info.,
+    // },
     {
       field: 'log_time',
       headerName: t('label.logTime'),
@@ -45,7 +123,7 @@ const SLTLogTableList = ({ data }: EntryFieldProps) => {
     },
   ];
   return (
-    <Box data-testid="availableData">
+    <Box data-testid="availableData" ml={4}>
       <DataGrid
         ariaDescription={t('ariaLabel.gridTableDescription')}
         ariaTitle={t('ariaLabel.gridTable')}

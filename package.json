@@ -1,6 +1,6 @@
 {
   "name": "ska-oso-slt-ui",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "private": true,
   "description": "SKA Shift Log Tool",
   "repository": "git@gitlab.com:ska-telescope/oso/ska-oso-slt-ui.git",

@@ -7,6 +7,8 @@ import { useTranslation } from 'react-i18next';
 import SLTHistoryDataModel from '../../Models/SLTHistory';
 // import ViewSLTHistory from '../ViewSLTHistory/ViewSLTHistory';
 
+const COLUMN_WIDTH = 200;
+
 const ViewSLTHistory = ({ shiftData, updatedList }) => {
   const loadInfoPage = (shiftData) => {
     updatedList(shiftData);
@@ -17,7 +19,7 @@ const ViewSLTHistory = ({ shiftData, updatedList }) => {
       style={{ cursor: 'pointer', textDecoration: 'underline' }}
       onClick={() => loadInfoPage(shiftData)}
     >
-      {shiftData.id}
+      {shiftData.shift_id}
     </span>
   );
 };
@@ -30,45 +32,47 @@ interface EntryFieldProps {
 const SLTHistoryTableList = ({ data, updateList }: EntryFieldProps) => {
   const { t } = useTranslation('translations');
 
-  // let shift_id = 1;
-  // data.map((row) => {
-  //   row.shift_id = shift_id++;
-  //   return row;
-  // });
-
   const onTriggerFunction = (data) => {
     updateList(data);
   };
   const columns = [
     {
       field: 'shift_id',
+      headerClassName: 'super-app-theme--header',
+      alignText: 'center',
       headerName: t('label.shiftId'),
-      width: 150,
+      width: COLUMN_WIDTH,
       renderCell: (params) => (
         <ViewSLTHistory updatedList={onTriggerFunction} shiftData={params.row} />
       ),
     },
     {
       field: 'shift_start',
+      headerClassName: 'super-app-theme--header',
+      alignText: 'center',
       headerName: t('label.shiftStart'),
-      width: 150,
+      width: COLUMN_WIDTH,
       renderCell: (params) => moment(params.row.shift_start).format('DD-MM-YYYY hh:MM:SS'),
     },
     {
       field: 'shift_end',
+      headerClassName: 'super-app-theme--header',
+      alignText: 'center',
       headerName: t('label.shiftEnd'),
-      width: 150,
+      width: COLUMN_WIDTH,
       renderCell: (params) => moment(params.row.shift_end).format('DD-MM-YYYY hh:MM:SS'),
     },
     {
       field: 'operator_name',
+      headerClassName: 'super-app-theme--header',
+      alignText: 'center',
       headerName: t('label.operatorName'),
-      width: 180,
+      width: COLUMN_WIDTH,
       renderCell: (params) => params.row.shift_operator.name,
     },
   ];
   return (
-    <Box data-testid="availableData" m={1}>
+    <Box data-testid="availableData" ml={4}>
       <DataGrid
         height={500}
         ariaDescription={t('ariaLabel.gridTableDescription')}

@@ -2,7 +2,6 @@ import React from 'react';
 import { Routes, Route, BrowserRouter as Router } from 'react-router-dom';
 import SLTLogs from './SLTLogs/SLTLogs';
 import SLTHistory from './SLTHistory/SLTHistory';
-import ShiftData from './SLTHistory/SLTHistory';
 import ShiftDataTest from './SLTHistory/ShiftData';
 
 export const Routing = () => (

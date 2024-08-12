@@ -1,19 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import React, { useState } from 'react';
-import {
-  DataGrid,
-  Button,
-  ButtonColorTypes,
-  ButtonVariantTypes,
-} from '@ska-telescope/ska-gui-components';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
-import SLTDataModel from '../../Models/SLTHistory';
 import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
-
-import { Box, Grid, Paper, TextField } from '@mui/material';
+import SLTDataModel from '../../Models/SLTHistory';
 
 interface EntryFieldProps {
   shiftData: SLTDataModel;
@@ -22,9 +14,6 @@ interface EntryFieldProps {
 
 const ViewSLTHistory = ({ shiftData, updateStatus }: EntryFieldProps) => {
   const { t } = useTranslation('translations');
-  const navigate = useNavigate();
-  // const [data, setData] = useState(null);
-  // const handleClose = () => setOpen(false);
 
   const columns = [
     {

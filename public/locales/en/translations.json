@@ -48,9 +48,10 @@
   "msg": {
     "shiftStarted": "Shift started successfully",
     "shiftEnd": "Shift ended successfully",
+    "imageUpload": "Image upload success",
     "commentSubmit": "Comment submitted successfully",
     "selectedDates": "Showing records for selected dates",
-    "selectOperator": "Please Select Operator Name",
+    "selectOperator": "Please select operator name",
     "errFutureDate": "Selected date is greater than current date",
     "errInvalidDate": "Start date is greater than End date",
     "requiredStartDate": "Please enter start date",
