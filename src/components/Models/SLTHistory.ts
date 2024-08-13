@@ -9,7 +9,7 @@ interface ShiftLogs {
   logtime: Date;
 }
 
-export default interface SLTDataModel {
+export default interface SltHistoryDataModel {
   id: number;
   shift_id: number;
   shift_operator: string;
@@ -22,5 +22,6 @@ export default interface SLTDataModel {
   created_time: Date;
   last_modified_time: Date;
   logs: ShiftLogs[];
+  source: string;
   media: Media;
 }

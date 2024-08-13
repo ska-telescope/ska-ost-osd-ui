@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Box, Dialog, DialogContent, DialogTitle } from '@mui/material';
-import { DataGrid } from '@ska-telescope/ska-gui-components';
+import { Box, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import { Button, ButtonColorTypes, ButtonVariantTypes, DataGrid } from '@ska-telescope/ska-gui-components';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import SLTLogDataModel from '../../Models/SLTLogs';
@@ -10,7 +10,7 @@ const ViewEB = ({ ebId }) => {
 
   const [openModal, setOpenModal] = useState(false);
 
-  const handleClose = () => {
+  const handleCloseRequestResponse = () => {
     setOpenModal(false);
   };
 
@@ -62,13 +62,23 @@ const ViewEB = ({ ebId }) => {
           },
         }}
         open={openModal}
-        onClose={handleClose}
+        onClose={handleCloseRequestResponse}
         aria-labelledby="responsive-dialog-title"
       >
         <DialogTitle>EB Request Response</DialogTitle>
         <DialogContent dividers>
           <RequestResponseDisplay responseArray={ebId.request_responses} />
         </DialogContent>
+        <DialogActions>
+          <Button
+            color={ButtonColorTypes.Inherit}
+            variant={ButtonVariantTypes.Contained}
+            testId="statusClose"
+            label={t('label.close')}
+            onClick={handleCloseRequestResponse}
+            toolTip={t('label.close')}
+          />
+        </DialogActions>
       </Dialog>
     </>
   );
@@ -91,7 +101,7 @@ const SLTLogTableList = ({ data }: EntryFieldProps) => {
     {
       field: 'source',
       headerName: t('label.source'),
-      width: 100,
+      width: 120,
       renderCell: (params) => params.row.shift_operator,
     },
     {
@@ -104,7 +114,7 @@ const SLTLogTableList = ({ data }: EntryFieldProps) => {
     {
       field: 'info.sbi_status',
       headerName: t('label.currentStatus'),
-      width: 220,
+      width: 150,
 
       renderCell: (params) => params.row.info.sbi_status,
     },

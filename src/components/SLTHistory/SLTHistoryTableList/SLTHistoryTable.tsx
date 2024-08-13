@@ -4,8 +4,7 @@ import { DataGrid } from '@ska-telescope/ska-gui-components';
 import moment from 'moment';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import SLTHistoryDataModel from '../../Models/SLTHistory';
-// import ViewSLTHistory from '../ViewSLTHistory/ViewSLTHistory';
+import SltHistoryDataModel from '../../Models/SLTHistory';
 
 const COLUMN_WIDTH = 200;
 
@@ -25,7 +24,7 @@ const ViewSLTHistory = ({ shiftData, updatedList }) => {
 };
 
 interface EntryFieldProps {
-  data: SLTHistoryDataModel[];
+  data: SltHistoryDataModel[];
   updateList: any;
 }
 

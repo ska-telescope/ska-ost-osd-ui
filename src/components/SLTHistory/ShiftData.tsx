@@ -4,7 +4,7 @@ import { DataGrid } from '@ska-telescope/ska-gui-components';
 import moment from 'moment';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import SLTHistoryDataModel from '../../Models/SLTHistory';
+import SLTHistoryDataModel from '../Models/SLTHistory';
 import SLTLogMockList from '../../mockData/SLTLogMock';
 
 const COLUMN_WIDTH = 300;
@@ -51,7 +51,7 @@ const ShiftDataTest = (data) => {
     {
       field: 'source',
       headerName: t('label.source'),
-      width: COLUMN_WIDTH,
+      width: 120,
       renderCell: (params) => params.row.shift_operator,
     },
     {
@@ -64,7 +64,7 @@ const ShiftDataTest = (data) => {
     {
       field: 'info.sbi_status',
       headerName: t('label.currentStatus'),
-      width: COLUMN_WIDTH,
+      width: 150,
 
       renderCell: (params) => params.row.info.sbi_status,
     },
@@ -78,12 +78,6 @@ const ShiftDataTest = (data) => {
 
   return (
     <Box data-testid="availableData" m={1}>
-      <Paper elevation={2} sx={{ border: 1 }}>
-        <h1 style={{ fontWeight: 'bold', textAlign: 'center', alignItems: 'center' }}>
-          <b>Shift History Data </b>
-        </h1>
-      </Paper>
-
       <Grid container spacing={2} sx={{ paddingLeft: 2 }} alignItems="left" textAlign="left">
         <Grid item xs={12} sm={12} md={4}>
           <p style={{ fontWeight: 'bold' }}>
@@ -142,16 +136,14 @@ const ShiftDataTest = (data) => {
 
       <Grid
         container
+        padding={2}
         spacing={2}
-        sx={{ paddingLeft: 2, paddingTop: 2 }}
-        alignItems="left"
-        textAlign="left"
       >
-        <Grid item xs={12} sm={12} md={5}>
+        <Grid   item xs={12} sm={12} md={5}>
           <TextField
-            sx={{ width: 700, alignContent: 'flex-end' }}
+          sx={{ width: "100%" }}
             id="outlined-multiline-static"
-            label="Annotations"
+            label="Annotation"
             multiline
             rows={3}
             inputProps={{
@@ -165,7 +157,7 @@ const ShiftDataTest = (data) => {
 
         <Grid item xs={12} sm={12} md={5}>
           <TextField
-            sx={{ width: 700, alignContent: 'flex-end' }}
+            sx={{ width: "100%" }}
             id="outlined-multiline-static"
             label="Operator Comments"
             multiline
@@ -178,10 +170,10 @@ const ShiftDataTest = (data) => {
         </Grid>
       </Grid>
 
-      <Paper elevation={2} sx={{ border: 1, marginTop: 1 }}>
-        <Grid container spacing={2} alignItems="left" textAlign="center">
+      <Paper  sx={{ border: 1, marginTop: 1 }}>
+        <Grid container   padding={2} spacing={2} alignItems="left" textAlign="center">
           <Grid item xs={12} sm={12} md={12}>
-            <Paper elevation={2} sx={{ border: 1, margin: 1 }}>
+            <Paper  sx={{ border: 1, margin: 1 }}>
               <p style={{ fontWeight: 'bold', textAlign: 'center', alignItems: 'center' }}>
                 Logs for Shift ID {data.data.shift_id}
               </p>

@@ -7,12 +7,25 @@ export const DATA_STORE_BOX_HEIGHT = 70;
 export const SPACER = 50;
 export const CHARACTER_LIMIT = 1000;
 export const COMMENT_PADDING = 10;
-export const DEFAULT_TIME = '-------------------';
+export const DEFAULT_TIME = '---------------------------';
 
 export const fucreatedBeforeDatellHeight = () =>
   `calc(100vh - ${SPACER_HEADER + SPACER_FOOTER + SPACER}px)`;
 export const tableHeight = () =>
   `calc(100vh - ${SPACER_HEADER + SPACER_FOOTER + DATA_STORE_BOX_HEIGHT + SPACER}px)`;
+
+  export const SEARCH_TYPE = {
+    last7days: 'last 7 days',
+    today: 'today',
+    dates: 'dates',
+    id: 'id'
+  }
+
+  export const nextdate = moment()
+  .utc()
+  .add(1, 'days')
+  .toISOString()
+  .substring(0, 10);
 
 export const ENTITY = {
   shift: 'shift',

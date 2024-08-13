@@ -11,10 +11,10 @@ import {
   ButtonColorTypes,
   ButtonVariantTypes,
 } from '@ska-telescope/ska-gui-components';
-import SLTDataModel from '../../Models/SLTLogs';
+import SLTLogDataModel from '../../Models/SLTLogs';
 
 interface EntryFieldProps {
-  shiftData: SLTDataModel[];
+  shiftData: SLTLogDataModel[];
 }
 
 const ViewSLT = ({ shiftData }: EntryFieldProps) => {

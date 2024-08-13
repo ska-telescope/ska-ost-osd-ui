@@ -47,17 +47,11 @@ function SLTLogs() {
   const [value, setValue] = useState('');
   const { t } = useTranslation('translations');
   const [interval, setTime] = useState(null);
-
   const getShiftStartTime = async () => {
     console.log('operator', operator, operator.length);
 
     if (operator.length === 0) {
-      setMessageCode(200);
-      setStatusMessage('msg.selectOperator');
-      setShowElement(true);
-      setTimeout(() => {
-        setShowElement(false);
-      }, 2000);
+      validateOperator()
     } else {
       setStartShift(true);
 
@@ -73,10 +67,9 @@ function SLTLogs() {
       setTimeout(() => {
         setShowElement(false);
       }, 3000);
-
-      setShiftShowStart(moment(response.data.data.shift_start).format('DD-MM-YYYY HH:mm:ss'));
-      setShiftStartTime(response.data.data.shift_start);
-      setShiftId(response.data.data.id);
+      setShiftShowStart(moment(response && response.data && response.data.data && response.data.data.shift_start).utc().format('YYYY-MM-DD HH:mm:ss'));
+      setShiftStartTime(moment(response && response.data && response.data.data && response.data.data.shift_start).utc().format('YYYY-MM-DD HH:mm:ss'));
+      setShiftId(response && response.data && response.data.data  && response.data.data.id);
 
       const interval = setInterval(() => {
         updateLogs(response.data.data.id);
@@ -107,7 +100,7 @@ function SLTLogs() {
 
     const path = `shifts/${shiftId}`;
     const response = await apiService.putShiftData(path, shiftData);
-    setShiftShowEnd(moment(response.data.data.shift_end).format('DD-MM-YYYY HH:mm:ss'));
+    setShiftShowEnd(moment(response && response.data && response.data.data && response.data.data.shift_end).utc().format('YYYY-MM-DD HH:mm:ss'));
     setMessageCode(response.status);
     setStatusMessage('msg.shiftEnd');
     setShowElement(true);
@@ -122,7 +115,7 @@ function SLTLogs() {
       setShiftShowEnd(DEFAULT_TIME);
       setValue('');
       setShiftEndTime(DEFAULT_TIME);
-    }, 2000);
+    }, 3000);
   };
 
   const getSubmit = async () => {
@@ -141,7 +134,7 @@ function SLTLogs() {
     setShowElement(true);
     setTimeout(() => {
       setShowElement(false);
-    }, 2000);
+    }, 3000);
   };
 
   const handleChange = (event) => {
@@ -191,7 +184,7 @@ function SLTLogs() {
     setShowElement(true);
     setTimeout(() => {
       setShowElement(false);
-    }, 2000);
+    }, 3000);
   };
 
   const renderMessageResponse = () => {
@@ -208,10 +201,16 @@ function SLTLogs() {
     return false;
   };
 
+  const validateOperator = () => {
+    if (operator.length === 0) {
+      return t('msg.selectOperator');
+    }
+    return '';
+  };
   return (
     <Box>
       <Grid container padding={2} justifyContent="left">
-        <Grid item xs={12} sm={12} md={1}>
+        <Grid item xs={12} sm={12} md={1.2}>
           <Link to="/">
             <Button
               icon={<HomeIcon />}
@@ -245,15 +244,16 @@ function SLTLogs() {
         </Grid>
 
         <Grid item xs={12} sm={12} md={1} />
-        <Grid item xs={12} sm={12} md={3}>
+        <Grid item xs={12} sm={12} md={4}>
           {showElement ? renderMessageResponse() : ''}
         </Grid>
       </Grid>
 
-      <Paper elevation={12} sx={{ border: 1, margin: 1 }}>
+      <Paper sx={{ border: 1, margin: 1 }}>
         <Grid container paddingLeft={2} spacing={2} sx={{ padding: 4 }} justifyContent="center">
           <Grid item sx={{ padding: 10 }} xs={12} sm={12} md={3}>
             <DropDown
+              errorText={validateOperator()}
               options={operatorName}
               testId="operatorNameId"
               value={operator}
@@ -264,15 +264,15 @@ function SLTLogs() {
             />
           </Grid>
           <Grid item xs={12} sm={12} md={4} />
-          <Grid item xs={12} sm={12} md={4}>
-            <Grid container spacing={2} justifyContent="center">
-              <Grid item xs={12} sm={12} md={6}>
+          <Grid item xs={12} sm={12} md={5}>
+            <Grid container spacing={2} justifyContent="right">
+              <Grid item xs={12} sm={12} md={7}>
                 <p style={{ fontWeight: 'bold', marginLeft: 15, alignItems: 'center' }}>
-                  Shift Start: {shiftShowStart}{' '}
+                  Shift starts at: {shiftShowStart}{' '}
                 </p>
               </Grid>
 
-              <Grid sx={{ marginTop: 1 }} item xs={12} sm={12} md={6}>
+              <Grid sx={{ marginTop: 1 }} item xs={12} sm={12} md={5}>
                 <Button
                   icon={<AccessTimeIcon />}
                   size={ButtonSizeTypes.Large}
@@ -286,13 +286,13 @@ function SLTLogs() {
               </Grid>
             </Grid>
             <Grid container spacing={2} justifyContent="center">
-              <Grid item xs={12} sm={12} md={6}>
+              <Grid item xs={12} sm={12} md={7}>
                 <p style={{ fontWeight: 'bold', marginLeft: 15, alignItems: 'center' }}>
-                  Shift End: {shiftShowEnd}{' '}
+                  Shift ends at: {shiftShowEnd}{' '}
                 </p>
               </Grid>
 
-              <Grid sx={{ marginTop: 1 }} item xs={12} sm={12} md={6}>
+              <Grid sx={{ marginTop: 1 }} item xs={12} sm={12} md={5}>
                 <Button
                   icon={<AccessTimeIcon />}
                   size={ButtonSizeTypes.Large}
@@ -310,14 +310,14 @@ function SLTLogs() {
         </Grid>
       </Paper>
 
-      <Paper elevation={12} sx={{ border: 1, margin: 1 }}>
-        <Grid container paddingLeft={COMMENT_PADDING} paddingTop={1} alignItems="flex-start">
+      <Paper sx={{ border: 1, margin: 1 }}>
+        <Grid container padding={2} alignItems="flex-start">
           <Grid item xs={12} sm={12} md={6}>
             <p style={{ fontWeight: 'bold', marginLeft: 8, alignItems: 'center' }}>
               Operator Comments
             </p>
             <TextField
-              sx={{ width: 750, alignContent: 'flex-end' }}
+              sx={{ width: "100%" }}
               id="outlined-multiline-static"
               label="Please enter comments..."
               multiline
@@ -341,7 +341,6 @@ function SLTLogs() {
               />
             </Grid>
           </Grid>
-
           <Grid item paddingTop={1} xs={12} sm={12} md={6}>
             <FileUpload
               uploadFunction={postImage}
@@ -352,7 +351,7 @@ function SLTLogs() {
         </Grid>
       </Paper>
 
-      <Paper elevation={12} sx={{ border: 1, margin: 1 }}>
+      <Paper  sx={{ border: 1, margin: 1 }}>
         <p style={{ fontWeight: 'bold', textAlign: 'center', alignItems: 'center' }}>Log Summary</p>
         <hr />
 

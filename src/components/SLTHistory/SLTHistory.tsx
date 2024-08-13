@@ -22,8 +22,8 @@ import ShiftDataTest from './ShiftData';
 function SLTHistory() {
   const { t } = useTranslation('translations');
   const [dataDetails, setSltHistory] = useState([]);
-  const [createdAfter, setCreatedAfter] = useState(null);
-  const [createdBefore, setCreatedBefore] = useState(null);
+  const [createdAfter, setCreatedAfter] = useState('');
+  const [createdBefore, setCreatedBefore] = useState('');
   const [displayTable, setDisplayTable] = useState(true);
   const [displayButton, setDisplayButton] = useState(true);
   const [displayData, setDisplayData] = useState('');
@@ -68,8 +68,8 @@ function SLTHistory() {
 
   return (
     <>
-      <Grid container padding={2} justifyContent="left">
-        <Grid item xs={12} sm={12} md={1}>
+      <Grid container padding={2} >
+        <Grid item xs={12} sm={12} md={1.2}>
           <Link to="/">
             <Button
               icon={<HomeIcon />}
@@ -103,9 +103,8 @@ function SLTHistory() {
         </Grid>
       </Grid>
       <Paper sx={{ border: 1, margin: 1 }}>
-        <Grid container paddingTop={2}>
-          <Grid item xs={12} sm={12} md={2} />
-          <Grid paddingLeft={10} item xs={12} sm={12} md={3}>
+        <Grid container paddingTop={2} justifyContent="left">
+          <Grid paddingLeft={4} item xs={12} sm={12} md={3}>
             <DateEntry
               ariaDescription={t('ariaLabel.dateDescription')}
               ariaTitle={t('ariaLabel.date')}
@@ -154,11 +153,18 @@ function SLTHistory() {
           <SLTHistoryTableList updateList={onTriggerFunction} data={dataDetails} />
         ) : (
           <>
-            <ShiftDataTest data={displayData} />
-
-            <Grid container paddingTop={2} paddingBottom={2} justifyContent="flex-end">
-              <Grid item xs={12} sm={12} md={2}>
-                <div>
+          <Paper sx={{ border: 1 }}>
+          <Grid container  justifyContent="center" >
+          <Grid item xs={12} sm={12} md={4}>
+            </Grid>
+              <Grid item xs={12} sm={12} md={4}>
+              <h1 style={{ fontWeight: 'bold', textAlign: 'center', alignItems: 'center' }}>
+          <b>Shift History Data </b>
+        </h1>
+              </Grid>
+              <Grid item xs={12} sm={12} md={3}></Grid>
+              <Grid item xs={12} sm={12} md={1}>
+              <div style={{float: "right",padding:"10px",paddingTop:"25px"}}>
                   <Button
                     color={ButtonColorTypes.Inherit}
                     variant={ButtonVariantTypes.Contained}
@@ -170,6 +176,10 @@ function SLTHistory() {
                 </div>
               </Grid>
             </Grid>
+
+ 
+      </Paper>
+            <ShiftDataTest data={displayData} />
           </>
         )}
       </Paper>

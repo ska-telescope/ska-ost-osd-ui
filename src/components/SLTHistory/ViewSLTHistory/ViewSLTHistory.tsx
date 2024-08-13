@@ -5,10 +5,10 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
-import SLTDataModel from '../../Models/SLTHistory';
+import SLTHistoryDataModel from '../../Models/SLTHistory';
 
 interface EntryFieldProps {
-  shiftData: SLTDataModel;
+  shiftData: SLTHistoryDataModel;
   updateStatus;
 }
 
