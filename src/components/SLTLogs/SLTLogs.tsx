@@ -137,7 +137,6 @@ function SLTLogs() {
       setShiftShowStart(DEFAULT_TIME);
       setShiftShowEnd(DEFAULT_TIME);
       setValue('');
-      setShiftEndTime(DEFAULT_TIME);
     }, 2000);
   };
 

@@ -7,13 +7,12 @@ import {
   ButtonColorTypes,
   ButtonSizeTypes,
   ButtonVariantTypes,
-  DateEntry,
-  DropDown
+  DateEntry
 } from '@ska-telescope/ska-gui-components';
 import HomeIcon from '@mui/icons-material/Home';
 import HistoryIcon from '@mui/icons-material/History';
 import SearchIcon from '@mui/icons-material/Search';
-import { ENTITY, today, operatorName, makeUrlPath } from '../../utils/constants';
+import { ENTITY, today, makeUrlPath } from '../../utils/constants';
 
 import apiService from '../../services/apis';
 import SLTHistoryTableList from './SLTHistoryTableList/SLTHistoryTable';
@@ -27,7 +26,6 @@ function SLTHistory() {
   const [displayTable, setDisplayTable] = useState(true);
   const [displayButton, setDisplayButton] = useState(true);
   const [displayData, setDisplayData] = useState('');
-  const [operator, setOperator] = useState('');
 
   const validateDates = () => {
     if (
