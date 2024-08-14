@@ -10,23 +10,17 @@ import {
   InfoCard,
   InfoCardColorTypes,
   ButtonColorTypes,
-  ButtonSizeTypes,
+  ButtonSizeTypes
 } from '@ska-telescope/ska-gui-components';
 import { Box, Grid, Paper, TextField } from '@mui/material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import HomeIcon from '@mui/icons-material/Home';
-import SendIcon from '@mui/icons-material/Send';
+import AddIcon from '@mui/icons-material/Add';
 import HistoryIcon from '@mui/icons-material/History';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
-import {
-  ENTITY,
-  CHARACTER_LIMIT,
-  COMMENT_PADDING,
-  DEFAULT_TIME,
-  operatorName,
-} from '../../utils/constants';
+import { ENTITY, COMMENT_PADDING, DEFAULT_TIME, operatorName } from '../../utils/constants';
 
 import apiService from '../../services/apis';
 import SLTLogTableList from './SLTTableList/SLTTableList';
@@ -34,12 +28,12 @@ import SLTLogMockList from '../../mockData/SLTLogMock';
 
 function SLTLogs() {
   const [shiftStartTime, setShiftStartTime] = useState(DEFAULT_TIME);
-  const [statusMessage, setStatusMessage] = useState(null);
   const [shiftShowStart, setShiftShowStart] = useState(DEFAULT_TIME);
   const [shiftShowEnd, setShiftShowEnd] = useState(DEFAULT_TIME);
+
+  const [statusMessage, setStatusMessage] = useState(null);
   const [dataDetails, setSltLogs] = useState([]);
   const [startShift, setStartShift] = useState(false);
-  const [shiftEndTime, setShiftEndTime] = useState(DEFAULT_TIME);
   const [showElement, setShowElement] = useState(false);
   const [responseCode, setMessageCode] = useState(null);
   const [operator, setOperator] = useState('');
@@ -49,8 +43,6 @@ function SLTLogs() {
   const [interval, setTime] = useState(null);
 
   const getShiftStartTime = async () => {
-    console.log('operator', operator, operator.length);
-
     if (operator.length === 0) {
       setMessageCode(200);
       setStatusMessage('msg.selectOperator');
@@ -63,6 +55,7 @@ function SLTLogs() {
 
       const shiftData = {
         shift_operator: { name: operator },
+        shift_start: moment().utc().toISOString()
       };
 
       const path = `shifts`;
@@ -74,14 +67,31 @@ function SLTLogs() {
         setShowElement(false);
       }, 3000);
 
-      setShiftShowStart(moment(response.data.data.shift_start).format('DD-MM-YYYY HH:mm:ss'));
-      setShiftStartTime(response.data.data.shift_start);
+      setShiftShowStart(
+        moment(response && response.data && response.data.data && response.data.data.shift_start)
+          .utc()
+          .format('YYYY-MM-DD HH:mm:ss')
+      );
+      setShiftStartTime(
+        moment(response && response.data && response.data.data && response.data.data.shift_start)
+          .utc()
+          .format('YYYY-MM-DD HH:mm:ss')
+      );
+
       setShiftId(response.data.data.id);
 
       const interval = setInterval(() => {
-        updateLogs(response.data.data.id);
+        setSltLogs([SLTLogMockList[0]]);
       }, 5000);
       setTime(interval);
+      const interval1 = setInterval(() => {
+        setSltLogs([SLTLogMockList[1], SLTLogMockList[0]]);
+      }, 10000);
+      setTime(interval1);
+      setInterval(() => {
+        clearInterval(interval);
+        clearInterval(interval1);
+      }, 11000);
     }
   };
 
@@ -94,20 +104,26 @@ function SLTLogs() {
         shift_start: shiftStartTime,
         shift_end: moment().utc().toISOString(),
         id: shiftId,
-        comments: value,
+        comments: value
       };
     } else {
       shiftData = {
         shift_operator: { name: operator },
         shift_start: shiftStartTime,
         shift_end: moment().utc().toISOString(),
-        id: shiftId,
+        id: shiftId
       };
     }
 
     const path = `shifts/${shiftId}`;
     const response = await apiService.putShiftData(path, shiftData);
-    setShiftShowEnd(moment(response.data.data.shift_end).format('DD-MM-YYYY HH:mm:ss'));
+
+    setShiftShowEnd(
+      moment(response && response.data && response.data.data && response.data.data.shift_end)
+        .utc()
+        .format('YYYY-MM-DD HH:mm:ss')
+    );
+
     setMessageCode(response.status);
     setStatusMessage('msg.shiftEnd');
     setShowElement(true);
@@ -131,7 +147,7 @@ function SLTLogs() {
     const shiftData = {
       shift_operator: { name: operator },
       shift_start: shiftStartTime,
-      comments: `${value}, `,
+      comments: `${value}, `
     };
 
     const path = `shifts/${shiftId}`;
@@ -168,7 +184,7 @@ function SLTLogs() {
     setSltLogs(
       result && result.data && result.data.shift_logs && result.data.shift_logs.length > 0
         ? result.data.shift_logs
-        : [],
+        : []
     );
   };
 
@@ -181,8 +197,8 @@ function SLTLogs() {
     const config = {
       headers: {
         accept: 'application/json',
-        'content-type': 'multipart/form-data',
-      },
+        'content-type': 'multipart/form-data'
+      }
     };
     const result = await apiService.postImage(path, formData, config);
 
@@ -266,13 +282,13 @@ function SLTLogs() {
           <Grid item xs={12} sm={12} md={4} />
           <Grid item xs={12} sm={12} md={4}>
             <Grid container spacing={2} justifyContent="center">
-              <Grid item xs={12} sm={12} md={6}>
+              <Grid item xs={12} sm={12} md={8}>
                 <p style={{ fontWeight: 'bold', marginLeft: 15, alignItems: 'center' }}>
                   Shift Start: {shiftShowStart}{' '}
                 </p>
               </Grid>
 
-              <Grid sx={{ marginTop: 1 }} item xs={12} sm={12} md={6}>
+              <Grid sx={{ marginTop: 1 }} item xs={12} sm={12} md={4}>
                 <Button
                   icon={<AccessTimeIcon />}
                   size={ButtonSizeTypes.Large}
@@ -286,13 +302,13 @@ function SLTLogs() {
               </Grid>
             </Grid>
             <Grid container spacing={2} justifyContent="center">
-              <Grid item xs={12} sm={12} md={6}>
+              <Grid item xs={12} sm={12} md={8}>
                 <p style={{ fontWeight: 'bold', marginLeft: 15, alignItems: 'center' }}>
                   Shift End: {shiftShowEnd}{' '}
                 </p>
               </Grid>
 
-              <Grid sx={{ marginTop: 1 }} item xs={12} sm={12} md={6}>
+              <Grid sx={{ marginTop: 1 }} item xs={12} sm={12} md={4}>
                 <Button
                   icon={<AccessTimeIcon />}
                   size={ButtonSizeTypes.Large}
@@ -322,16 +338,12 @@ function SLTLogs() {
               label="Please enter comments..."
               multiline
               rows={3}
-              // inputProps={{
-              //   maxLength: CHARACTER_LIMIT
-              // }}
-              // helperText={`${value.length}/${CHARACTER_LIMIT}`}
               value={value}
               onChange={handleChange}
             />
             <Grid item paddingTop={1} paddingBottom={1} xs={12} sm={12} md={6}>
               <Button
-                icon={<SendIcon />}
+                icon={<AddIcon />}
                 disabled={disableButtons()}
                 ariaDescription="Button for submitting comment"
                 label={t('label.submit')}
@@ -356,21 +368,10 @@ function SLTLogs() {
         <p style={{ fontWeight: 'bold', textAlign: 'center', alignItems: 'center' }}>Log Summary</p>
         <hr />
 
-        <SLTLogTableList data={SLTLogMockList} />
+        <SLTLogTableList data={dataDetails} />
       </Paper>
     </Box>
   );
 }
 
 export default SLTLogs;
-
-// <p style={{ fontWeight: 'bold', marginLeft: 15, alignItems: 'center' }}>Log Summary</p>
-//         <hr />
-
-//         {dataDetails && Array.isArray(dataDetails) && dataDetails.length > 0 ? (
-//           <SLTLogTableList data={dataDetails} />
-//         ) : (
-//           <p style={{ fontWeight: 'bold', marginLeft: 15, alignItems: 'center' }} id="logNotFound">
-//             {t('msg.noLogsFound')}
-//           </p>
-//         )}

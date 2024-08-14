@@ -1,13 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Box } from '@mui/material';
 import { DataGrid } from '@ska-telescope/ska-gui-components';
-import moment from 'moment';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import SLTHistoryDataModel from '../../Models/SLTHistory';
-// import ViewSLTHistory from '../ViewSLTHistory/ViewSLTHistory';
 
-const COLUMN_WIDTH = 200;
+const COLUMN_WIDTH = 250;
 
 const ViewSLTHistory = ({ shiftData, updatedList }) => {
   const loadInfoPage = (shiftData) => {
@@ -44,7 +42,7 @@ const SLTHistoryTableList = ({ data, updateList }: EntryFieldProps) => {
       width: COLUMN_WIDTH,
       renderCell: (params) => (
         <ViewSLTHistory updatedList={onTriggerFunction} shiftData={params.row} />
-      ),
+      )
     },
     {
       field: 'shift_start',
@@ -52,7 +50,7 @@ const SLTHistoryTableList = ({ data, updateList }: EntryFieldProps) => {
       alignText: 'center',
       headerName: t('label.shiftStart'),
       width: COLUMN_WIDTH,
-      renderCell: (params) => moment(params.row.shift_start).format('DD-MM-YYYY hh:MM:SS'),
+      renderCell: (params) => params.row.shift_start
     },
     {
       field: 'shift_end',
@@ -60,7 +58,7 @@ const SLTHistoryTableList = ({ data, updateList }: EntryFieldProps) => {
       alignText: 'center',
       headerName: t('label.shiftEnd'),
       width: COLUMN_WIDTH,
-      renderCell: (params) => moment(params.row.shift_end).format('DD-MM-YYYY hh:MM:SS'),
+      renderCell: (params) => params.row.shift_end
     },
     {
       field: 'operator_name',
@@ -68,8 +66,8 @@ const SLTHistoryTableList = ({ data, updateList }: EntryFieldProps) => {
       alignText: 'center',
       headerName: t('label.operatorName'),
       width: COLUMN_WIDTH,
-      renderCell: (params) => params.row.shift_operator.name,
-    },
+      renderCell: (params) => params.row.shift_operator.name
+    }
   ];
   return (
     <Box data-testid="availableData" ml={4}>

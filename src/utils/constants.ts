@@ -17,12 +17,12 @@ export const tableHeight = () =>
 export const ENTITY = {
   shift: 'shift',
   shiftHistory: 'history',
-  shiftLog: 'log',
+  shiftLog: 'log'
 };
 
 export const ENTITY_ID = {
   shift: 'shift_id',
-  today: 'today',
+  today: 'today'
 };
 
 export const makeUrlPath = (urlPath: string, createdBefore: string, createdAfter: string) => {
@@ -49,5 +49,5 @@ export const operatorName: OperatorName[] = [
   { label: 'Brian Greene', value: 'Brian Greene' },
   { label: 'Brian Cox', value: 'Brian Cox' },
   { label: 'Jenna Levin', value: 'Jenna Levin' },
-  { label: 'Neil Degrass Tyson', value: 'Neil Degrass Tyson' },
+  { label: 'Neil Degrass Tyson', value: 'Neil Degrass Tyson' }
 ];

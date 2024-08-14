@@ -14,7 +14,7 @@ function handleAxiosError(error: object) {
   if (axios.isAxiosError(error)) {
     const typedError: AxiosErrorType = {
       message: error.message,
-      statusCode: error.response?.status || 500,
+      statusCode: error.response?.status || 500
     };
     status = typedError.statusCode;
     errorMessage = typedError.message;
@@ -26,7 +26,7 @@ function handleAxiosError(error: object) {
 }
 
 const apiService = {
-  baseURL: () => 'http://192.168.1.9:5000/ska-oso-slt-services/slt/api/v1',
+  baseURL: () => 'http://10.59.40.144:5000/ska-oso-slt-services/slt/api/v1',
 
   postShiftData: async (path, shiftData: any): Promise<any> => {
     const baseUrl = apiService.baseURL();
@@ -82,8 +82,6 @@ const apiService = {
     const baseUrl = apiService.baseURL();
     const url = `${baseUrl}/${path}`;
 
-    console.log('formData', formData);
-
     try {
       const result = await axios.post(url, formData, config);
       return { data: result, status: 200, error: null };
@@ -92,6 +90,19 @@ const apiService = {
       return { data: null, status: errorResponse.status, error: errorResponse.error };
     }
   },
+
+  getImage: async (path): Promise<any> => {
+    const baseUrl = apiService.baseURL();
+    const url = `${baseUrl}/${path}`;
+
+    try {
+      const result = await axios.get(url);
+      return { data: result, status: 200, error: null };
+    } catch (err) {
+      const errorResponse = handleAxiosError(err);
+      return { data: null, status: errorResponse.status, error: errorResponse.error };
+    }
+  }
 };
 
 export default apiService;
