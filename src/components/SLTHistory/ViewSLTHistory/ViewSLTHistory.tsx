@@ -38,7 +38,7 @@ const ViewSLTHistory = ({ shiftData, updateStatus }: EntryFieldProps) => {
       field: 'operator_name',
       headerName: t('label.operatorName'),
       width: 180,
-      renderCell: (params) => shiftData.shift_operator.name
+      renderCell: (params) => shiftData.shift_operator
     }
     // {
     //   field: 'sbi_ref',

@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Box } from '@mui/material';
 import { DataGrid } from '@ska-telescope/ska-gui-components';
-import moment from 'moment';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import moment from 'moment';
 import SltHistoryDataModel from '../../Models/SLTHistory';
 
-const COLUMN_WIDTH = 200;
+const COLUMN_WIDTH = 250;
 
 const ViewSLTHistory = ({ shiftData, updatedList }) => {
   const loadInfoPage = (shiftData) => {

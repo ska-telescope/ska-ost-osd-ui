@@ -15,18 +15,12 @@ import {
 import { Box, Grid, Paper, TextField } from '@mui/material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import HomeIcon from '@mui/icons-material/Home';
-import SendIcon from '@mui/icons-material/Send';
+import AddIcon from '@mui/icons-material/Add';
 import HistoryIcon from '@mui/icons-material/History';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
-import {
-  ENTITY,
-  CHARACTER_LIMIT,
-  COMMENT_PADDING,
-  DEFAULT_TIME,
-  operatorName
-} from '../../utils/constants';
+import { ENTITY, COMMENT_PADDING, DEFAULT_TIME, operatorName } from '../../utils/constants';
 
 import apiService from '../../services/apis';
 import SLTLogTableList from './SLTTableList/SLTTableList';
@@ -34,12 +28,12 @@ import SLTLogMockList from '../../mockData/SLTLogMock';
 
 function SLTLogs() {
   const [shiftStartTime, setShiftStartTime] = useState(DEFAULT_TIME);
-  const [statusMessage, setStatusMessage] = useState(null);
   const [shiftShowStart, setShiftShowStart] = useState(DEFAULT_TIME);
   const [shiftShowEnd, setShiftShowEnd] = useState(DEFAULT_TIME);
+
+  const [statusMessage, setStatusMessage] = useState(null);
   const [dataDetails, setSltLogs] = useState([]);
   const [startShift, setStartShift] = useState(false);
-  const [shiftEndTime, setShiftEndTime] = useState(DEFAULT_TIME);
   const [showElement, setShowElement] = useState(false);
   const [responseCode, setMessageCode] = useState(null);
   const [operator, setOperator] = useState('');
@@ -53,15 +47,14 @@ function SLTLogs() {
   }
 
   const getShiftStartTime = async () => {
-    console.log('operator', operator, operator.length);
-
     if (operator.length === 0) {
       validateOperator();
     } else {
       setStartShift(true);
 
       const shiftData = {
-        shift_operator: { name: operator }
+        shift_operator: { name: operator },
+        shift_start: moment().utc().toISOString()
       };
 
       const path = `shifts`;
@@ -88,10 +81,10 @@ function SLTLogs() {
           .utc()
           .format('YYYY-MM-DD HH:mm:ss')
       );
-      setShiftId(response && response.data && response.data.data && response.data.data.id);
+
+      setShiftId(response.data.data.id);
 
       const interval = setInterval(() => {
-        // updateLogs(response.data.data.id);
         setSltLogs([SLTLogMockList[0]]);
       }, 5000);
       setTime(interval);
@@ -146,7 +139,7 @@ function SLTLogs() {
       setShiftShowStart(DEFAULT_TIME);
       setShiftShowEnd(DEFAULT_TIME);
       setValue('');
-      setShiftEndTime(DEFAULT_TIME);
+      // setShiftEndTime(DEFAULT_TIME);
       localStorage.removeItem('id');
     }, 3000);
   };
@@ -224,7 +217,7 @@ function SLTLogs() {
     if (responseCode === 200) {
       return (
         <InfoCard
-          fontSize={15}
+          fontSize={20}
           color={InfoCardColorTypes.Success}
           message={t(statusMessage)}
           testId="successStatusMsg"
@@ -242,46 +235,16 @@ function SLTLogs() {
   };
   return (
     <Box>
-      <Grid container padding={2} justifyContent="end">
-        {/* <Grid item xs={12} sm={12} md={1.2}>
-          <Link to="/">
-            <Button
-              icon={<HomeIcon />}
-              size={ButtonSizeTypes.Large}
-              ariaDescription="Button for log tab"
-              label={t('label.logButton')}
-              testId="logButton"
-              color={
-                location.pathname === '/' ? ButtonColorTypes.Secondary : ButtonColorTypes.Inherit
-              }
-              variant={ButtonVariantTypes.Contained}
-            />
-          </Link>
-        </Grid> */}
+      <Grid container  sx={{ margin: 2, marginBottom:0 }} justifyContent="end">
         <Grid item xs={12} sm={12} md={3}>
-          {/* <Link to="/history">
-            <Button
-              icon={<HistoryIcon />}
-              size={ButtonSizeTypes.Large}
-              ariaDescription="Button for history tab"
-              label={t('label.history')}
-              testId="historyButton"
-              color={
-                location.pathname === `/${ENTITY.shiftHistory}`
-                  ? ButtonColorTypes.Secondary
-                  : ButtonColorTypes.Inherit
-              }
-              variant={ButtonVariantTypes.Contained}
-            />
-          </Link> */}
+        <h2>Manage Shift</h2>
         </Grid>
-
         <Grid item xs={12} sm={12} md={1} />
         <Grid item xs={12} sm={12} md={4}>
           {showElement ? renderMessageResponse() : ''}
         </Grid>
         <Grid item xs={12} sm={12} md={2} />
-        <Grid item xs={12} sm={12} md={1.9}>
+        <Grid item xs={12} sm={12} md={2}>
           <Link to="/history">
             <Button
               icon={<HistoryIcon />}
@@ -300,7 +263,7 @@ function SLTLogs() {
         </Grid>
       </Grid>
 
-      <Paper sx={{ border: 1, margin: 4, marginTop: 2 }}>
+      <Paper sx={{ border: 1, margin: 2, marginTop: 0 }}>
         <Grid container spacing={2} sx={{ padding: 2 }} justifyContent="center">
           <Grid item sx={{ padding: 10 }} xs={12} sm={12} md={3}>
             <DropDown
@@ -361,7 +324,7 @@ function SLTLogs() {
         </Grid>
       </Paper>
 
-      <Paper sx={{ border: 1, margin: 4 }}>
+      <Paper sx={{ border: 1, margin: 2 }}>
         <Grid container sx={{ padding: 2 }} alignItems="flex-start">
           <Grid item xs={12} sm={12} md={6}>
             <p style={{ fontWeight: 'bold', marginLeft: 8, alignItems: 'center' }}>
@@ -373,16 +336,12 @@ function SLTLogs() {
               label="Please enter comments..."
               multiline
               rows={3}
-              // inputProps={{
-              //   maxLength: CHARACTER_LIMIT
-              // }}
-              // helperText={`${value.length}/${CHARACTER_LIMIT}`}
               value={value}
               onChange={handleChange}
             />
             <Grid item paddingTop={1} paddingBottom={1} xs={12} sm={12} md={6}>
               <Button
-                icon={<SendIcon />}
+                icon={<AddIcon />}
                 disabled={disableButtons()}
                 ariaDescription="Button for submitting comment"
                 label={t('label.submit')}
@@ -413,14 +372,3 @@ function SLTLogs() {
 }
 
 export default SLTLogs;
-
-// <p style={{ fontWeight: 'bold', marginLeft: 15, alignItems: 'center' }}>Log Summary</p>
-//         <hr />
-
-//         {dataDetails && Array.isArray(dataDetails) && dataDetails.length > 0 ? (
-//           <SLTLogTableList data={dataDetails} />
-//         ) : (
-//           <p style={{ fontWeight: 'bold', marginLeft: 15, alignItems: 'center' }} id="logNotFound">
-//             {t('msg.noLogsFound')}
-//           </p>
-//         )}

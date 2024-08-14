@@ -1,10 +1,17 @@
 const SLTHistoryMockList = [
   {
     shift_start: '2024-08-02T02:48:58.228541',
+    id: 1,
+    shift_id: 'shift-20240812-1',
     shift_end: '2024-08-02T02:48:58.228541',
     operator_name: 'Chandler Bing',
     comments: 'Test is a test for Comment view on SLT UI History Page',
-    annotations: 'Test Annotation',
+    annotation: 'Test Annotation',
+    media: [
+      {
+        img: '/home/sagar/Projects/ska-oso-slt-services/src/ska_oso_slt_services/common/media/49_SLT_SequenceFlow.jpg'
+      }
+    ],
     info: [
       {
         eb_id: 'eb-t0001-20240801-00004',
@@ -29,10 +36,17 @@ const SLTHistoryMockList = [
   },
   {
     shift_start: '2024-08-02T02:48:58.228541',
+    id: 2,
+    shift_id: 'shift-20240812-2',
     shift_end: '2024-08-02T02:48:58.228541',
     operator_name: 'Chandler Bing',
     comments: [],
-    annotations: [],
+    annotation: [],
+    media: [
+      {
+        img: '/home/sagar/Projects/ska-oso-slt-services/src/ska_oso_slt_services/common/media/49_SLT_SequenceFlow.jpg'
+      }
+    ],
     info: [
       {
         eb_id: 'eb-t0001-20240801-00005',
@@ -57,6 +71,8 @@ const SLTHistoryMockList = [
   },
   {
     shift_start: '2024-08-02T02:48:58.228541',
+    id: 3,
+    shift_id: 'shift-20240812-3',
     shift_end: '2024-08-02T02:48:58.228541',
     operator_name: 'Chandler Bing',
     comments: [],
@@ -85,10 +101,17 @@ const SLTHistoryMockList = [
   },
   {
     shift_start: '2024-08-02T02:48:58.228541',
+    id: 4,
+    shift_id: 'shift-20240812-4',
     shift_end: '2024-08-02T02:48:58.228541',
     operator_name: 'Chandler Bing',
     comments: [],
-    annotations: [],
+    annotation: [],
+    media: [
+      {
+        img: '/home/sagar/Projects/ska-oso-slt-services/src/ska_oso_slt_services/common/media/49_SLT_SequenceFlow.jpg'
+      }
+    ],
     info: [
       {
         eb_id: 'eb-t0001-20240801-00007',
@@ -113,6 +136,8 @@ const SLTHistoryMockList = [
   },
   {
     shift_start: '2024-08-02T02:48:58.228541',
+    id: 5,
+    shift_id: 'shift-20240812-5',
     shift_end: '2024-08-02T02:48:58.228541',
     operator_name: 'Chandler Bing',
     comments: 'Test is a test for Comment view on SLT UI History Page',
@@ -141,6 +166,8 @@ const SLTHistoryMockList = [
   },
   {
     shift_start: '2024-08-02T02:48:58.228541',
+    id: 6,
+    shift_id: 'shift-20240812-6',
     shift_end: '2024-08-02T02:48:58.228541',
     operator_name: 'Chandler Bing',
     comments: [],
@@ -169,6 +196,8 @@ const SLTHistoryMockList = [
   },
   {
     shift_start: '2024-08-02T02:48:58.228541',
+    id: 7,
+    shift_id: 'shift-20240812-7',
     shift_end: '2024-08-02T02:48:58.228541',
     operator_name: 'Chandler Bing',
     comments: [],
@@ -197,6 +226,8 @@ const SLTHistoryMockList = [
   },
   {
     shift_start: '2024-08-02T02:48:58.228541',
+    id: 8,
+    shift_id: 'shift-20240812-8',
     shift_end: '2024-08-02T02:48:58.228541',
     operator_name: 'Chandler Bing',
     comments: [],

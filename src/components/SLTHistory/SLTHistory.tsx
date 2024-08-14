@@ -7,14 +7,14 @@ import {
   ButtonColorTypes,
   ButtonSizeTypes,
   ButtonVariantTypes,
-  DateEntry,
-  DropDown
+  DateEntry
 } from '@ska-telescope/ska-gui-components';
 import HomeIcon from '@mui/icons-material/Home';
 import HistoryIcon from '@mui/icons-material/History';
 import SearchIcon from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/Add';
-import { ENTITY, today, operatorName, makeUrlPath } from '../../utils/constants';
+import { ENTITY, today, makeUrlPath } from '../../utils/constants';
+
 import apiService from '../../services/apis';
 import SLTHistoryTableList from './SLTHistoryTableList/SLTHistoryTable';
 import ShiftDataTest from './ShiftData';
@@ -27,7 +27,6 @@ function SLTHistory() {
   const [displayTable, setDisplayTable] = useState(true);
   const [displayButton, setDisplayButton] = useState(true);
   const [displayData, setDisplayData] = useState('');
-  const [operator, setOperator] = useState('');
 
   const validateDates = () => {
     if (
@@ -68,9 +67,12 @@ function SLTHistory() {
 
   return (
     <>
-      <Grid container padding={2} justifyContent="right">
-        <Grid item xs={12} sm={12} md={10} />
-        <Grid item xs={12} sm={12} md={1.9}>
+      <Grid container  sx={{ margin: 2, marginBottom:0  }}justifyContent="end">
+      <Grid item xs={12} sm={12} md={3} >
+        <h2>Log History</h2>
+      </Grid>
+        <Grid item xs={12} sm={12} md={7} />
+        <Grid item xs={12} sm={12} md={2}>
           <Link to="/">
             <Button
               icon={<AddIcon />}
@@ -86,28 +88,28 @@ function SLTHistory() {
           </Link>
         </Grid>
       </Grid>
-      <Paper sx={{ border: 1, margin: 4, marginTop: 2 }}>
-        <Grid container paddingTop={2} justifyContent="left">
-          <Grid paddingLeft={4} item xs={12} sm={12} md={3}>
+      <Paper sx={{ border: 1, margin: 2, marginTop: 0 }}>
+        <Grid container spacing={2} padding={2} justifyContent="left">
+          <Grid item xs={12} sm={12} md={3}>
             <DateEntry
               ariaDescription={t('ariaLabel.dateDescription')}
               ariaTitle={t('ariaLabel.date')}
               helperText={t('msg.requiredStartDate')}
               testId="dateEntryStart"
-              errorText={validateDates()}
+              // errorText={validateDates()}
               label={t('label.startDate')}
               value={createdAfter}
               setValue={setCreatedAfter}
             />
           </Grid>
 
-          <Grid paddingLeft={10} item xs={12} sm={12} md={3}>
+          <Grid item xs={12} sm={12} md={3}>
             <DateEntry
               ariaDescription={t('ariaLabel.dateDescription')}
               ariaTitle={t('ariaLabel.date')}
               helperText={t('msg.requiredEndDate')}
               testId="dateEntryEnd"
-              errorText={validateDates()}
+              // errorText={validateDates()}
               label={t('label.endDate')}
               value={createdBefore}
               setValue={setCreatedBefore}
@@ -132,7 +134,7 @@ function SLTHistory() {
         </Grid>
       </Paper>
 
-      <Paper sx={{ border: 1, margin: 4 }}>
+      <Paper sx={{ border: 1, margin: 2 }}>
         {displayTable ? (
           <SLTHistoryTableList updateList={onTriggerFunction} data={dataDetails} />
         ) : (

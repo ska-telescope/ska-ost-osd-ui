@@ -123,13 +123,6 @@ const SLTLogTableList = ({ data }: EntryFieldProps) => {
 
       renderCell: (params) => params.row.info.sbi_status
     },
-    // {
-    //   field: 'info.sbi_status',
-    //   headerName: t('label.currentStatus'),
-    //   width: 220,
-
-    //   renderCell: (params) => params.row.info.,
-    // },
     {
       field: 'log_time',
       headerName: t('label.logTime'),

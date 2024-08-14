@@ -82,10 +82,21 @@ const apiService = {
     const baseUrl = apiService.baseURL();
     const url = `${baseUrl}/${path}`;
 
-    console.log('formData', formData);
-
     try {
       const result = await axios.post(url, formData, config);
+      return { data: result, status: 200, error: null };
+    } catch (err) {
+      const errorResponse = handleAxiosError(err);
+      return { data: null, status: errorResponse.status, error: errorResponse.error };
+    }
+  },
+
+  getImage: async (path): Promise<any> => {
+    const baseUrl = apiService.baseURL();
+    const url = `${baseUrl}/${path}`;
+
+    try {
+      const result = await axios.get(url);
       return { data: result, status: 200, error: null };
     } catch (err) {
       const errorResponse = handleAxiosError(err);
