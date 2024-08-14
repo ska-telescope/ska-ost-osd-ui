@@ -15,7 +15,7 @@
     "shiftStart": "Start Shift",
     "history": "Shift History",
     "logTime": "Log Time",
-    "logButton": "Home",
+    "logButton": "Add New Shift",
     "submit": "Submit",
     "operatorName": "Operator Name",
     "shiftEnd": "End Shift",
@@ -24,7 +24,7 @@
     "comments": "Comments",
     "images": "Images",
     "source": "Source",
-    "info": "Execution Block ID",
+    "info": "Log Info",
     "created_on": "Created Date",
     "created_by": "Created By",
     "search": "Search",
@@ -48,7 +48,7 @@
   "msg": {
     "shiftStarted": "Shift started successfully",
     "shiftEnd": "Shift ended successfully",
-    "imageUpload": "Image upload success",
+    "imageUpload": "Image uploaded successfully",
     "commentSubmit": "Comment submitted successfully",
     "selectedDates": "Showing records for selected dates",
     "selectOperator": "Please select operator name",
@@ -61,8 +61,8 @@
   },
   "toolTip": {
     "button": {
-      "docs": "Click here for PTT documentation",
-      "docsURL": "https://developer.skao.int/projects/ska-oso-ptt/en/latest/?badge=latest",
+      "docs": "Click here for SLT documentation",
+      "docsURL": "https://developer.skao.int/projects/ska-oso-slt-ui/en/latest/?badge=latest",
       "mode": "Colour Mode Toggle",
       "skao": "SKAO WebSite",
       "dateSearch": "Search by dates",

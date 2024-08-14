@@ -15,7 +15,7 @@ interface EntryFieldProps {
 
 const images = [
   { id: 1, url: 'images/SLT History Page.png' },
-  { id: 2, url: 'images/SLT Log Page.png' },
+  { id: 2, url: 'images/SLT Log Page.png' }
 ];
 
 const ImageDisplay = ({ imageArray }) => (
@@ -52,64 +52,64 @@ const ShiftDataTest = (data) => {
       field: 'source',
       headerName: t('label.source'),
       width: 120,
-      renderCell: (params) => params.row.shift_operator,
+      renderCell: (params) => params.row.shift_operator
     },
     {
       field: 'info.eb_id',
       headerName: t('label.info'),
       width: COLUMN_WIDTH,
 
-      renderCell: (params) => params.row.info.eb_id,
+      renderCell: (params) => params.row.info.eb_id
     },
     {
       field: 'info.sbi_status',
       headerName: t('label.currentStatus'),
       width: 150,
 
-      renderCell: (params) => params.row.info.sbi_status,
+      renderCell: (params) => params.row.info.sbi_status
     },
     {
       field: 'log_time',
       headerName: t('label.logTime'),
       width: COLUMN_WIDTH,
-      renderCell: (params) => params.row.info.log_time,
-    },
+      renderCell: (params) => params.row.info.log_time
+    }
   ];
 
   return (
-    <Box data-testid="availableData" m={1}>
-      <Grid container spacing={2} sx={{ paddingLeft: 2 }} alignItems="left" textAlign="left">
+    <Box data-testid="availableData" sx={{ margin: 4 }}>
+      <Grid container spacing={2} sx={{ paddingLeft: 0 }} justifyContent="left">
         <Grid item xs={12} sm={12} md={4}>
-          <p style={{ fontWeight: 'bold' }}>
+          <span style={{ fontWeight: 'bold' }}>
             Shift ID:{' '}
             {`${moment(data.data.shift_start).format('DD-MM-YYYY_hh_MM_SS')}-${data.data.shift_id}`}{' '}
-          </p>
+          </span>
         </Grid>
-        <Grid item xs={12} sm={12} md={3} />
+        <Grid item xs={12} sm={12} md={2.9} />
         <Grid item xs={12} sm={12} md={5}>
-          <p style={{ fontWeight: 'bold' }}>
+          <span style={{ fontWeight: 'bold' }}>
             Shift Start: {moment(data.data.shift_start).format('DD-MM-YYYY hh:MM:SS')}{' '}
-          </p>
+          </span>
         </Grid>
       </Grid>
 
-      <Grid container spacing={2} sx={{ paddingLeft: 2 }} alignItems="left" textAlign="left">
+      <Grid container spacing={2} sx={{ padding: 2, paddingLeft: 0 }} justifyContent="left">
         <Grid item xs={12} sm={12} md={4}>
-          <p style={{ fontWeight: 'bold', alignItems: 'center' }}>
+          <span style={{ fontWeight: 'bold', alignItems: 'center' }}>
             Operator Name: {data.data.shift_operator.name}{' '}
-          </p>
+          </span>
         </Grid>
         <Grid item xs={12} sm={12} md={3} />
         <Grid item xs={12} sm={12} md={3}>
-          <p style={{ fontWeight: 'bold', alignItems: 'center' }}>
+          <span style={{ fontWeight: 'bold', alignItems: 'center' }}>
             Shift End: {moment(data.data.shift_end).format('DD-MM-YYYY hh:MM:SS')}{' '}
-          </p>
+          </span>
         </Grid>
 
         <Grid item xs={12} sm={12} md={2}>
-          <p style={{ cursor: 'pointer', textDecoration: 'underline' }} onClick={handleOpen}>
+          <span style={{ cursor: 'pointer', textDecoration: 'underline' }} onClick={handleOpen}>
             View Images
-          </p>
+          </span>
 
           <Dialog
             aria-label={t('ariaLabel.dialog')}
@@ -118,9 +118,9 @@ const ShiftDataTest = (data) => {
               '& .MuiDialog-container': {
                 '& .MuiPaper-root': {
                   width: '100%',
-                  maxWidth: '1000px', // Set your width here
-                },
-              },
+                  maxWidth: '1000px' // Set your width here
+                }
+              }
             }}
             open={openModal}
             onClose={handleClose}
@@ -134,20 +134,16 @@ const ShiftDataTest = (data) => {
         </Grid>
       </Grid>
 
-      <Grid
-        container
-        padding={2}
-        spacing={2}
-      >
-        <Grid   item xs={12} sm={12} md={5}>
+      <Grid container sx={{ padding: 2, paddingLeft: 0 }} spacing={2}>
+        <Grid item xs={12} sm={12} md={5}>
           <TextField
-          sx={{ width: "100%" }}
+            sx={{ width: '100%' }}
             id="outlined-multiline-static"
             label="Annotation"
             multiline
             rows={3}
             inputProps={{
-              readOnly: true,
+              readOnly: true
             }}
             value={data.data.annotations}
           />
@@ -157,25 +153,25 @@ const ShiftDataTest = (data) => {
 
         <Grid item xs={12} sm={12} md={5}>
           <TextField
-            sx={{ width: "100%" }}
+            sx={{ width: '100%' }}
             id="outlined-multiline-static"
             label="Operator Comments"
             multiline
             rows={3}
             inputProps={{
-              readOnly: true,
+              readOnly: true
             }}
             value={data.data.comments}
           />
         </Grid>
       </Grid>
 
-      <Paper  sx={{ border: 1, marginTop: 1 }}>
-        <Grid container   padding={2} spacing={2} alignItems="left" textAlign="center">
+      <Paper sx={{ border: 1 }}>
+        <Grid container spacing={2} alignItems="left" textAlign="center">
           <Grid item xs={12} sm={12} md={12}>
-            <Paper  sx={{ border: 1, margin: 1 }}>
+            <Paper sx={{ border: 1 }}>
               <p style={{ fontWeight: 'bold', textAlign: 'center', alignItems: 'center' }}>
-                Logs for Shift ID {data.data.shift_id}
+                Logs for Shift ID: {data.data.shift_id}
               </p>
             </Paper>
           </Grid>

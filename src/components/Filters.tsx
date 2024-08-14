@@ -4,7 +4,7 @@ import {
   ButtonColorTypes,
   ButtonVariantTypes,
   DateEntry,
-  SearchEntry,
+  SearchEntry
 } from '@ska-telescope/ska-gui-components';
 import { useTranslation } from 'react-i18next';
 import React, { useEffect, useState } from 'react';
@@ -13,7 +13,7 @@ import {
   createdAfterDate,
   createdBeforeDate,
   nextdate,
-  today,
+  today
 } from '../utils/constants';
 
 interface FilterProps {
@@ -35,7 +35,7 @@ const Filters = ({ filterstate, onData }: EntryFieldProps) => {
     if (filterstate) {
       setId(filterstate.value);
       const filterStates = {
-        id: filterstate.value,
+        id: filterstate.value
       };
       onData(filterStates);
     }
@@ -57,7 +57,7 @@ const Filters = ({ filterstate, onData }: EntryFieldProps) => {
   const searchById = (type) => {
     setSearchType(type);
     const filterStates = {
-      id,
+      id
     };
     onData(filterStates);
   };
@@ -66,7 +66,7 @@ const Filters = ({ filterstate, onData }: EntryFieldProps) => {
     setSearchType(type);
     const filterStates = {
       createdAfter: createdAfterDate,
-      createdBefore: createdBeforeDate,
+      createdBefore: createdBeforeDate
     };
     onData(filterStates);
   };
@@ -75,7 +75,7 @@ const Filters = ({ filterstate, onData }: EntryFieldProps) => {
     setSearchType(type);
     const filterStates = {
       createdAfter: today,
-      createdBefore: nextdate,
+      createdBefore: nextdate
     };
     onData(filterStates);
   };
@@ -84,7 +84,7 @@ const Filters = ({ filterstate, onData }: EntryFieldProps) => {
     setSearchType(type);
     const filterStates = {
       createdAfter,
-      createdBefore,
+      createdBefore
     };
     onData(filterStates);
   };
@@ -118,7 +118,7 @@ const Filters = ({ filterstate, onData }: EntryFieldProps) => {
           {t('msg.last7days')}
           <small>
             {` (Between ${t('date_format_two', {
-              date: new Date(createdAfterDate),
+              date: new Date(createdAfterDate)
             })} and  ${t('date_format_two', { date: new Date(createdBeforeDate) })})`}
           </small>
         </span>
@@ -128,7 +128,7 @@ const Filters = ({ filterstate, onData }: EntryFieldProps) => {
           {t('msg.selectedDates')}
           <small>
             {` (Between ${t('date_format_two', {
-              date: new Date(createdAfter),
+              date: new Date(createdAfter)
             })} and  ${t('date_format_two', { date: new Date(createdBefore) })})`}
           </small>
         </p>

@@ -10,7 +10,7 @@ import {
   InfoCard,
   InfoCardColorTypes,
   ButtonColorTypes,
-  ButtonSizeTypes,
+  ButtonSizeTypes
 } from '@ska-telescope/ska-gui-components';
 import { Box, Grid, Paper, TextField } from '@mui/material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
@@ -25,7 +25,7 @@ import {
   CHARACTER_LIMIT,
   COMMENT_PADDING,
   DEFAULT_TIME,
-  operatorName,
+  operatorName
 } from '../../utils/constants';
 
 import apiService from '../../services/apis';
@@ -47,34 +47,62 @@ function SLTLogs() {
   const [value, setValue] = useState('');
   const { t } = useTranslation('translations');
   const [interval, setTime] = useState(null);
+  if (localStorage.getItem('id') !== null) {
+    const currentID = JSON.parse(localStorage.getItem('id'));
+    console.log('currentID', currentID);
+  }
+
   const getShiftStartTime = async () => {
     console.log('operator', operator, operator.length);
 
     if (operator.length === 0) {
-      validateOperator()
+      validateOperator();
     } else {
       setStartShift(true);
 
       const shiftData = {
-        shift_operator: { name: operator },
+        shift_operator: { name: operator }
       };
 
       const path = `shifts`;
       const response = await apiService.postShiftData(path, shiftData);
       setMessageCode(response.status);
       setStatusMessage('msg.shiftStarted');
+      localStorage.setItem(
+        'id',
+        JSON.stringify(response && response.data && response.data.data && response.data.data.id)
+      );
+      // const tt = JSON.parse(localStorage.getItem('id'))
+      // console.log('tt', tt);
       setShowElement(true);
       setTimeout(() => {
         setShowElement(false);
       }, 3000);
-      setShiftShowStart(moment(response && response.data && response.data.data && response.data.data.shift_start).utc().format('YYYY-MM-DD HH:mm:ss'));
-      setShiftStartTime(moment(response && response.data && response.data.data && response.data.data.shift_start).utc().format('YYYY-MM-DD HH:mm:ss'));
-      setShiftId(response && response.data && response.data.data  && response.data.data.id);
+      setShiftShowStart(
+        moment(response && response.data && response.data.data && response.data.data.shift_start)
+          .utc()
+          .format('YYYY-MM-DD HH:mm:ss')
+      );
+      setShiftStartTime(
+        moment(response && response.data && response.data.data && response.data.data.shift_start)
+          .utc()
+          .format('YYYY-MM-DD HH:mm:ss')
+      );
+      setShiftId(response && response.data && response.data.data && response.data.data.id);
 
       const interval = setInterval(() => {
-        updateLogs(response.data.data.id);
+        // updateLogs(response.data.data.id);
+        setSltLogs([SLTLogMockList[0]]);
       }, 5000);
       setTime(interval);
+      const interval1 = setInterval(() => {
+        setSltLogs([SLTLogMockList[1], SLTLogMockList[0]]);
+      }, 10000);
+      setTime(interval1);
+      setInterval(() => {
+        clearInterval(interval);
+        clearInterval(interval1);
+      }, 11000);
     }
   };
 
@@ -87,20 +115,24 @@ function SLTLogs() {
         shift_start: shiftStartTime,
         shift_end: moment().utc().toISOString(),
         id: shiftId,
-        comments: value,
+        comments: value
       };
     } else {
       shiftData = {
         shift_operator: { name: operator },
         shift_start: shiftStartTime,
         shift_end: moment().utc().toISOString(),
-        id: shiftId,
+        id: shiftId
       };
     }
 
     const path = `shifts/${shiftId}`;
     const response = await apiService.putShiftData(path, shiftData);
-    setShiftShowEnd(moment(response && response.data && response.data.data && response.data.data.shift_end).utc().format('YYYY-MM-DD HH:mm:ss'));
+    setShiftShowEnd(
+      moment(response && response.data && response.data.data && response.data.data.shift_end)
+        .utc()
+        .format('YYYY-MM-DD HH:mm:ss')
+    );
     setMessageCode(response.status);
     setStatusMessage('msg.shiftEnd');
     setShowElement(true);
@@ -115,6 +147,7 @@ function SLTLogs() {
       setShiftShowEnd(DEFAULT_TIME);
       setValue('');
       setShiftEndTime(DEFAULT_TIME);
+      localStorage.removeItem('id');
     }, 3000);
   };
 
@@ -124,7 +157,7 @@ function SLTLogs() {
     const shiftData = {
       shift_operator: { name: operator },
       shift_start: shiftStartTime,
-      comments: `${value}, `,
+      comments: `${value}, `
     };
 
     const path = `shifts/${shiftId}`;
@@ -161,7 +194,7 @@ function SLTLogs() {
     setSltLogs(
       result && result.data && result.data.shift_logs && result.data.shift_logs.length > 0
         ? result.data.shift_logs
-        : [],
+        : []
     );
   };
 
@@ -174,8 +207,8 @@ function SLTLogs() {
     const config = {
       headers: {
         accept: 'application/json',
-        'content-type': 'multipart/form-data',
-      },
+        'content-type': 'multipart/form-data'
+      }
     };
     const result = await apiService.postImage(path, formData, config);
 
@@ -191,7 +224,7 @@ function SLTLogs() {
     if (responseCode === 200) {
       return (
         <InfoCard
-          fontSize={20}
+          fontSize={15}
           color={InfoCardColorTypes.Success}
           message={t(statusMessage)}
           testId="successStatusMsg"
@@ -209,8 +242,8 @@ function SLTLogs() {
   };
   return (
     <Box>
-      <Grid container padding={2} justifyContent="left">
-        <Grid item xs={12} sm={12} md={1.2}>
+      <Grid container padding={2} justifyContent="end">
+        {/* <Grid item xs={12} sm={12} md={1.2}>
           <Link to="/">
             <Button
               icon={<HomeIcon />}
@@ -224,8 +257,31 @@ function SLTLogs() {
               variant={ButtonVariantTypes.Contained}
             />
           </Link>
-        </Grid>
+        </Grid> */}
         <Grid item xs={12} sm={12} md={3}>
+          {/* <Link to="/history">
+            <Button
+              icon={<HistoryIcon />}
+              size={ButtonSizeTypes.Large}
+              ariaDescription="Button for history tab"
+              label={t('label.history')}
+              testId="historyButton"
+              color={
+                location.pathname === `/${ENTITY.shiftHistory}`
+                  ? ButtonColorTypes.Secondary
+                  : ButtonColorTypes.Inherit
+              }
+              variant={ButtonVariantTypes.Contained}
+            />
+          </Link> */}
+        </Grid>
+
+        <Grid item xs={12} sm={12} md={1} />
+        <Grid item xs={12} sm={12} md={4}>
+          {showElement ? renderMessageResponse() : ''}
+        </Grid>
+        <Grid item xs={12} sm={12} md={2} />
+        <Grid item xs={12} sm={12} md={1.9}>
           <Link to="/history">
             <Button
               icon={<HistoryIcon />}
@@ -242,15 +298,10 @@ function SLTLogs() {
             />
           </Link>
         </Grid>
-
-        <Grid item xs={12} sm={12} md={1} />
-        <Grid item xs={12} sm={12} md={4}>
-          {showElement ? renderMessageResponse() : ''}
-        </Grid>
       </Grid>
 
-      <Paper sx={{ border: 1, margin: 1 }}>
-        <Grid container paddingLeft={2} spacing={2} sx={{ padding: 4 }} justifyContent="center">
+      <Paper sx={{ border: 1, margin: 4, marginTop: 2 }}>
+        <Grid container spacing={2} sx={{ padding: 2 }} justifyContent="center">
           <Grid item sx={{ padding: 10 }} xs={12} sm={12} md={3}>
             <DropDown
               errorText={validateOperator()}
@@ -310,14 +361,14 @@ function SLTLogs() {
         </Grid>
       </Paper>
 
-      <Paper sx={{ border: 1, margin: 1 }}>
-        <Grid container padding={2} alignItems="flex-start">
+      <Paper sx={{ border: 1, margin: 4 }}>
+        <Grid container sx={{ padding: 2 }} alignItems="flex-start">
           <Grid item xs={12} sm={12} md={6}>
             <p style={{ fontWeight: 'bold', marginLeft: 8, alignItems: 'center' }}>
               Operator Comments
             </p>
             <TextField
-              sx={{ width: "100%" }}
+              sx={{ width: '100%' }}
               id="outlined-multiline-static"
               label="Please enter comments..."
               multiline
@@ -351,11 +402,11 @@ function SLTLogs() {
         </Grid>
       </Paper>
 
-      <Paper  sx={{ border: 1, margin: 1 }}>
+      <Paper sx={{ border: 1, margin: 4 }}>
         <p style={{ fontWeight: 'bold', textAlign: 'center', alignItems: 'center' }}>Log Summary</p>
         <hr />
 
-        <SLTLogTableList data={SLTLogMockList} />
+        <SLTLogTableList data={dataDetails} />
       </Paper>
     </Box>
   );

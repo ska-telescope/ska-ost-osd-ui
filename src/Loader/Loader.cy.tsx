@@ -14,7 +14,7 @@ describe('<Legend />', () => {
         <ThemeProvider theme={theme(theTheme)}>
           <CssBaseline />
           <Loader />
-        </ThemeProvider>,
+        </ThemeProvider>
       );
     });
   }

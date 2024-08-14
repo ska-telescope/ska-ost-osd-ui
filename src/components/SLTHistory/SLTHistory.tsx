@@ -8,13 +8,13 @@ import {
   ButtonSizeTypes,
   ButtonVariantTypes,
   DateEntry,
-  DropDown,
+  DropDown
 } from '@ska-telescope/ska-gui-components';
 import HomeIcon from '@mui/icons-material/Home';
 import HistoryIcon from '@mui/icons-material/History';
 import SearchIcon from '@mui/icons-material/Search';
+import AddIcon from '@mui/icons-material/Add';
 import { ENTITY, today, operatorName, makeUrlPath } from '../../utils/constants';
-
 import apiService from '../../services/apis';
 import SLTHistoryTableList from './SLTHistoryTableList/SLTHistoryTable';
 import ShiftDataTest from './ShiftData';
@@ -68,11 +68,12 @@ function SLTHistory() {
 
   return (
     <>
-      <Grid container padding={2} >
-        <Grid item xs={12} sm={12} md={1.2}>
+      <Grid container padding={2} justifyContent="right">
+        <Grid item xs={12} sm={12} md={10} />
+        <Grid item xs={12} sm={12} md={1.9}>
           <Link to="/">
             <Button
-              icon={<HomeIcon />}
+              icon={<AddIcon />}
               size={ButtonSizeTypes.Large}
               ariaDescription="Button for log tab"
               label={t('label.logButton')}
@@ -84,25 +85,8 @@ function SLTHistory() {
             />
           </Link>
         </Grid>
-        <Grid item xs={12} sm={12} md={3}>
-          <Link to="/history">
-            <Button
-              icon={<HistoryIcon />}
-              size={ButtonSizeTypes.Large}
-              ariaDescription="Button for history tab"
-              label={t('label.history')}
-              testId="historyButton"
-              color={
-                location.pathname === `/${ENTITY.shiftHistory}`
-                  ? ButtonColorTypes.Secondary
-                  : ButtonColorTypes.Inherit
-              }
-              variant={ButtonVariantTypes.Contained}
-            />
-          </Link>
-        </Grid>
       </Grid>
-      <Paper sx={{ border: 1, margin: 1 }}>
+      <Paper sx={{ border: 1, margin: 4, marginTop: 2 }}>
         <Grid container paddingTop={2} justifyContent="left">
           <Grid paddingLeft={4} item xs={12} sm={12} md={3}>
             <DateEntry
@@ -148,37 +132,34 @@ function SLTHistory() {
         </Grid>
       </Paper>
 
-      <Paper sx={{ border: 1, margin: 1 }}>
+      <Paper sx={{ border: 1, margin: 4 }}>
         {displayTable ? (
           <SLTHistoryTableList updateList={onTriggerFunction} data={dataDetails} />
         ) : (
           <>
-          <Paper sx={{ border: 1 }}>
-          <Grid container  justifyContent="center" >
-          <Grid item xs={12} sm={12} md={4}>
-            </Grid>
-              <Grid item xs={12} sm={12} md={4}>
-              <h1 style={{ fontWeight: 'bold', textAlign: 'center', alignItems: 'center' }}>
-          <b>Shift History Data </b>
-        </h1>
+            <Paper sx={{ border: 1 }}>
+              <Grid container justifyContent="center">
+                <Grid item xs={12} sm={12} md={4} />
+                <Grid item xs={12} sm={12} md={4}>
+                  <h3 style={{ fontWeight: 'bold', textAlign: 'center', alignItems: 'center' }}>
+                    <b>Shift History Data </b>
+                  </h3>
+                </Grid>
+                <Grid item xs={12} sm={12} md={3} />
+                <Grid item xs={12} sm={12} md={1}>
+                  <div style={{ float: 'right', padding: '15px' }}>
+                    <Button
+                      color={ButtonColorTypes.Inherit}
+                      variant={ButtonVariantTypes.Contained}
+                      testId="historyClose"
+                      label={t('label.close')}
+                      onClick={handleClose}
+                      toolTip={t('label.close')}
+                    />
+                  </div>
+                </Grid>
               </Grid>
-              <Grid item xs={12} sm={12} md={3}></Grid>
-              <Grid item xs={12} sm={12} md={1}>
-              <div style={{float: "right",padding:"10px",paddingTop:"25px"}}>
-                  <Button
-                    color={ButtonColorTypes.Inherit}
-                    variant={ButtonVariantTypes.Contained}
-                    testId="historyClose"
-                    label={t('label.close')}
-                    onClick={handleClose}
-                    toolTip={t('label.close')}
-                  />
-                </div>
-              </Grid>
-            </Grid>
-
- 
-      </Paper>
+            </Paper>
             <ShiftDataTest data={displayData} />
           </>
         )}

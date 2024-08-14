@@ -14,28 +14,24 @@ export const fucreatedBeforeDatellHeight = () =>
 export const tableHeight = () =>
   `calc(100vh - ${SPACER_HEADER + SPACER_FOOTER + DATA_STORE_BOX_HEIGHT + SPACER}px)`;
 
-  export const SEARCH_TYPE = {
-    last7days: 'last 7 days',
-    today: 'today',
-    dates: 'dates',
-    id: 'id'
-  }
+export const SEARCH_TYPE = {
+  last7days: 'last 7 days',
+  today: 'today',
+  dates: 'dates',
+  id: 'id'
+};
 
-  export const nextdate = moment()
-  .utc()
-  .add(1, 'days')
-  .toISOString()
-  .substring(0, 10);
+export const nextdate = moment().utc().add(1, 'days').toISOString().substring(0, 10);
 
 export const ENTITY = {
   shift: 'shift',
   shiftHistory: 'history',
-  shiftLog: 'log',
+  shiftLog: 'log'
 };
 
 export const ENTITY_ID = {
   shift: 'shift_id',
-  today: 'today',
+  today: 'today'
 };
 
 export const makeUrlPath = (urlPath: string, createdBefore: string, createdAfter: string) => {
@@ -62,5 +58,5 @@ export const operatorName: OperatorName[] = [
   { label: 'Brian Greene', value: 'Brian Greene' },
   { label: 'Brian Cox', value: 'Brian Cox' },
   { label: 'Jenna Levin', value: 'Jenna Levin' },
-  { label: 'Neil Degrass Tyson', value: 'Neil Degrass Tyson' },
+  { label: 'Neil Degrass Tyson', value: 'Neil Degrass Tyson' }
 ];

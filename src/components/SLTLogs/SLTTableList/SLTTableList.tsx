@@ -1,6 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Box, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
-import { Button, ButtonColorTypes, ButtonVariantTypes, DataGrid } from '@ska-telescope/ska-gui-components';
+import {
+  Button,
+  ButtonColorTypes,
+  ButtonVariantTypes,
+  DataGrid
+} from '@ska-telescope/ska-gui-components';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import SLTLogDataModel from '../../Models/SLTLogs';
@@ -57,9 +62,9 @@ const ViewEB = ({ ebId }) => {
           '& .MuiDialog-container': {
             '& .MuiPaper-root': {
               width: '100%',
-              maxWidth: '1000px', // Set your width here
-            },
-          },
+              maxWidth: '1000px' // Set your width here
+            }
+          }
         }}
         open={openModal}
         onClose={handleCloseRequestResponse}
@@ -102,21 +107,21 @@ const SLTLogTableList = ({ data }: EntryFieldProps) => {
       field: 'source',
       headerName: t('label.source'),
       width: 120,
-      renderCell: (params) => params.row.shift_operator,
+      renderCell: (params) => params.row.shift_operator
     },
     {
       field: 'info.eb_id',
       headerName: t('label.info'),
       width: 220,
 
-      renderCell: (params) => <ViewEB ebId={params.row.info} />,
+      renderCell: (params) => <ViewEB ebId={params.row.info} />
     },
     {
       field: 'info.sbi_status',
       headerName: t('label.currentStatus'),
       width: 150,
 
-      renderCell: (params) => params.row.info.sbi_status,
+      renderCell: (params) => params.row.info.sbi_status
     },
     // {
     //   field: 'info.sbi_status',
@@ -129,11 +134,11 @@ const SLTLogTableList = ({ data }: EntryFieldProps) => {
       field: 'log_time',
       headerName: t('label.logTime'),
       width: 220,
-      renderCell: (params) => params.row.info.log_time,
-    },
+      renderCell: (params) => params.row.info.log_time
+    }
   ];
   return (
-    <Box data-testid="availableData" ml={4}>
+    <Box data-testid="availableData">
       <DataGrid
         ariaDescription={t('ariaLabel.gridTableDescription')}
         ariaTitle={t('ariaLabel.gridTable')}
