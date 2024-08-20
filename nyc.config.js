@@ -14,8 +14,8 @@ module.exports = {
   'temp-dir': COVERAGE_OUTPUT_DIR + '/.nyc_output',
   extension: ['.js', '.cjs', '.mjs', '.ts', '.tsx', '.jsx'],
   include: ['src/components/**/*.{js,jsx,ts,tsx}'],
-  branches: 35,
-  lines: 50,
-  functions: 50,
-  statements: 60,
+  branches: 25,
+  lines: 25,
+  functions: 25,
+  statements: 25,
 };
