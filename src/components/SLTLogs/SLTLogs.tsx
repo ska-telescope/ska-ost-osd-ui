@@ -27,7 +27,7 @@ function SLTLogs() {
   const [shiftShowStart, setShiftShowStart] = useState(DEFAULT_TIME);
   const [shiftShowEnd, setShiftShowEnd] = useState(DEFAULT_TIME);
   const [openModal, setOpenModal] = useState(false);
-  const [statusMessage, setStatusMessage] = useState(null);
+  const [statusMessage, setStatusMessage] = useState('');
   const [dataDetails, setSltLogs] = useState([]);
   const [startShift, setStartShift] = useState(false);
   const [showElement, setShowElement] = useState(false);
@@ -35,7 +35,6 @@ function SLTLogs() {
   const [shiftId, setShiftId] = useState('');
   const [value, setValue] = useState('');
   const { t } = useTranslation('translations');
-  const [interval, setTime] = useState(null);
   const [images, setImages] = useState([]);
   const location = useLocation();
 
@@ -90,10 +89,9 @@ function SLTLogs() {
         );
         setShiftId(response.data.data.id);
       }
-      const logInterval = setInterval(() => {
-        updateLogs(response.data.data.id);
+      setInterval(() => {
+        updateLogs(response && response.data && response.data.data && response.data.data.id);
       }, 5000);
-      setTime(logInterval);
     }
   };
 

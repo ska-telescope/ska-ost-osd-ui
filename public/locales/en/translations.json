@@ -55,7 +55,8 @@
     "view": "Display Table",
     "editDescription": "Edit icon to update record",
     "edit": "Edit record",
-    "dialog": "Open dialog"
+    "dialog": "Open dialog",
+    "logSummary": "Log Summary"
   },
   "msg": {
     "shiftStarted": "Shift started successfully",
