@@ -8,100 +8,100 @@ import {
 } from '@ska-telescope/ska-gui-components';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import SLTLogDataModel from '../../Models/SLTLogs';
 
-const ViewEB = ({ ebId }) => {
-  const { t } = useTranslation('translations');
-
-  const [openModal, setOpenModal] = useState(false);
-
-  const handleCloseRequestResponse = () => {
-    setOpenModal(false);
-  };
-
-  const handleOpen = () => {
-    setOpenModal(true);
-  };
-
-  const RequestResponseDisplay = ({ responseArray }) => (
-    <div>
-      {responseArray.map((data) => (
-        <>
-          <p>
-            <b>Command Name:</b> {data.request}
-          </p>
-          <p>
-            <b>Status:</b> {data.status}
-          </p>
-          <p>
-            <b>Request Sent at:</b> {data.request_sent_at}
-          </p>
-          <p>
-            <b>Details:</b> {data.status == 'OK' ? data.response.result : data.error.detail}
-          </p>
-          <hr />
-        </>
-      ))}
-    </div>
-  );
-
-  return (
-    <>
-      {' '}
-      <span
-        id="shiftId"
-        style={{ cursor: 'pointer', textDecoration: 'underline' }}
-        onClick={() => handleOpen()}
-      >
-        {ebId.eb_id}
-      </span>
-      <Dialog
-        aria-label={t('ariaLabel.dialog')}
-        data-testid="dialogStatus"
-        sx={{
-          '& .MuiDialog-container': {
-            '& .MuiPaper-root': {
-              width: '100%',
-              maxWidth: '1000px' // Set your width here
-            }
-          }
-        }}
-        open={openModal}
-        onClose={handleCloseRequestResponse}
-        aria-labelledby="responsive-dialog-title"
-      >
-        <DialogTitle>EB Request Response</DialogTitle>
-        <DialogContent dividers>
-          <RequestResponseDisplay responseArray={ebId.request_responses} />
-        </DialogContent>
-        <DialogActions>
-          <Button
-            color={ButtonColorTypes.Inherit}
-            variant={ButtonVariantTypes.Contained}
-            testId="statusClose"
-            label={t('label.close')}
-            onClick={handleCloseRequestResponse}
-            toolTip={t('label.close')}
-          />
-        </DialogActions>
-      </Dialog>
-    </>
-  );
-};
 
 interface EntryFieldProps {
-  data: SLTLogDataModel[];
+  data: any;
 }
 
 const SLTLogTableList = ({ data }: EntryFieldProps) => {
   const { t } = useTranslation('translations');
 
+  const ViewEB = ({ ebId }) => {
+  
+    const [openModal, setOpenModal] = useState(false);
+  
+    const handleCloseRequestResponse = () => {
+      setOpenModal(false);
+    };
+  
+    const handleOpen = () => {
+      setOpenModal(true);
+    };
+  
+     const RequestResponseDisplay = (responseArray) => (
+      <div>
+        {responseArray && responseArray.map((data) => (
+          <>
+            <p>
+              <b> {t('ariaLabel.commandName')}:</b> {data.request}
+            </p>
+            <p>
+              <b>{t('ariaLabel.status')}:</b> {data.status}
+            </p>
+            <p>
+              <b>{t('ariaLabel.requestSentAt')}:</b> {data.request_sent_at}
+            </p>
+            <p>
+              <b>{t('ariaLabel.details')}:</b> {data.status === 'OK' ? data.response.result : data.error.detail}
+            </p>
+            <hr />
+          </>
+        ))}
+      </div>
+    );
+  
+    return (
+      <>
+        {' '}
+        <span
+          id="shiftId"
+          style={{ cursor: 'pointer', textDecoration: 'underline' }}
+          onClick={() => handleOpen()}
+        >
+          {ebId.eb_id}
+        </span>
+        <Dialog
+          aria-label={t('ariaLabel.dialog')}
+          data-testid="dialogStatus"
+          sx={{
+            '& .MuiDialog-container': {
+              '& .MuiPaper-root': {
+                width: '100%',
+                maxWidth: '1000px' // Set your width here
+              }
+            }
+          }}
+          open={openModal}
+          onClose={handleCloseRequestResponse}
+          aria-labelledby="responsive-dialog-title"
+        >
+          <DialogTitle>EB Request Response</DialogTitle>
+          <DialogContent dividers>
+            <RequestResponseDisplay responseArray={ebId.request_responses} />
+          </DialogContent>
+          <DialogActions>
+            <Button
+              color={ButtonColorTypes.Inherit}
+              variant={ButtonVariantTypes.Contained}
+              testId="statusClose"
+              label={t('label.close')}
+              onClick={handleCloseRequestResponse}
+              toolTip={t('label.close')}
+            />
+          </DialogActions>
+        </Dialog>
+      </>
+    );
+  };
+  
   let id = 1;
-  data &&
+  if(data){
     data.map((row) => {
       row.id = id++;
       return row;
     });
+  }
   const columns = [
     {
       field: 'source',

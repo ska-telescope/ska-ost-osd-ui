@@ -1,7 +1,7 @@
 {
   "language": "English",
   "date_format_one": "{{-date, YYYY/MM/DD}}",
-  "date_format_two": "{{date, DD-MM-YYYY}}",
+  "dateFormatTwo": "{{date, DD-MM-YYYY}}",
   "dummy": "I am in ENGLISH translation file only",
   "intlNumber": "{{val, number}}",
   "label": {
@@ -16,6 +16,7 @@
     "history": "Shift History",
     "logTime": "Log Time",
     "logButton": "Add New Shift",
+    "logHistoryTitle": "Log History",
     "submit": "Submit",
     "operatorName": "Operator Name",
     "shiftEnd": "End Shift",
@@ -28,7 +29,19 @@
     "created_on": "Created Date",
     "created_by": "Created By",
     "search": "Search",
-    "close": "Close"
+    "close": "Close",
+    "viewHistoryTitle":"Shift History Data",
+    "shiftIDlable":"Shift ID",
+    "viewImages":"View Images",
+    "addImages":"Add Images",
+    "viewLogDataIDLabel":"Logs for Shift ID",
+    "manageShift":"Manage Shift",
+    "addComment":"Add Comment",
+    "commandName":"Command Name",
+    "status":"Status",
+    "requestSentAt:":"Request Sent at",
+    "details":"Details"
+    
   },
   "ariaLabel": {
     "date": "Select Date",
@@ -57,7 +70,9 @@
     "requiredStartDate": "Please enter start date",
     "requiredEndDate": "Please enter end date",
     "shiftStartMessage": "Shift Started",
-    "shiftEndMessage": "Shift Ended"
+    "shiftEndMessage": "Shift Ended",
+    "showTodayRecords":"Showing records for today",
+    "annotationSubmit":"Annotation submitted successfully"
   },
   "toolTip": {
     "button": {

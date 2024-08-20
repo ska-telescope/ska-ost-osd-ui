@@ -9,8 +9,8 @@ import SltHistoryDataModel from '../../Models/SLTHistory';
 const COLUMN_WIDTH = 250;
 
 const ViewSLTHistory = ({ shiftData, updatedList }) => {
-  const loadInfoPage = (shiftData) => {
-    updatedList(shiftData);
+  const loadInfoPage = (data) => {
+    updatedList(data);
   };
   return (
     <span
@@ -72,6 +72,7 @@ const SLTHistoryTableList = ({ data, updateList }: EntryFieldProps) => {
   ];
   return (
     <Box data-testid="availableData">
+      
       <DataGrid
         height={500}
         ariaDescription={t('ariaLabel.gridTableDescription')}

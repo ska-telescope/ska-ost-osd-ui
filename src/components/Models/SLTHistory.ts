@@ -1,27 +1,20 @@
-interface Media {
-  type: string;
-  path: string;
+
+interface ShiftOperator {
+  name: string;
 }
 
-interface ShiftLogs {
-  Info: JSON;
-  media: Media;
-  logtime: Date;
-}
-
-export default interface SltHistoryDataModel {
-  id: number;
-  shift_id: number;
-  shift_operator: string;
+export default interface  SltHistoryDataModel {
+  annotations: string;
   comments: string;
-  annotation: string;
-  created_by: string;
-  last_modified_by: string;
-  shift_start: Date;
-  shift_end: Date;
-  created_time: Date;
-  last_modified_time: Date;
-  logs: ShiftLogs[];
-  source: string;
-  media: Media;
+  created_by: string | null;
+  created_time: string;
+  id: number;
+  last_modified_by: string | null;
+  last_modified_time: string | null;
+  media: string | null;
+  shift_end: string | null;
+  shift_id: string;
+  shift_logs: string | null;
+  shift_operator: ShiftOperator;
+  shift_start: string;
 }

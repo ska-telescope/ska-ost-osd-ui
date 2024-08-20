@@ -13,40 +13,6 @@ interface EntryFieldProps {
 }
 
 const ViewSLTHistory = ({ shiftData, updateStatus }: EntryFieldProps) => {
-  const { t } = useTranslation('translations');
-
-  const columns = [
-    {
-      field: 'shift_id',
-      headerName: t('label.shiftId'),
-      width: 150,
-      renderCell: (params) => shiftData.id
-    },
-    {
-      field: 'shift_start',
-      headerName: t('label.shiftStart'),
-      width: 150,
-      renderCell: (params) => moment(shiftData.shift_start).format('DD-MM-YYYY hh:MM:SS')
-    },
-    {
-      field: 'shift_end',
-      headerName: t('label.shiftEnd'),
-      width: 150,
-      renderCell: (params) => moment(shiftData.shift_end).format('DD-MM-YYYY hh:MM:SS')
-    },
-    {
-      field: 'operator_name',
-      headerName: t('label.operatorName'),
-      width: 180,
-      renderCell: (params) => shiftData.shift_operator
-    }
-    // {
-    //   field: 'sbi_ref',
-    //   headerName: t('label.logTime'),
-    //   width: 220,
-    //   renderCell: (params) => shiftData.sbi_ref
-    // }
-  ];
   const loadInfoPage = () => {
     updateStatus();
   };
