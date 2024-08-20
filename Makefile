@@ -7,7 +7,7 @@ K8S_CHART ?= ska-oso-slt-ui-umbrella
 RELEASE_NAME ?= test
 
 # The default SLT_BACKEND_URL points to the umbrella chart SLT back-end deployment
-BACKEND_URL ?= $(KUBE_HOST)/$(KUBE_NAMESPACE)/slt/api/v1
+BACKEND_URL ?= $(KUBE_HOST)/$(KUBE_NAMESPACE)/oda/api/v5
 POSTGRES_HOST ?= $(RELEASE_NAME)-postgresql
 K8S_CHART_PARAMS += \
   --set ska-oso-slt-ui.backendURL=$(BACKEND_URL) \
