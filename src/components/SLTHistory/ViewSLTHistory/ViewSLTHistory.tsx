@@ -8,7 +8,7 @@ interface EntryFieldProps {
 
 const ViewSLTHistory = ({ shiftData, updatedList }: EntryFieldProps) => {
   const loadInfoPage = () => {
-    updatedList();
+    updatedList(shiftData);
   };
   return (
     <span
@@ -18,7 +18,7 @@ const ViewSLTHistory = ({ shiftData, updatedList }: EntryFieldProps) => {
       style={{ cursor: 'pointer', textDecoration: 'underline' }}
       onClick={() => loadInfoPage()}
     >
-      {shiftData.id}
+      {shiftData.shift_id}
     </span>
   );
 };

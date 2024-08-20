@@ -11,7 +11,6 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import AddIcon from '@mui/icons-material/Add';
 import moment from 'moment';
-import SLTLogMockList from '../../mockData/SLTLogMock';
 import apiService from '../../services/apis';
 import ImageDisplay from '../SLTLogs/ImageDisplay';
 import EBRequestResponse from '../SLTLogs/EBRequestResponse';
@@ -39,7 +38,7 @@ const ShiftDataTest = ({ data }) => {
 
     const path = `shifts/${data.id}`;
     const response = await apiService.putShiftData(path, shiftData);
-    setValue(response && response.data && response.data.annotations);
+    setValue(response && response.data && response.data.data.annotations);
     setShowElement(true);
     setStatusMessage('msg.annotationSubmit');
     setTimeout(() => {
@@ -113,7 +112,7 @@ const ShiftDataTest = ({ data }) => {
       <Grid container spacing={2} sx={{ paddingLeft: 0 }} justifyContent="left">
         <Grid item xs={12} sm={12} md={3}>
           <span id="shiftIDlable" style={{ fontWeight: 'bold' }}>
-            {t('label.shiftIDlable')}: {`${data.shift_id}`}{' '}
+            {t('label.shiftIDlable')}: {`${data && data.shift_id}`}{' '}
           </span>
         </Grid>
         <Grid item xs={12} sm={12} md={3.9}>
@@ -222,7 +221,7 @@ const ShiftDataTest = ({ data }) => {
                 id="viewLogDataIDLabel"
                 style={{ fontWeight: 'bold', textAlign: 'center', alignItems: 'center' }}
               >
-                {t('label.viewLogDataIDLabel')}: {data.shift_id}
+                {t('label.viewLogDataIDLabel')}: {data && data.shift_id}
               </p>
             </Paper>
           </Grid>
@@ -233,7 +232,7 @@ const ShiftDataTest = ({ data }) => {
               ariaTitle={t('ariaLabel.gridTable')}
               data-testid={data}
               columns={columns}
-              rows={SLTLogMockList}
+              rows={data.shift_logs}
               showBorder
               testId="sltLogTableView"
             />
