@@ -309,7 +309,6 @@ function SLTLogs() {
             </Grid>
           </Grid>
         </Grid>
-        {/* <hr/> */}
         <Grid container sx={{ padding: 2, paddingTop: 0 }} alignItems="flex-start">
           <Grid item xs={12} sm={12} md={5}>
             <p data-testid="addComment" style={{ fontWeight: 'bold' }}>
@@ -389,49 +388,12 @@ function SLTLogs() {
         </Grid>
       </Paper>
 
-      {/* <Paper sx={{ border: 1, margin: 2 }}>
-        <Grid container sx={{ padding: 2 }} alignItems="flex-start">
-          <Grid item xs={12} sm={12} md={6}>
-            <p style={{ fontWeight: 'bold', marginLeft: 8, alignItems: 'center' }}>
-              Operator Comments
-            </p>
-            <TextField
-              sx={{ width: '100%' }}
-              id="outlined-multiline-static"
-              label="Please enter comments..."
-              multiline
-              rows={3}
-              value={value}
-              onChange={handleChange}
-            />
-            <Grid item paddingTop={1} paddingBottom={1} xs={12} sm={12} md={6}>
-              <Button
-                icon={<AddIcon />}
-                disabled={disableButtons()}
-                ariaDescription="Button for submitting comment"
-                label={t('label.submit')}
-                testId="commentButton"
-                onClick={addComment}
-                variant={ButtonVariantTypes.Contained}
-                color={ButtonColorTypes.Secondary}
-              />
-            </Grid>
-          </Grid>
-          <Grid item paddingTop={1} xs={12} sm={12} md={6}>
-            <FileUpload
-              uploadFunction={postImage}
-              chooseDisabled={disableButtons()}
-              testId="fileId"
-            />
-          </Grid>
-        </Grid>
-      </Paper> */}
-
       <Paper sx={{ border: 1, margin: 2 }}>
-        <p style={{ fontWeight: 'bold', textAlign: 'center', alignItems: 'center' }}>Log Summary</p>
+        <p style={{ fontWeight: 'bold', textAlign: 'center', alignItems: 'center' }}>
+          {t('label.logSummary')}
+        </p>
         <hr />
-
-        <SLTLogTableList data={dataDetails} />
+        {dataDetails ? <SLTLogTableList data={dataDetails} /> : ''}
       </Paper>
     </Box>
   );
