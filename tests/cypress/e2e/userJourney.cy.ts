@@ -10,7 +10,7 @@ if (language === 'English') {
 const startDate = moment().utc().subtract(7, 'days').format('YYYY-MM-DD');
 const endDate = moment().utc().format('YYYY-MM-DD');
 
-context('REACT SKELETON', () => {
+context('Shift Log Tool', () => {
   beforeEach(() => {
     cy.visit('http://localhost:8090/');
   });
