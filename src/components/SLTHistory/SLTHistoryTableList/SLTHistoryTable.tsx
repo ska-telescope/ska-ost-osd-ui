@@ -29,7 +29,7 @@ const SLTHistoryTableList = ({ data, updateList }: EntryFieldProps) => {
       width: COLUMN_WIDTH,
       renderCell: (params) => (
         <ViewSLTHistory updatedList={onTriggerFunction} shiftData={params.row} />
-      ),
+      )
     },
     {
       field: 'shift_start',
@@ -37,7 +37,7 @@ const SLTHistoryTableList = ({ data, updateList }: EntryFieldProps) => {
       alignText: 'center',
       headerName: t('label.shiftStart'),
       width: COLUMN_WIDTH,
-      renderCell: (params) => moment(params.row.shift_start).format('DD-MM-YYYY hh:MM:SS'),
+      renderCell: (params) => moment(params.row.shift_start).format('DD-MM-YYYY hh:MM:SS')
     },
     {
       field: 'shift_end',
@@ -45,7 +45,7 @@ const SLTHistoryTableList = ({ data, updateList }: EntryFieldProps) => {
       alignText: 'center',
       headerName: t('label.shiftEnd'),
       width: COLUMN_WIDTH,
-      renderCell: (params) => moment(params.row.shift_end).format('DD-MM-YYYY hh:MM:SS'),
+      renderCell: (params) => moment(params.row.shift_end).format('DD-MM-YYYY hh:MM:SS')
     },
     {
       field: 'operator_name',
@@ -53,8 +53,8 @@ const SLTHistoryTableList = ({ data, updateList }: EntryFieldProps) => {
       alignText: 'center',
       headerName: t('label.operatorName'),
       width: COLUMN_WIDTH,
-      renderCell: (params) => params.row.shift_operator.name,
-    },
+      renderCell: (params) => params.row.shift_operator.name
+    }
   ];
   return (
     <Box data-testid="availableData">

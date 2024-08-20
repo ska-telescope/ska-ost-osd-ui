@@ -7,7 +7,7 @@ import {
   InfoCard,
   InfoCardColorTypes,
   ButtonColorTypes,
-  ButtonSizeTypes,
+  ButtonSizeTypes
 } from '@ska-telescope/ska-gui-components';
 import { Box, Dialog, DialogContent, DialogTitle, Grid, Paper, TextField } from '@mui/material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
@@ -50,7 +50,7 @@ function SLTLogs() {
     setSltLogs(
       result && result.data && result.data.shift_logs && result.data.shift_logs.length > 0
         ? result.data.shift_logs
-        : [],
+        : []
     );
   };
   const getShiftStartTime = async () => {
@@ -67,7 +67,7 @@ function SLTLogs() {
 
       const shiftData = {
         shift_operator: { name: operator },
-        shift_start: moment().utc().toISOString(),
+        shift_start: moment().utc().toISOString()
       };
 
       const path = `shifts`;
@@ -81,21 +81,17 @@ function SLTLogs() {
       setTimeout(() => {
         setShowElement(false);
       }, 3000);
-      setShiftShowStart(
-        moment(response && response.data && response.data.data && response.data.data.shift_start)
-          .utc()
-          .format('YYYY-MM-DD HH:mm:ss'),
-      );
-      setShiftStartTime(
-        moment(response && response.data && response.data.data && response.data.data.shift_start)
-          .utc()
-          .format('YYYY-MM-DD HH:mm:ss'),
-      );
-
-      setShiftId(response && response.data && response.data.data && response.data.data.id);
-
+      if (response && response.data && response.data.data) {
+        setShiftShowStart(
+          moment(response.data.data.shift_start).utc().format('YYYY-MM-DD HH:mm:ss')
+        );
+        setShiftStartTime(
+          moment(response.data.data.shift_start).utc().format('YYYY-MM-DD HH:mm:ss')
+        );
+        setShiftId(response.data.data.id);
+      }
       const logInterval = setInterval(() => {
-        updateLogs(shiftId);
+        updateLogs(response.data.data.id);
       }, 5000);
       setTime(logInterval);
     }
@@ -110,14 +106,14 @@ function SLTLogs() {
         shift_start: shiftStartTime,
         shift_end: moment().utc().toISOString(),
         id: shiftId,
-        comments: value,
+        comments: value
       };
     } else {
       shiftData = {
         shift_operator: { name: operator },
         shift_start: shiftStartTime,
         shift_end: moment().utc().toISOString(),
-        id: shiftId,
+        id: shiftId
       };
     }
 
@@ -126,7 +122,7 @@ function SLTLogs() {
     setShiftShowEnd(
       moment(response && response.data && response.data.data && response.data.data.shift_end)
         .utc()
-        .format('YYYY-MM-DD HH:mm:ss'),
+        .format('YYYY-MM-DD HH:mm:ss')
     );
 
     setStatusMessage('msg.shiftEnd');
@@ -141,18 +137,16 @@ function SLTLogs() {
       setShiftShowStart(DEFAULT_TIME);
       setShiftShowEnd(DEFAULT_TIME);
       setValue('');
-      // setShiftEndTime(DEFAULT_TIME);
-      localStorage.removeItem('id');
     }, 3000);
   };
 
-  const getSubmit = async () => {
+  const addComment = async () => {
     if (value === '') return;
 
     const shiftData = {
       shift_operator: { name: operator },
       shift_start: shiftStartTime,
-      comments: `${value}, `,
+      comments: `${value}`
     };
 
     const path = `shifts/${shiftId}`;
@@ -192,8 +186,8 @@ function SLTLogs() {
     const config = {
       headers: {
         accept: 'application/json',
-        'content-type': 'multipart/form-data',
-      },
+        'content-type': 'multipart/form-data'
+      }
     };
     await apiService.postImage(path, formData, config);
 
@@ -338,7 +332,7 @@ function SLTLogs() {
                 ariaDescription="Button for submitting comment"
                 label={t('label.submit')}
                 testId="commentButton"
-                onClick={getSubmit}
+                onClick={addComment}
                 variant={ButtonVariantTypes.Contained}
                 color={ButtonColorTypes.Secondary}
               />
@@ -373,9 +367,9 @@ function SLTLogs() {
                 '& .MuiDialog-container': {
                   '& .MuiPaper-root': {
                     width: '100%',
-                    maxWidth: '1000px', // Set your width here
-                  },
-                },
+                    maxWidth: '1000px' // Set your width here
+                  }
+                }
               }}
               open={openModal}
               onClose={handleClose}
@@ -417,7 +411,7 @@ function SLTLogs() {
                 ariaDescription="Button for submitting comment"
                 label={t('label.submit')}
                 testId="commentButton"
-                onClick={getSubmit}
+                onClick={addComment}
                 variant={ButtonVariantTypes.Contained}
                 color={ButtonColorTypes.Secondary}
               />

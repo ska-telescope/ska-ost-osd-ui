@@ -11,7 +11,7 @@ describe('<ViewSLTHistory />', () => {
       <ThemeProvider theme={theme(THEME_DARK)}>
         <CssBaseline />
         <ViewSLTHistory shiftData={undefined} updatedList={undefined} />
-      </ThemeProvider>,
+      </ThemeProvider>
     );
   });
 
@@ -20,7 +20,7 @@ describe('<ViewSLTHistory />', () => {
       <ThemeProvider theme={theme(THEME_LIGHT)}>
         <CssBaseline />
         <ViewSLTHistory shiftData={undefined} updatedList={undefined} />
-      </ThemeProvider>,
+      </ThemeProvider>
     );
   });
 });

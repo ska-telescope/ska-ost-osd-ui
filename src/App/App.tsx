@@ -6,7 +6,7 @@ import {
   Footer,
   Header,
   Spacer,
-  SPACER_VERTICAL,
+  SPACER_VERTICAL
 } from '@ska-telescope/ska-gui-components';
 import { storageObject } from '@ska-telescope/ska-gui-local-storage';
 import Loader from '../Loader/Loader';
@@ -35,7 +35,7 @@ function App() {
     telescope,
     themeMode: themeMode.mode,
     toggleTheme,
-    updateTelescope,
+    updateTelescope
   };
 
   return (

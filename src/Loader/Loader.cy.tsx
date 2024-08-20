@@ -10,7 +10,7 @@ describe('<Legend />', () => {
       <ThemeProvider theme={theme(THEME_DARK)}>
         <CssBaseline />
         <Loader />
-      </ThemeProvider>,
+      </ThemeProvider>
     );
   });
 
@@ -19,7 +19,7 @@ describe('<Legend />', () => {
       <ThemeProvider theme={theme(THEME_LIGHT)}>
         <CssBaseline />
         <Loader />
-      </ThemeProvider>,
+      </ThemeProvider>
     );
   });
 });

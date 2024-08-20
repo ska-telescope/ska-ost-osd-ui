@@ -13,5 +13,5 @@ root.render(
     <StoreProvider>
       <App />
     </StoreProvider>
-  </React.Suspense>,
+  </React.Suspense>
 );

@@ -13,7 +13,7 @@ describe('<SLTLogTableList />', () => {
       <ThemeProvider theme={theme(THEME_DARK)}>
         <CssBaseline />
         <SLTLogTableList data={mockData} />
-      </ThemeProvider>,
+      </ThemeProvider>
     );
   });
 
@@ -23,7 +23,7 @@ describe('<SLTLogTableList />', () => {
       <ThemeProvider theme={theme(THEME_LIGHT)}>
         <CssBaseline />
         <SLTLogTableList data={mockData} />
-      </ThemeProvider>,
+      </ThemeProvider>
     );
   });
 });

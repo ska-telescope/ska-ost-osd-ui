@@ -5,7 +5,7 @@ import {
   ButtonVariantTypes,
   DataGrid,
   InfoCard,
-  InfoCardColorTypes,
+  InfoCardColorTypes
 } from '@ska-telescope/ska-gui-components';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -33,7 +33,7 @@ const ShiftDataTest = ({ data }) => {
 
   const addAnnotation = async () => {
     const shiftData = {
-      annotations: `${value}`,
+      annotations: `${value}`
     };
 
     const path = `shifts/${data.id}`;
@@ -83,28 +83,28 @@ const ShiftDataTest = ({ data }) => {
       field: 'source',
       headerName: t('label.source'),
       width: 120,
-      renderCell: (params) => params.row.shift_operator,
+      renderCell: (params) => params.row.shift_operator
     },
     {
       field: 'info',
       headerName: t('label.info'),
       width: COLUMN_WIDTH,
 
-      renderCell: (params) => <EBRequestResponse ebData={params.row.info} />,
+      renderCell: (params) => <EBRequestResponse ebData={params.row.info} />
     },
     {
       field: 'currentStatus',
       headerName: t('label.currentStatus'),
       width: 150,
 
-      renderCell: (params) => params.row.info.sbi_status,
+      renderCell: (params) => params.row.info.sbi_status
     },
     {
       field: 'logTime',
       headerName: t('label.logTime'),
       width: COLUMN_WIDTH,
-      renderCell: (params) => params.row.info.log_time,
-    },
+      renderCell: (params) => params.row.info.log_time
+    }
   ];
 
   return (
@@ -156,9 +156,9 @@ const ShiftDataTest = ({ data }) => {
               '& .MuiDialog-container': {
                 '& .MuiPaper-root': {
                   width: '100%',
-                  maxWidth: '1000px', // Set your width here
-                },
-              },
+                  maxWidth: '1000px' // Set your width here
+                }
+              }
             }}
             open={openModal}
             onClose={handleClose}
@@ -206,7 +206,7 @@ const ShiftDataTest = ({ data }) => {
             multiline
             rows={3}
             inputProps={{
-              readOnly: true,
+              readOnly: true
             }}
             value={data.comments}
           />

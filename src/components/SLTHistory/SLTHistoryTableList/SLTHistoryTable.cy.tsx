@@ -14,7 +14,7 @@ describe('<SLTHistoryTableList />', () => {
       <ThemeProvider theme={theme(THEME_DARK)}>
         <CssBaseline />
         <SLTHistoryTableList data={mockData} updateList={undefined} />
-      </ThemeProvider>,
+      </ThemeProvider>
     );
   });
 
@@ -24,7 +24,7 @@ describe('<SLTHistoryTableList />', () => {
       <ThemeProvider theme={theme(THEME_LIGHT)}>
         <CssBaseline />
         <SLTHistoryTableList data={mockData} updateList={undefined} />
-      </ThemeProvider>,
+      </ThemeProvider>
     );
   });
 });

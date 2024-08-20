@@ -10,7 +10,7 @@ describe('<Components />', () => {
       <ThemeProvider theme={theme(THEME_DARK)}>
         <CssBaseline />
         <App />
-      </ThemeProvider>,
+      </ThemeProvider>
     );
   });
   it(`Theme ${THEME_LIGHT}: Renders`, () => {
@@ -18,7 +18,7 @@ describe('<Components />', () => {
       <ThemeProvider theme={theme(THEME_LIGHT)}>
         <CssBaseline />
         <App />
-      </ThemeProvider>,
+      </ThemeProvider>
     );
   });
 });

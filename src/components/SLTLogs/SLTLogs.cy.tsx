@@ -11,7 +11,7 @@ describe('<SLTLogs />', () => {
       <ThemeProvider theme={theme(THEME_DARK)}>
         <CssBaseline />
         <SLTLogs />
-      </ThemeProvider>,
+      </ThemeProvider>
     );
   });
 
@@ -20,7 +20,7 @@ describe('<SLTLogs />', () => {
       <ThemeProvider theme={theme(THEME_LIGHT)}>
         <CssBaseline />
         <SLTLogs />
-      </ThemeProvider>,
+      </ThemeProvider>
     );
   });
 });

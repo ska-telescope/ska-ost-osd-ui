@@ -12,9 +12,9 @@ const SLTHistoryMockList = [
     shift_id: 'shift-20240813-1',
     shift_logs: null,
     shift_operator: {
-      name: 'John Doe',
+      name: 'John Doe'
     },
-    shift_start: '2024-08-13T11:19:06.666737Z',
+    shift_start: '2024-08-13T11:19:06.666737Z'
   },
   {
     annotations: 'Routine maintenance shift. sdfsd, dsgdsfg, ',
@@ -29,9 +29,9 @@ const SLTHistoryMockList = [
     shift_id: 'shift-20240813-2',
     shift_logs: null,
     shift_operator: {
-      name: 'John Doe',
+      name: 'John Doe'
     },
-    shift_start: '2024-08-13T11:19:09.772793Z',
+    shift_start: '2024-08-13T11:19:09.772793Z'
   },
   {
     annotations: 'Routine maintenance shift.',
@@ -46,9 +46,9 @@ const SLTHistoryMockList = [
     shift_id: 'shift-20240813-3',
     shift_logs: null,
     shift_operator: {
-      name: 'John Doe',
+      name: 'John Doe'
     },
-    shift_start: '2024-08-13T11:19:10.531555Z',
+    shift_start: '2024-08-13T11:19:10.531555Z'
   },
   {
     annotations: 'Routine maintenance shift.',
@@ -63,10 +63,10 @@ const SLTHistoryMockList = [
     shift_id: 'shift-20240813-4',
     shift_logs: null,
     shift_operator: {
-      name: 'John Doe',
+      name: 'John Doe'
     },
-    shift_start: '2024-08-13T11:19:11.396053Z',
-  },
+    shift_start: '2024-08-13T11:19:11.396053Z'
+  }
 ];
 
 export default SLTHistoryMockList;

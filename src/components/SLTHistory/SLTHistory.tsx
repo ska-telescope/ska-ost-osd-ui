@@ -7,7 +7,7 @@ import {
   ButtonColorTypes,
   ButtonSizeTypes,
   ButtonVariantTypes,
-  DateEntry,
+  DateEntry
 } from '@ska-telescope/ska-gui-components';
 import SearchIcon from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/Add';
@@ -73,7 +73,7 @@ function SLTHistory() {
           {t('msg.selectedDates')}
           <small>
             {` (Between ${t('dateFormatTwo', {
-              date: new Date(createdAfter),
+              date: new Date(createdAfter)
             })} and  ${t('dateFormatTwo', { date: new Date(createdBefore) })})`}
           </small>
         </p>
@@ -176,7 +176,7 @@ function SLTHistory() {
           ''
         )}
       </Paper>
-      <div style={{ marginLeft: '15px' }}>{message()}</div>
+      {displayTable ? <div style={{ marginLeft: '15px' }}>{message()}</div> : ''}
       <Paper sx={{ border: 1, margin: 2 }} data-testid="content">
         {displayTable ? (
           <SLTHistoryTableList updateList={onTriggerFunction} data={dataDetails} />

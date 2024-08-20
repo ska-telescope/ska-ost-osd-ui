@@ -18,7 +18,7 @@ export const SEARCH_TYPE = {
   last7days: 'last 7 days',
   today: 'today',
   dates: 'dates',
-  id: 'id',
+  id: 'id'
 };
 
 export const nextdate = moment().utc().add(1, 'days').toISOString().substring(0, 10);
@@ -26,12 +26,12 @@ export const nextdate = moment().utc().add(1, 'days').toISOString().substring(0,
 export const ENTITY = {
   shift: 'shift',
   shiftHistory: 'history',
-  shiftLog: 'log',
+  shiftLog: 'log'
 };
 
 export const ENTITY_ID = {
   shift: 'shift_id',
-  today: 'today',
+  today: 'today'
 };
 
 export const makeUrlPath = (urlPath: string, createdBefore: string, createdAfter: string) => {
@@ -51,5 +51,5 @@ interface OperatorName {
 
 export const operatorName: OperatorName[] = [
   { label: 'DefaultUser', value: 'DefaultUser' },
-  { label: 'TestUser', value: 'TestUser' },
+  { label: 'TestUser', value: 'TestUser' }
 ];

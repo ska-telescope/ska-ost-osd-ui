@@ -61,9 +61,9 @@ const EBRequestResponse = ({ ebData }) => {
           '& .MuiDialog-container': {
             '& .MuiPaper-root': {
               width: '100%',
-              maxWidth: '1000px', // Set your width here
-            },
-          },
+              maxWidth: '1000px' // Set your width here
+            }
+          }
         }}
         open={openModalEB}
         onClose={handleCloseRequestResponse}
