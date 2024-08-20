@@ -29,21 +29,21 @@ const SLTLogTableList = ({ data }: EntryFieldProps) => {
       setOpenModal(true);
     };
   
-     const RequestResponseDisplay = (responseArray) => (
+     const RequestResponseDisplay = ({responseArray}) => (
       <div>
-        {responseArray && responseArray.map((data) => (
+        {responseArray && responseArray.map((element) => (
           <>
             <p>
-              <b> {t('ariaLabel.commandName')}:</b> {data.request}
+              <b> {t('ariaLabel.commandName')}:</b> {element.request}
             </p>
             <p>
-              <b>{t('ariaLabel.status')}:</b> {data.status}
+              <b>{t('ariaLabel.status')}:</b> {element.status}
             </p>
             <p>
-              <b>{t('ariaLabel.requestSentAt')}:</b> {data.request_sent_at}
+              <b>{t('ariaLabel.requestSentAt')}:</b> {element.request_sent_at}
             </p>
             <p>
-              <b>{t('ariaLabel.details')}:</b> {data.status === 'OK' ? data.response.result : data.error.detail}
+              <b>{t('ariaLabel.details')}:</b> {element.status === 'OK' ? element.response.result : element.error.detail}
             </p>
             <hr />
           </>

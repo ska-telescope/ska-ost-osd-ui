@@ -26,10 +26,10 @@ function SLTHistory() {
   const [displayButton, setDisplayButton] = useState(true);
   const [displayData, setDisplayData] = useState('');
   const [searchType, setsearchType] = useState('');
-
+  const location = useLocation();
 
   const fetchSltTodayShifts = async () => {
-    const location = useLocation();
+   
     const path = makeUrlPath('shifts', today, nextdate);
     const result = await apiService.getSltData(path);
     setSltHistory(result.data);
@@ -94,6 +94,12 @@ function SLTHistory() {
   const handleClose = () => {
     setDisplayTable(true);
     setDisplayButton(true);
+    if(createdAfter && createdBefore){
+      fetchSltHistory()
+    }else{
+      fetchSltTodayShifts()
+    }
+    
   };
 
   const onTriggerFunction = (data) => {

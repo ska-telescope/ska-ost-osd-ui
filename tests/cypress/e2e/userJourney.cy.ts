@@ -96,9 +96,9 @@ context('REACT SKELETON', () => {
       }
     });
   };
-  // it('Header : Verify external link to skao site', () => {
-  //   cy.get('[data-testid="skaoLogo"]').click();
-  // });
+  it('Header : Verify external link to skao site', () => {
+    cy.get('[data-testid="skaoLogo"]').click();
+  });
 
   it('Header : Verify light/dark mode is available', () => {
     cy.get('[data-testid="Brightness7Icon"]').click();

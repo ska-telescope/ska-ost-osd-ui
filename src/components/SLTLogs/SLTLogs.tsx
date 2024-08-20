@@ -10,26 +10,21 @@ import {
   InfoCard,
   InfoCardColorTypes,
   ButtonColorTypes,
-  ButtonSizeTypes,
-  EntryField
+  ButtonSizeTypes
 } from '@ska-telescope/ska-gui-components';
 import { Box, Dialog, DialogContent, DialogTitle, Grid, Paper, TextField } from '@mui/material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import HomeIcon from '@mui/icons-material/Home';
 import AddIcon from '@mui/icons-material/Add';
 import HistoryIcon from '@mui/icons-material/History';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import moment from 'moment';
-import Tab from '@mui/material/Tab';
-import TabContext from '@mui/lab/TabContext';
-import TabList from '@mui/lab/TabList';
-import TabPanel from '@mui/lab/TabPanel';
-import { ENTITY, COMMENT_PADDING, DEFAULT_TIME, operatorName, makeUrlPath, createdAfterDate, nextdate } from '../../utils/constants';
+import { ENTITY, DEFAULT_TIME, operatorName} from '../../utils/constants';
 
 import apiService from '../../services/apis';
 import SLTLogTableList from './SLTTableList/SLTTableList';
 import SLTLogMockList from '../../mockData/SLTLogMock';
+import ImageDisplay from './ImageDisplay';
 
 
 
@@ -51,25 +46,26 @@ function SLTLogs() {
   const { t } = useTranslation('translations');
   const [interval, setTime] = useState(null);
   const [images, setImages] = useState([]);
+  const location = useLocation();
 
-  const ImageDisplay = () => (
-    <div>
-      {images &&
-        images.length > 0 &&
-        images.map((image, index) => (
-          <>
-            <img
-              key={index}
-              src={`data:image/jpg;base64,${image}`}
-              width={700}
-              height={500}
-              alt={`Image ${index}`}
-            />
-            <hr />
-          </>
-        ))}
-    </div>
-  );
+  // const ImageDisplay = () => (
+  //   <div>
+  //     {images &&
+  //       images.length > 0 &&
+  //       images.map((image, index) => (
+  //         <>
+  //           <img
+  //             key={index}
+  //             src={`data:image/jpg;base64,${image}`}
+  //             width={700}
+  //             height={500}
+  //             alt={`Image ${index}`}
+  //           />
+  //           <hr />
+  //         </>
+  //       ))}
+  //   </div>
+  // );
 
   const fetchImage = async () => {
     const path = `shifts/images/${shiftId}`;
@@ -79,7 +75,6 @@ function SLTLogs() {
 
   const getShiftStartTime = async () => {
     // setStatusMessage('msg.shiftStarted');
-    console.log('aaaaaaaaaa',operator.length)
     if (operator.length === 0) {
       // validateOperator();
       setShowElement(true);
@@ -98,7 +93,7 @@ function SLTLogs() {
       const path = `shifts`;
       const response = await apiService.postShiftData(path, shiftData);
      
-      if(response.status == 200){
+      if(response.status === 200){
         setSltData(response.data.data)
         setStatusMessage('msg.shiftStarted');
       }
@@ -250,7 +245,7 @@ function SLTLogs() {
   const handleClose = () => {
     setOpenModal(false);
   };
-  const handleOpen = () => {
+  const handleOpenImage = () => {
     fetchImage()
     setOpenModal(true);
   };
@@ -401,7 +396,7 @@ function SLTLogs() {
               </Grid>
               <Grid item xs={12} sm={12} md={6} />
               <Grid item xs={12} sm={12} md={3}>
-              <span  data-testid="viewImages" style={{ cursor: 'pointer', textDecoration: 'underline' }} onClick={handleOpen}>
+              <span  data-testid="viewImages" style={{ cursor: 'pointer', textDecoration: 'underline' }} onKeyDown={handleOpenImage} onClick={handleOpenImage}>
               {t('label.viewImages')}
           </span>
               </Grid>
@@ -425,7 +420,7 @@ function SLTLogs() {
           >
             <DialogTitle>{t('label.viewImages')}</DialogTitle>
             <DialogContent dividers>
-              <ImageDisplay />
+              <ImageDisplay images={images} />
             </DialogContent>
           </Dialog>
             <FileUpload

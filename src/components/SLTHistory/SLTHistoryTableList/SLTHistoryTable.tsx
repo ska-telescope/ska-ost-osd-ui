@@ -13,13 +13,14 @@ const ViewSLTHistory = ({ shiftData, updatedList }) => {
     updatedList(data);
   };
   return (
-    <span
+    <p
       id="shiftId"
       style={{ cursor: 'pointer', textDecoration: 'underline' }}
       onClick={() => loadInfoPage(shiftData)}
+      onKeyDown={() => loadInfoPage(shiftData)}
     >
       {shiftData.shift_id}
-    </span>
+    </p>
   );
 };
 
@@ -31,8 +32,8 @@ interface EntryFieldProps {
 const SLTHistoryTableList = ({ data, updateList }: EntryFieldProps) => {
   const { t } = useTranslation('translations');
 
-  const onTriggerFunction = (data) => {
-    updateList(data);
+  const onTriggerFunction = (Info) => {
+    updateList(Info);
   };
   const columns = [
     {

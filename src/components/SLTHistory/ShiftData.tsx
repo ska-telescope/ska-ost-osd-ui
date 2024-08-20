@@ -23,6 +23,8 @@ import AddIcon from '@mui/icons-material/Add';
 import moment from 'moment';
 import SLTLogMockList from '../../mockData/SLTLogMock';
 import apiService from '../../services/apis';
+import ImageDisplay from '../SLTLogs/ImageDisplay';
+import EBRequestResponse from '../SLTLogs/EBRequestResponse';
 
 const COLUMN_WIDTH = 300;
 
@@ -30,112 +32,14 @@ const ShiftDataTest = ({data}) => {
   const { t } = useTranslation('translations');
   const [openModal, setOpenModal] = useState(false);
   const [images, setImages] = useState([]);
-  const [value, setValue] = useState(data.data.annotations);
+  const [value, setValue] = useState(data && data && data.annotations);
   const [statusMessage, setStatusMessage] = useState(null);
   const [showElement, setShowElement] = useState(false);
-  
-  const ViewEB = ({ ebId }) => {
-    const { t } = useTranslation('translations');
-  
-    const [openModal, setOpenModal] = useState(false);
-  
-    const handleCloseRequestResponse = () => {
-      setOpenModal(false);
-    };
-  
-    const handleOpen = () => {
-      setOpenModal(true);
-    };
-  
-    const RequestResponseDisplay = (responseArray) => (
-      <div>
-        {responseArray && responseArray.map((data) => (
-          <>
-            <p>
-              <b> {t('ariaLabel.commandName')}:</b> {data.request}
-            </p>
-            <p>
-              <b>{t('ariaLabel.status')}:</b> {data.status}
-            </p>
-            <p>
-              <b>{t('ariaLabel.requestSentAt')}:</b> {data.request_sent_at}
-            </p>
-            <p>
-              <b>{t('ariaLabel.details')}:</b> {data.status == 'OK' ? data.response.result : data.error.detail}
-            </p>
-            <hr />
-          </>
-        ))}
-      </div>
-    );
-  
-    return (
-      <>
-        {' '}
-        <span
-          id="shiftId"
-          style={{ cursor: 'pointer', textDecoration: 'underline' }}
-          onClick={() => handleOpen()}
-        >
-          {ebId && ebId.eb_id}
-        </span>
-        <Dialog
-          aria-label={t('ariaLabel.dialog')}
-          data-testid="dialogStatus"
-          sx={{
-            '& .MuiDialog-container': {
-              '& .MuiPaper-root': {
-                width: '100%',
-                maxWidth: '1000px' // Set your width here
-              }
-            }
-          }}
-          open={openModal}
-          onClose={handleCloseRequestResponse}
-          aria-labelledby="responsive-dialog-title"
-        >
-          <DialogTitle>EB Request Response</DialogTitle>
-          <DialogContent dividers>
-            <RequestResponseDisplay responseArray={ebId.request_responses} />
-          </DialogContent>
-          <DialogActions>
-            <Button
-              color={ButtonColorTypes.Inherit}
-              variant={ButtonVariantTypes.Contained}
-              testId="statusClose"
-              label={t('label.close')}
-              onClick={handleCloseRequestResponse}
-              toolTip={t('label.close')}
-            />
-          </DialogActions>
-        </Dialog>
-      </>
-    );
-  };
-
-  const ImageDisplay = () => (
-    <div>
-      {images &&
-        images.length > 0 &&
-        images.map((image, index) => (
-          <>
-            <img
-              key={index}
-              src={`data:image/jpg;base64,${image}`}
-              width={700}
-              height={500}
-              alt={`Image ${index}`}
-            />
-            <hr />
-          </>
-        ))}
-    </div>
-  );
 
   const fetchImage = async () => {
-    const path = `shifts/images/${data.data.id}`;
+    const path = `shifts/images/${data.id}`;
     const result = await apiService.getImage(path);
-    setImages(result.data.data);
+    setImages(result.data);
   };
 
   const addAnnotation = async () => {
@@ -143,9 +47,9 @@ const ShiftDataTest = ({data}) => {
       annotations: `${value}`
     };
 
-    const path = `shifts/${data.data.id}`;
+    const path = `shifts/${data.id}`;
     const response = await apiService.putShiftData(path, shiftData);
-    setValue(response.data.data.annotations);
+    setValue(response && response.data && response.data.annotations);
     setShowElement(true);
     setStatusMessage('msg.annotationSubmit');
     setTimeout(() => {
@@ -154,6 +58,13 @@ const ShiftDataTest = ({data}) => {
   };
 
   let id = 1;
+  // if(data && data.shift_logs){
+  //   data.shift_logs.map((row) => {
+  //     row.id = id++;
+  //     return row;
+  //   });
+  // }
+
   SLTLogMockList.map((row) => {
     row.id = id++;
     return row;
@@ -197,7 +108,7 @@ const ShiftDataTest = ({data}) => {
       headerName: t('label.info'),
       width: COLUMN_WIDTH,
 
-      renderCell: (params) => <ViewEB ebId={params.row.info} />
+      renderCell: (params) => <EBRequestResponse ebData={params.row.info} />
     },
     {
       field: 'currentStatus',
@@ -221,7 +132,7 @@ const ShiftDataTest = ({data}) => {
         <Grid item xs={12} sm={12} md={3}>
           <span id="shiftIDlable" style={{ fontWeight: 'bold' }}>
           {t('label.shiftIDlable')}:{' '}
-            {`${data.data.shift_id}`}{' '}
+            {`${data.shift_id}`}{' '}
           </span>
         </Grid>
         <Grid item xs={12} sm={12} md={3.9} >
@@ -229,7 +140,7 @@ const ShiftDataTest = ({data}) => {
           </Grid>
         <Grid item xs={12} sm={12} md={5}>
           <span id="shiftStart" style={{ fontWeight: 'bold' }}>
-          {t('label.shiftStart')}: {moment(data.data.shift_start).format('DD-MM-YYYY hh:MM:SS')}{' '}
+          {t('label.shiftStart')}: {moment(data.shift_start).format('DD-MM-YYYY hh:MM:SS')}{' '}
           </span>
         </Grid>
       </Grid>
@@ -237,18 +148,18 @@ const ShiftDataTest = ({data}) => {
       <Grid container spacing={2} sx={{ padding: 2, paddingLeft: 0 }} justifyContent="left">
         <Grid item xs={12} sm={12} md={4}>
           <span id="operatorName" style={{ fontWeight: 'bold', alignItems: 'center' }}>
-          {t('label.operatorName')} : {data.data.shift_operator.name}{' '}
+          {t('label.operatorName')} : {data.shift_operator.name}{' '}
           </span>
         </Grid>
         <Grid item xs={12} sm={12} md={3} />
         <Grid item xs={12} sm={12} md={3}>
           <span id="shiftEnd" style={{ fontWeight: 'bold', alignItems: 'center' }}>
-          {t('label.shiftEnd')}: {moment(data.data.shift_end).format('DD-MM-YYYY hh:MM:SS')}{' '}
+          {t('label.shiftEnd')}: {moment(data.shift_end).format('DD-MM-YYYY hh:MM:SS')}{' '}
           </span>
         </Grid>
 
         <Grid item xs={12} sm={12} md={2}>
-          <span id="viewImages" style={{ cursor: 'pointer', textDecoration: 'underline' }} onClick={handleOpen}>
+          <span id="viewImages" style={{ cursor: 'pointer', textDecoration: 'underline' }} onKeyDown={handleOpen}  onClick={handleOpen}>
           {t('label.viewImages')}
           </span>
 
@@ -269,7 +180,7 @@ const ShiftDataTest = ({data}) => {
           >
             <DialogTitle>View Images</DialogTitle>
             <DialogContent dividers>
-              <ImageDisplay />
+            <ImageDisplay images={images} />
             </DialogContent>
           </Dialog>
         </Grid>
@@ -311,7 +222,7 @@ const ShiftDataTest = ({data}) => {
             inputProps={{
               readOnly: true
             }}
-            value={data.data.comments}
+            value={data.comments}
           />
         </Grid>
       </Grid>
@@ -321,7 +232,7 @@ const ShiftDataTest = ({data}) => {
           <Grid item xs={12} sm={12} md={12}>
             <Paper sx={{ border: 1 }}>
               <p id="viewLogDataIDLabel" style={{ fontWeight: 'bold', textAlign: 'center', alignItems: 'center' }}>
-              {t('label.viewLogDataIDLabel')}: {data.data.shift_id}
+              {t('label.viewLogDataIDLabel')}: {data.shift_id}
               </p>
             </Paper>
           </Grid>
