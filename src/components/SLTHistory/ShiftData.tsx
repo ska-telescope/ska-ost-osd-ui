@@ -1,21 +1,11 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import {
-  Box,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Grid,
-  Paper,
-  TextField
-} from '@mui/material';
+import { Box, Dialog, DialogContent, DialogTitle, Grid, Paper, TextField } from '@mui/material';
 import {
   Button,
   ButtonColorTypes,
   ButtonVariantTypes,
   DataGrid,
   InfoCard,
-  InfoCardColorTypes
+  InfoCardColorTypes,
 } from '@ska-telescope/ska-gui-components';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -28,7 +18,7 @@ import EBRequestResponse from '../SLTLogs/EBRequestResponse';
 
 const COLUMN_WIDTH = 300;
 
-const ShiftDataTest = ({data}) => {
+const ShiftDataTest = ({ data }) => {
   const { t } = useTranslation('translations');
   const [openModal, setOpenModal] = useState(false);
   const [images, setImages] = useState([]);
@@ -44,7 +34,7 @@ const ShiftDataTest = ({data}) => {
 
   const addAnnotation = async () => {
     const shiftData = {
-      annotations: `${value}`
+      annotations: `${value}`,
     };
 
     const path = `shifts/${data.id}`;
@@ -58,17 +48,12 @@ const ShiftDataTest = ({data}) => {
   };
 
   let id = 1;
-  // if(data && data.shift_logs){
-  //   data.shift_logs.map((row) => {
-  //     row.id = id++;
-  //     return row;
-  //   });
-  // }
-
-  SLTLogMockList.map((row) => {
-    row.id = id++;
-    return row;
-  });
+  if (data && data.shift_logs) {
+    data.shift_logs.map((row) => {
+      row.id = id++;
+      return row;
+    });
+  }
 
   const handleClose = () => {
     setOpenModal(false);
@@ -85,62 +70,58 @@ const ShiftDataTest = ({data}) => {
   };
 
   const renderMessageResponse = () => (
-      <div style={{ position: "relative",top:"-28px"}}  >
-         <InfoCard
+    <div style={{ position: 'relative', top: '-28px' }}>
+      <InfoCard
         fontSize={15}
         color={InfoCardColorTypes.Success}
         message={t(statusMessage)}
         testId="successStatusMsg"
       />
-
-      </div>
-     
-    );
+    </div>
+  );
   const columns = [
     {
       field: 'source',
       headerName: t('label.source'),
       width: 120,
-      renderCell: (params) => params.row.shift_operator
+      renderCell: (params) => params.row.shift_operator,
     },
     {
       field: 'info',
       headerName: t('label.info'),
       width: COLUMN_WIDTH,
 
-      renderCell: (params) => <EBRequestResponse ebData={params.row.info} />
+      renderCell: (params) => <EBRequestResponse ebData={params.row.info} />,
     },
     {
       field: 'currentStatus',
       headerName: t('label.currentStatus'),
       width: 150,
 
-      renderCell: (params) => params.row.info.sbi_status
+      renderCell: (params) => params.row.info.sbi_status,
     },
     {
       field: 'logTime',
       headerName: t('label.logTime'),
       width: COLUMN_WIDTH,
-      renderCell: (params) => params.row.info.log_time
-    }
+      renderCell: (params) => params.row.info.log_time,
+    },
   ];
 
   return (
     <Box data-testid="availableData" sx={{ margin: 4 }}>
       <Grid container spacing={2} sx={{ paddingLeft: 0 }} justifyContent="left">
-      
         <Grid item xs={12} sm={12} md={3}>
           <span id="shiftIDlable" style={{ fontWeight: 'bold' }}>
-          {t('label.shiftIDlable')}:{' '}
-            {`${data.shift_id}`}{' '}
+            {t('label.shiftIDlable')}: {`${data.shift_id}`}{' '}
           </span>
         </Grid>
-        <Grid item xs={12} sm={12} md={3.9} >
-        {showElement ? renderMessageResponse() : ''}
-          </Grid>
+        <Grid item xs={12} sm={12} md={3.9}>
+          {showElement ? renderMessageResponse() : ''}
+        </Grid>
         <Grid item xs={12} sm={12} md={5}>
           <span id="shiftStart" style={{ fontWeight: 'bold' }}>
-          {t('label.shiftStart')}: {moment(data.shift_start).format('DD-MM-YYYY hh:MM:SS')}{' '}
+            {t('label.shiftStart')}: {moment(data.shift_start).format('DD-MM-YYYY hh:MM:SS')}{' '}
           </span>
         </Grid>
       </Grid>
@@ -148,19 +129,25 @@ const ShiftDataTest = ({data}) => {
       <Grid container spacing={2} sx={{ padding: 2, paddingLeft: 0 }} justifyContent="left">
         <Grid item xs={12} sm={12} md={4}>
           <span id="operatorName" style={{ fontWeight: 'bold', alignItems: 'center' }}>
-          {t('label.operatorName')} : {data.shift_operator.name}{' '}
+            {t('label.operatorName')} : {data.shift_operator.name}{' '}
           </span>
         </Grid>
         <Grid item xs={12} sm={12} md={3} />
         <Grid item xs={12} sm={12} md={3}>
           <span id="shiftEnd" style={{ fontWeight: 'bold', alignItems: 'center' }}>
-          {t('label.shiftEnd')}: {moment(data.shift_end).format('DD-MM-YYYY hh:MM:SS')}{' '}
+            {t('label.shiftEnd')}: {moment(data.shift_end).format('DD-MM-YYYY hh:MM:SS')}{' '}
           </span>
         </Grid>
 
         <Grid item xs={12} sm={12} md={2}>
-          <span id="viewImages" style={{ cursor: 'pointer', textDecoration: 'underline' }} onKeyDown={handleOpen}  onClick={handleOpen}>
-          {t('label.viewImages')}
+          <span
+            aria-hidden="true"
+            id="viewImages"
+            style={{ cursor: 'pointer', textDecoration: 'underline' }}
+            onKeyDown={handleOpen}
+            onClick={handleOpen}
+          >
+            {t('label.viewImages')}
           </span>
 
           <Dialog
@@ -170,9 +157,9 @@ const ShiftDataTest = ({data}) => {
               '& .MuiDialog-container': {
                 '& .MuiPaper-root': {
                   width: '100%',
-                  maxWidth: '1000px' // Set your width here
-                }
-              }
+                  maxWidth: '1000px', // Set your width here
+                },
+              },
             }}
             open={openModal}
             onClose={handleClose}
@@ -180,7 +167,7 @@ const ShiftDataTest = ({data}) => {
           >
             <DialogTitle>View Images</DialogTitle>
             <DialogContent dividers>
-            <ImageDisplay images={images} />
+              <ImageDisplay images={images} />
             </DialogContent>
           </Dialog>
         </Grid>
@@ -220,7 +207,7 @@ const ShiftDataTest = ({data}) => {
             multiline
             rows={3}
             inputProps={{
-              readOnly: true
+              readOnly: true,
             }}
             value={data.comments}
           />
@@ -231,8 +218,11 @@ const ShiftDataTest = ({data}) => {
         <Grid container spacing={2} alignItems="left" textAlign="center">
           <Grid item xs={12} sm={12} md={12}>
             <Paper sx={{ border: 1 }}>
-              <p id="viewLogDataIDLabel" style={{ fontWeight: 'bold', textAlign: 'center', alignItems: 'center' }}>
-              {t('label.viewLogDataIDLabel')}: {data.shift_id}
+              <p
+                id="viewLogDataIDLabel"
+                style={{ fontWeight: 'bold', textAlign: 'center', alignItems: 'center' }}
+              >
+                {t('label.viewLogDataIDLabel')}: {data.shift_id}
               </p>
             </Paper>
           </Grid>

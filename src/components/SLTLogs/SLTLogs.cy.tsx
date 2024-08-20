@@ -5,17 +5,22 @@ import { THEME_DARK, THEME_LIGHT } from '@ska-telescope/ska-gui-components';
 import theme from '../../services/theme/theme';
 import SLTLogs from './SLTLogs';
 
-const THEME = [THEME_DARK, THEME_LIGHT];
-
 describe('<SLTLogs />', () => {
-  for (const theTheme of THEME) {
-    it(`Theme ${theTheme}: Renders SLTLogs`, () => {
-      mount(
-        <ThemeProvider theme={theme(theTheme)}>
-          <CssBaseline />
-          <SLTLogs  />
-        </ThemeProvider>
-      );
-    });
-  }
+  it(`Theme ${THEME_DARK}: Renders SLTLogs`, () => {
+    mount(
+      <ThemeProvider theme={theme(THEME_DARK)}>
+        <CssBaseline />
+        <SLTLogs />
+      </ThemeProvider>,
+    );
+  });
+
+  it(`Theme ${THEME_LIGHT}: Renders SLTLogs`, () => {
+    mount(
+      <ThemeProvider theme={theme(THEME_LIGHT)}>
+        <CssBaseline />
+        <SLTLogs />
+      </ThemeProvider>,
+    );
+  });
 });

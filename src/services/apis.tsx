@@ -14,7 +14,7 @@ function handleAxiosError(error: object) {
   if (axios.isAxiosError(error)) {
     const typedError: AxiosErrorType = {
       message: error.message,
-      statusCode: error.response?.status || 500
+      statusCode: error.response?.status || 500,
     };
     status = typedError.statusCode;
     errorMessage = typedError.message;
@@ -26,7 +26,7 @@ function handleAxiosError(error: object) {
 }
 
 const apiService = {
-  baseURL: () => 'http://127.0.0.1:6001/ska-oso-slt-services/slt/api/v0',
+  baseURL: () => window.env.BACKEND_URL,
 
   postShiftData: async (path, shiftData: any): Promise<any> => {
     const baseUrl = apiService.baseURL();
@@ -102,7 +102,7 @@ const apiService = {
       const errorResponse = handleAxiosError(err);
       return { data: null, status: errorResponse.status, error: errorResponse.error };
     }
-  }
+  },
 };
 
 export default apiService;

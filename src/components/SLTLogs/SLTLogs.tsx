@@ -1,7 +1,4 @@
-/* eslint-disable @typescript-eslint/no-shadow */
-/* eslint-disable  @typescript-eslint/no-unused-vars */
-/* eslint-disable no-use-before-define */
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Button,
   ButtonVariantTypes,
@@ -10,7 +7,7 @@ import {
   InfoCard,
   InfoCardColorTypes,
   ButtonColorTypes,
-  ButtonSizeTypes
+  ButtonSizeTypes,
 } from '@ska-telescope/ska-gui-components';
 import { Box, Dialog, DialogContent, DialogTitle, Grid, Paper, TextField } from '@mui/material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
@@ -19,16 +16,11 @@ import HistoryIcon from '@mui/icons-material/History';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
 import moment from 'moment';
-import { ENTITY, DEFAULT_TIME, operatorName} from '../../utils/constants';
+import { ENTITY, DEFAULT_TIME, operatorName } from '../../utils/constants';
 
 import apiService from '../../services/apis';
 import SLTLogTableList from './SLTTableList/SLTTableList';
-import SLTLogMockList from '../../mockData/SLTLogMock';
 import ImageDisplay from './ImageDisplay';
-
-
-
-
 
 function SLTLogs() {
   const [shiftStartTime, setShiftStartTime] = useState(DEFAULT_TIME);
@@ -37,7 +29,6 @@ function SLTLogs() {
   const [openModal, setOpenModal] = useState(false);
   const [statusMessage, setStatusMessage] = useState(null);
   const [dataDetails, setSltLogs] = useState([]);
-  const [data, setSltData] = useState(null);
   const [startShift, setStartShift] = useState(false);
   const [showElement, setShowElement] = useState(false);
   const [operator, setOperator] = useState('');
@@ -48,31 +39,20 @@ function SLTLogs() {
   const [images, setImages] = useState([]);
   const location = useLocation();
 
-  // const ImageDisplay = () => (
-  //   <div>
-  //     {images &&
-  //       images.length > 0 &&
-  //       images.map((image, index) => (
-  //         <>
-  //           <img
-  //             key={index}
-  //             src={`data:image/jpg;base64,${image}`}
-  //             width={700}
-  //             height={500}
-  //             alt={`Image ${index}`}
-  //           />
-  //           <hr />
-  //         </>
-  //       ))}
-  //   </div>
-  // );
-
   const fetchImage = async () => {
     const path = `shifts/images/${shiftId}`;
     const result = await apiService.getImage(path);
     setImages(result && result.data && result.data.data);
   };
-
+  const updateLogs = async (id) => {
+    const path = `shifts/${id}`;
+    const result = await apiService.getSltLogs(path);
+    setSltLogs(
+      result && result.data && result.data.shift_logs && result.data.shift_logs.length > 0
+        ? result.data.shift_logs
+        : [],
+    );
+  };
   const getShiftStartTime = async () => {
     // setStatusMessage('msg.shiftStarted');
     if (operator.length === 0) {
@@ -87,45 +67,37 @@ function SLTLogs() {
 
       const shiftData = {
         shift_operator: { name: operator },
-        shift_start: moment().utc().toISOString()
+        shift_start: moment().utc().toISOString(),
       };
 
       const path = `shifts`;
       const response = await apiService.postShiftData(path, shiftData);
-     
-      if(response.status === 200){
-        setSltData(response.data.data)
+
+      if (response.status === 200) {
         setStatusMessage('msg.shiftStarted');
+        setShowElement(true);
       }
-      setShowElement(true);
+
       setTimeout(() => {
         setShowElement(false);
       }, 3000);
       setShiftShowStart(
         moment(response && response.data && response.data.data && response.data.data.shift_start)
           .utc()
-          .format('YYYY-MM-DD HH:mm:ss')
+          .format('YYYY-MM-DD HH:mm:ss'),
       );
       setShiftStartTime(
         moment(response && response.data && response.data.data && response.data.data.shift_start)
           .utc()
-          .format('YYYY-MM-DD HH:mm:ss')
+          .format('YYYY-MM-DD HH:mm:ss'),
       );
 
       setShiftId(response && response.data && response.data.data && response.data.data.id);
 
-      const interval = setInterval(() => {
-        setSltLogs([SLTLogMockList[0]]);
+      const logInterval = setInterval(() => {
+        updateLogs(shiftId);
       }, 5000);
-      setTime(interval);
-      const interval1 = setInterval(() => {
-        setSltLogs([SLTLogMockList[1], SLTLogMockList[0]]);
-      }, 10000);
-      setTime(interval1);
-      setInterval(() => {
-        clearInterval(interval);
-        clearInterval(interval1);
-      }, 11000);
+      setTime(logInterval);
     }
   };
 
@@ -138,14 +110,14 @@ function SLTLogs() {
         shift_start: shiftStartTime,
         shift_end: moment().utc().toISOString(),
         id: shiftId,
-        comments: value
+        comments: value,
       };
     } else {
       shiftData = {
         shift_operator: { name: operator },
         shift_start: shiftStartTime,
         shift_end: moment().utc().toISOString(),
-        id: shiftId
+        id: shiftId,
       };
     }
 
@@ -154,7 +126,7 @@ function SLTLogs() {
     setShiftShowEnd(
       moment(response && response.data && response.data.data && response.data.data.shift_end)
         .utc()
-        .format('YYYY-MM-DD HH:mm:ss')
+        .format('YYYY-MM-DD HH:mm:ss'),
     );
 
     setStatusMessage('msg.shiftEnd');
@@ -180,11 +152,11 @@ function SLTLogs() {
     const shiftData = {
       shift_operator: { name: operator },
       shift_start: shiftStartTime,
-      comments: `${value}, `
+      comments: `${value}, `,
     };
 
     const path = `shifts/${shiftId}`;
-    const response = await apiService.putShiftData(path, shiftData);
+    await apiService.putShiftData(path, shiftData);
 
     setStatusMessage('msg.commentSubmit');
     setShowElement(true);
@@ -211,16 +183,6 @@ function SLTLogs() {
     return false;
   };
 
-  const updateLogs = async (shiftId: number) => {
-    const path = `shifts/${shiftId}`;
-    const result = await apiService.getSltLogs(path);
-    setSltLogs(
-      result && result.data && result.data.shift_logs && result.data.shift_logs.length > 0
-        ? result.data.shift_logs
-        : []
-    );
-  };
-
   const postImage = async (file) => {
     const path = `shifts/images/${shiftId}`;
 
@@ -230,11 +192,10 @@ function SLTLogs() {
     const config = {
       headers: {
         accept: 'application/json',
-        'content-type': 'multipart/form-data'
-      }
+        'content-type': 'multipart/form-data',
+      },
     };
-    const result = await apiService.postImage(path, formData, config);
-
+    await apiService.postImage(path, formData, config);
 
     setStatusMessage('msg.imageUpload');
     setShowElement(true);
@@ -246,17 +207,17 @@ function SLTLogs() {
     setOpenModal(false);
   };
   const handleOpenImage = () => {
-    fetchImage()
+    fetchImage();
     setOpenModal(true);
   };
   const renderMessageResponse = () => (
-        <InfoCard
-          fontSize={20}
-          color={InfoCardColorTypes.Success}
-          message={t(statusMessage)}
-          testId="successStatusMsg"
-        />
-      );
+    <InfoCard
+      fontSize={20}
+      color={InfoCardColorTypes.Success}
+      message={t(statusMessage)}
+      testId="successStatusMsg"
+    />
+  );
 
   const validateOperator = () => {
     if (operator.length === 0) {
@@ -266,9 +227,9 @@ function SLTLogs() {
   };
   return (
     <Box>
-      <Grid container  sx={{ margin: 2, marginBottom:0,marginTop:0 }} justifyContent="end">
+      <Grid container sx={{ margin: 2, marginBottom: 0, marginTop: 0 }} justifyContent="end">
         <Grid item xs={12} sm={12} md={3}>
-        <h2 data-testid="manageShift" >{t('label.manageShift')}</h2>
+          <h2 data-testid="manageShift">{t('label.manageShift')}</h2>
         </Grid>
         <Grid item xs={12} sm={12} md={1} />
         <Grid item xs={12} sm={12} md={4}>
@@ -276,7 +237,7 @@ function SLTLogs() {
         </Grid>
         <Grid item xs={12} sm={12} md={2} />
         <Grid item xs={12} sm={12} md={2}>
-          <Link to="/history" style={{color:ButtonColorTypes.Inherit}}>
+          <Link to="/history" style={{ color: ButtonColorTypes.Inherit }}>
             <Button
               icon={<HistoryIcon />}
               size={ButtonSizeTypes.Large}
@@ -295,7 +256,7 @@ function SLTLogs() {
       </Grid>
 
       <Paper sx={{ border: 1, margin: 2, marginTop: 0 }}>
-        <Grid container spacing={2} sx={{ padding: 2,paddingBottom:0 }} justifyContent="center">
+        <Grid container spacing={2} sx={{ padding: 2, paddingBottom: 0 }} justifyContent="center">
           <Grid item sx={{ padding: 10 }} xs={12} sm={12} md={3}>
             <DropDown
               errorText={validateOperator()}
@@ -313,8 +274,7 @@ function SLTLogs() {
             <Grid container spacing={2} justifyContent="right">
               <Grid item xs={12} sm={12} md={7}>
                 <p style={{ fontWeight: 'bold', marginLeft: 15, alignItems: 'center' }}>
-                <span data-testid="shiftStart" >{t('label.shiftStart')}</span>
-               : {shiftShowStart}{' '}
+                  <span data-testid="shiftStart">{t('label.shiftStart')}</span>: {shiftShowStart}{' '}
                 </p>
               </Grid>
 
@@ -335,7 +295,7 @@ function SLTLogs() {
             <Grid container spacing={2} justifyContent="center">
               <Grid item xs={12} sm={12} md={7}>
                 <p style={{ fontWeight: 'bold', marginLeft: 15, alignItems: 'center' }}>
-                <span data-testid="shiftEnd" >{t('label.shiftEnd')}</span>: {shiftShowEnd}{' '}
+                  <span data-testid="shiftEnd">{t('label.shiftEnd')}</span>: {shiftShowEnd}{' '}
                 </p>
               </Grid>
 
@@ -356,13 +316,12 @@ function SLTLogs() {
           </Grid>
         </Grid>
         {/* <hr/> */}
-        <Grid container sx={{ padding: 2,paddingTop:0 }} alignItems="flex-start">
+        <Grid container sx={{ padding: 2, paddingTop: 0 }} alignItems="flex-start">
           <Grid item xs={12} sm={12} md={5}>
             <p data-testid="addComment" style={{ fontWeight: 'bold' }}>
-            {t('label.addComment')}
-      
+              {t('label.addComment')}
             </p>
-      
+
             <TextField
               sx={{ width: '100%' }}
               data-testid="operatorComment"
@@ -387,42 +346,46 @@ function SLTLogs() {
           </Grid>
           <Grid item paddingTop={1} xs={12} sm={12} md={1} />
           <Grid item paddingTop={1} xs={12} sm={12} md={6}>
-          <Grid container spacing={2} justifyContent="right" marginBottom={2}>
+            <Grid container spacing={2} justifyContent="right" marginBottom={2}>
               <Grid item xs={12} sm={12} md={3}>
-              <span data-testid="addImages" style={{ fontWeight: 'bold'}}>
-              {t('label.addImages')}
-        
-            </span>
+                <span data-testid="addImages" style={{ fontWeight: 'bold' }}>
+                  {t('label.addImages')}
+                </span>
               </Grid>
               <Grid item xs={12} sm={12} md={6} />
               <Grid item xs={12} sm={12} md={3}>
-              <span  data-testid="viewImages" style={{ cursor: 'pointer', textDecoration: 'underline' }} onKeyDown={handleOpenImage} onClick={handleOpenImage}>
-              {t('label.viewImages')}
-          </span>
+                <span
+                  aria-hidden="true"
+                  data-testid="viewImages"
+                  style={{ cursor: 'pointer', textDecoration: 'underline' }}
+                  onKeyDown={handleOpenImage}
+                  onClick={handleOpenImage}
+                >
+                  {t('label.viewImages')}
+                </span>
               </Grid>
-              </Grid>
-        
-         
-          <Dialog
-            aria-label={t('ariaLabel.dialog')}
-            data-testid="dialogStatus"
-            sx={{
-              '& .MuiDialog-container': {
-                '& .MuiPaper-root': {
-                  width: '100%',
-                  maxWidth: '1000px' // Set your width here
-                }
-              }
-            }}
-            open={openModal}
-            onClose={handleClose}
-            aria-labelledby="responsive-dialog-title"
-          >
-            <DialogTitle>{t('label.viewImages')}</DialogTitle>
-            <DialogContent dividers>
-              <ImageDisplay images={images} />
-            </DialogContent>
-          </Dialog>
+            </Grid>
+
+            <Dialog
+              aria-label={t('ariaLabel.dialog')}
+              data-testid="dialogStatus"
+              sx={{
+                '& .MuiDialog-container': {
+                  '& .MuiPaper-root': {
+                    width: '100%',
+                    maxWidth: '1000px', // Set your width here
+                  },
+                },
+              }}
+              open={openModal}
+              onClose={handleClose}
+              aria-labelledby="responsive-dialog-title"
+            >
+              <DialogTitle>{t('label.viewImages')}</DialogTitle>
+              <DialogContent dividers>
+                <ImageDisplay images={images} />
+              </DialogContent>
+            </Dialog>
             <FileUpload
               uploadFunction={postImage}
               chooseDisabled={disableButtons()}

@@ -30,18 +30,17 @@
     "created_by": "Created By",
     "search": "Search",
     "close": "Close",
-    "viewHistoryTitle":"Shift History Data",
-    "shiftIDlable":"Shift ID",
-    "viewImages":"View Images",
-    "addImages":"Add Images",
-    "viewLogDataIDLabel":"Logs for Shift ID",
-    "manageShift":"Manage Shift",
-    "addComment":"Add Comment",
-    "commandName":"Command Name",
-    "status":"Status",
-    "requestSentAt:":"Request Sent at",
-    "details":"Details"
-    
+    "viewHistoryTitle": "Shift History Data",
+    "shiftIDlable": "Shift ID",
+    "viewImages": "View Images",
+    "addImages": "Add Images",
+    "viewLogDataIDLabel": "Logs for Shift ID",
+    "manageShift": "Manage Shift",
+    "addComment": "Add Comment",
+    "commandName": "Command Name",
+    "status": "Status",
+    "requestSentAt:": "Request Sent at",
+    "details": "Details"
   },
   "ariaLabel": {
     "date": "Select Date",
@@ -71,8 +70,8 @@
     "requiredEndDate": "Please enter end date",
     "shiftStartMessage": "Shift Started",
     "shiftEndMessage": "Shift Ended",
-    "showTodayRecords":"Showing records for today",
-    "annotationSubmit":"Annotation submitted successfully"
+    "showTodayRecords": "Showing records for today",
+    "annotationSubmit": "Annotation submitted successfully"
   },
   "toolTip": {
     "button": {

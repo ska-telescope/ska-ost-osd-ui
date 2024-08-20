@@ -1,4 +1,3 @@
-
 import enTranslations from '../../../public/locales/en/translations.json';
 import moment from 'moment';
 const language = 'English';
@@ -8,22 +7,17 @@ if (language === 'English') {
   translation = enTranslations;
 }
 
-const startDate = moment().utc()
-  .subtract(7, 'days')
-  .format('YYYY-MM-DD');
+const startDate = moment().utc().subtract(7, 'days').format('YYYY-MM-DD');
 const endDate = moment().utc().format('YYYY-MM-DD');
 
 context('REACT SKELETON', () => {
-
-
   beforeEach(() => {
     cy.visit('http://localhost:8090/');
   });
 
-
   const validateShiftLogDataTable = () => {
     cy.wait(waitTime);
-    cy.get('body').then(ele => {
+    cy.get('body').then((ele) => {
       if (ele.find('[data-testid="sltHistoryTable"]').length > 0) {
         cy.get('[data-testid="sltHistoryTable"]').should('be.visible');
         cy.get('[data-testid="sltHistoryTable"]')
@@ -44,7 +38,7 @@ context('REACT SKELETON', () => {
 
   const validateLogDataTable = () => {
     cy.wait(waitTime);
-    cy.get('body').then(element => {
+    cy.get('body').then((element) => {
       if (element.find('[data-testid="sltLogTableView"]').length > 0) {
         cy.get('[data-testid="sltLogTableView"]').should('be.visible');
         cy.get('[data-testid="sltLogTableView"]')
@@ -65,7 +59,7 @@ context('REACT SKELETON', () => {
 
   const validateShiftLogView = () => {
     cy.wait(waitTime);
-    cy.get('[data-testid="content"]').then(ele => {
+    cy.get('[data-testid="content"]').then((ele) => {
       if (ele.find('[data-testid="sltHistoryTable"]').length > 0) {
         cy.get('[data-testid="sltHistoryTable"]').should('be.visible');
         cy.get('[data-testid="sltHistoryTable"]')
@@ -90,9 +84,7 @@ context('REACT SKELETON', () => {
         cy.get('#viewLogDataIDLabel').contains(translation.label.viewLogDataIDLabel);
         cy.get('#annotation').should('be.visible');
         cy.get('#comments').should('be.visible');
-        validateLogDataTable()
-
-      
+        validateLogDataTable();
       }
     });
   };
@@ -106,7 +98,6 @@ context('REACT SKELETON', () => {
     cy.get('[data-testid="Brightness4Icon"]').click();
     cy.get('[data-testid="Brightness7Icon"]').should('be.visible');
   });
-
 
   it('Content : Verify shift log history list', () => {
     cy.get('[data-testid="historyButton"]').click();
@@ -140,16 +131,11 @@ context('REACT SKELETON', () => {
     cy.get('[data-testid="addComment"]').contains(translation.label.addComment);
     cy.get('[data-testid="addImages"]').contains(translation.label.addImages);
     cy.get('[data-testid="viewImages"]').contains(translation.label.viewImages);
-    cy.get('[data-testid="operatorComment"]').type("This is test comment by operator");
+    cy.get('[data-testid="operatorComment"]').type('This is test comment by operator');
     cy.get('[data-testid="commentButton"]').click();
     cy.get('[data-testid="successStatusMsg"]').contains(translation.msg.commentSubmit);
-    validateShiftLogDataTable()
+    validateShiftLogDataTable();
     cy.get('[data-testid="shiftEndButton"]').click();
     cy.get('[data-testid="successStatusMsg"]').contains(translation.msg.shiftEnd);
-
   });
-
-
-
-
 });

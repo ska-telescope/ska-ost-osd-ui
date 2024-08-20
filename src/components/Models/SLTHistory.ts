@@ -1,9 +1,8 @@
-
 interface ShiftOperator {
   name: string;
 }
 
-export default interface  SltHistoryDataModel {
+export default interface SltHistoryDataModel {
   annotations: string;
   comments: string;
   created_by: string | null;

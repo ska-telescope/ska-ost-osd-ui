@@ -7,7 +7,7 @@ import {
   ButtonColorTypes,
   ButtonSizeTypes,
   ButtonVariantTypes,
-  DateEntry
+  DateEntry,
 } from '@ska-telescope/ska-gui-components';
 import SearchIcon from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/Add';
@@ -29,13 +29,10 @@ function SLTHistory() {
   const location = useLocation();
 
   const fetchSltTodayShifts = async () => {
-   
     const path = makeUrlPath('shifts', today, nextdate);
     const result = await apiService.getSltData(path);
     setSltHistory(result.data);
-    setsearchType(SEARCH_TYPE.today)
-
-
+    setsearchType(SEARCH_TYPE.today);
   };
   useEffect(() => {
     fetchSltTodayShifts();
@@ -76,7 +73,7 @@ function SLTHistory() {
           {t('msg.selectedDates')}
           <small>
             {` (Between ${t('dateFormatTwo', {
-              date: new Date(createdAfter)
+              date: new Date(createdAfter),
             })} and  ${t('dateFormatTwo', { date: new Date(createdBefore) })})`}
           </small>
         </p>
@@ -88,18 +85,17 @@ function SLTHistory() {
     const path = makeUrlPath('shifts', createdAfter, createdBefore);
     const result = await apiService.getSltData(path);
     setSltHistory(result.data);
-    setsearchType(SEARCH_TYPE.dates)
+    setsearchType(SEARCH_TYPE.dates);
   };
 
   const handleClose = () => {
     setDisplayTable(true);
     setDisplayButton(true);
-    if(createdAfter && createdBefore){
-      fetchSltHistory()
-    }else{
-      fetchSltTodayShifts()
+    if (createdAfter && createdBefore) {
+      fetchSltHistory();
+    } else {
+      fetchSltTodayShifts();
     }
-    
   };
 
   const onTriggerFunction = (data) => {
@@ -110,13 +106,13 @@ function SLTHistory() {
 
   return (
     <>
-      <Grid container  sx={{ margin: 2, marginBottom:0,marginTop:0   }} justifyContent="end">
-      <Grid item xs={12} sm={12} md={3} >
-        <h2 data-testid="logHistoryLabel">{t('label.logHistoryTitle')}</h2>
-      </Grid>
+      <Grid container sx={{ margin: 2, marginBottom: 0, marginTop: 0 }} justifyContent="end">
+        <Grid item xs={12} sm={12} md={3}>
+          <h2 data-testid="logHistoryLabel">{t('label.logHistoryTitle')}</h2>
+        </Grid>
         <Grid item xs={12} sm={12} md={7} />
         <Grid item xs={12} sm={12} md={2}>
-          <Link to="/" style={{color:ButtonColorTypes.Inherit}}>
+          <Link to="/" style={{ color: ButtonColorTypes.Inherit }}>
             <Button
               icon={<AddIcon />}
               size={ButtonSizeTypes.Large}
@@ -131,66 +127,69 @@ function SLTHistory() {
           </Link>
         </Grid>
       </Grid>
-      <Paper sx={{ border: 1, margin: 2,marginTop:0 }}>
-      {displayTable ? (
-        <Grid container spacing={2} padding={2} justifyContent="left">
-          
-          <Grid item xs={12} sm={12} md={3}>
-            <DateEntry
-              ariaDescription={t('ariaLabel.dateDescription')}
-              ariaTitle={t('ariaLabel.date')}
-              helperText={t('msg.requiredStartDate')}
-              testId="dateEntryStart"
-              errorText={validateDates()}
-              label={t('label.startDate')}
-              value={createdAfter}
-              setValue={setCreatedAfter}
-            />
-          </Grid>
+      <Paper sx={{ border: 1, margin: 2, marginTop: 0 }}>
+        {displayTable ? (
+          <Grid container spacing={2} padding={2} justifyContent="left">
+            <Grid item xs={12} sm={12} md={3}>
+              <DateEntry
+                ariaDescription={t('ariaLabel.dateDescription')}
+                ariaTitle={t('ariaLabel.date')}
+                helperText={t('msg.requiredStartDate')}
+                testId="dateEntryStart"
+                errorText={validateDates()}
+                label={t('label.startDate')}
+                value={createdAfter}
+                setValue={setCreatedAfter}
+              />
+            </Grid>
 
-          <Grid item xs={12} sm={12} md={3}>
-            <DateEntry
-              ariaDescription={t('ariaLabel.dateDescription')}
-              ariaTitle={t('ariaLabel.date')}
-              helperText={t('msg.requiredEndDate')}
-              testId="dateEntryEnd"
-              errorText={validateDates()}
-              label={t('label.endDate')}
-              value={createdBefore}
-              setValue={setCreatedBefore}
-            />
-          </Grid>
+            <Grid item xs={12} sm={12} md={3}>
+              <DateEntry
+                ariaDescription={t('ariaLabel.dateDescription')}
+                ariaTitle={t('ariaLabel.date')}
+                helperText={t('msg.requiredEndDate')}
+                testId="dateEntryEnd"
+                errorText={validateDates()}
+                label={t('label.endDate')}
+                value={createdBefore}
+                setValue={setCreatedBefore}
+              />
+            </Grid>
 
-          <Grid item xs={12} sm={12} md={1} />
+            <Grid item xs={12} sm={12} md={1} />
 
-          <Grid item xs={12} sm={6} md={3} sx={{ marginTop: '25px' }}>
-            <Button
-              icon={<SearchIcon />}
-              ariaDescription={t('ariaLabel.searchButtonDescription')}
-              disabled={disableSearch()}
-              color={ButtonColorTypes.Secondary}
-              variant={ButtonVariantTypes.Contained}
-              testId="logHistorySearch"
-              label={t('label.searchById')}
-              onClick={fetchSltHistory}
-              toolTip={t('toolTip.button.idSearch')}
-            />
+            <Grid item xs={12} sm={6} md={3} sx={{ marginTop: '25px' }}>
+              <Button
+                icon={<SearchIcon />}
+                ariaDescription={t('ariaLabel.searchButtonDescription')}
+                disabled={disableSearch()}
+                color={ButtonColorTypes.Secondary}
+                variant={ButtonVariantTypes.Contained}
+                testId="logHistorySearch"
+                label={t('label.searchById')}
+                onClick={fetchSltHistory}
+                toolTip={t('toolTip.button.idSearch')}
+              />
+            </Grid>
           </Grid>
-        </Grid>
-      ):''}
+        ) : (
+          ''
+        )}
       </Paper>
-      <div style={{ marginLeft: "15px" }} >{message()}</div>
+      <div style={{ marginLeft: '15px' }}>{message()}</div>
       <Paper sx={{ border: 1, margin: 2 }} data-testid="content">
         {displayTable ? (
           <SLTHistoryTableList updateList={onTriggerFunction} data={dataDetails} />
-          
         ) : (
           <>
-            <Paper >
+            <Paper>
               <Grid container justifyContent="center">
                 <Grid item xs={12} sm={12} md={4} />
                 <Grid item xs={12} sm={12} md={4}>
-                  <h3 id="viewHistoryTitle" style={{ fontWeight: 'bold', textAlign: 'center', alignItems: 'center' }}>
+                  <h3
+                    id="viewHistoryTitle"
+                    style={{ fontWeight: 'bold', textAlign: 'center', alignItems: 'center' }}
+                  >
                     <b>{t('label.viewHistoryTitle')}</b>
                   </h3>
                 </Grid>

@@ -5,17 +5,22 @@ import { THEME_DARK, THEME_LIGHT } from '@ska-telescope/ska-gui-components';
 import theme from '../../../services/theme/theme';
 import ViewSLTHistory from './ViewSLTHistory';
 
-const THEME = [THEME_DARK, THEME_LIGHT];
-
 describe('<ViewSLTHistory />', () => {
-  for (const theTheme of THEME) {
-    it(`Theme ${theTheme}: Renders ViewSLTHistory`, () => {
-      mount(
-        <ThemeProvider theme={theme(theTheme)}>
-          <CssBaseline />
-          <ViewSLTHistory shiftData={undefined} updateStatus={undefined} />
-        </ThemeProvider>
-      );
-    });
-  }
+  it(`Theme ${THEME_DARK}: Renders ViewSLTHistory`, () => {
+    mount(
+      <ThemeProvider theme={theme(THEME_DARK)}>
+        <CssBaseline />
+        <ViewSLTHistory shiftData={undefined} updatedList={undefined} />
+      </ThemeProvider>,
+    );
+  });
+
+  it(`Theme ${THEME_LIGHT}: Renders ViewSLTHistory`, () => {
+    mount(
+      <ThemeProvider theme={theme(THEME_LIGHT)}>
+        <CssBaseline />
+        <ViewSLTHistory shiftData={undefined} updatedList={undefined} />
+      </ThemeProvider>,
+    );
+  });
 });

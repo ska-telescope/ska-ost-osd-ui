@@ -7,7 +7,6 @@ import SLTHistoryTableList from './SLTHistoryTable';
 import SLTHistoryMockList from '../../../mockData/SLTHistoryMock';
 import SltHistoryDataModel from '../../Models/SLTHistory';
 
-
 describe('<SLTHistoryTableList />', () => {
   it(`Theme ${THEME_DARK}: Renders SLTHistoryTableList`, () => {
     const mockData: SltHistoryDataModel[] = SLTHistoryMockList;
@@ -15,7 +14,7 @@ describe('<SLTHistoryTableList />', () => {
       <ThemeProvider theme={theme(THEME_DARK)}>
         <CssBaseline />
         <SLTHistoryTableList data={mockData} updateList={undefined} />
-      </ThemeProvider>
+      </ThemeProvider>,
     );
   });
 
@@ -25,7 +24,7 @@ describe('<SLTHistoryTableList />', () => {
       <ThemeProvider theme={theme(THEME_LIGHT)}>
         <CssBaseline />
         <SLTHistoryTableList data={mockData} updateList={undefined} />
-      </ThemeProvider>
+      </ThemeProvider>,
     );
   });
 });

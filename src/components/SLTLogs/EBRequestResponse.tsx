@@ -3,36 +3,34 @@ import { Button, ButtonColorTypes, ButtonVariantTypes } from '@ska-telescope/ska
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-
-
-const RequestResponseDisplay = ({responseArray}) =>{
+const RequestResponseDisplay = ({ responseArray }) => {
   const { t } = useTranslation('translations');
   return (
-  <div>
-    {responseArray && responseArray.map((dataItem) => (
-      <>
-        <p>
-          <b> {t('ariaLabel.commandName')}:</b> {dataItem.request}
-        </p>
-        <p>
-          <b>{t('ariaLabel.status')}:</b> {dataItem.status}
-        </p>
-        <p>
-          <b>{t('ariaLabel.requestSentAt')}:</b> {dataItem.request_sent_at}
-        </p>
-        <p>
-          <b>{t('ariaLabel.details')}:</b> {dataItem.status === 'OK' ? dataItem.response.result : dataItem.error.detail}
-        </p>
-        <hr />
-      </>
-    ))}
-  </div>
-);
-
-} 
+    <div>
+      {responseArray &&
+        responseArray.map((dataItem) => (
+          <>
+            <p>
+              <b> {t('ariaLabel.commandName')}:</b> {dataItem.request}
+            </p>
+            <p>
+              <b>{t('ariaLabel.status')}:</b> {dataItem.status}
+            </p>
+            <p>
+              <b>{t('ariaLabel.requestSentAt')}:</b> {dataItem.request_sent_at}
+            </p>
+            <p>
+              <b>{t('ariaLabel.details')}:</b>{' '}
+              {dataItem.status === 'OK' ? dataItem.response.result : dataItem.error.detail}
+            </p>
+            <hr />
+          </>
+        ))}
+    </div>
+  );
+};
 
 const EBRequestResponse = ({ ebData }) => {
- 
   const { t } = useTranslation('translations');
   const [openModalEB, setOpenModalEB] = useState(false);
 
@@ -44,12 +42,11 @@ const EBRequestResponse = ({ ebData }) => {
     setOpenModalEB(true);
   };
 
-
-
   return (
     <>
       {' '}
       <span
+        aria-hidden="true"
         id="shiftId"
         style={{ cursor: 'pointer', textDecoration: 'underline' }}
         onClick={() => handleOpenEB()}
@@ -64,9 +61,9 @@ const EBRequestResponse = ({ ebData }) => {
           '& .MuiDialog-container': {
             '& .MuiPaper-root': {
               width: '100%',
-              maxWidth: '1000px' // Set your width here
-            }
-          }
+              maxWidth: '1000px', // Set your width here
+            },
+          },
         }}
         open={openModalEB}
         onClose={handleCloseRequestResponse}
@@ -90,7 +87,5 @@ const EBRequestResponse = ({ ebData }) => {
     </>
   );
 };
-
-
 
 export default EBRequestResponse;

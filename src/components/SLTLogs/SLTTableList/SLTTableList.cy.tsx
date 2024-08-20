@@ -6,18 +6,24 @@ import theme from '../../../services/theme/theme';
 import SLTLogTableList from './SLTTableList';
 import SLTLogMockList from '../../../mockData/SLTLogMock';
 
-const THEME = [THEME_DARK, THEME_LIGHT];
-
 describe('<SLTLogTableList />', () => {
-  for (const theTheme of THEME) {
-    it(`Theme ${theTheme}: Renders SLTLogTableList`, () => {
-      const mockData = SLTLogMockList;
-      mount(
-        <ThemeProvider theme={theme(theTheme)}>
-          <CssBaseline />
-          <SLTLogTableList data={mockData}  />
-        </ThemeProvider>
-      );
-    });
-  }
+  it(`Theme ${THEME_DARK}: Renders SLTLogTableList`, () => {
+    const mockData = SLTLogMockList;
+    mount(
+      <ThemeProvider theme={theme(THEME_DARK)}>
+        <CssBaseline />
+        <SLTLogTableList data={mockData} />
+      </ThemeProvider>,
+    );
+  });
+
+  it(`Theme ${THEME_LIGHT}: Renders SLTLogTableList`, () => {
+    const mockData = SLTLogMockList;
+    mount(
+      <ThemeProvider theme={theme(THEME_LIGHT)}>
+        <CssBaseline />
+        <SLTLogTableList data={mockData} />
+      </ThemeProvider>,
+    );
+  });
 });
