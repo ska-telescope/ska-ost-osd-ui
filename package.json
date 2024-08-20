@@ -12,7 +12,7 @@
     "cypress:open": "cypress open",
     "cypress:run": "cypress run --config video=true",
     "cypress:run:component": "cypress run --component --config video=true",
-    "dev": "webpack serve --mode development --open",
+    "dev": "npx react-inject-env set -d public/ && webpack serve --mode development --open",
     "instrument": "webpack serve --mode development @cypress/instrument-cra",
     "lint": "eslint src/**/*.{js,jsx,ts,tsx}",
     "lint:fix": "eslint src/**/*.{js,jsx,ts,tsx} --fix",
@@ -20,7 +20,7 @@
     "prettier": "prettier --check \"**/*\"",
     "prettier:fix": "prettier --write \"**/*\"",
     "skao:update": "yarn add @ska-telescope/ska-gui-components@latest @ska-telescope/ska-gui-local-storage@latest",
-    "start": "NODE_ENV=test webpack serve --mode development --open",
+    "start": "make set-dev-env-vars && webpack serve --env NODE_ENV=local --mode development --open",
     "test:component:headless": "cypress run --component --headless --browser chrome --config video=true",
     "test:coverage:report": "npx nyc report --report-dir=build/reports --reporter=html",
     "test:coverage:report:ci": "npx nyc report --report-dir=build/reports",
@@ -63,6 +63,7 @@
     "react-router-dom": "^6.20.1",
     "react-test-renderer": "^18.2.0",
     "typescript": "^5.0.3"
+  
   },
   "devDependencies": {
     "@babel/core": "^7.21.4",
