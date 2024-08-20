@@ -34,7 +34,3 @@ endif
 
 set-dev-env-vars:
 	BASE_URL="/" BACKEND_URL=$(BACKEND_URL) ENVJS_FILE=./public/env.js ./scripts/write_env_js.sh
-
-set-absolute-paths:
-	BASE_URL="/" INDEX_FILE=./dist/index.html ./scripts/set_absolute_paths.sh
-
