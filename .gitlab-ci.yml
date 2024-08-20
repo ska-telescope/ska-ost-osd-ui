@@ -53,6 +53,10 @@ code_analysis:
   artifacts:
     paths:
       - build/
+      
+docs-build-rtd:
+  rules:
+    - when: never
 
 # run the test coverage reports
 test_and_coverage:
