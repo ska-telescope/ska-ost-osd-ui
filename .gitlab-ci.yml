@@ -53,9 +53,9 @@ code_analysis:
     paths:
       - build/
 
-# docs-build-rtd:
-#   rules:
-#     - when: never
+docs-build-rtd:
+  rules:
+    - when: never
 
 # run the cypress test coverage reports
 test_and_coverage:
