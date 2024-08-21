@@ -129,8 +129,6 @@ function SLTLogs() {
       setShowElement(false);
       setStartShift(false);
       setOperator('');
-      clearInterval(interval);
-
       setShiftStartTime(DEFAULT_TIME);
       setShiftShowStart(DEFAULT_TIME);
       setShiftShowEnd(DEFAULT_TIME);

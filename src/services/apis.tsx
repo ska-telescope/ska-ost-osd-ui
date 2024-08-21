@@ -26,7 +26,7 @@ function handleAxiosError(error: object) {
 }
 
 const apiService = {
-  baseURL: () => window.env.BACKEND_URL,
+  baseURL: () => 'http://192.168.49.2:30001/ska-oso-slt-services/slt/api/v0',
 
   postShiftData: async (path, shiftData: any): Promise<any> => {
     const baseUrl = apiService.baseURL();

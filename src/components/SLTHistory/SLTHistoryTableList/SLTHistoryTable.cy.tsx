@@ -4,12 +4,12 @@ import { mount } from 'cypress/react18';
 import { THEME_DARK, THEME_LIGHT } from '@ska-telescope/ska-gui-components';
 import theme from '../../../services/theme/theme';
 import SLTHistoryTableList from './SLTHistoryTable';
-import SLTHistoryMockList from '../../../mockData/SLTHistoryMock';
-import SltHistoryDataModel from '../../Models/SLTHistory';
+import sltDataModel from '../../Models/sltDataModel';
+import sltData from '../../../mockData/sltData';
 
 describe('<SLTHistoryTableList />', () => {
   it(`Theme ${THEME_DARK}: Renders SLTHistoryTableList`, () => {
-    const mockData: SltHistoryDataModel[] = SLTHistoryMockList;
+    const mockData: sltDataModel[] = sltData;
     mount(
       <ThemeProvider theme={theme(THEME_DARK)}>
         <CssBaseline />
@@ -19,7 +19,7 @@ describe('<SLTHistoryTableList />', () => {
   });
 
   it(`Theme ${THEME_LIGHT}: Renders SLTHistoryTableList`, () => {
-    const mockData: SltHistoryDataModel[] = SLTHistoryMockList;
+    const mockData: sltDataModel[] = sltData;
     mount(
       <ThemeProvider theme={theme(THEME_LIGHT)}>
         <CssBaseline />

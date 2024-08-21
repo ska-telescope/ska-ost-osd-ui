@@ -1,8 +1,8 @@
 import React from 'react';
-import SLTHistoryDataModel from '../../Models/SLTHistory';
+import sltDataModel from '../../Models/sltDataModel';
 
 interface EntryFieldProps {
-  shiftData: SLTHistoryDataModel;
+  shiftData: sltDataModel;
   updatedList;
 }
 

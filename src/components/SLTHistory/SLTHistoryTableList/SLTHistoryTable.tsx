@@ -4,13 +4,13 @@ import { DataGrid } from '@ska-telescope/ska-gui-components';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import moment from 'moment';
-import SltHistoryDataModel from '../../Models/SLTHistory';
 import ViewSLTHistory from '../ViewSLTHistory/ViewSLTHistory';
+import sltDataModel from '../../Models/sltDataModel';
 
 const COLUMN_WIDTH = 250;
 
 interface EntryFieldProps {
-  data: SltHistoryDataModel[];
+  data: sltDataModel[];
   updateList: any;
 }
 
