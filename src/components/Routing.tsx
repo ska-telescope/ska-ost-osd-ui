@@ -4,7 +4,7 @@ import SLTLogs from './SLTLogs/SLTLogs';
 import SLTHistory from './SLTHistory/SLTHistory';
 
 export const Routing = () => (
-  <Router>
+  <Router basename={env.BASE_URL || '/'}>
     <Routes>
       <Route path="/" element={<SLTLogs />} />
       <Route path="/history" element={<SLTHistory />} />

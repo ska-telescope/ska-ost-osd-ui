@@ -63,7 +63,6 @@
     "react-router-dom": "^6.20.1",
     "react-test-renderer": "^18.2.0",
     "typescript": "^5.0.3"
-  
   },
   "devDependencies": {
     "@babel/core": "^7.21.4",

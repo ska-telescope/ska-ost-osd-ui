@@ -133,7 +133,10 @@ context('Shift Log Tool', () => {
     cy.get('[data-testid="shiftStartButton"]').click();
 
     cy.get('body').then((element) => {
-      if (element.find('[data-testid="successStatusMsg"]').length > 0) {
+      if (
+        element.find('[data-testid="successStatusMsg"]') &&
+        element.find('[data-testid="successStatusMsg"]').length > 0
+      ) {
         cy.get('[data-testid="successStatusMsg"]').contains(translation.msg.shiftStarted);
       }
     });
@@ -145,7 +148,10 @@ context('Shift Log Tool', () => {
     cy.get('[data-testid="operatorComment"]').type('This is test comment by operator');
     cy.get('[data-testid="commentButton"]').click();
     cy.get('body').then((element) => {
-      if (element.find('[data-testid="successStatusMsg"]').length > 0) {
+      if (
+        element.find('[data-testid="successStatusMsg"]') &&
+        element.find('[data-testid="successStatusMsg"]').length > 0
+      ) {
         cy.get('[data-testid="successStatusMsg"]').contains(translation.msg.commentSubmit);
       }
     });
@@ -153,7 +159,10 @@ context('Shift Log Tool', () => {
     validateShiftLogDataTable();
     cy.get('[data-testid="shiftEndButton"]').click();
     cy.get('body').then((element) => {
-      if (element.find('[data-testid="successStatusMsg"]').length > 0) {
+      if (
+        element.find('[data-testid="successStatusMsg"]') &&
+        element.find('[data-testid="successStatusMsg"]').length > 0
+      ) {
         cy.get('[data-testid="successStatusMsg"]').contains(translation.msg.shiftEnd);
       }
     });
