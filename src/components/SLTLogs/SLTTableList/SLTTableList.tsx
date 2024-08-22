@@ -3,7 +3,6 @@ import { Box } from '@mui/material';
 import { DataGrid } from '@ska-telescope/ska-gui-components';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import moment from 'moment';
 import EBRequestResponse from '../EBRequestResponse';
 
 interface EntryFieldProps {
@@ -51,7 +50,7 @@ const SLTLogTableList = ({ data, updatedList }: EntryFieldProps) => {
       field: 'log_time',
       headerName: t('label.logTime'),
       width: 220,
-      renderCell: (params) => moment(params.row.info.log_time).utc().format('YYYY-MM-DD HH:mm:ss')
+      renderCell: (params) => params.row.info.log_time
     }
   ];
   return (

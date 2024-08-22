@@ -152,7 +152,7 @@ function SLTLogs() {
         );
         const intervel = setInterval(() => {
           updateLogs(response && response.data && response.data.data && response.data.data.sid);
-        }, 5000);
+        }, 25000);
         setItervalLogs(intervel);
       }
     }
@@ -175,7 +175,7 @@ function SLTLogs() {
       }
       const intervel = setInterval(() => {
         updateLogs(response && response.data && response.data.sid);
-      }, 5000);
+      }, 25000);
       setItervalLogs(intervel);
     }
   };

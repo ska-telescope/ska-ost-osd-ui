@@ -34,6 +34,7 @@ function SLTHistory() {
     setSltHistory(result.data);
     setsearchType(SEARCH_TYPE.today);
   };
+
   useEffect(() => {
     fetchSltTodayShifts();
   }, []);

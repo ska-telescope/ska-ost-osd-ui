@@ -23,7 +23,9 @@ const RequestResponseDisplay = ({ responseArray }) => {
             <p>
               <b>{t('label.status')}:</b> {dataItem.status}
             </p>
-            <p><b>{t('label.requestSentAt')}:</b> {dataItem.request_sent_at}</p>
+            <p>
+              <b>{t('label.requestSentAt')}:</b> {dataItem.request_sent_at}
+            </p>
             <p>
               <b>{t('label.details')}:</b>{' '}
               {dataItem.status === 'OK' ? dataItem.response.result : dataItem.error.detail}
@@ -65,9 +67,9 @@ const EBRequestResponse = ({ ebData, updatedStatus }) => {
           '& .MuiDialog-container': {
             '& .MuiPaper-root': {
               width: '100%',
-              maxWidth: '1000px', // Set your width here
-            },
-          },
+              maxWidth: '1000px' // Set your width here
+            }
+          }
         }}
         open={openModalEB}
         aria-labelledby="responsive-dialog-title"

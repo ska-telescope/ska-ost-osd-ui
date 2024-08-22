@@ -1,4 +1,13 @@
-import { Box, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Paper, TextField } from '@mui/material';
+import {
+  Box,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Grid,
+  Paper,
+  TextField
+} from '@mui/material';
 import {
   Button,
   ButtonColorTypes,
@@ -103,8 +112,7 @@ const ShiftDataTest = ({ data }) => {
       field: 'logTime',
       headerName: t('label.logTime'),
       width: COLUMN_WIDTH,
-
-      renderCell: (params) => moment(params.row.info.log_time).utc().format('YYYY-MM-DD HH:mm:ss')
+      renderCell: (params) => params.row.info.log_time
     }
   ];
 
@@ -170,15 +178,15 @@ const ShiftDataTest = ({ data }) => {
               <ImageDisplay images={images} />
             </DialogContent>
             <DialogActions>
-                <Button
-                  color={ButtonColorTypes.Inherit}
-                  variant={ButtonVariantTypes.Contained}
-                  testId="statusClose"
-                  label={t('label.close')}
-                  onClick={handleClose}
-                  toolTip={t('label.close')}
-                />
-              </DialogActions>
+              <Button
+                color={ButtonColorTypes.Inherit}
+                variant={ButtonVariantTypes.Contained}
+                testId="statusClose"
+                label={t('label.close')}
+                onClick={handleClose}
+                toolTip={t('label.close')}
+              />
+            </DialogActions>
           </Dialog>
         </Grid>
       </Grid>
