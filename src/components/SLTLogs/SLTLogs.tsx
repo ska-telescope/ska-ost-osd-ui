@@ -114,7 +114,7 @@ function SLTLogs() {
     }
   };
   const getShiftStartTime = async () => {
-    // setStatusMessage('msg.shiftStarted');
+    setStartShift(true);
     if (operator.length === 0) {
       // validateOperator();
       setShowElement(true);
@@ -127,12 +127,10 @@ function SLTLogs() {
         shift_operator: { name: operator },
         shift_start: moment().utc().toISOString()
       };
-
       const path = `shifts`;
       const response = await apiService.postShiftData(path, shiftData);
 
       if (response.status === 200) {
-        setStartShift(true);
         setStatusMessage('msg.shiftStarted');
         setShowElement(true);
       }
