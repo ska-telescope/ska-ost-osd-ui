@@ -37,7 +37,7 @@ const SLTHistoryTableList = ({ data, updateList }: EntryFieldProps) => {
       alignText: 'center',
       headerName: t('label.shiftStart'),
       width: COLUMN_WIDTH,
-      renderCell: (params) => moment(params.row.shift_start).format('DD-MM-YYYY hh:MM:SS')
+      renderCell: (params) => moment(params.row.shift_start).utc().format('YYYY-MM-DD HH:mm:ss')
     },
     {
       field: 'shift_end',
@@ -45,7 +45,7 @@ const SLTHistoryTableList = ({ data, updateList }: EntryFieldProps) => {
       alignText: 'center',
       headerName: t('label.shiftEnd'),
       width: COLUMN_WIDTH,
-      renderCell: (params) => moment(params.row.shift_end).format('DD-MM-YYYY hh:MM:SS')
+      renderCell: (params) => moment(params.row.shift_end).utc().format('YYYY-MM-DD HH:mm:ss')
     },
     {
       field: 'operator_name',

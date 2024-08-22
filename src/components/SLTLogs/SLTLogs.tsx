@@ -36,6 +36,7 @@ function SLTLogs() {
   const { t } = useTranslation('translations');
   const [images, setImages] = useState([]);
   const location = useLocation();
+  const [interval, setItervalLogs] = useState(null);
 
   const fetchImage = async () => {
     const path = `shifts/images/${shiftId}`;
@@ -91,23 +92,23 @@ function SLTLogs() {
   const fetchSltCurrentShifts = async () => {
     const path = `current_shifts`;
     const response = await apiService.getSltData(path);
-    if (response.status === 200) {
-      setStartShift(true);
+    if (response.status === 200 && !response.data.shift_end) {
       setStatusMessage('msg.shiftAlreadyStarted');
       setShowElement(true);
       setTimeout(() => {
         setShowElement(false);
       }, 3000);
       if (response && response.data && response.data) {
-        setShiftStart(moment(response.data.shift_start).utc().format('YYYY-MM-DD HH:mm:ss'));
+        setShiftStart(moment(response.data.shift_start).format('YYYY-MM-DD HH:mm:ss'));
         setShiftId(response.data.id);
         setOperator(response.data.shift_operator.name);
         setComment(response.data.comments ? response.data.comments : '');
       }
 
-      setInterval(() => {
+      const intervel = setInterval(() => {
         updateLogs(response && response.data && response.data.id);
       }, 5000);
+      setItervalLogs(intervel);
     }
   };
   useEffect(() => {
@@ -140,6 +141,7 @@ function SLTLogs() {
       setShiftStart(DEFAULT_TIME);
       setShiftEnd(DEFAULT_TIME);
       setComment('');
+      clearInterval(interval);
     }, 3000);
   };
 

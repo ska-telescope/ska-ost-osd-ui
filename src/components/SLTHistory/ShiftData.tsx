@@ -103,7 +103,8 @@ const ShiftDataTest = ({ data }) => {
       field: 'logTime',
       headerName: t('label.logTime'),
       width: COLUMN_WIDTH,
-      renderCell: (params) => params.row.info.log_time
+
+      renderCell: (params) => moment(params.row.info.log_time).utc().format('YYYY-MM-DD HH:mm:ss')
     }
   ];
 
@@ -120,7 +121,7 @@ const ShiftDataTest = ({ data }) => {
         </Grid>
         <Grid item xs={12} sm={12} md={5}>
           <span id="shiftStart" style={{ fontWeight: 'bold' }}>
-            {t('label.shiftStart')}: {moment(data.shift_start).format('DD-MM-YYYY hh:MM:SS')}{' '}
+            {t('label.shiftStart')}: {moment(data.shift_start).utc().format('YYYY-MM-DD HH:mm:ss')}
           </span>
         </Grid>
       </Grid>
@@ -134,7 +135,7 @@ const ShiftDataTest = ({ data }) => {
         <Grid item xs={12} sm={12} md={3} />
         <Grid item xs={12} sm={12} md={3}>
           <span id="shiftEnd" style={{ fontWeight: 'bold', alignItems: 'center' }}>
-            {t('label.shiftEnd')}: {moment(data.shift_end).format('DD-MM-YYYY hh:MM:SS')}{' '}
+            {t('label.shiftEnd')}: {moment(data.shift_end).utc().format('YYYY-MM-DD HH:mm:ss')}
           </span>
         </Grid>
 
