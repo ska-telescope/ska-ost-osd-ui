@@ -341,7 +341,7 @@ function SLTLogs() {
           {showElement ? renderMessageResponse() : ''}
         </Grid>
         <Grid item xs={12} sm={12} md={2} />
-        <Grid item xs={12} sm={12} md={1.8}>
+        <Grid item xs={12} sm={12} md={2}>
           <Link to="/history" style={{ color: ButtonColorTypes.Inherit }}>
             <Button
               icon={<HistoryIcon />}
