@@ -28,7 +28,7 @@ const ShiftDataTest = ({ data }) => {
   const fetchImage = async () => {
     const path = `shifts/images/${data.sid}`;
     const result = await apiService.getImage(path);
-    setImages(result.data);
+    setImages(result && result.data && result.data.data);
   };
 
   const addAnnotation = async () => {
