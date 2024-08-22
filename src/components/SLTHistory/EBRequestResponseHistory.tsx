@@ -28,7 +28,9 @@ const RequestResponseDisplay = ({ responseArray }) => {
             </p>
             <p>
               <b>{t('label.details')}:</b>{' '}
-              {dataItem.status === 'OK' ? dataItem.response.result : dataItem.error.detail}
+              {dataItem.status === 'OK'.toLowerCase()
+                ? dataItem.response.result
+                : dataItem.error.detail}
             </p>
             <hr />
           </div>
@@ -37,7 +39,7 @@ const RequestResponseDisplay = ({ responseArray }) => {
   );
 };
 
-const EBRequestResponse = ({ ebData }) => {
+const EBRequestResponseHistory = ({ ebData }) => {
   const { t } = useTranslation('translations');
   const [openModalEB, setOpenModalEB] = useState(false);
 
@@ -93,4 +95,4 @@ const EBRequestResponse = ({ ebData }) => {
   );
 };
 
-export default EBRequestResponse;
+export default EBRequestResponseHistory;

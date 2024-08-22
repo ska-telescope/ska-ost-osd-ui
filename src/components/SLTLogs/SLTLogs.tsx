@@ -55,7 +55,9 @@ const RequestResponseDisplay = ({ responseArray }) => {
             </p>
             <p>
               <b>{t('label.details')}:</b>{' '}
-              {dataItem.status === 'OK' ? dataItem.response.result : dataItem.error.detail}
+              {dataItem.status === 'OK'.toLowerCase()
+                ? dataItem.response.result
+                : dataItem.error.detail}
             </p>
             <hr />
           </div>
@@ -121,8 +123,6 @@ function SLTLogs() {
         setShowElement(false);
       }, 3000);
     } else {
-      setStartShift(true);
-
       const shiftData = {
         shift_operator: { name: operator },
         shift_start: moment().utc().toISOString()
@@ -132,10 +132,10 @@ function SLTLogs() {
       const response = await apiService.postShiftData(path, shiftData);
 
       if (response.status === 200) {
+        setStartShift(true);
         setStatusMessage('msg.shiftStarted');
         setShowElement(true);
       }
-
       setTimeout(() => {
         setShowElement(false);
       }, 3000);

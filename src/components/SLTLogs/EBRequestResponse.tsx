@@ -28,7 +28,9 @@ const RequestResponseDisplay = ({ responseArray }) => {
             </p>
             <p>
               <b>{t('label.details')}:</b>{' '}
-              {dataItem.status === 'OK' ? dataItem.response.result : dataItem.error.detail}
+              {dataItem.status === 'OK'.toLowerCase()
+                ? dataItem.response.result
+                : dataItem.error.detail}
             </p>
             <hr />
           </div>
