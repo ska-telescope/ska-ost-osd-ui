@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   ButtonVariantTypes,
@@ -23,9 +23,8 @@ import SLTLogTableList from './SLTTableList/SLTTableList';
 import ImageDisplay from './ImageDisplay';
 
 function SLTLogs() {
-  const [shiftStartTime, setShiftStartTime] = useState(DEFAULT_TIME);
-  const [shiftShowStart, setShiftShowStart] = useState(DEFAULT_TIME);
-  const [shiftShowEnd, setShiftShowEnd] = useState(DEFAULT_TIME);
+  const [shiftStart, setShiftStart] = useState(DEFAULT_TIME);
+  const [shiftEnd, setShiftEnd] = useState(DEFAULT_TIME);
   const [openModal, setOpenModal] = useState(false);
   const [statusMessage, setStatusMessage] = useState('');
   const [dataDetails, setSltLogs] = useState([]);
@@ -33,7 +32,7 @@ function SLTLogs() {
   const [showElement, setShowElement] = useState(false);
   const [operator, setOperator] = useState('');
   const [shiftId, setShiftId] = useState('');
-  const [value, setValue] = useState('');
+  const [commentValue, setComment] = useState('');
   const { t } = useTranslation('translations');
   const [images, setImages] = useState([]);
   const location = useLocation();
@@ -81,12 +80,7 @@ function SLTLogs() {
         setShowElement(false);
       }, 3000);
       if (response && response.data && response.data.data) {
-        setShiftShowStart(
-          moment(response.data.data.shift_start).utc().format('YYYY-MM-DD HH:mm:ss')
-        );
-        setShiftStartTime(
-          moment(response.data.data.shift_start).utc().format('YYYY-MM-DD HH:mm:ss')
-        );
+        setShiftStart(moment(response.data.data.shift_start).utc().format('YYYY-MM-DD HH:mm:ss'));
         setShiftId(response.data.data.id);
       }
       setInterval(() => {
@@ -94,30 +88,43 @@ function SLTLogs() {
       }, 5000);
     }
   };
+  const fetchSltCurrentShifts = async () => {
+    const path = `current_shifts`;
+    const response = await apiService.getSltData(path);
+    if (response.status === 200) {
+      setStartShift(true);
+      setStatusMessage('msg.shiftAlreadyStarted');
+      setShowElement(true);
+      setTimeout(() => {
+        setShowElement(false);
+      }, 3000);
+      if (response && response.data && response.data) {
+        setShiftStart(moment(response.data.shift_start).utc().format('YYYY-MM-DD HH:mm:ss'));
+        setShiftId(response.data.id);
+        setOperator(response.data.shift_operator.name);
+        setComment(response.data.comments ? response.data.comments : '');
+      }
 
-  const getShiftEndTime = async () => {
-    let shiftData;
-
-    if (value !== '') {
-      shiftData = {
-        shift_operator: { name: operator },
-        shift_start: shiftStartTime,
-        shift_end: moment().utc().toISOString(),
-        id: shiftId,
-        comments: value
-      };
-    } else {
-      shiftData = {
-        shift_operator: { name: operator },
-        shift_start: shiftStartTime,
-        shift_end: moment().utc().toISOString(),
-        id: shiftId
-      };
+      setInterval(() => {
+        updateLogs(response && response.data && response.data.id);
+      }, 5000);
     }
+  };
+  useEffect(() => {
+    fetchSltCurrentShifts();
+  }, []);
+  const getShiftEndTime = async () => {
+    const shiftData = {
+      shift_operator: { name: operator },
+      shift_start: shiftStart,
+      shift_end: moment().utc().toISOString(),
+      id: shiftId,
+      comments: commentValue
+    };
 
     const path = `shifts/${shiftId}`;
     const response = await apiService.putShiftData(path, shiftData);
-    setShiftShowEnd(
+    setShiftEnd(
       moment(response && response.data && response.data.data && response.data.data.shift_end)
         .utc()
         .format('YYYY-MM-DD HH:mm:ss')
@@ -129,20 +136,20 @@ function SLTLogs() {
       setShowElement(false);
       setStartShift(false);
       setOperator('');
-      setShiftStartTime(DEFAULT_TIME);
-      setShiftShowStart(DEFAULT_TIME);
-      setShiftShowEnd(DEFAULT_TIME);
-      setValue('');
+      setShiftStart(DEFAULT_TIME);
+      setShiftStart(DEFAULT_TIME);
+      setShiftEnd(DEFAULT_TIME);
+      setComment('');
     }, 3000);
   };
 
   const addComment = async () => {
-    if (value === '') return;
+    if (commentValue === '') return;
 
     const shiftData = {
       shift_operator: { name: operator },
-      shift_start: shiftStartTime,
-      comments: `${value}`
+      shift_start: shiftStart,
+      comments: `${commentValue}`
     };
 
     const path = `shifts/${shiftId}`;
@@ -156,7 +163,7 @@ function SLTLogs() {
   };
 
   const handleChange = (event) => {
-    setValue(event.target.value);
+    setComment(event.target.value);
   };
 
   const disableStartShift = () => {
@@ -264,7 +271,7 @@ function SLTLogs() {
             <Grid container spacing={2} justifyContent="right">
               <Grid item xs={12} sm={12} md={7}>
                 <p style={{ fontWeight: 'bold', marginLeft: 15, alignItems: 'center' }}>
-                  <span data-testid="shiftStart">{t('label.shiftStart')}</span>: {shiftShowStart}{' '}
+                  <span data-testid="shiftStart">{t('label.shiftStart')}</span>: {shiftStart}{' '}
                 </p>
               </Grid>
 
@@ -285,7 +292,7 @@ function SLTLogs() {
             <Grid container spacing={2} justifyContent="center">
               <Grid item xs={12} sm={12} md={7}>
                 <p style={{ fontWeight: 'bold', marginLeft: 15, alignItems: 'center' }}>
-                  <span data-testid="shiftEnd">{t('label.shiftEnd')}</span>: {shiftShowEnd}{' '}
+                  <span data-testid="shiftEnd">{t('label.shiftEnd')}</span>: {shiftEnd}{' '}
                 </p>
               </Grid>
 
@@ -317,7 +324,7 @@ function SLTLogs() {
               label="Please enter comments..."
               multiline
               rows={3}
-              value={value}
+              value={commentValue}
               onChange={handleChange}
             />
             <Grid item paddingTop={1} paddingBottom={1} xs={12} sm={12} md={6}>

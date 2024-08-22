@@ -5,6 +5,7 @@ import { THEME_DARK, THEME_LIGHT } from '@ska-telescope/ska-gui-components';
 import theme from '../../../services/theme/theme';
 import ViewSLTHistory from './ViewSLTHistory';
 import sltDataModel from '../../Models/sltDataModel';
+import sltData from '../../../mockData/sltData';
 
 describe('<ViewSLTHistory />', () => {
   it(`Theme ${THEME_DARK}: Renders ViewSLTHistory`, () => {

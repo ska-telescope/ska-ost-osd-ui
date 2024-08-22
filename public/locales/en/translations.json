@@ -59,6 +59,7 @@
     "logSummary": "Log Summary"
   },
   "msg": {
+    "shiftAlreadyStarted": "Shift already started",
     "shiftStarted": "Shift started successfully",
     "shiftEnd": "Shift ended successfully",
     "imageUpload": "Image uploaded successfully",
