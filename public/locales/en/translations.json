@@ -41,7 +41,8 @@
     "status": "Status",
     "requestSentAt:": "Request Sent at",
     "details": "Details",
-    "logSummary": "Log Summary"
+    "logSummary": "Log Summary",
+    "ebRequestResponse": "EB Request Response"
   },
   "ariaLabel": {
     "date": "Select Date",

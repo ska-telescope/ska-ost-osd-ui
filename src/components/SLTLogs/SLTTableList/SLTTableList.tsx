@@ -8,10 +8,15 @@ import EBRequestResponse from '../EBRequestResponse';
 
 interface EntryFieldProps {
   data: any;
+  updatedList: any;
 }
 
-const SLTLogTableList = ({ data }: EntryFieldProps) => {
+const SLTLogTableList = ({ data, updatedList }: EntryFieldProps) => {
   const { t } = useTranslation('translations');
+
+  const onTriggerFunction = (ebData) => {
+    updatedList(ebData);
+  };
 
   let id = 1;
   if (data) {
@@ -31,7 +36,9 @@ const SLTLogTableList = ({ data }: EntryFieldProps) => {
       field: 'info.eb_id',
       headerName: t('label.info'),
       width: 220,
-      renderCell: (params) => <EBRequestResponse ebData={params.row.info} />
+      renderCell: (params) => (
+        <EBRequestResponse updatedStatus={onTriggerFunction} ebData={params.row.info} />
+      )
     },
     {
       field: 'info.sbi_status',

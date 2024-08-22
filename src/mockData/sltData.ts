@@ -101,7 +101,7 @@ const sltData = [
       }
     ],
     shift_operator: {
-      name: 'John Doe'
+      name: 'DefaultUser'
     },
     shift_start: '2024-08-20T14:19:14.369563'
   }

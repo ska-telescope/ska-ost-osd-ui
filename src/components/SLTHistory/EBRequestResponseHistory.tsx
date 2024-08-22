@@ -16,14 +16,16 @@ const RequestResponseDisplay = ({ responseArray }) => {
     <div>
       {responseArray &&
         responseArray.map((dataItem) => (
-          <div key={dataItem.id}>
+          <div>
             <p>
               <b> {t('label.commandName')}:</b> {dataItem.request}
             </p>
             <p>
               <b>{t('label.status')}:</b> {dataItem.status}
             </p>
-            <p>{/* <b>{t('label.requestSentAt')}:</b> {dataItem.request_sent_at} */}</p>
+            <p>
+              <b>{t('label.requestSentAt')}:</b> {dataItem.request_sent_at}
+            </p>
             <p>
               <b>{t('label.details')}:</b>{' '}
               {dataItem.status === 'OK' ? dataItem.response.result : dataItem.error.detail}
@@ -35,7 +37,7 @@ const RequestResponseDisplay = ({ responseArray }) => {
   );
 };
 
-const EBRequestResponse = ({ ebData, updatedStatus }) => {
+const EBRequestResponse = ({ ebData }) => {
   const { t } = useTranslation('translations');
   const [openModalEB, setOpenModalEB] = useState(false);
 
@@ -44,7 +46,7 @@ const EBRequestResponse = ({ ebData, updatedStatus }) => {
   };
 
   const handleOpenEB = () => {
-    updatedStatus(ebData);
+    setOpenModalEB(true);
   };
 
   return (
@@ -54,7 +56,7 @@ const EBRequestResponse = ({ ebData, updatedStatus }) => {
         aria-hidden="true"
         id="shiftId"
         style={{ cursor: 'pointer', textDecoration: 'underline' }}
-        onClick={handleOpenEB}
+        onClick={() => handleOpenEB()}
       >
         {ebData && ebData.eb_id}
       </span>

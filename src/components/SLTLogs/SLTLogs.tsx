@@ -9,7 +9,16 @@ import {
   ButtonColorTypes,
   ButtonSizeTypes
 } from '@ska-telescope/ska-gui-components';
-import { Box, Dialog, DialogContent, DialogTitle, Grid, Paper, TextField } from '@mui/material';
+import {
+  Box,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Grid,
+  Paper,
+  TextField
+} from '@mui/material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import AddIcon from '@mui/icons-material/Add';
 import HistoryIcon from '@mui/icons-material/History';
@@ -17,10 +26,43 @@ import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
 import moment from 'moment';
 import { ENTITY, DEFAULT_TIME, operatorName } from '../../utils/constants';
-
 import apiService from '../../services/apis';
 import SLTLogTableList from './SLTTableList/SLTTableList';
 import ImageDisplay from './ImageDisplay';
+
+const RequestResponseDisplay = ({ responseArray }) => {
+  const { t } = useTranslation('translations');
+  let id = 1;
+  if (responseArray && responseArray.length > 0) {
+    responseArray.map((row) => {
+      row.id = id++;
+      return row;
+    });
+  }
+  return (
+    <div>
+      {responseArray &&
+        responseArray.map((dataItem) => (
+          <div key={dataItem.id}>
+            <p>
+              <b> {t('label.commandName')}:</b> {dataItem.request}
+            </p>
+            <p>
+              <b>{t('label.status')}:</b> {dataItem.status}
+            </p>
+            <p>
+              <b>{t('label.requestSentAt')}:</b> {dataItem.request_sent_at}
+            </p>
+            <p>
+              <b>{t('label.details')}:</b>{' '}
+              {dataItem.status === 'OK' ? dataItem.response.result : dataItem.error.detail}
+            </p>
+            <hr />
+          </div>
+        ))}
+    </div>
+  );
+};
 
 function SLTLogs() {
   const [shiftStart, setShiftStart] = useState(DEFAULT_TIME);
@@ -37,23 +79,41 @@ function SLTLogs() {
   const [images, setImages] = useState([]);
   const location = useLocation();
   const [interval, setItervalLogs] = useState(null);
+  const [EBData, setIEBData] = useState(null);
+  const [openModalEB, setOpenModalEB] = useState(false);
 
   const fetchImage = async () => {
     const path = `shifts/images/${shiftId}`;
     const result = await apiService.getImage(path);
     setImages(result && result.data && result.data.data);
   };
-  const updateLogs = async (id) => {
-    const path = `shifts/${id}`;
+  const updateLogs = async (sid) => {
+    const path = `shifts/${sid}`;
     const result = await apiService.getSltLogs(path);
-    setSltLogs(
-      result && result.data && result.data.shift_logs && result.data.shift_logs.length > 0
-        ? result.data.shift_logs
-        : []
-    );
+    if (dataDetails && dataDetails.length === 0) {
+      setSltLogs(
+        result && result.data && result.data.shift_logs && result.data.shift_logs.length > 0
+          ? result.data.shift_logs
+          : []
+      );
+    }
+    if (
+      dataDetails &&
+      dataDetails.length < result &&
+      result.data &&
+      result.data.shift_logs &&
+      result.data.shift_logs.length
+    ) {
+      setSltLogs(
+        result && result.data && result.data.shift_logs && result.data.shift_logs.length > 0
+          ? result.data.shift_logs
+          : []
+      );
+    }
   };
   const getShiftStartTime = async () => {
     // setStatusMessage('msg.shiftStarted');
+    clearInterval(interval);
     if (operator.length === 0) {
       // validateOperator();
       setShowElement(true);
@@ -82,14 +142,24 @@ function SLTLogs() {
       }, 3000);
       if (response && response.data && response.data.data) {
         setShiftStart(moment(response.data.data.shift_start).utc().format('YYYY-MM-DD HH:mm:ss'));
-        setShiftId(response.data.data.id);
-        setInterval(() => {
-          updateLogs(response && response.data && response.data.data && response.data.data.id);
+        setShiftId(response.data.data.sid);
+        setSltLogs(
+          response &&
+            response.data &&
+            response.data.data.shift_logs &&
+            response.data.data.shift_logs.length > 0
+            ? response.data.data.shift_logs
+            : []
+        );
+        const intervel = setInterval(() => {
+          updateLogs(response && response.data && response.data.data && response.data.data.sid);
         }, 5000);
+        setItervalLogs(intervel);
       }
     }
   };
   const fetchSltCurrentShifts = async () => {
+    clearInterval(interval);
     const path = `current_shifts`;
     const response = await apiService.getSltData(path);
     if (response.status === 200 && !response.data.shift_end) {
@@ -101,13 +171,12 @@ function SLTLogs() {
       if (response && response.data && response.data) {
         setStartShift(true);
         setShiftStart(moment(response.data.shift_start).format('YYYY-MM-DD HH:mm:ss'));
-        setShiftId(response.data.id);
+        setShiftId(response.data.sid);
         setOperator(response.data.shift_operator.name);
         setComment(response.data.comments ? response.data.comments : '');
       }
-
       const intervel = setInterval(() => {
-        updateLogs(response && response.data && response.data.id);
+        updateLogs(response && response.data && response.data.sid);
       }, 5000);
       setItervalLogs(intervel);
     }
@@ -120,7 +189,7 @@ function SLTLogs() {
       shift_operator: { name: operator },
       shift_start: shiftStart,
       shift_end: moment().utc().toISOString(),
-      id: shiftId,
+      sid: shiftId,
       comments: commentValue
     };
 
@@ -225,8 +294,46 @@ function SLTLogs() {
     }
     return '';
   };
+
+  const onTriggerFunction = (ebData) => {
+    setIEBData(ebData.request_responses);
+    setOpenModalEB(true);
+  };
+  const handleCloseRequestResponse = () => {
+    setOpenModalEB(false);
+  };
+
   return (
     <Box>
+      <Dialog
+        aria-label={t('ariaLabel.dialog')}
+        data-testid="dialogStatus"
+        sx={{
+          '& .MuiDialog-container': {
+            '& .MuiPaper-root': {
+              width: '100%',
+              maxWidth: '1000px' // Set your width here
+            }
+          }
+        }}
+        open={openModalEB}
+        aria-labelledby="responsive-dialog-title"
+      >
+        <DialogTitle>{t('label.ebRequestResponse')}</DialogTitle>
+        <DialogContent dividers>
+          <RequestResponseDisplay responseArray={EBData} />
+        </DialogContent>
+        <DialogActions>
+          <Button
+            color={ButtonColorTypes.Inherit}
+            variant={ButtonVariantTypes.Contained}
+            testId="statusClose"
+            label={t('label.close')}
+            onClick={handleCloseRequestResponse}
+            toolTip={t('label.close')}
+          />
+        </DialogActions>
+      </Dialog>
       <Grid container sx={{ margin: 2, marginBottom: 0, marginTop: 0 }} justifyContent="end">
         <Grid item xs={12} sm={12} md={3}>
           <h2 data-testid="manageShift">{t('label.manageShift')}</h2>
@@ -384,6 +491,16 @@ function SLTLogs() {
               <DialogContent dividers>
                 <ImageDisplay images={images} />
               </DialogContent>
+              <DialogActions>
+                <Button
+                  color={ButtonColorTypes.Inherit}
+                  variant={ButtonVariantTypes.Contained}
+                  testId="statusClose"
+                  label={t('label.close')}
+                  onClick={handleClose}
+                  toolTip={t('label.close')}
+                />
+              </DialogActions>
             </Dialog>
             <FileUpload
               uploadFunction={postImage}
@@ -399,7 +516,7 @@ function SLTLogs() {
           {t('label.logSummary')}
         </p>
         <hr />
-        {dataDetails ? <SLTLogTableList data={dataDetails} /> : ''}
+        {dataDetails ? <SLTLogTableList updatedList={onTriggerFunction} data={dataDetails} /> : ''}
       </Paper>
     </Box>
   );

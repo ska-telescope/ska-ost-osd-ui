@@ -12,7 +12,7 @@ const SLTHistoryMockList = [
     shift_id: 'shift-20240813-1',
     shift_logs: null,
     shift_operator: {
-      name: 'John Doe'
+      name: 'DefaultUser'
     },
     shift_start: '2024-08-13T11:19:06.666737Z'
   },
@@ -29,7 +29,7 @@ const SLTHistoryMockList = [
     shift_id: 'shift-20240813-2',
     shift_logs: null,
     shift_operator: {
-      name: 'John Doe'
+      name: 'DefaultUser'
     },
     shift_start: '2024-08-13T11:19:09.772793Z'
   },
@@ -46,7 +46,7 @@ const SLTHistoryMockList = [
     shift_id: 'shift-20240813-3',
     shift_logs: null,
     shift_operator: {
-      name: 'John Doe'
+      name: 'DefaultUser'
     },
     shift_start: '2024-08-13T11:19:10.531555Z'
   },
@@ -63,7 +63,7 @@ const SLTHistoryMockList = [
     shift_id: 'shift-20240813-4',
     shift_logs: null,
     shift_operator: {
-      name: 'John Doe'
+      name: 'DefaultUser'
     },
     shift_start: '2024-08-13T11:19:11.396053Z'
   }

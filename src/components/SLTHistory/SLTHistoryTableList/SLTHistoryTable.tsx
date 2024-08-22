@@ -20,6 +20,13 @@ const SLTHistoryTableList = ({ data, updateList }: EntryFieldProps) => {
   const onTriggerFunction = (Info) => {
     updateList(Info);
   };
+  let id = 1;
+  if (data && data.length > 0) {
+    data.map((row) => {
+      row.id = id++;
+      return row;
+    });
+  }
   const columns = [
     {
       field: 'shift_id',

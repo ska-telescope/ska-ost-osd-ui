@@ -13,7 +13,7 @@ import AddIcon from '@mui/icons-material/Add';
 import moment from 'moment';
 import apiService from '../../services/apis';
 import ImageDisplay from '../SLTLogs/ImageDisplay';
-import EBRequestResponse from '../SLTLogs/EBRequestResponse';
+import EBRequestResponseHistory from './EBRequestResponseHistory';
 
 const COLUMN_WIDTH = 300;
 
@@ -26,7 +26,7 @@ const ShiftDataTest = ({ data }) => {
   const [showElement, setShowElement] = useState(false);
 
   const fetchImage = async () => {
-    const path = `shifts/images/${data.id}`;
+    const path = `shifts/images/${data.sid}`;
     const result = await apiService.getImage(path);
     setImages(result.data);
   };
@@ -36,7 +36,7 @@ const ShiftDataTest = ({ data }) => {
       annotations: `${value}`
     };
 
-    const path = `shifts/${data.id}`;
+    const path = `shifts/${data.sid}`;
     const response = await apiService.putShiftData(path, shiftData);
     setValue(response && response.data && response.data.data.annotations);
     setShowElement(true);
@@ -90,7 +90,7 @@ const ShiftDataTest = ({ data }) => {
       headerName: t('label.info'),
       width: COLUMN_WIDTH,
 
-      renderCell: (params) => <EBRequestResponse ebData={params.row.info} />
+      renderCell: (params) => <EBRequestResponseHistory ebData={params.row.info} />
     },
     {
       field: 'currentStatus',

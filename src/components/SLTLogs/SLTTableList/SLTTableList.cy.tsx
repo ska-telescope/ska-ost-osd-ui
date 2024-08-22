@@ -12,7 +12,7 @@ describe('<SLTLogTableList />', () => {
     mount(
       <ThemeProvider theme={theme(THEME_DARK)}>
         <CssBaseline />
-        <SLTLogTableList data={mockData} />
+        <SLTLogTableList data={mockData} updatedList={undefined} />
       </ThemeProvider>
     );
   });
@@ -22,7 +22,7 @@ describe('<SLTLogTableList />', () => {
     mount(
       <ThemeProvider theme={theme(THEME_LIGHT)}>
         <CssBaseline />
-        <SLTLogTableList data={mockData} />
+        <SLTLogTableList data={mockData} updatedList={undefined} />
       </ThemeProvider>
     );
   });
