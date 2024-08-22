@@ -26,9 +26,7 @@ function handleAxiosError(error: object) {
 }
 
 const apiService = {
-  //
-  baseURL: () =>
-    'https://k8s.stfc.skao.int/dev-ska-oso-slt-services-nak-998-merge-image-api/slt/api/v0',
+  baseURL: () => 'https://k8s.stfc.skao.int/dev-ska-oso-slt-services-main/slt/api/v0',
   // baseURL: () => 'http://192.168.49.2:30001/ska-oso-slt-services/slt/api/v0',
   // baseURL: () => 'http://127.0.0.1:6001/ska-oso-slt-services/slt/api/v0',
   postShiftData: async (path, shiftData: any): Promise<any> => {
