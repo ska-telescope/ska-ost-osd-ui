@@ -83,10 +83,10 @@ function SLTLogs() {
       if (response && response.data && response.data.data) {
         setShiftStart(moment(response.data.data.shift_start).utc().format('YYYY-MM-DD HH:mm:ss'));
         setShiftId(response.data.data.id);
+        setInterval(() => {
+          updateLogs(response && response.data && response.data.data && response.data.data.id);
+        }, 5000);
       }
-      setInterval(() => {
-        updateLogs(response && response.data && response.data.data && response.data.data.id);
-      }, 5000);
     }
   };
   const fetchSltCurrentShifts = async () => {
