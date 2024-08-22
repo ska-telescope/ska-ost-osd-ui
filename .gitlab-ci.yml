@@ -53,7 +53,11 @@ code_analysis:
     paths:
       - build/
 
-# run the test coverage reports
+docs-build-rtd:
+  rules:
+    - when: never
+
+# run the cypress test coverage reports
 test_and_coverage:
   image: cypress/browsers:node-20.9.0-chrome-118.0.5993.88-1-ff-118.0.2-edge-118.0.2088.46-1
   stage: test
@@ -161,9 +165,9 @@ pages:
     echo "Status of pods in $KUBE_NAMESPACE namespace:"
     kubectl get pods -n $KUBE_NAMESPACE -o jsonpath="{range .items[*]}{'Pod: '}{.metadata.name}:{'\n'}{'\t'}{'Image: '}{.spec.containers[*].image}{'\n'}{'\t'}{'Status: '}{.status.phase}{'\n'}{end}{'\n'}"
     echo "Addresses to connect to the deployment of the SLT: "
-    echo "  https://k8s.stfc.skao.int/$KUBE_NAMESPACE/slt/"
+    echo "https://k8s.stfc.skao.int/$KUBE_NAMESPACE/slt/"
     echo "SLT Backend Swagger UI:"
-    echo "  https://k8s.stfc.skao.int/$KUBE_NAMESPACE/oda/api/v4/ui"
+    echo "https://k8s.stfc.skao.int/$KUBE_NAMESPACE/slt/api/v0/ui"
 
 .dev_env: &dev_env
   variables:

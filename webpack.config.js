@@ -68,7 +68,7 @@ module.exports = () => {
         filename: 'remoteEntry.js',
         remotes: {},
         exposes: {
-          './slt': './src/components/ShiftLog/ShiftLog.tsx',
+          './slt': './src/components/Routing.tsx',
         },
         shared: {
           ...deps,
@@ -77,11 +77,23 @@ module.exports = () => {
             singleton: true,
             requiredVersion: deps['react'],
           },
+          axios: { singleton: true, requiredVersion: '^1.5.1', eager: true },
           'react-dom': {
             eager: true,
             singleton: true,
             requiredVersion: deps['react-dom'],
           },
+          'react-json-view': {
+            eager: true,
+            singleton: true,
+            requiredVersion: deps['react-json-view'],
+          },
+          'react-router-dom': {
+            eager: true,
+            singleton: true,
+            requiredVersion: deps['react-router-dom'],
+          },
+
           // i18n
           i18next: {
             eager: true,
