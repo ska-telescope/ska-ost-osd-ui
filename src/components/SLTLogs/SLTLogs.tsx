@@ -113,7 +113,6 @@ function SLTLogs() {
   };
   const getShiftStartTime = async () => {
     // setStatusMessage('msg.shiftStarted');
-    clearInterval(interval);
     if (operator.length === 0) {
       // validateOperator();
       setShowElement(true);
@@ -159,7 +158,6 @@ function SLTLogs() {
     }
   };
   const fetchSltCurrentShifts = async () => {
-    clearInterval(interval);
     const path = `current_shifts`;
     const response = await apiService.getSltData(path);
     if (response.status === 200 && !response.data.shift_end) {
