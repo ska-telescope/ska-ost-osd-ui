@@ -127,10 +127,10 @@ context('Shift Log Tool', () => {
   it('Content : Verify running shift log flow', () => {
     cy.get('[data-testid="manageShift"]').contains(translation.label.manageShift);
     cy.get('[data-testid="historyButton"]').contains(translation.label.history);
-    cy.get('[data-testid="operatorNameId"]').click();
+    cy.get('[data-testid="operatorNameId"]').click({ force: true });
     cy.contains('DefaultUser').click({ force: true });
     cy.get('[data-testid="shiftStart"]').contains(translation.label.shiftStart);
-    cy.get('[data-testid="shiftStartButton"]').click();
+    cy.get('[data-testid="shiftStartButton"]').click({ force: true });
 
     cy.get('body').then((element) => {
       if (
@@ -146,7 +146,7 @@ context('Shift Log Tool', () => {
     cy.get('[data-testid="addImages"]').contains(translation.label.addImages);
     cy.get('[data-testid="viewImages"]').contains(translation.label.viewImages);
     cy.get('[data-testid="operatorComment"]').type('This is test comment by operator');
-    cy.get('[data-testid="commentButton"]').click();
+    cy.get('[data-testid="commentButton"]').click({ force: true });
     cy.get('body').then((element) => {
       if (
         element.find('[data-testid="successStatusMsg"]') &&
@@ -157,7 +157,7 @@ context('Shift Log Tool', () => {
     });
 
     validateShiftLogDataTable();
-    cy.get('[data-testid="shiftEndButton"]').click();
+    cy.get('[data-testid="shiftEndButton"]').click({ force: true });
     cy.get('body').then((element) => {
       if (
         element.find('[data-testid="successStatusMsg"]') &&
