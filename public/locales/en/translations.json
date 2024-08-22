@@ -40,7 +40,8 @@
     "commandName": "Command Name",
     "status": "Status",
     "requestSentAt:": "Request Sent at",
-    "details": "Details"
+    "details": "Details",
+    "logSummary": "Log Summary"
   },
   "ariaLabel": {
     "date": "Select Date",

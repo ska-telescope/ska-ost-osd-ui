@@ -99,6 +99,7 @@ function SLTLogs() {
         setShowElement(false);
       }, 3000);
       if (response && response.data && response.data) {
+        setStartShift(true);
         setShiftStart(moment(response.data.shift_start).format('YYYY-MM-DD HH:mm:ss'));
         setShiftId(response.data.id);
         setOperator(response.data.shift_operator.name);
@@ -235,7 +236,7 @@ function SLTLogs() {
           {showElement ? renderMessageResponse() : ''}
         </Grid>
         <Grid item xs={12} sm={12} md={2} />
-        <Grid item xs={12} sm={12} md={2}>
+        <Grid item xs={12} sm={12} md={1.8}>
           <Link to="/history" style={{ color: ButtonColorTypes.Inherit }}>
             <Button
               icon={<HistoryIcon />}

@@ -111,7 +111,7 @@ function SLTHistory() {
           <h2 data-testid="logHistoryLabel">{t('label.logHistoryTitle')}</h2>
         </Grid>
         <Grid item xs={12} sm={12} md={7} />
-        <Grid item xs={12} sm={12} md={2}>
+        <Grid item xs={12} sm={12} md={1.8}>
           <Link to="/" style={{ color: ButtonColorTypes.Inherit }}>
             <Button
               icon={<AddIcon />}
