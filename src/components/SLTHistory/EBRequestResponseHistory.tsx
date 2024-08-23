@@ -2,6 +2,7 @@ import { Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material
 import { Button, ButtonColorTypes, ButtonVariantTypes } from '@ska-telescope/ska-gui-components';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { EBRequestStatus } from '../../utils/constants';
 
 const RequestResponseDisplay = ({ responseArray }) => {
   const { t } = useTranslation('translations');
@@ -28,7 +29,7 @@ const RequestResponseDisplay = ({ responseArray }) => {
             </p>
             <p>
               <b>{t('label.details')}:</b>{' '}
-              {dataItem.status === 'OK'.toLowerCase()
+              {dataItem.status === EBRequestStatus.ok
                 ? dataItem.response.result
                 : dataItem.error.detail}
             </p>

@@ -21,6 +21,10 @@ export const SEARCH_TYPE = {
   id: 'id'
 };
 
+export const EBRequestStatus = {
+  ok: 'OK'
+};
+
 export const nextdate = moment().utc().add(1, 'days').toISOString().substring(0, 10);
 
 export const ENTITY = {
