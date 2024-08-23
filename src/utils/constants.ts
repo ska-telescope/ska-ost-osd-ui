@@ -21,7 +21,7 @@ export const SEARCH_TYPE = {
   id: 'id'
 };
 
-export const EBRequestStatus = {
+export const EBRequestResponseStatus = {
   OK: 'OK'
 };
 
