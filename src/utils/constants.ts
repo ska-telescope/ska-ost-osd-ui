@@ -22,7 +22,7 @@ export const SEARCH_TYPE = {
 };
 
 export const EBRequestStatus = {
-  ok: 'OK'
+  OK: 'OK'
 };
 
 export const nextdate = moment().utc().add(1, 'days').toISOString().substring(0, 10);

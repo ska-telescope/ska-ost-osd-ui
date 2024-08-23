@@ -29,7 +29,7 @@ const RequestResponseDisplay = ({ responseArray }) => {
             </p>
             <p>
               <b>{t('label.details')}:</b>{' '}
-              {dataItem.status === EBRequestStatus.ok
+              {dataItem.status === EBRequestStatus.OK
                 ? dataItem.response.result
                 : dataItem.error.detail}
             </p>
