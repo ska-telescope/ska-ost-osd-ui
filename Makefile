@@ -1,6 +1,5 @@
 # KUBE_HOST defines the IP address of the Minikube ingress.
-# KUBE_HOST ?= http://`minikube ip`
-KUBE_HOST ?= "http://localhost:8090/"
+KUBE_HOST ?= http://`minikube ip`
 # KUBE_NAMESPACE defines the Kubernetes Namespace that will be deployed to
 # using Helm.  If this does not already exist it will be created
 KUBE_NAMESPACE ?= ska-oso-slt-ui
