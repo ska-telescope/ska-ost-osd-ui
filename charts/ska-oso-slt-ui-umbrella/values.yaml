@@ -11,28 +11,10 @@ global:
 # The configuration can be changed using the parameters below, or see the `make dev-up` target.
 
 # Note: the SLT url, ODA url and Postgres host are only known at runtime, so are set in the Makefile
-ska-oso-slt-services:
-  rest:
-    oda:
-      backendType: rest
-      url: ~ # Defaults to the ODA Kubernetes service address if not set
-
-
-ska-db-oda-umbrella:
-  ska-db-oda:
-    enabled: true
+ska-oso-slt-services-umbrella:
+  ska-oso-slt-services:
     rest:
-      enabled: true
-      ingress:
-        enabled: true
-      backend:
-        postgres:
-          host:
-  postgresql:
-    enabled: true
-  pgadmin4:
-    enabled: true
-  ska-ser-skuid:
-    skuid:
-      enabled: true
+      oda:
+        backendType: rest
+        url: ~ # Defaults to the ODA Kubernetes service address if not set
 
