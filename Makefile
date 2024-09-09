@@ -1,5 +1,6 @@
 # KUBE_HOST defines the IP address of the Minikube ingress.
-KUBE_HOST ?= http://`minikube ip`
+# KUBE_HOST ?= http://`minikube ip`
+KUBE_HOST ?= "http://localhost:8090/"
 # KUBE_NAMESPACE defines the Kubernetes Namespace that will be deployed to
 # using Helm.  If this does not already exist it will be created
 KUBE_NAMESPACE ?= ska-oso-slt-ui
@@ -8,10 +9,8 @@ RELEASE_NAME ?= test
 
 # The default SLT_BACKEND_URL points to the umbrella chart SLT back-end deployment
 BACKEND_URL ?= $(KUBE_HOST)/$(KUBE_NAMESPACE)/slt/api/v0
-POSTGRES_HOST ?= $(RELEASE_NAME)-postgresql
 K8S_CHART_PARAMS += \
   --set ska-oso-slt-ui.backendURL=$(BACKEND_URL) \
-  --set ska-db-oda-umbrella.pgadmin4.serverDefinitions.servers.firstServer.Host=$(POSTGRES_HOST)
 
 # include core makefile targets for release management
 -include .make/base.mk
