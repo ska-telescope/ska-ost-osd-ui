@@ -9,10 +9,8 @@ For instructions on developing the SLT UI, see the `README <https://gitlab.com/s
 
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Releases
-   :hidden:
-   
 
    CHANGELOG.rst
 
