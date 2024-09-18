@@ -8,13 +8,7 @@ global:
 # This default `make k8s-install-chart` will deploy all of the dependencies: the UI will access an
 # SLT backend, which will use the RESTRepository backend to access the ODA REST API, which will connect
 # with the PostgreSQL instance.
-# The configuration can be changed using the parameters below, or see the `make dev-up` target.
 
-# Note: the SLT url, ODA url and Postgres host are only known at runtime, so are set in the Makefile
 ska-oso-slt-services-umbrella:
   ska-oso-slt-services:
     rest:
-      oda:
-        backendType: rest
-        url: ~ # Defaults to the ODA Kubernetes service address if not set
-
