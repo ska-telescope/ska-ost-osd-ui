@@ -1,4 +1,1 @@
-Change Log
-===========
-
 ../../CHANGELOG.md
