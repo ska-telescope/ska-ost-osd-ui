@@ -6,9 +6,8 @@ global:
   cluster_domain: techops.internal.skao.int
 
 # This default `make k8s-install-chart` will deploy all of the dependencies: the UI will access an
-# SLT backend, which will use the RESTRepository backend to access the ODA REST API, which will connect
+# SLT backend, which will access the ODA REST API, which will connect
 # with the PostgreSQL instance.
 
 ska-oso-slt-services-umbrella:
   ska-oso-slt-services:
-    rest:
