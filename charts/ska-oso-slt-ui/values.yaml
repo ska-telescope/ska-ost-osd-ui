@@ -7,3 +7,6 @@ image:
 ingress:
   prependByNamespace: true
   path: slt
+
+# Set this in the Makefile
+backendURL:
