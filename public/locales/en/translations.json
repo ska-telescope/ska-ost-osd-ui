@@ -39,7 +39,7 @@
     "addComment": "Add Comment",
     "commandName": "Command Name",
     "status": "Status",
-    "requestSentAt:": "Request Sent at",
+    "requestSentAt": "Request Sent at",
     "details": "Details",
     "logSummary": "Log Summary",
     "ebRequestResponse": "EB Request Response"
