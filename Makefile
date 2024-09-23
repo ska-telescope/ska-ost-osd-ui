@@ -6,9 +6,7 @@ KUBE_NAMESPACE ?= ska-oso-slt-ui
 K8S_CHART ?= ska-oso-slt-ui-umbrella
 
 # The default SLT_BACKEND_URL points to the umbrella chart SLT back-end deployment
-# BACKEND_URL ?= $(KUBE_HOST)/$(KUBE_NAMESPACE)/slt/api/v0
-# K8S_CHART_PARAMS += \
-#   --set ska-oso-slt-ui.backendURL=$(BACKEND_URL) \
+BACKEND_URL ?= $(KUBE_HOST)/$(KUBE_NAMESPACE)/slt/api/v0
 
 # include core makefile targets for release management
 -include .make/base.mk
