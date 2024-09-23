@@ -9,4 +9,4 @@ ingress:
   path: slt
 
 # Set this in the Makefile
-backendURL:
+# backendURL:
