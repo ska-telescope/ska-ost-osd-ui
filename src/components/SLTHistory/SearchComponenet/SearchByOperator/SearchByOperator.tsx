@@ -3,7 +3,7 @@ import { Button, ButtonColorTypes, ButtonVariantTypes } from '@ska-telescope/ska
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import SearchIcon from '@mui/icons-material/Search';
-import { operatorName } from '../../../utils/constants';
+import { operatorName } from '../../../../utils/constants';
 
 interface EntryFieldProps {
   setFilterCirteria;

@@ -22,9 +22,9 @@ import {
 import apiService from '../../services/apis';
 import SLTHistoryTableList from './SLTHistoryTableList/SLTHistoryTable';
 import ShiftDataTest from './ShiftData';
-import SearchByDates from './SearchComponenet/SearchByDates';
-import SearchByOperator from './SearchComponenet/SearchByOperator';
-import SearchByStatus from './SearchComponenet/SearchByStatus';
+import SearchByDates from './SearchComponenet/SearchByDates/SearchByDates';
+import SearchByOperator from './SearchComponenet/SearchByOperator/SearchByOperator';
+import SearchByStatus from './SearchComponenet/SearchByStatus/SearchByStatus';
 
 function SLTHistory() {
   const { t } = useTranslation('translations');

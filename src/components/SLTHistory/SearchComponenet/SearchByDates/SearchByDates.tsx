@@ -8,7 +8,7 @@ import {
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import SearchIcon from '@mui/icons-material/Search';
-import { today } from '../../../utils/constants';
+import { today } from '../../../../utils/constants';
 
 interface EntryFieldProps {
   setFilterCirteria;
