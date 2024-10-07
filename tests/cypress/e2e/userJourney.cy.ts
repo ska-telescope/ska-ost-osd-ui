@@ -121,7 +121,7 @@ context('Shift Log Tool', () => {
     cy.get('[data-testid="logSearchBy"]').click();
     cy.contains('Search by operator').click();
     cy.get('[data-testid="operatorName"]').click({ force: true });
-    cy.contains('DefaultUser').click({ force: true });
+    cy.get('[data-testid="sbiStatus"]').type('DefaultUser');
     cy.get('[data-testid="logHistorySearch"]').click({ force: true });
     validateShiftLogDataTable();
   });
@@ -170,7 +170,7 @@ context('Shift Log Tool', () => {
     cy.get('[data-testid="addImages"]').contains(translation.label.addImages);
     cy.get('[data-testid="viewImages"]').contains(translation.label.viewImages);
     cy.get('[data-testid="operatorComment"]').type('This is test comment by operator');
-    cy.get('[data-testid="commentButton"]').click();
+    cy.get('[data-testid="commentButton"]').click({ force: true });
     cy.get('body').then((element) => {
       if (
         element.find('[data-testid="successStatusMsg"]') &&
