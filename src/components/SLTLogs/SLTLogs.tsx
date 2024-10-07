@@ -26,7 +26,7 @@ import HistoryIcon from '@mui/icons-material/History';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
 import moment from 'moment';
-import { ENTITY, DEFAULT_TIME, operatorName } from '../../utils/constants';
+import { ENTITY, DEFAULT_TIME, operatorName, EBRequestResponseStatus } from '../../utils/constants';
 import apiService from '../../services/apis';
 import SLTLogTableList from './SLTTableList/SLTTableList';
 import ImageDisplay from './ImageDisplay';
@@ -56,7 +56,7 @@ const RequestResponseDisplay = ({ responseArray }) => {
             </p>
             <p>
               <b>{t('label.details')}:</b>{' '}
-              {dataItem.status === 'OK'.toLowerCase()
+              {dataItem.status === EBRequestResponseStatus.OK
                 ? dataItem.response.result
                 : dataItem.error.detail}
             </p>

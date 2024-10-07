@@ -25,7 +25,7 @@ sys.path.append(os.path.abspath('../../'))
 # -- Project information -----------------------------------------------------
 
 project = 'ska-oso-slt-ui'
-copyright = '2023, SKAO'
+copyright = '2024, SKAO'
 author = 'SKAO, (Team NAKSHATRA)'
 
 # The short X.Y version
