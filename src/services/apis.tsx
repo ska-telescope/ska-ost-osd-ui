@@ -33,7 +33,7 @@ const apiService = {
 
     try {
       const result = await axios.post<JSON>(url, shiftData);
-      return { data: result, status: 200, error: null };
+      return { data: result.data, status: 200, error: null };
     } catch (err) {
       const errorResponse = handleAxiosError(err);
       return { data: null, status: errorResponse.status, error: errorResponse.error };
@@ -46,7 +46,7 @@ const apiService = {
 
     try {
       const result = await axios.put<JSON>(url, shiftData);
-      return { data: result, status: 200, error: null };
+      return { data: result.data, status: 200, error: null };
     } catch (err) {
       const errorResponse = handleAxiosError(err);
       return { data: null, status: errorResponse.status, error: errorResponse.error };
@@ -82,7 +82,7 @@ const apiService = {
     const url = `${baseUrl}/${path}`;
 
     try {
-      const result = await axios.post(url, formData, config);
+      const result = await axios.put(url, formData, config);
       return { data: result, status: 200, error: null };
     } catch (err) {
       const errorResponse = handleAxiosError(err);
@@ -96,7 +96,7 @@ const apiService = {
 
     try {
       const result = await axios.get(url);
-      return { data: result, status: 200, error: null };
+      return { data: result.data, status: 200, error: null };
     } catch (err) {
       const errorResponse = handleAxiosError(err);
       return { data: null, status: errorResponse.status, error: errorResponse.error };

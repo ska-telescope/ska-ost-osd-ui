@@ -1,20 +1,12 @@
-import {
-  Box,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Grid,
-  Paper,
-  TextField
-} from '@mui/material';
+import { Box, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Paper } from '@mui/material';
 import {
   Button,
   ButtonColorTypes,
   ButtonVariantTypes,
   DataGrid,
   InfoCard,
-  InfoCardColorTypes
+  InfoCardColorTypes,
+  TextEntry
 } from '@ska-telescope/ska-gui-components';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -33,31 +25,32 @@ const ShiftDataTest = ({ data }) => {
   const [value, setValue] = useState(data && data && data.annotations);
   const [statusMessage, setStatusMessage] = useState(null);
   const [showElement, setShowElement] = useState(false);
-
   const fetchImage = async () => {
-    const path = `shifts/images/${data.sid}`;
+    const path = `shift/shifts/download-image/${data.shift_id}`;
     const result = await apiService.getImage(path);
-    setImages(result && result.data && result.data.data);
+    setImages(result && result.data && result.data[0]);
   };
-
   const addAnnotation = async () => {
     const shiftData = {
+      shift_id: data.shift_id,
       annotations: `${value}`
     };
 
-    const path = `shifts/${data.sid}`;
+    const path = `shift/shifts/update`;
     const response = await apiService.putShiftData(path, shiftData);
-    setValue(response && response.data && response.data.data.annotations);
-    setShowElement(true);
-    setStatusMessage('msg.annotationSubmit');
-    setTimeout(() => {
-      setShowElement(false);
-    }, 3000);
+    if (response.status === 200) {
+      setValue(response.data[0].annotations);
+      setShowElement(true);
+      setStatusMessage('msg.annotationSubmit');
+      setTimeout(() => {
+        setShowElement(false);
+      }, 3000);
+    }
   };
 
   let id = 1;
-  if (data && data.shift_logs) {
-    data.shift_logs.map((row) => {
+  if (data && data.shift_logs && data.shift_logs.logs) {
+    data.shift_logs.logs.map((row) => {
       row.id = id++;
       return row;
     });
@@ -73,8 +66,8 @@ const ShiftDataTest = ({ data }) => {
     setOpenModal(true);
   };
 
-  const handleChange = (event) => {
-    setValue(event.target.value);
+  const setAnnotationValue = (event) => {
+    setValue(event);
   };
 
   const renderMessageResponse = () => (
@@ -112,12 +105,12 @@ const ShiftDataTest = ({ data }) => {
       field: 'logTime',
       headerName: t('label.logTime'),
       width: COLUMN_WIDTH,
-      renderCell: (params) => params.row.info.log_time
+      renderCell: (params) => params.row.log_time
     }
   ];
 
   return (
-    <Box data-testid="availableData" sx={{ margin: 4 }}>
+    <Box sx={{ margin: 4 }}>
       <Grid container spacing={2} sx={{ paddingLeft: 0 }} justifyContent="left">
         <Grid item xs={12} sm={12} md={3}>
           <span id="shiftIDlable" style={{ fontWeight: 'bold' }}>
@@ -137,13 +130,14 @@ const ShiftDataTest = ({ data }) => {
       <Grid container spacing={2} sx={{ padding: 2, paddingLeft: 0 }} justifyContent="left">
         <Grid item xs={12} sm={12} md={4}>
           <span id="operatorName" style={{ fontWeight: 'bold', alignItems: 'center' }}>
-            {t('label.operatorName')} : {data.shift_operator.name}{' '}
+            {t('label.operatorName')} : {data.shift_operator}
           </span>
         </Grid>
         <Grid item xs={12} sm={12} md={3} />
         <Grid item xs={12} sm={12} md={3}>
           <span id="shiftEnd" style={{ fontWeight: 'bold', alignItems: 'center' }}>
-            {t('label.shiftEnd')}: {moment(data.shift_end).utc().format('YYYY-MM-DD HH:mm:ss')}
+            {t('label.shiftEnd')}:{' '}
+            {data.shift_end ? moment(data.shift_end).utc().format('YYYY-MM-DD HH:mm:ss') : ''}
           </span>
         </Grid>
 
@@ -175,7 +169,7 @@ const ShiftDataTest = ({ data }) => {
           >
             <DialogTitle>View Images</DialogTitle>
             <DialogContent dividers>
-              <ImageDisplay images={images} />
+              {images && images.length > 0 && <ImageDisplay images={images} />}
             </DialogContent>
             <DialogActions>
               <Button
@@ -193,14 +187,12 @@ const ShiftDataTest = ({ data }) => {
 
       <Grid container sx={{ padding: 2, paddingLeft: 0 }} spacing={2}>
         <Grid item xs={12} sm={12} md={5}>
-          <TextField
-            sx={{ width: '100%' }}
-            id="annotation"
-            label="Annotation"
-            multiline
-            rows={3}
+          <TextEntry
+            setValue={setAnnotationValue}
+            rows={2}
+            label="Please enter annotation..."
             value={value}
-            onChange={handleChange}
+            testId="annotation"
           />
         </Grid>
         <Grid item sx={{ mt: 7 }} xs={12} sm={12} md={1}>
@@ -218,17 +210,10 @@ const ShiftDataTest = ({ data }) => {
         <Grid item xs={12} sm={12} md={1} />
 
         <Grid item xs={12} sm={12} md={5}>
-          <TextField
-            sx={{ width: '100%' }}
-            id="comments"
-            label="Operator Comments"
-            multiline
-            rows={3}
-            inputProps={{
-              readOnly: true
-            }}
-            value={data.comments}
-          />
+          <span id="comments" style={{ fontWeight: 'bold', alignItems: 'center' }}>
+            Comment:
+          </span>
+          <span style={{ alignItems: 'center' }}>{data.comments}</span>
         </Grid>
       </Grid>
 
@@ -251,7 +236,7 @@ const ShiftDataTest = ({ data }) => {
               ariaTitle={t('ariaLabel.gridTable')}
               data-testid={data}
               columns={columns}
-              rows={data.shift_logs}
+              rows={data.shift_logs && data.shift_logs.logs ? data.shift_logs.logs : []}
               showBorder
               testId="sltLogTableView"
             />

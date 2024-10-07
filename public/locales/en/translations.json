@@ -9,6 +9,7 @@
     "text": "Text Label",
     "appTitle": "Shift Log Tool",
     "searchById": "Search Logs",
+    "searchByStatus": "Status",
     "shiftId": "Shift ID",
     "startDate": "Start Date",
     "endDate": "End Date",
@@ -16,9 +17,10 @@
     "history": "Shift History",
     "logTime": "Log Time",
     "logButton": "Add New Shift",
-    "logHistoryTitle": "Log History",
+    "logHistoryTitle": "Shift History",
     "submit": "Submit",
     "operatorName": "Operator Name",
+    "logSearchBy": "Select search type",
     "shiftEnd": "End Shift",
     "currentStatus": "Status",
     "logMessage": "Log Message",
@@ -75,7 +77,11 @@
     "shiftStartMessage": "Shift Started",
     "shiftEndMessage": "Shift Ended",
     "showTodayRecords": "Showing records for today",
-    "annotationSubmit": "Annotation submitted successfully"
+    "showOperatorRecords": "Showing records for operator",
+    "showStatusRecords": "Showing records for status",
+    "annotationSubmit": "Annotation submitted successfully",
+    "requiredOperator": "Please select operator",
+    "requiredStatus": "Please slect status"
   },
   "toolTip": {
     "button": {

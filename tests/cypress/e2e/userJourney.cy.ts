@@ -85,7 +85,7 @@ context('Shift Log Tool', () => {
             cy.get('#shiftIDlable').contains(translation.label.shiftId);
             cy.get('#viewImages').contains(translation.label.viewImages);
             cy.get('#viewLogDataIDLabel').contains(translation.label.viewLogDataIDLabel);
-            cy.get('#annotation').should('be.visible');
+            cy.get('[data-testid="annotation"]').should('be.visible');
             cy.get('#comments').should('be.visible');
             validateLogDataTable();
           }
@@ -104,13 +104,37 @@ context('Shift Log Tool', () => {
     cy.get('[data-testid="Brightness7Icon"]').should('be.visible');
   });
 
-  it('Content : Verify shift log history list', () => {
+  it('Content : Verify shift log history list by dates', () => {
     cy.get('[data-testid="historyButton"]').click();
     cy.get('[data-testid="logHistoryLabel"]').contains(translation.label.logHistoryTitle);
     cy.get('[data-testid="logButton"]').contains(translation.label.logButton);
     cy.get('[data-testid="dateEntryStart"]').type(startDate);
     cy.get('[data-testid="dateEntryEnd"]').type(endDate);
     cy.get('[data-testid="logHistorySearch"]').click();
+    validateShiftLogDataTable();
+  });
+
+  it('Content : Verify shift log history list by operator', () => {
+    cy.get('[data-testid="historyButton"]').click();
+    cy.get('[data-testid="logHistoryLabel"]').contains(translation.label.logHistoryTitle);
+    cy.get('[data-testid="logButton"]').contains(translation.label.logButton);
+    cy.get('[data-testid="logSearchBy"]').click();
+    cy.contains('Search by operator').click();
+    cy.get('[data-testid="operatorName"]').click({ force: true });
+    cy.contains('DefaultUser').click({ force: true });
+    cy.get('[data-testid="logHistorySearch"]').click({ force: true });
+    validateShiftLogDataTable();
+  });
+
+  it('Content : Verify shift log history list by status', () => {
+    cy.get('[data-testid="historyButton"]').click();
+    cy.get('[data-testid="logHistoryLabel"]').contains(translation.label.logHistoryTitle);
+    cy.get('[data-testid="logButton"]').contains(translation.label.logButton);
+    cy.get('[data-testid="logSearchBy"]').click();
+    cy.contains('Search by status').click();
+    cy.get('[data-testid="sbiStatus"]').click({ force: true });
+    cy.get('[data-testid="sbiStatus"]').type('Executing');
+    cy.get('[data-testid="logHistorySearch"]').click({ force: true });
     validateShiftLogDataTable();
   });
 
@@ -127,7 +151,7 @@ context('Shift Log Tool', () => {
   it('Content : Verify running shift log flow', () => {
     cy.get('[data-testid="manageShift"]').contains(translation.label.manageShift);
     cy.get('[data-testid="historyButton"]').contains(translation.label.history);
-    cy.get('[data-testid="operatorNameId"]').click();
+    cy.get('[data-testid="operatorName"]').click();
     cy.contains('DefaultUser').click();
     cy.get('[data-testid="shiftStart"]').contains(translation.label.shiftStart);
     cy.get('[data-testid="shiftStartButton"]').click();

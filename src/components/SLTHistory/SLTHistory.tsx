@@ -7,57 +7,50 @@ import {
   ButtonColorTypes,
   ButtonSizeTypes,
   ButtonVariantTypes,
-  DateEntry
+  DropDown
 } from '@ska-telescope/ska-gui-components';
-import SearchIcon from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/Add';
-import { today, makeUrlPath, nextdate, SEARCH_TYPE } from '../../utils/constants';
+import {
+  today,
+  nextdate,
+  SEARCH_TYPE,
+  logSearchType,
+  logTypeEnum,
+  getUrlPath
+} from '../../utils/constants';
 
 import apiService from '../../services/apis';
 import SLTHistoryTableList from './SLTHistoryTableList/SLTHistoryTable';
 import ShiftDataTest from './ShiftData';
+import SearchByDates from './SearchComponenet/SearchByDates';
+import SearchByOperator from './SearchComponenet/SearchByOperator';
+import SearchByStatus from './SearchComponenet/SearchByStatus';
 
 function SLTHistory() {
   const { t } = useTranslation('translations');
   const [dataDetails, setSltHistory] = useState([]);
   const [createdAfter, setCreatedAfter] = useState('');
   const [createdBefore, setCreatedBefore] = useState('');
+  const [operator, setOperator] = useState('');
+  const [status, setStatus] = useState('');
   const [displayTable, setDisplayTable] = useState(true);
-  const [displayButton, setDisplayButton] = useState(true);
   const [displayData, setDisplayData] = useState('');
   const [searchType, setsearchType] = useState('');
+  const [logSearchBy, setLogSearchBy] = useState(logTypeEnum.searchByDate);
   const location = useLocation();
 
   const fetchSltTodayShifts = async () => {
-    const path = makeUrlPath('shifts', today, nextdate);
+    const path = `shift/shifts?query_type=created_between&shift_start=${today}&shift_end=${nextdate}`;
     const result = await apiService.getSltData(path);
-    setSltHistory(result.data);
-    setsearchType(SEARCH_TYPE.today);
+    if (result.status === 200) {
+      setSltHistory(result.data[0]);
+      setsearchType(SEARCH_TYPE.today);
+    }
   };
 
   useEffect(() => {
     fetchSltTodayShifts();
   }, []);
-
-  const validateDates = () => {
-    if (
-      Date.parse(createdAfter) > Date.parse(today) ||
-      Date.parse(createdBefore) > Date.parse(today)
-    ) {
-      return t('msg.errFutureDate');
-    }
-    if (Date.parse(createdAfter) > Date.parse(createdBefore)) {
-      return t('msg.errInvalidDate');
-    }
-    return '';
-  };
-
-  const disableSearch = () => {
-    if (displayButton === true) {
-      return false;
-    }
-    return true;
-  };
 
   const message = () => (
     <div>
@@ -65,44 +58,69 @@ function SLTHistory() {
         <div>
           <span id="msgToday">
             {t('msg.showTodayRecords')}
-            <small>{` (${t('dateFormatTwo', { date: new Date(today) })})`}</small>
+            {` (${t('dateFormatTwo', { date: new Date(today) })})`}
           </span>
         </div>
       )}
       {searchType === SEARCH_TYPE.dates && createdAfter && createdBefore && (
         <p>
           {t('msg.selectedDates')}
-          <small>
-            {` (Between ${t('dateFormatTwo', {
-              date: new Date(createdAfter)
-            })} and  ${t('dateFormatTwo', { date: new Date(createdBefore) })})`}
-          </small>
+
+          {` (Between ${t('dateFormatTwo', {
+            date: new Date(createdAfter)
+          })} and  ${t('dateFormatTwo', { date: new Date(createdBefore) })})`}
         </p>
+      )}
+      {searchType === SEARCH_TYPE.operator && (
+        <div>
+          <span id="msgOperator">
+            {t('msg.showOperatorRecords')}
+            &nbsp; {operator}
+          </span>
+        </div>
+      )}
+      {searchType === SEARCH_TYPE.status && (
+        <div>
+          <span id="msgStatus">
+            {t('msg.showStatusRecords')}
+            &nbsp;{status}
+          </span>
+        </div>
       )}
     </div>
   );
 
-  const fetchSltHistory = async () => {
-    const path = makeUrlPath('shifts', createdAfter, createdBefore);
-    const result = await apiService.getSltData(path);
-    setSltHistory(result.data);
-    setsearchType(SEARCH_TYPE.dates);
+  const fetchSltHistoryByFilters = async (data) => {
+    const path = getUrlPath(data);
+    const response = await apiService.getSltData(path);
+    if (response.status === 200 && response.data && response.data.length > 0) {
+      setSltHistory(response.data[0]);
+    }
   };
 
   const handleClose = () => {
     setDisplayTable(true);
-    setDisplayButton(true);
-    if (createdAfter && createdBefore) {
-      fetchSltHistory();
-    } else {
-      fetchSltTodayShifts();
-    }
   };
 
   const onTriggerFunction = (data) => {
     setDisplayTable(false);
     setDisplayData(data);
-    setDisplayButton(false);
+  };
+
+  const getFilterCriteria = (data) => {
+    if (data.createdAfter && data.createdBefore) {
+      setsearchType(SEARCH_TYPE.dates);
+      setCreatedAfter(data.createdAfter);
+      setCreatedBefore(data.createdBefore);
+    } else if (data.shift_operator) {
+      setsearchType(SEARCH_TYPE.operator);
+      setOperator(data.shift_operator);
+    } else if (data.status) {
+      setsearchType(SEARCH_TYPE.status);
+      setStatus(data.status);
+    }
+
+    fetchSltHistoryByFilters(data);
   };
 
   return (
@@ -128,55 +146,36 @@ function SLTHistory() {
           </Link>
         </Grid>
       </Grid>
-      <Paper sx={{ border: 1, margin: 2, marginTop: 0 }}>
-        {displayTable ? (
-          <Grid container spacing={2} padding={2} justifyContent="left">
-            <Grid item xs={12} sm={12} md={3}>
-              <DateEntry
-                ariaDescription={t('ariaLabel.dateDescription')}
-                ariaTitle={t('ariaLabel.date')}
-                helperText={t('msg.requiredStartDate')}
-                testId="dateEntryStart"
-                errorText={validateDates()}
-                label={t('label.startDate')}
-                value={createdAfter}
-                setValue={setCreatedAfter}
+      {displayTable ? (
+        <Paper elevation={0} sx={{ border: 1, margin: 2, marginTop: 0 }}>
+          <Grid container spacing={2} sx={{ padding: 2 }} justifyContent="left">
+            <Grid item xs={12} sm={12} md={2}>
+              <DropDown
+                options={logSearchType}
+                testId="logSearchBy"
+                value={logSearchBy}
+                setValue={setLogSearchBy}
+                label={t('label.logSearchBy')}
+                labelBold
               />
             </Grid>
-
-            <Grid item xs={12} sm={12} md={3}>
-              <DateEntry
-                ariaDescription={t('ariaLabel.dateDescription')}
-                ariaTitle={t('ariaLabel.date')}
-                helperText={t('msg.requiredEndDate')}
-                testId="dateEntryEnd"
-                errorText={validateDates()}
-                label={t('label.endDate')}
-                value={createdBefore}
-                setValue={setCreatedBefore}
-              />
-            </Grid>
-
             <Grid item xs={12} sm={12} md={1} />
-
-            <Grid item xs={12} sm={6} md={3} sx={{ marginTop: '25px' }}>
-              <Button
-                icon={<SearchIcon />}
-                ariaDescription={t('ariaLabel.searchButtonDescription')}
-                disabled={disableSearch()}
-                color={ButtonColorTypes.Secondary}
-                variant={ButtonVariantTypes.Contained}
-                testId="logHistorySearch"
-                label={t('label.searchById')}
-                onClick={fetchSltHistory}
-                toolTip={t('toolTip.button.idSearch')}
-              />
+            <Grid item xs={12} sm={12} md={9}>
+              {displayTable && logSearchBy === logTypeEnum.searchByDate && (
+                <SearchByDates setFilterCirteria={getFilterCriteria} />
+              )}
+              {displayTable && logSearchBy === logTypeEnum.searchByOperator && (
+                <SearchByOperator setFilterCirteria={getFilterCriteria} />
+              )}
+              {displayTable && logSearchBy === logTypeEnum.searchByStatus && (
+                <SearchByStatus setFilterCirteria={getFilterCriteria} />
+              )}
             </Grid>
           </Grid>
-        ) : (
-          ''
-        )}
-      </Paper>
+        </Paper>
+      ) : (
+        ''
+      )}
       {displayTable ? <div style={{ marginLeft: '15px' }}>{message()}</div> : ''}
       <Paper sx={{ border: 1, margin: 2 }} data-testid="content">
         {displayTable ? (

@@ -65,7 +65,7 @@ function App() {
         {
           // This is the ONLY component that is accessible via micro-frontend implementation
         }
-        <Routing data-testId="routing" />
+        <Routing data-testid="routing" />
         {
           // Example of the spacer being used to stop content from being hidden behind the Footer component
         }
