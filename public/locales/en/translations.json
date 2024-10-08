@@ -44,7 +44,8 @@
     "requestSentAt": "Request Sent at",
     "details": "Details",
     "logSummary": "Log Summary",
-    "ebRequestResponse": "EB Request Response"
+    "ebRequestResponse": "EB Request Response",
+    "addAnnotation": "Please enter annotation"
   },
   "ariaLabel": {
     "date": "Select Date",
@@ -74,14 +75,12 @@
     "errInvalidDate": "Start date is greater than End date",
     "requiredStartDate": "Please enter start date",
     "requiredEndDate": "Please enter end date",
-    "shiftStartMessage": "Shift Started",
-    "shiftEndMessage": "Shift Ended",
     "showTodayRecords": "Showing records for today",
     "showOperatorRecords": "Showing records for operator",
     "showStatusRecords": "Showing records for status",
     "annotationSubmit": "Annotation submitted successfully",
     "requiredOperator": "Please select operator",
-    "requiredStatus": "Please slect status"
+    "requiredStatus": "Please select status"
   },
   "toolTip": {
     "button": {

@@ -15,7 +15,6 @@ export const EBRequestResponseStatus = {
   OK: 'OK'
 };
 
-
 export const ENTITY = {
   shift: 'shift',
   shiftHistory: 'history',

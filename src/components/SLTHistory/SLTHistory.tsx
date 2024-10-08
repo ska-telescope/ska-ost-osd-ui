@@ -21,7 +21,7 @@ import {
 
 import apiService from '../../services/apis';
 import SLTHistoryTableList from './SLTHistoryTableList/SLTHistoryTable';
-import ShiftDataTest from './ShiftData';
+import ViewShiftData from './ViewShiftData';
 import SearchByDates from './SearchComponenet/SearchByDates/SearchByDates';
 import SearchByOperator from './SearchComponenet/SearchByOperator/SearchByOperator';
 import SearchByStatus from './SearchComponenet/SearchByStatus/SearchByStatus';
@@ -208,7 +208,7 @@ function SLTHistory() {
                 </Grid>
               </Grid>
             </Paper>
-            <ShiftDataTest data={displayData} />
+            <ViewShiftData data={displayData} />
           </>
         )}
       </Paper>

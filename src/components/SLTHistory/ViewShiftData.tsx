@@ -18,7 +18,7 @@ import EBRequestResponseHistory from './EBRequestResponseHistory';
 
 const COLUMN_WIDTH = 300;
 
-const ShiftDataTest = ({ data }) => {
+const ViewShiftData = ({ data }) => {
   const { t } = useTranslation('translations');
   const [openModal, setOpenModal] = useState(false);
   const [images, setImages] = useState([]);
@@ -73,7 +73,7 @@ const ShiftDataTest = ({ data }) => {
   const renderMessageResponse = () => (
     <div style={{ position: 'relative', top: '-28px' }}>
       <InfoCard
-        fontSize={15}
+        fontSize={20}
         color={InfoCardColorTypes.Success}
         message={t(statusMessage)}
         testId="successStatusMsg"
@@ -167,7 +167,7 @@ const ShiftDataTest = ({ data }) => {
             onClose={handleClose}
             aria-labelledby="responsive-dialog-title"
           >
-            <DialogTitle>View Images</DialogTitle>
+            <DialogTitle>{t('label.viewImages')}</DialogTitle>
             <DialogContent dividers>
               {images && images.length > 0 && <ImageDisplay images={images} />}
             </DialogContent>
@@ -190,7 +190,7 @@ const ShiftDataTest = ({ data }) => {
           <TextEntry
             setValue={setAnnotationValue}
             rows={2}
-            label="Please enter annotation..."
+            label={t('label.addAnnotation')}
             value={value}
             testId="annotation"
           />
@@ -211,7 +211,7 @@ const ShiftDataTest = ({ data }) => {
 
         <Grid item xs={12} sm={12} md={5}>
           <span id="comments" style={{ fontWeight: 'bold', alignItems: 'center' }}>
-            Comment:
+            {t('label.comments')}:&nbsp;
           </span>
           <span style={{ alignItems: 'center' }}>{data.comments}</span>
         </Grid>
@@ -247,4 +247,4 @@ const ShiftDataTest = ({ data }) => {
   );
 };
 
-export default ShiftDataTest;
+export default ViewShiftData;
