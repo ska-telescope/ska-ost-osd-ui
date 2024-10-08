@@ -33,7 +33,7 @@ const SLTHistoryTableList = ({ data, updateList }: EntryFieldProps) => {
       headerClassName: 'super-app-theme--header',
       alignText: 'center',
       headerName: t('label.shiftId'),
-      width: COLUMN_WIDTH,
+      width: 350,
       renderCell: (params) => (
         <ViewSLTHistory updatedList={onTriggerFunction} shiftData={params.row} />
       )
@@ -60,7 +60,7 @@ const SLTHistoryTableList = ({ data, updateList }: EntryFieldProps) => {
       alignText: 'center',
       headerName: t('label.operatorName'),
       width: COLUMN_WIDTH,
-      renderCell: (params) => params.row.shift_operator.name
+      renderCell: (params) => params.row.shift_operator
     }
   ];
   return (
