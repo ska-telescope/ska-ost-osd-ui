@@ -15,7 +15,8 @@ import {
   logSearchType,
   logTypeEnum,
   getUrlPath,
-  getTodayDateRange
+  getTodayDateRange,
+  todayDate
 } from '../../utils/constants';
 
 import apiService from '../../services/apis';
@@ -57,7 +58,7 @@ function SLTHistory() {
         <div>
           <span id="msgToday">
             {t('msg.showTodayRecords')}
-            {` (${t('dateFormatTwo', { date: new Date(today) })})`}
+            {` (${t('dateFormatTwo', { date: new Date(todayDate) })})`}
           </span>
         </div>
       )}
