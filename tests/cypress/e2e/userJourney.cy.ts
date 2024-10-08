@@ -181,7 +181,7 @@ context('Shift Log Tool', () => {
     });
 
     validateShiftLogDataTable();
-    cy.get('[data-testid="shiftEndButton"]').click({force:true});
+    cy.get('[data-testid="shiftEndButton"]').click({ force: true });
     cy.get('body').then((element) => {
       if (
         element.find('[data-testid="successStatusMsg"]') &&

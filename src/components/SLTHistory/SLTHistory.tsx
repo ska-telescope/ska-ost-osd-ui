@@ -11,12 +11,11 @@ import {
 } from '@ska-telescope/ska-gui-components';
 import AddIcon from '@mui/icons-material/Add';
 import {
-  today,
-  nextdate,
   SEARCH_TYPE,
   logSearchType,
   logTypeEnum,
-  getUrlPath
+  getUrlPath,
+  getTodayDateRange
 } from '../../utils/constants';
 
 import apiService from '../../services/apis';
@@ -40,7 +39,7 @@ function SLTHistory() {
   const location = useLocation();
 
   const fetchSltTodayShifts = async () => {
-    const path = `shift/shifts?query_type=created_between&shift_start=${today}&shift_end=${nextdate}`;
+    const path = `shift/shifts?query_type=created_between&shift_start=${getTodayDateRange.start}&shift_end=${getTodayDateRange.end}`;
     const result = await apiService.getSltData(path);
     if (result.status === 200) {
       setSltHistory(result.data[0]);

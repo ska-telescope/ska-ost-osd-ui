@@ -3,8 +3,7 @@ import { Routes, Route, BrowserRouter as Router } from 'react-router-dom';
 import SLTLogs from './SLTLogs/SLTLogs';
 import SLTHistory from './SLTHistory/SLTHistory';
 
-export const Routing = () => 
-{
+export const Routing = () => {
   const basename = window.env?.BASE_URL;
   return (
     <Router basename={basename}>
@@ -14,6 +13,6 @@ export const Routing = () =>
       </Routes>
     </Router>
   );
-}
+};
 
 export default Routing;

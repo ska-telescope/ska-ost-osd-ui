@@ -8,7 +8,7 @@ import {
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import SearchIcon from '@mui/icons-material/Search';
-import { today } from '../../../../utils/constants';
+import { getUTCDateRange, todayDate } from '../../../../utils/constants';
 
 interface EntryFieldProps {
   setFilterCirteria;
@@ -16,28 +16,31 @@ interface EntryFieldProps {
 
 const SearchByDates = ({ setFilterCirteria }: EntryFieldProps) => {
   const { t } = useTranslation('translations');
-  const [createdAfter, setCreatedAfter] = useState('');
-  const [createdBefore, setCreatedBefore] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
 
   const validateDates = () => {
     if (
-      Date.parse(createdAfter) > Date.parse(today) ||
-      Date.parse(createdBefore) > Date.parse(today)
+      Date.parse(startDate) > Date.parse(todayDate) ||
+      Date.parse(endDate) > Date.parse(todayDate)
     ) {
       return t('msg.errFutureDate');
     }
-    if (Date.parse(createdAfter) > Date.parse(createdBefore)) {
+    if (Date.parse(startDate) > Date.parse(endDate)) {
       return t('msg.errInvalidDate');
     }
     return '';
   };
   const disableSearch = () => {
-    if (createdAfter.length > 0 && createdBefore.length > 0 && !validateDates()) {
+    if (startDate.length > 0 && endDate.length > 0 && !validateDates()) {
       return false;
     }
     return true;
   };
   const setDates = () => {
+    const getDatedRange = getUTCDateRange(startDate, endDate);
+    const createdAfter = getDatedRange.start;
+    const createdBefore = getDatedRange.end;
     const emmitData = {
       createdAfter,
       createdBefore
@@ -54,8 +57,8 @@ const SearchByDates = ({ setFilterCirteria }: EntryFieldProps) => {
           testId="dateEntryStart"
           errorText={validateDates()}
           label={t('label.startDate')}
-          value={createdAfter}
-          setValue={setCreatedAfter}
+          value={startDate}
+          setValue={setStartDate}
         />
       </Grid>
 
@@ -67,8 +70,8 @@ const SearchByDates = ({ setFilterCirteria }: EntryFieldProps) => {
           testId="dateEntryEnd"
           errorText={validateDates()}
           label={t('label.endDate')}
-          value={createdBefore}
-          setValue={setCreatedBefore}
+          value={endDate}
+          setValue={setEndDate}
         />
       </Grid>
 
