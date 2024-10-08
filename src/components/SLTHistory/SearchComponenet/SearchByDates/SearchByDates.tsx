@@ -16,8 +16,8 @@ interface EntryFieldProps {
 
 const SearchByDates = ({ setFilterCirteria }: EntryFieldProps) => {
   const { t } = useTranslation('translations');
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+  const [startDate, setStartDate] = useState(todayDate);
+  const [endDate, setEndDate] = useState(todayDate);
 
   const validateDates = () => {
     if (
