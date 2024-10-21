@@ -3,9 +3,9 @@ import { Box } from '@mui/material';
 import { DataGrid } from '@ska-telescope/ska-gui-components';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import moment from 'moment';
 import ViewSLTHistory from '../ViewSLTHistory/ViewSLTHistory';
 import sltDataModel from '../../Models/sltDataModel';
+import { toUTCDateTimeFormat } from '../../../utils/constants';
 
 const COLUMN_WIDTH = 250;
 
@@ -44,7 +44,8 @@ const SLTHistoryTableList = ({ data, updateList }: EntryFieldProps) => {
       alignText: 'center',
       headerName: t('label.shiftStart'),
       width: COLUMN_WIDTH,
-      renderCell: (params) => moment(params.row.shift_start).utc().format('YYYY-MM-DD HH:mm:ss')
+      renderCell: (params) =>
+        params.row.shift_start ? toUTCDateTimeFormat(params.row.shift_start) : ''
     },
     {
       field: 'shift_end',
@@ -52,7 +53,8 @@ const SLTHistoryTableList = ({ data, updateList }: EntryFieldProps) => {
       alignText: 'center',
       headerName: t('label.shiftEnd'),
       width: COLUMN_WIDTH,
-      renderCell: (params) => moment(params.row.shift_end).utc().format('YYYY-MM-DD HH:mm:ss')
+      renderCell: (params) =>
+        params.row.shift_end ? toUTCDateTimeFormat(params.row.shift_end) : 'Current Shift'
     },
     {
       field: 'operator_name',

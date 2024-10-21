@@ -79,3 +79,6 @@ export const logSearchType: LogSearchType[] = [
 ];
 
 export const SBIStatus = ['Created', 'Executing', 'Observed', 'Failed'];
+
+export const toUTCDateTimeFormat = (value: string) =>
+  moment(value).utc().format('DD-MM-YYYY HH:mm:ss');

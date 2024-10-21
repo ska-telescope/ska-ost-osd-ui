@@ -95,6 +95,8 @@ function SLTHistory() {
     const response = await apiService.getSltData(path);
     if (response.status === 200 && response.data && response.data.length > 0) {
       setSltHistory(response.data[0]);
+    } else {
+      setSltHistory([]);
     }
   };
 

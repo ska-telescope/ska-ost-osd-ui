@@ -3,23 +3,23 @@ import { CssBaseline, ThemeProvider } from '@mui/material';
 import { mount } from 'cypress/react18';
 import { THEME_DARK, THEME_LIGHT } from '@ska-telescope/ska-gui-components';
 import theme from '../../services/theme/theme';
-import SLTLogs from './SLTLogs';
+import CurrentActiveShift from './CurrentActiveShift';
 
-describe('<SLTLogs />', () => {
-  it(`Theme ${THEME_DARK}: Renders SLTLogs`, () => {
+describe('<CurrentActiveShift />', () => {
+  it(`Theme ${THEME_DARK}: Renders CurrentActiveShift`, () => {
     mount(
       <ThemeProvider theme={theme(THEME_DARK)}>
         <CssBaseline />
-        <SLTLogs />
+        <CurrentActiveShift />
       </ThemeProvider>
     );
   });
 
-  it(`Theme ${THEME_LIGHT}: Renders SLTLogs`, () => {
+  it(`Theme ${THEME_LIGHT}: Renders CurrentActiveShift`, () => {
     mount(
       <ThemeProvider theme={theme(THEME_LIGHT)}>
         <CssBaseline />
-        <SLTLogs />
+        <CurrentActiveShift />
       </ThemeProvider>
     );
   });

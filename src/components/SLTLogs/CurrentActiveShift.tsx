@@ -26,48 +26,12 @@ import HistoryIcon from '@mui/icons-material/History';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
 import moment from 'moment';
-import { ENTITY, DEFAULT_TIME, operatorName, EBRequestResponseStatus } from '../../utils/constants';
+import { ENTITY, DEFAULT_TIME, operatorName } from '../../utils/constants';
 import apiService from '../../services/apis';
-import SLTLogTableList from './SLTTableList/SLTTableList';
 import ImageDisplay from './ImageDisplay';
+import ShiftLogs from './ShiftLogs';
 
-const RequestResponseDisplay = ({ responseArray }) => {
-  const { t } = useTranslation('translations');
-  let id = 1;
-  if (responseArray && responseArray.length > 0) {
-    responseArray.map((row) => {
-      row.id = id++;
-      return row;
-    });
-  }
-  return (
-    <div>
-      {responseArray &&
-        responseArray.map((dataItem) => (
-          <div key={dataItem.id}>
-            <p>
-              <b> {t('label.commandName')}:</b> {dataItem.request}
-            </p>
-            <p>
-              <b>{t('label.status')}:</b> {dataItem.status}
-            </p>
-            <p>
-              <b>{t('label.requestSentAt')}:</b> {dataItem.request_sent_at}
-            </p>
-            <p>
-              <b>{t('label.details')}:</b>{' '}
-              {dataItem.status === EBRequestResponseStatus.OK
-                ? dataItem.response.result
-                : dataItem.error.detail}
-            </p>
-            <hr />
-          </div>
-        ))}
-    </div>
-  );
-};
-
-function SLTLogs() {
+function CurrentActiveShift() {
   const [displayShiftStart, setDisplayShiftStart] = useState(DEFAULT_TIME);
   const [shiftStart, setShiftStart] = useState('');
   const [displayShiftEnd, setDisplayShiftEnd] = useState(DEFAULT_TIME);
@@ -83,8 +47,6 @@ function SLTLogs() {
   const [images, setImages] = useState([]);
   const location = useLocation();
   const [interval, setItervalLogs] = useState(null);
-  const [EBData, setIEBData] = useState(null);
-  const [openModalEB, setOpenModalEB] = useState(false);
   const [inputValue, setInputValue] = React.useState('');
 
   const fetchImage = async () => {
@@ -92,6 +54,7 @@ function SLTLogs() {
     const result = await apiService.getImage(path);
     setImages(result && result.data && result.data[0]);
   };
+
   const updateShitLogs = async (shiftID) => {
     const path = `shift/shifts/${shiftID}`;
     const result = await apiService.getSltLogs(path);
@@ -116,6 +79,7 @@ function SLTLogs() {
       );
     }
   };
+
   const startNewShift = async () => {
     const shiftData = {
       shift_operator: operator
@@ -135,8 +99,11 @@ function SLTLogs() {
       );
       setShiftId(response.data[0].shift_id);
       setSltLogs(
-        response && response.data[0].shift_logs && response.data[0].shift_logs.length > 0
-          ? response.data[0].shift_logs
+        response &&
+          response.data[0].shift_logs &&
+          response.data[0].shift_logs &&
+          response.data[0].shift_logs.logs.length > 0
+          ? response.data[0].shift_logs.logs
           : []
       );
       const intervel = setInterval(() => {
@@ -147,7 +114,7 @@ function SLTLogs() {
   };
 
   const fetchSltCurrentShifts = async () => {
-    const path = `current_shifts`;
+    const path = `shift/shifts/current_shift`;
     const response = await apiService.getSltData(path);
     if (response.status === 200 && !response.data.shift_end) {
       setMessage('msg.shiftAlreadyStarted');
@@ -157,12 +124,12 @@ function SLTLogs() {
       }, 3000);
       if (response && response.data && response.data) {
         setDisplayShiftStart(moment(response.data.shift_start).format('YYYY-MM-DD HH:mm:ss'));
-        setShiftId(response.data.sid);
+        setShiftId(response.data[0].shift_id);
         setOperator(response.data.shift_operator.name);
         setComment(response.data.comments ? response.data.comments : '');
       }
       const intervel = setInterval(() => {
-        updateShitLogs(response && response.data && response.data.sid);
+        updateShitLogs(response && response.data && response.data[0].shift_id);
       }, 25000);
       setItervalLogs(intervel);
     }
@@ -271,45 +238,8 @@ function SLTLogs() {
     return true;
   };
 
-  const onTriggerFunction = (ebData) => {
-    setIEBData(ebData.request_responses);
-    setOpenModalEB(true);
-  };
-  const handleCloseRequestResponse = () => {
-    setOpenModalEB(false);
-  };
-
   return (
     <Box>
-      <Dialog
-        aria-label={t('ariaLabel.dialog')}
-        data-testid="dialogStatus"
-        sx={{
-          '& .MuiDialog-container': {
-            '& .MuiPaper-root': {
-              width: '100%',
-              maxWidth: '1000px' // Set your width here
-            }
-          }
-        }}
-        open={openModalEB}
-        aria-labelledby="responsive-dialog-title"
-      >
-        <DialogTitle>{t('label.ebRequestResponse')}</DialogTitle>
-        <DialogContent dividers>
-          <RequestResponseDisplay responseArray={EBData} />
-        </DialogContent>
-        <DialogActions>
-          <Button
-            color={ButtonColorTypes.Inherit}
-            variant={ButtonVariantTypes.Contained}
-            testId="statusClose"
-            label={t('label.close')}
-            onClick={handleCloseRequestResponse}
-            toolTip={t('label.close')}
-          />
-        </DialogActions>
-      </Dialog>
       <Grid container sx={{ margin: 2, marginBottom: 0, marginTop: 0 }} justifyContent="end">
         <Grid item xs={12} sm={12} md={3}>
           <h2 data-testid="manageShift">{t('label.manageShift')}</h2>
@@ -440,13 +370,13 @@ function SLTLogs() {
           <Grid item paddingTop={1} xs={12} sm={12} md={6}>
             <Grid container spacing={2} justifyContent="right" marginBottom={2}>
               <Grid item xs={12} sm={12} md={3}>
-                <span data-testid="addImages" style={{ fontWeight: 'bold' }}>
+                <p data-testid="addImages" style={{ fontWeight: 'bold' }}>
                   {t('label.addImages')}
-                </span>
+                </p>
               </Grid>
               <Grid item xs={12} sm={12} md={6} />
               <Grid item xs={12} sm={12} md={3}>
-                <span
+                <p
                   aria-hidden="true"
                   data-testid="viewImages"
                   style={{ cursor: 'pointer', textDecoration: 'underline' }}
@@ -454,7 +384,7 @@ function SLTLogs() {
                   onClick={handleOpenImage}
                 >
                   {t('label.viewImages')}
-                </span>
+                </p>
               </Grid>
             </Grid>
 
@@ -498,10 +428,11 @@ function SLTLogs() {
           {t('label.logSummary')}
         </p>
         <hr />
-        {dataDetails ? <SLTLogTableList updatedList={onTriggerFunction} data={dataDetails} /> : ''}
+        {dataDetails ? <ShiftLogs logData={dataDetails} /> : ''}
+        {/* {dataDetails ? <SLTLogTableList updatedList={onTriggerFunction} data={dataDetails} /> : ''} */}
       </Paper>
     </Box>
   );
 }
 
-export default SLTLogs;
+export default CurrentActiveShift;

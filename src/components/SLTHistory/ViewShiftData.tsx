@@ -3,7 +3,6 @@ import {
   Button,
   ButtonColorTypes,
   ButtonVariantTypes,
-  DataGrid,
   InfoCard,
   InfoCardColorTypes,
   TextEntry
@@ -14,9 +13,7 @@ import AddIcon from '@mui/icons-material/Add';
 import moment from 'moment';
 import apiService from '../../services/apis';
 import ImageDisplay from '../SLTLogs/ImageDisplay';
-import EBRequestResponseHistory from './EBRequestResponseHistory';
-
-const COLUMN_WIDTH = 300;
+import ShiftLogs from '../SLTLogs/ShiftLogs';
 
 const ViewShiftData = ({ data }) => {
   const { t } = useTranslation('translations');
@@ -80,34 +77,6 @@ const ViewShiftData = ({ data }) => {
       />
     </div>
   );
-  const columns = [
-    {
-      field: 'source',
-      headerName: t('label.source'),
-      width: 120,
-      renderCell: (params) => params.row.shift_operator
-    },
-    {
-      field: 'info',
-      headerName: t('label.info'),
-      width: COLUMN_WIDTH,
-
-      renderCell: (params) => <EBRequestResponseHistory ebData={params.row.info} />
-    },
-    {
-      field: 'currentStatus',
-      headerName: t('label.currentStatus'),
-      width: 150,
-
-      renderCell: (params) => params.row.info.sbi_status
-    },
-    {
-      field: 'logTime',
-      headerName: t('label.logTime'),
-      width: COLUMN_WIDTH,
-      renderCell: (params) => params.row.log_time
-    }
-  ];
 
   return (
     <Box sx={{ margin: 4 }}>
@@ -231,15 +200,7 @@ const ViewShiftData = ({ data }) => {
           </Grid>
 
           <Grid item xs={12} sm={12} md={12}>
-            <DataGrid
-              ariaDescription={t('ariaLabel.gridTableDescription')}
-              ariaTitle={t('ariaLabel.gridTable')}
-              data-testid={data}
-              columns={columns}
-              rows={data.shift_logs && data.shift_logs.logs ? data.shift_logs.logs : []}
-              showBorder
-              testId="sltLogTableView"
-            />
+            {data.shift_logs.logs ? <ShiftLogs logData={data.shift_logs.logs} /> : ''}
           </Grid>
         </Grid>
       </Paper>

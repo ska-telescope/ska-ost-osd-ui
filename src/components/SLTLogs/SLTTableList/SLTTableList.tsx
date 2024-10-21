@@ -3,20 +3,14 @@ import { Box } from '@mui/material';
 import { DataGrid } from '@ska-telescope/ska-gui-components';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import EBRequestResponse from '../EBRequestResponse';
+import ShiftLogs from '../ShiftLogs';
 
 interface EntryFieldProps {
   data: any;
-  updatedList: any;
 }
 
-const SLTLogTableList = ({ data, updatedList }: EntryFieldProps) => {
+const SLTLogTableList = ({ data }: EntryFieldProps) => {
   const { t } = useTranslation('translations');
-
-  const onTriggerFunction = (ebData) => {
-    updatedList(ebData);
-  };
-
   let id = 1;
   if (data) {
     data.map((row) => {
@@ -26,31 +20,10 @@ const SLTLogTableList = ({ data, updatedList }: EntryFieldProps) => {
   }
   const columns = [
     {
-      field: 'source',
-      headerName: t('label.source'),
-      width: 120,
-      renderCell: (params) => params.row.shift_operator
-    },
-    {
-      field: 'info.eb_id',
+      field: 'shiftLogs',
       headerName: t('label.info'),
       width: 220,
-      renderCell: (params) => (
-        <EBRequestResponse updatedStatus={onTriggerFunction} ebData={params.row.info} />
-      )
-    },
-    {
-      field: 'info.sbi_status',
-      headerName: t('label.currentStatus'),
-      width: 150,
-
-      renderCell: (params) => params.row.info.sbi_status
-    },
-    {
-      field: 'log_time',
-      headerName: t('label.logTime'),
-      width: 220,
-      renderCell: (params) => params.row.info.log_time
+      renderCell: (params) => <ShiftLogs logData={params.row} />
     }
   ];
   return (

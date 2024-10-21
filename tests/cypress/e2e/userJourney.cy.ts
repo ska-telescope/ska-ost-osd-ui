@@ -48,8 +48,8 @@ context('Shift Log Tool', () => {
           .get('[data-field="info"]')
           .contains(translation.label.info);
         cy.get('[data-testid="sltLogTableView"]')
-          .get('[data-field="currentStatus"]')
-          .contains(translation.label.currentStatus);
+          .get('[data-field="sbiStatus"]')
+          .contains(translation.label.sbiStatus);
         cy.get('[data-testid="sltLogTableView"]')
           .get('[data-field="logTime"]')
           .contains(translation.label.logTime);
