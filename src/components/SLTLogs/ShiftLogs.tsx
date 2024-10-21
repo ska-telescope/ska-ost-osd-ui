@@ -33,30 +33,37 @@ const RequestResponseDisplay = ({ responseArray }) => {
                 id="panel1-header"
               >
                 <Typography>
-                  {t('label.commandName')}: &nbsp; {dataItem.request}
+                  {dataItem.request ? dataItem.request : ''}{' '}
+                  <Chip
+                    size="small"
+                    label={dataItem.status}
+                    style={{ marginLeft: '10px' }}
+                    color={dataItem.status === EBRequestResponseStatus.OK ? 'success' : 'error'}
+                  />
                 </Typography>
               </AccordionSummary>
               <AccordionDetails>
                 <Grid container justifyContent="start">
-                  <Grid item xs={12} sm={12} md={3}>
+                  <Grid item xs={12} sm={12} md={6}>
                     <Typography>
-                      {t('label.status')}: &nbsp;{dataItem.status}
+                      {t('label.requestSentAt')}{' '}
+                      <b>{toUTCDateTimeFormat(dataItem.request_sent_at)}</b>
                     </Typography>
                   </Grid>
-                  <Grid item xs={12} sm={12} md={9}>
-                    <Typography>
-                      {t('label.requestSentAt')}: &nbsp;
-                      {dataItem.request_sent_at
-                        ? toUTCDateTimeFormat(dataItem.request_sent_at)
-                        : 'NA'}
-                    </Typography>
+                  <Grid item xs={12} sm={12} md={6}>
+                    {dataItem.response_received_at && (
+                      <Typography>
+                        {t('label.responseReceivedAt')}{' '}
+                        <b>{toUTCDateTimeFormat(dataItem.response_received_at)}</b>
+                      </Typography>
+                    )}
                   </Grid>
                 </Grid>
-                <Grid container justifyContent="start">
+                <Grid container justifyContent="start" style={{ paddingTop: '10px' }}>
                   <Grid item xs={12} sm={12} md={12}>
-                    <Typography style={{ textDecoration: 'underline' }}>
+                    <Typography style={{ textDecoration: 'underline', fontSize: '15px' }}>
                       {' '}
-                      {t('label.details')}
+                      <b>{t('label.details')}</b>
                     </Typography>
                     <pre>
                       {dataItem.status === EBRequestResponseStatus.OK
@@ -89,7 +96,7 @@ const ShiftLogs = ({ logData }) => {
           <div key={data.id}>
             <Paper style={{ margin: '10px', paddingLeft: '10px' }}>
               <Grid container justifyContent="start">
-                <Grid item xs={12} sm={12} md={6}>
+                <Grid item xs={12} sm={12} md={7}>
                   <Grid container justifyContent="start">
                     <Grid item xs={12} sm={12} md={3}>
                       <Chip size="small" label={`Source:${data.source}`} color="secondary" />
@@ -118,7 +125,7 @@ const ShiftLogs = ({ logData }) => {
                     </Grid>
                   </Grid>
                 </Grid>
-                <Grid item xs={12} sm={12} md={4} />
+                <Grid item xs={12} sm={12} md={5} />
               </Grid>
             </Paper>
             <Divider />
