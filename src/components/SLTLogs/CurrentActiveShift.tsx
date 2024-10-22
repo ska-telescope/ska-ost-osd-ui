@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React, { useEffect, useState } from 'react';
 import {
   Button,
@@ -26,10 +27,36 @@ import HistoryIcon from '@mui/icons-material/History';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
 import moment from 'moment';
+import { Kafka } from 'kafkajs';
 import { ENTITY, DEFAULT_TIME, operatorName } from '../../utils/constants';
 import apiService from '../../services/apis';
 import ImageDisplay from './ImageDisplay';
 import ShiftLogs from './ShiftLogs';
+
+const useKafkaData = (topic) => {
+  const [messages, setMessages] = useState([]);
+  useEffect(() => {
+    const kafka = new Kafka({
+      clientId: window.location.hostname,
+      brokers: ['kafka-cluster-kafka-bootstrap:9092']
+    });
+    const consumer = kafka.consumer({ groupId: 'my_consumer_group' });
+    const run = async () => {
+      await consumer.connect();
+      await consumer.subscribe({ topic, fromBeginning: true });
+      await consumer.run({
+        eachMessage: async ({ message }) => {
+          setMessages((prevMessages) => [...prevMessages, message.value.toString()]);
+        }
+      });
+    };
+    run().catch(console.error);
+    return () => {
+      consumer.disconnect();
+    };
+  }, [topic]);
+  return messages;
+};
 
 function CurrentActiveShift() {
   const [displayShiftStart, setDisplayShiftStart] = useState(DEFAULT_TIME);
@@ -46,8 +73,8 @@ function CurrentActiveShift() {
   const { t } = useTranslation('translations');
   const [images, setImages] = useState([]);
   const location = useLocation();
-  const [interval, setItervalLogs] = useState(null);
   const [inputValue, setInputValue] = React.useState('');
+  const messages = useKafkaData('slt-to-frontend-topic');
 
   const fetchImage = async () => {
     const path = `shifts/download_image/${shiftId}`;
@@ -55,24 +82,18 @@ function CurrentActiveShift() {
     setImages(result && result.data && result.data[0]);
   };
 
-  const updateShitLogs = async (shiftID) => {
-    const path = `shift?shift_id=${shiftID}`;
-    const baseURL = await apiService.getURLPath(path);
-    const eventSource = new EventSource(baseURL);
-    eventSource.onmessage = (event) => {
-      try {
-        const parsedData = JSON.parse(event.data);
-        setSltLogs(parsedData);
-      } catch (e) {
-        eventSource.close();
+  const updateShiftLogs = async (shiftID) => {
+    if (messages && message.length > 0) {
+      const path = `shift?shift_id=${shiftID}`;
+      const result = await apiService.getSltLogs(path);
+      if (dataDetails && dataDetails.length === 0) {
+        setSltLogs(
+          result && result.data && result.data.length > 0 && result.data[0].shift_logs
+            ? result.data[0].shift_logs
+            : []
+        );
       }
-    };
-    eventSource.onerror = () => {
-      eventSource.close();
-    };
-    return () => {
-      eventSource.close();
-    };
+    }
   };
 
   const startNewShift = async () => {
@@ -98,7 +119,7 @@ function CurrentActiveShift() {
           ? response.data[0].shift_logs
           : []
       );
-      updateShitLogs(response.data[0].shift_id);
+      updateShiftLogs(response.data[0].shift_id);
     }
   };
 
@@ -117,10 +138,6 @@ function CurrentActiveShift() {
         setOperator(response.data.shift_operator.name);
         setComment(response.data.comments ? response.data.comments : '');
       }
-      const intervel = setInterval(() => {
-        updateShitLogs(response && response.data && response.data[0].shift_id);
-      }, 25000);
-      setItervalLogs(intervel);
     }
   };
   useEffect(() => {
@@ -140,14 +157,13 @@ function CurrentActiveShift() {
     if (response.status === 200) {
       setMessage('msg.shiftEnd');
       setDisplayMessageElement(true);
-      setDisplayShiftEnd(moment(response.data[0].shift_end).utc().format('YYYY-MM-DD HH:mm:ss'));
+      setDisplayShiftEnd(moment(response.data[0].shift_end).utc().format('DD-MM-YYYY HH:mm:ss'));
       setTimeout(() => {
         setDisplayMessageElement(false);
         setOperator('');
         setDisplayShiftStart(DEFAULT_TIME);
         setDisplayShiftEnd(DEFAULT_TIME);
         setComment('');
-        clearInterval(interval);
       }, 3000);
     }
   };
