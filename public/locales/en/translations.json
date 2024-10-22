@@ -48,7 +48,7 @@
     "ebRequestResponse": "EB Request Response",
     "addAnnotation": "Please enter annotation",
     "ebObservations": "Execution Block Observations",
-    "isStatus": "is in status",
+    "isStatus": "status",
     "ebID": "Execution Block ID",
     "sbiID": "Scheduling Block Instance ID"
   },

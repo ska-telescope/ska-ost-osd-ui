@@ -56,28 +56,23 @@ function CurrentActiveShift() {
   };
 
   const updateShitLogs = async (shiftID) => {
-    const path = `shifts/${shiftID}`;
-    const result = await apiService.getSltLogs(path);
-    if (dataDetails && dataDetails.length === 0) {
-      setSltLogs(
-        result && result.data && result.data.shift_logs && result.data.shift_logs.length > 0
-          ? result.data.shift_logs
-          : []
-      );
-    }
-    if (
-      dataDetails &&
-      dataDetails.length < result &&
-      result.data &&
-      result.data.shift_logs &&
-      result.data.shift_logs.length
-    ) {
-      setSltLogs(
-        result && result.data && result.data.shift_logs && result.data.shift_logs.length > 0
-          ? result.data.shift_logs
-          : []
-      );
-    }
+    const path = `shift?shift_id=${shiftID}`;
+    const baseURL = await apiService.getURLPath(path);
+    const eventSource = new EventSource(baseURL);
+    eventSource.onmessage = (event) => {
+      try {
+        const parsedData = JSON.parse(event.data);
+        setSltLogs(parsedData);
+      } catch (e) {
+        eventSource.close();
+      }
+    };
+    eventSource.onerror = () => {
+      eventSource.close();
+    };
+    return () => {
+      eventSource.close();
+    };
   };
 
   const startNewShift = async () => {
@@ -95,21 +90,15 @@ function CurrentActiveShift() {
       setDisableButton(false);
       setShiftStart(response.data[0].shift_start);
       setDisplayShiftStart(
-        moment(response.data[0].shift_start).utc().format('YYYY-MM-DD HH:mm:ss')
+        moment(response.data[0].shift_start).utc().format('DD-MM-YYYY HH:mm:ss')
       );
       setShiftId(response.data[0].shift_id);
       setSltLogs(
-        response &&
-          response.data[0].shift_logs &&
-          response.data[0].shift_logs &&
-          response.data[0].shift_logs.length > 0
+        response && response.data[0].shift_logs && response.data[0].shift_logs.length > 0
           ? response.data[0].shift_logs
           : []
       );
-      const intervel = setInterval(() => {
-        updateShitLogs(response.data[0].shift_id);
-      }, 25000);
-      setItervalLogs(intervel);
+      updateShitLogs(response.data[0].shift_id);
     }
   };
 
@@ -426,7 +415,6 @@ function CurrentActiveShift() {
         </p>
         <hr />
         {dataDetails ? <ShiftLogs logData={dataDetails} /> : ''}
-        {/* {dataDetails ? <SLTLogTableList updatedList={onTriggerFunction} data={dataDetails} /> : ''} */}
       </Paper>
     </Box>
   );
