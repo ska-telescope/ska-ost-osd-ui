@@ -23,15 +23,15 @@ export const ENTITY = {
 
 export const getUrlPath = (data) => {
   if (data.status) {
-    const baseURL = `shift/shifts?status=${data.status}&match_type=contains`;
+    const baseURL = `shifts?sbi_status=${data.status}&match_type=contains`;
     return baseURL;
   }
   if (data.shift_operator) {
-    const baseURL = `shift/shifts?shift_operator=${data.shift_operator}&match_type=contains`;
+    const baseURL = `shifts?shift_operator=${data.shift_operator}&match_type=contains`;
     return baseURL;
   }
   if (data.createdAfter && data.createdBefore) {
-    const baseURL = `shift/shifts?shift_start=${data.createdAfter}&shift_end=${data.createdBefore}&query_type=created_between`;
+    const baseURL = `shifts?shift_start=${data.createdAfter}&shift_end=${data.createdBefore}&query_type=created_between`;
     return baseURL;
   }
   return '';

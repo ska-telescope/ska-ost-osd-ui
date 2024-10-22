@@ -40,7 +40,7 @@ function SLTHistory() {
   const location = useLocation();
 
   const fetchSltTodayShifts = async () => {
-    const path = `shift/shifts?query_type=created_between&shift_start=${getTodayDateRange.start}&shift_end=${getTodayDateRange.end}`;
+    const path = `shifts?query_type=created_between&shift_start=${getTodayDateRange.start}&shift_end=${getTodayDateRange.end}`;
     const result = await apiService.getSltData(path);
     if (result.status === 200) {
       setSltHistory(result.data[0]);

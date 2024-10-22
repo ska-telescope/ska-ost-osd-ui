@@ -32,7 +32,7 @@ const RequestResponseDisplay = ({ responseArray }) => {
                 aria-controls="panel1-content"
                 id="panel1-header"
               >
-                <Typography>
+                <div>
                   {dataItem.request ? dataItem.request : ''}{' '}
                   <Chip
                     size="small"
@@ -40,7 +40,7 @@ const RequestResponseDisplay = ({ responseArray }) => {
                     style={{ marginLeft: '10px' }}
                     color={dataItem.status === EBRequestResponseStatus.OK ? 'success' : 'error'}
                   />
-                </Typography>
+                </div>
               </AccordionSummary>
               <AccordionDetails>
                 <Grid container justifyContent="start">

@@ -23,17 +23,16 @@ const ViewShiftData = ({ data }) => {
   const [statusMessage, setStatusMessage] = useState(null);
   const [showElement, setShowElement] = useState(false);
   const fetchImage = async () => {
-    const path = `shift/shifts/download-image/${data.shift_id}`;
+    const path = `shifts/download_image/${data.shift_id}`;
     const result = await apiService.getImage(path);
     setImages(result && result.data && result.data[0]);
   };
   const addAnnotation = async () => {
     const shiftData = {
-      shift_id: data.shift_id,
       annotations: `${value}`
     };
 
-    const path = `shift/shifts/update`;
+    const path = `shifts/update/${data.shift_id}`;
     const response = await apiService.putShiftData(path, shiftData);
     if (response.status === 200) {
       setValue(response.data[0].annotations);
@@ -46,8 +45,8 @@ const ViewShiftData = ({ data }) => {
   };
 
   let id = 1;
-  if (data && data.shift_logs && data.shift_logs.logs) {
-    data.shift_logs.logs.map((row) => {
+  if (data && data.shift_logs) {
+    data.shift_logs.map((row) => {
       row.id = id++;
       return row;
     });
@@ -200,7 +199,7 @@ const ViewShiftData = ({ data }) => {
           </Grid>
 
           <Grid item xs={12} sm={12} md={12}>
-            {data.shift_logs.logs ? <ShiftLogs logData={data.shift_logs.logs} /> : ''}
+            {data.shift_logs ? <ShiftLogs logData={data.shift_logs} /> : ''}
           </Grid>
         </Grid>
       </Paper>

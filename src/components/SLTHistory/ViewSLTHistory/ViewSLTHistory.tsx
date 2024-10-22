@@ -9,7 +9,7 @@ interface EntryFieldProps {
 
 const ViewSLTHistory = ({ shiftData, updatedList }: EntryFieldProps) => {
   const fetchSltHistoryByID = async () => {
-    const path = `shift/shift?shift_id=${shiftData.shift_id}`;
+    const path = `shift?shift_id=${shiftData.shift_id}`;
     const response = await apiService.getSltData(path);
     if (response.status === 200 && response.data && response.data.length > 0) {
       updatedList(response.data[0]);

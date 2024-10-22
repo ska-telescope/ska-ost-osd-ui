@@ -50,13 +50,13 @@ function CurrentActiveShift() {
   const [inputValue, setInputValue] = React.useState('');
 
   const fetchImage = async () => {
-    const path = `shift/shifts/download-image/${shiftId}`;
+    const path = `shifts/download_image/${shiftId}`;
     const result = await apiService.getImage(path);
     setImages(result && result.data && result.data[0]);
   };
 
   const updateShitLogs = async (shiftID) => {
-    const path = `shift/shifts/${shiftID}`;
+    const path = `shifts/${shiftID}`;
     const result = await apiService.getSltLogs(path);
     if (dataDetails && dataDetails.length === 0) {
       setSltLogs(
@@ -84,7 +84,7 @@ function CurrentActiveShift() {
     const shiftData = {
       shift_operator: operator
     };
-    const path = `shift/shifts/create`;
+    const path = `shifts/create`;
     const response = await apiService.postShiftData(path, shiftData);
     if (response.status === 200 && response.data && response.data.length > 0) {
       setMessage('msg.shiftStarted');
@@ -102,8 +102,8 @@ function CurrentActiveShift() {
         response &&
           response.data[0].shift_logs &&
           response.data[0].shift_logs &&
-          response.data[0].shift_logs.logs.length > 0
-          ? response.data[0].shift_logs.logs
+          response.data[0].shift_logs.length > 0
+          ? response.data[0].shift_logs
           : []
       );
       const intervel = setInterval(() => {
@@ -114,7 +114,7 @@ function CurrentActiveShift() {
   };
 
   const fetchSltCurrentShifts = async () => {
-    const path = `shift/shifts/current_shift`;
+    const path = `shifts/current_shift`;
     const response = await apiService.getSltData(path);
     if (response.status === 200 && !response.data.shift_end) {
       setMessage('msg.shiftAlreadyStarted');
@@ -143,11 +143,10 @@ function CurrentActiveShift() {
       shift_operator: operator,
       shift_start: shiftStart,
       shift_end: moment().utc().toISOString(),
-      comments: `${commentValue}`,
-      shift_id: shiftId
+      comments: `${commentValue}`
     };
 
-    const path = `shift/shifts/update`;
+    const path = `shifts/update/${shiftId}`;
     const response = await apiService.putShiftData(path, shiftData);
     if (response.status === 200) {
       setMessage('msg.shiftEnd');
@@ -169,11 +168,9 @@ function CurrentActiveShift() {
 
     const shiftData = {
       shift_operator: operator,
-      shift_start: shiftStart,
-      comments: `${commentValue}`,
-      shift_id: shiftId
+      comments: `${commentValue}`
     };
-    const path = `shift/shifts/update`;
+    const path = `shifts/update/${shiftId}`;
     const response = await apiService.putShiftData(path, shiftData);
     if (response.status === 200) {
       setMessage('msg.commentSubmit');
@@ -196,7 +193,7 @@ function CurrentActiveShift() {
   };
 
   const postImage = async (file) => {
-    const path = `shift/shifts/upload_image/${shiftId}`;
+    const path = `shifts/upload_image/${shiftId}`;
 
     const formData = new FormData();
     formData.append('file', file);
