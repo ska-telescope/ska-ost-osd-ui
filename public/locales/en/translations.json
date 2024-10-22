@@ -50,7 +50,8 @@
     "ebObservations": "Execution Block Observations",
     "isStatus": "status",
     "ebID": "Execution Block ID",
-    "sbiID": "Scheduling Block Instance ID"
+    "sbiID": "Scheduling Block Instance ID",
+    "noLogsFound": "No logs found"
   },
   "ariaLabel": {
     "date": "Select Date",

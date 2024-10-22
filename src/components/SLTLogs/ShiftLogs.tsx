@@ -79,6 +79,7 @@ const RequestResponseDisplay = ({ responseArray }) => {
     </div>
   );
 };
+
 const ShiftLogs = ({ logData }) => {
   const { t } = useTranslation('translations');
   let id = 1;
