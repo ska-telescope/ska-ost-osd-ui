@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Grid, Paper } from '@mui/material';
+import { Box, Grid, Paper } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
 import {
@@ -34,7 +34,7 @@ function SLTHistory() {
   const [operator, setOperator] = useState('');
   const [status, setStatus] = useState('');
   const [displayTable, setDisplayTable] = useState(true);
-  const [displayData, setDisplayData] = useState('');
+  const [displayData, setDisplayData] = useState(null);
   const [searchType, setsearchType] = useState('');
   const [logSearchBy, setLogSearchBy] = useState(logTypeEnum.searchByDate);
   const location = useLocation();
@@ -106,6 +106,7 @@ function SLTHistory() {
 
   const onTriggerFunction = (data) => {
     setDisplayTable(false);
+    console.log('qqqqqqqqqqqqqqq',data)
     setDisplayData(data);
   };
 
@@ -127,16 +128,16 @@ function SLTHistory() {
 
   return (
     <>
-      <Grid container sx={{ margin: 2, marginBottom: 0, marginTop: 0 }} justifyContent="end">
+     <Box sx={{ marginLeft: 2, marginTop: 0,marginBottom: 0}}>
+     <Grid container  justifyContent="end">
         <Grid item xs={12} sm={12} md={3}>
-          <h2 data-testid="logHistoryLabel">{t('label.logHistoryTitle')}</h2>
+          <h2  style={{margin:0,marginBottom:"10px"}}data-testid="logHistoryLabel">{t('label.logHistoryTitle')}</h2>
         </Grid>
         <Grid item xs={12} sm={12} md={7} />
         <Grid item xs={12} sm={12} md={2}>
           <Link to="/" style={{ color: ButtonColorTypes.Inherit }}>
             <Button
               icon={<AddIcon />}
-              size={ButtonSizeTypes.Large}
               ariaDescription="Button for log tab"
               label={t('label.logButton')}
               testId="logButton"
@@ -148,8 +149,10 @@ function SLTHistory() {
           </Link>
         </Grid>
       </Grid>
+     </Box>
+     
       {displayTable ? (
-        <Paper elevation={0} sx={{ border: 1, margin: 2, marginTop: 0 }}>
+        <Paper elevation={0} sx={{ border: 1, margin: 1, marginTop: 2 }}>
           <Grid container spacing={2} sx={{ padding: 2 }} justifyContent="left">
             <Grid item xs={12} sm={12} md={2}>
               <DropDown
@@ -179,35 +182,36 @@ function SLTHistory() {
         ''
       )}
       {displayTable ? <div style={{ marginLeft: '15px' }}>{message()}</div> : ''}
-      <Paper sx={{ border: 1, margin: 2 }} data-testid="content">
+      <Paper sx={{ border: 1, margin: 1 }} data-testid="content">
         {displayTable ? (
           <SLTHistoryTableList updateList={onTriggerFunction} data={dataDetails} />
         ) : (
           <>
             <Paper>
               <Grid container justifyContent="center">
-                <Grid item xs={12} sm={12} md={4} />
-                <Grid item xs={12} sm={12} md={4}>
-                  <h3
-                    id="viewHistoryTitle"
-                    style={{ fontWeight: 'bold', textAlign: 'center', alignItems: 'center' }}
-                  >
-                    <b>{t('label.viewHistoryTitle')}</b>
-                  </h3>
-                </Grid>
-                <Grid item xs={12} sm={12} md={3} />
-                <Grid item xs={12} sm={12} md={1}>
+              <Grid item xs={12} sm={12} md={1}>
                   <div style={{ float: 'right', padding: '15px' }}>
                     <Button
                       color={ButtonColorTypes.Inherit}
                       variant={ButtonVariantTypes.Contained}
                       testId="historyClose"
-                      label={t('label.close')}
+                      label='Back'
                       onClick={handleClose}
                       toolTip={t('label.close')}
                     />
                   </div>
                 </Grid>
+                <Grid item xs={12} sm={12} md={3} />
+                <Grid item xs={12} sm={12} md={4}>
+                  <h3
+                    id="viewHistoryTitle"
+                    style={{ fontWeight: 'bold', textAlign: 'center', alignItems: 'center' }}
+                  >
+                    <b>View Shift ID {displayData.shift_id} </b>
+                  </h3>
+                </Grid>
+                <Grid item xs={12} sm={12} md={4} />
+         
               </Grid>
             </Paper>
             <ViewShiftData data={displayData} />

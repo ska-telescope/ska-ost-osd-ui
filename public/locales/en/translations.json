@@ -17,6 +17,7 @@
     "history": "Shift History",
     "logTime": "Log Time",
     "logButton": "Add New Shift",
+    "logCommentLabel":"Please enter log comment",
     "logHistoryTitle": "Shift History",
     "submit": "Submit",
     "operatorName": "Operator Name",
@@ -36,7 +37,7 @@
     "shiftIDlable": "Shift ID",
     "viewImages": "View Images",
     "addImages": "Add Images",
-    "viewLogDataIDLabel": "Logs for Shift ID",
+    "viewLogDataIDLabel": "Logs Summary",
     "manageShift": "Manage Shift",
     "addComment": "Add Comment",
     "commandName": "Command",
@@ -44,7 +45,7 @@
     "requestSentAt": "Request sent at",
     "responseReceivedAt": "Response received at",
     "details": "View Detail Information",
-    "logSummary": "Log Summary",
+    "logSummary": "Logs Summary",
     "ebRequestResponse": "EB Request Response",
     "addAnnotation": "Please enter annotation",
     "ebObservations": "Execution Block Observations",
@@ -67,7 +68,7 @@
     "editDescription": "Edit icon to update record",
     "edit": "Edit record",
     "dialog": "Open dialog",
-    "logSummary": "Log Summary"
+    "logSummary": "Logs Summary"
   },
   "msg": {
     "shiftAlreadyStarted": "Shift already started",
