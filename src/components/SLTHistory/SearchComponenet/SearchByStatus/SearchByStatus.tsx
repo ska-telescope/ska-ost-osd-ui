@@ -1,5 +1,10 @@
 import { Autocomplete, Grid, TextField } from '@mui/material';
-import { Button, ButtonColorTypes, ButtonVariantTypes } from '@ska-telescope/ska-gui-components';
+import {
+  Button,
+  ButtonColorTypes,
+  ButtonSizeTypes,
+  ButtonVariantTypes
+} from '@ska-telescope/ska-gui-components';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import SearchIcon from '@mui/icons-material/Search';
@@ -49,6 +54,7 @@ const SearchByStatus = ({ setFilterCirteria }: EntryFieldProps) => {
       <Grid item xs={12} sm={12} md={1} />
       <Grid item xs={12} sm={6} md={3} sx={{ marginTop: '15px' }}>
         <Button
+          size={ButtonSizeTypes.Small}
           icon={<SearchIcon />}
           ariaDescription={t('ariaLabel.searchButtonDescription')}
           disabled={disableSearch()}

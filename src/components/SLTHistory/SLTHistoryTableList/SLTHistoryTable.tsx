@@ -54,7 +54,7 @@ const SLTHistoryTableList = ({ data, updateList }: EntryFieldProps) => {
       headerName: t('label.shiftEnd'),
       width: COLUMN_WIDTH,
       renderCell: (params) =>
-        params.row.shift_end ? toUTCDateTimeFormat(params.row.shift_end) : 'Current Shift'
+        params.row.shift_end ? toUTCDateTimeFormat(params.row.shift_end) : 'Active Shift'
     },
     {
       field: 'operator_name',

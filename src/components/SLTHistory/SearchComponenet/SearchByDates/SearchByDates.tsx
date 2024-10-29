@@ -2,6 +2,7 @@ import { Grid } from '@mui/material';
 import {
   Button,
   ButtonColorTypes,
+  ButtonSizeTypes,
   ButtonVariantTypes,
   DateEntry
 } from '@ska-telescope/ska-gui-components';
@@ -79,6 +80,7 @@ const SearchByDates = ({ setFilterCirteria }: EntryFieldProps) => {
 
       <Grid item xs={12} sm={6} md={3} sx={{ marginTop: '25px' }}>
         <Button
+          size={ButtonSizeTypes.Small}
           icon={<SearchIcon />}
           ariaDescription={t('ariaLabel.searchButtonDescription')}
           disabled={disableSearch()}

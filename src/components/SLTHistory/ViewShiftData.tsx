@@ -8,7 +8,7 @@ import {
   Grid,
   Paper,
   Tooltip,
-  useTheme,
+  useTheme
 } from '@mui/material';
 import {
   Button,
@@ -17,32 +17,30 @@ import {
   ButtonVariantTypes,
   InfoCard,
   InfoCardColorTypes,
-  TextEntry,
+  TextEntry
 } from '@ska-telescope/ska-gui-components';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import AddIcon from '@mui/icons-material/Add';
-import moment from 'moment';
+import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
 import apiService from '../../services/apis';
 import ImageDisplay from '../SLTLogs/ImageDisplay';
 import ShiftLogs from '../SLTLogs/ShiftLogs';
 import { toUTCDateTimeFormat } from '../../utils/constants';
-import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
 
 const ViewShiftData = ({ data }) => {
   const { t } = useTranslation('translations');
-  const [openModal, setOpenModal] = useState(false);
   const [images, setImages] = useState([]);
   const [value, setValue] = useState(data && data && data.annotations);
   const [statusMessage, setStatusMessage] = useState(null);
   const [showElement, setShowElement] = useState(false);
-  const [isAnnotationUpdate, setAnnotationUpdate] = useState(data.annotations ? true : false);
+  const [isAnnotationUpdate, setAnnotationUpdate] = useState(!!data.annotations);
   const theme = useTheme();
   const [openViewImageModal, setOpenViewImageModal] = useState(false);
   data = {
     shift_id: 'shift-20241028-148',
     shift_start: '2024-10-22T11:24:04.389077Z',
-    shift_end:'2024-10-22T11:22:04.389077Z',
+    shift_end: '2024-10-22T11:22:04.389077Z',
     shift_operator: 'john',
     annotations: 'This is dummy annotations',
     shift_comment: [
@@ -51,15 +49,15 @@ const ViewShiftData = ({ data }) => {
           'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
         created_on: '2024-10-22T11:24:14.406107Z',
         id: 1,
-        isEdit: false,
+        isEdit: false
       },
       {
         shift_comments:
           'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
         created_on: '2024-10-22T11:24:14.406107Z',
         id: 2,
-        isEdit: false,
-      },
+        isEdit: false
+      }
     ],
     shift_logs: [
       {
@@ -73,7 +71,7 @@ const ViewShiftData = ({ data }) => {
             created_on: '2024-10-22T11:25:36.953526Z',
             pdm_version: '15.4.0',
             last_modified_by: 'DefaultUser',
-            last_modified_on: '2024-10-22T11:25:36.953526Z',
+            last_modified_on: '2024-10-22T11:25:36.953526Z'
           },
           interface: 'https://schema.skao.int/ska-oso-pdm-eb/0.1',
           telescope: 'ska_mid',
@@ -86,7 +84,7 @@ const ViewShiftData = ({ data }) => {
               response: { result: 'this is a result' },
               request_args: { kwargs: { subarray_id: '1' } },
               request_sent_at: '2022-09-23T15:43:53.971548Z',
-              response_received_at: '2022-09-23T15:43:53.971548Z',
+              response_received_at: '2022-09-23T15:43:53.971548Z'
             },
             {
               status: 'OK',
@@ -94,7 +92,7 @@ const ViewShiftData = ({ data }) => {
               response: { result: 'this is a result' },
               request_args: { kwargs: { subarray_id: '1' } },
               request_sent_at: '2022-09-23T15:43:53.971548Z',
-              response_received_at: '2022-09-23T15:43:53.971548Z',
+              response_received_at: '2022-09-23T15:43:53.971548Z'
             },
             {
               status: 'OK',
@@ -102,7 +100,7 @@ const ViewShiftData = ({ data }) => {
               response: { result: 'this is a result' },
               request_args: { kwargs: { subarray_id: '1' } },
               request_sent_at: '2022-09-23T15:43:53.971548Z',
-              response_received_at: '2022-09-23T15:43:53.971548Z',
+              response_received_at: '2022-09-23T15:43:53.971548Z'
             },
             {
               status: 'OK',
@@ -110,15 +108,15 @@ const ViewShiftData = ({ data }) => {
               response: { result: 'this is a result' },
               request_args: { kwargs: { subarray_id: '1' } },
               request_sent_at: '2022-09-23T15:43:53.971548Z',
-              response_received_at: '2022-09-23T15:43:53.971548Z',
+              response_received_at: '2022-09-23T15:43:53.971548Z'
             },
             {
               error: { detail: 'this is an error' },
               status: 'ERROR',
               request: 'ska_oso_scripting.functions.devicecontrol.end',
-              request_sent_at: '2022-09-23T15:43:53.971548Z',
-            },
-          ],
+              request_sent_at: '2022-09-23T15:43:53.971548Z'
+            }
+          ]
         },
         source: 'ODA',
         log_time: '2024-10-22T11:24:14.406107Z',
@@ -127,23 +125,23 @@ const ViewShiftData = ({ data }) => {
             logcomments: 'Lorem Ipsum is simply dummy text of the printing ',
             logCommentTime: '23-10-2024',
             id: 1,
-            isEdit: false,
+            isEdit: false
           },
           {
             logcomments:
               'Submitting Comments: We will implement a function to handle the submission of comments, making a POST request to the API for each comment',
             logCommentTime: '23-10-2024',
             id: 2,
-            isEdit: false,
+            isEdit: false
           },
           {
             logcomments:
               'Handling Input Changes: We will ensure that each text field can be updated independently.',
             logCommentTime: '23-10-2024',
             id: 3,
-            isEdit: false,
-          },
-        ],
+            isEdit: false
+          }
+        ]
       },
       {
         info: {
@@ -156,7 +154,7 @@ const ViewShiftData = ({ data }) => {
             created_on: '2024-10-22T11:25:36.953526Z',
             pdm_version: '15.4.0',
             last_modified_by: 'DefaultUser',
-            last_modified_on: '2024-10-22T11:25:36.953526Z',
+            last_modified_on: '2024-10-22T11:25:36.953526Z'
           },
           interface: 'https://schema.skao.int/ska-oso-pdm-eb/0.1',
           telescope: 'ska_mid',
@@ -169,7 +167,7 @@ const ViewShiftData = ({ data }) => {
               response: { result: 'this is a result' },
               request_args: { kwargs: { subarray_id: '1' } },
               request_sent_at: '2022-09-23T15:43:53.971548Z',
-              response_received_at: '2022-09-23T15:43:53.971548Z',
+              response_received_at: '2022-09-23T15:43:53.971548Z'
             },
             {
               status: 'OK',
@@ -177,7 +175,7 @@ const ViewShiftData = ({ data }) => {
               response: { result: 'this is a result' },
               request_args: { kwargs: { subarray_id: '1' } },
               request_sent_at: '2022-09-23T15:43:53.971548Z',
-              response_received_at: '2022-09-23T15:43:53.971548Z',
+              response_received_at: '2022-09-23T15:43:53.971548Z'
             },
             {
               status: 'OK',
@@ -185,7 +183,7 @@ const ViewShiftData = ({ data }) => {
               response: { result: 'this is a result' },
               request_args: { kwargs: { subarray_id: '1' } },
               request_sent_at: '2022-09-23T15:43:53.971548Z',
-              response_received_at: '2022-09-23T15:43:53.971548Z',
+              response_received_at: '2022-09-23T15:43:53.971548Z'
             },
             {
               status: 'OK',
@@ -193,28 +191,31 @@ const ViewShiftData = ({ data }) => {
               response: { result: 'this is a result' },
               request_args: { kwargs: { subarray_id: '1' } },
               request_sent_at: '2022-09-23T15:43:53.971548Z',
-              response_received_at: '2022-09-23T15:43:53.971548Z',
+              response_received_at: '2022-09-23T15:43:53.971548Z'
             },
             {
               error: { detail: 'this is an error' },
               status: 'ERROR',
               request: 'ska_oso_scripting.functions.devicecontrol.end',
-              request_sent_at: '2022-09-23T15:43:53.971548Z',
-            },
-          ],
+              request_sent_at: '2022-09-23T15:43:53.971548Z'
+            }
+          ]
         },
         source: 'ODA',
-        log_time: '2024-10-22T11:24:14.406107Z',
-      },
+        log_time: '2024-10-22T11:24:14.406107Z'
+      }
     ],
     metadata: {
       created_by: 'john',
       created_on: '2024-10-22T11:24:04.388998Z',
       last_modified_by: 'john',
-      last_modified_on: '2024-10-22T11:25:36.971764Z',
-    },
+      last_modified_on: '2024-10-22T11:25:36.971764Z'
+    }
   };
-
+  const onEditShiftAnnotation = (shiftCommentItem) => {
+    setValue(shiftCommentItem.annotations);
+    setAnnotationUpdate(false);
+  };
   const displayShiftComments = (shiftCommentItem) => <span>{shiftCommentItem.shift_comments}</span>;
 
   const displayShiftAnnotation = (shiftCommentItem) => (
@@ -228,33 +229,27 @@ const ViewShiftData = ({ data }) => {
           style={{
             cursor: 'pointer',
             position: 'relative',
-            top: '7px',
+            top: '7px'
           }}
-          onClick={() => onEditShiftAnnotation()}
+          onClick={() => onEditShiftAnnotation(shiftCommentItem)}
         />
       </Tooltip>{' '}
     </div>
   );
-  const handleOpenImage = () => {
-    console.log('wwwwwwwwwwwwwww');
-    setOpenViewImageModal(true);
-    // fetchImage();
-  };
-  const onEditShiftAnnotation = () => {
-    console.log('wwwwwwwwwwwwwww');
-    setAnnotationUpdate(false);
-    // fetchImage();
-  };
-
   const fetchImage = async () => {
     const path = `shifts/download_image/${data.shift_id}`;
     const result = await apiService.getImage(path);
     setImages(result && result.data && result.data[0]);
   };
+  const handleOpenImage = () => {
+    setOpenViewImageModal(true);
+    fetchImage();
+  };
+
   const addAnnotation = async () => {
     if (value) {
       const shiftData = {
-        annotations: `${value}`,
+        annotations: `${value}`
       };
 
       const path = `shifts/update/${data.shift_id}`;
@@ -278,16 +273,6 @@ const ViewShiftData = ({ data }) => {
       return row;
     });
   }
-
-  const handleClose = () => {
-    setOpenModal(false);
-  };
-
-  const handleOpen = () => {
-    fetchImage();
-
-    setOpenModal(true);
-  };
 
   const setAnnotationValue = (event) => {
     setValue(event);
@@ -316,9 +301,9 @@ const ViewShiftData = ({ data }) => {
           '& .MuiDialog-container': {
             '& .MuiPaper-root': {
               width: '100%',
-              maxWidth: '1000px',
-            },
-          },
+              maxWidth: '1000px'
+            }
+          }
         }}
         open={openViewImageModal}
         onClose={handleViewImageClose}
@@ -341,59 +326,70 @@ const ViewShiftData = ({ data }) => {
         </DialogActions>
       </Dialog>
       <Grid container spacing={2} justifyContent="left">
-      <Grid item xs={12} sm={12} md={5}>
-      <Grid container spacing={2} justifyContent="left">
-      <Grid item xs={12} sm={12} md={12}>
-          <span id="operatorName" style={{ fontWeight: 'bold', alignItems: 'center' }}>
-            {t('label.operatorName')} </span><span> :{' '} {data.shift_operator}
-          </span>
-        </Grid>
-        <Grid item xs={12} sm={12} md={12}>
-          <span id="shiftStart" style={{ fontWeight: 'bold' }}>
-            Shift started at</span><span>:{' '}
-            {data.shift_start ? toUTCDateTimeFormat(data.shift_start) : 'NA'}
-          </span>
-        </Grid>
-        <Grid item xs={12} sm={12} md={12}>
-          <span id="shiftEnd" style={{ fontWeight: 'bold', alignItems: 'center' }}>
-           Shift ends at</span><span>:{' '}
-            {data.shift_end ? moment(data.shift_end).utc().format('YYYY-MM-DD HH:mm:ss') : ''}
-          </span>
-        </Grid>
-        <Grid item xs={12} sm={12} md={12}>
+        <Grid item xs={12} sm={12} md={5}>
           <Grid container spacing={2} justifyContent="left">
-            {!isAnnotationUpdate && data.annotations && (
-              <Grid item xs={12} sm={12} md={12}>
-                <TextEntry
-                  setValue={setAnnotationValue}
-                  rows={2}
-                  label={t('label.addAnnotation')}
-                  value={value}
-                  testId="annotation"
-                />
-              </Grid>
-            )}
-            {!isAnnotationUpdate && data.annotations && (
-              <Grid item xs={12} sm={12} md={3}>
-                <Button
-                  icon={<AddIcon />}
-                  ariaDescription="Button for submitting comment"
-                  label="Add"
-                  testId="commentButton"
-                  onClick={addAnnotation}
-                  variant={ButtonVariantTypes.Contained}
-                  color={ButtonColorTypes.Secondary}
-                />
-              </Grid>
-            )}
-            <Grid item xs={12} sm={12} md={9}>
-              {showElement ? renderMessageResponse() : ''}
+            <Grid item xs={12} sm={12} md={12}>
+              <span id="operatorName" style={{ fontWeight: 'bold', alignItems: 'center' }}>
+                {t('label.operatorName')}{' '}
+              </span>
+              <span> : {data.shift_operator}</span>
             </Grid>
-
-            {isAnnotationUpdate && data.annotations && displayShiftAnnotation(data)}
+            <Grid item xs={12} sm={12} md={12}>
+              <span id="shiftStart" style={{ fontWeight: 'bold' }}>
+                Shift started at
+              </span>
+              <span>: {data.shift_start ? toUTCDateTimeFormat(data.shift_start) : 'NA'}</span>
+            </Grid>
+            <Grid item xs={12} sm={12} md={12}>
+              <span id="shiftEnd" style={{ fontWeight: 'bold', alignItems: 'center' }}>
+                Shift ends at
+              </span>
+              <span>: {data.shift_end ? toUTCDateTimeFormat(data.shift_end) : 'NA'}</span>
+            </Grid>
+            <Grid item xs={12} sm={12} md={12}>
+              <Grid container spacing={2} justifyContent="left" style={{ position: 'relative' }}>
+                {!isAnnotationUpdate && data.annotations && (
+                  <Grid item xs={12} sm={12} md={12}>
+                    <TextEntry
+                      setValue={setAnnotationValue}
+                      rows={2}
+                      label={t('label.addAnnotation')}
+                      value={value}
+                      testId="annotation"
+                    />
+                  </Grid>
+                )}
+                {!isAnnotationUpdate && data.annotations && (
+                  <Grid item xs={12} sm={12} md={3}>
+                    <Button
+                      icon={<AddIcon />}
+                      disabled={!(data && data.shift_end)}
+                      ariaDescription="Button for submitting comment"
+                      label="Add"
+                      testId="commentButton"
+                      onClick={addAnnotation}
+                      variant={ButtonVariantTypes.Contained}
+                      color={ButtonColorTypes.Secondary}
+                    />
+                  </Grid>
+                )}
+                <Grid
+                  item
+                  xs={12}
+                  sm={12}
+                  md={9}
+                  style={{ position: 'absolute', zIndex: 2, bottom: '-2%', left: '20%' }}
+                >
+                  {showElement ? renderMessageResponse() : ''}
+                </Grid>
+                <Grid container spacing={2} justifyContent="left">
+                  <Grid item xs={12} sm={12} md={9} marginLeft={2}>
+                    {isAnnotationUpdate && data.annotations && displayShiftAnnotation(data)}
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Grid>
           </Grid>
-        </Grid>
-        </Grid>
         </Grid>
         <Grid item xs={12} sm={12} md={7}>
           {data && data.shift_comment && data.shift_comment.length > 0 && (
@@ -408,7 +404,7 @@ const ViewShiftData = ({ data }) => {
                       textDecoration: 'underline',
                       fontWeight: 900,
                       fontSize: '18px',
-                      marginBottom: 0,
+                      marginBottom: 0
                     }}
                   >
                     View shift comments
@@ -433,7 +429,7 @@ const ViewShiftData = ({ data }) => {
                             style={{
                               color: theme.palette.secondary.main,
                               cursor: 'pointer',
-                              textDecoration: 'underline',
+                              textDecoration: 'underline'
                             }}
                             aria-hidden="true"
                             data-testid="viewImages"
@@ -464,13 +460,10 @@ const ViewShiftData = ({ data }) => {
           </span>
           <span style={{ alignItems: 'center' }}>{data.comments}</span> */}
         </Grid>
-    
       </Grid>
 
       <Grid container spacing={2} sx={{ padding: 2, paddingLeft: 0 }} justifyContent="left">
-   
         <Grid item xs={12} sm={12} md={3} />
-    
 
         {/* <Grid item xs={12} sm={12} md={2}>
           <span
@@ -516,11 +509,7 @@ const ViewShiftData = ({ data }) => {
         </Grid> */}
       </Grid>
 
-      <Grid container sx={{ padding: 2, paddingLeft: 0 }} spacing={2}>
-      
-
-        
-      </Grid>
+      <Grid container sx={{ padding: 2, paddingLeft: 0 }} spacing={2} />
 
       <Paper sx={{ border: 1 }}>
         <Grid container spacing={2} justifyContent="left">
@@ -536,7 +525,11 @@ const ViewShiftData = ({ data }) => {
           </Grid>
 
           <Grid item xs={12} sm={12} md={12}>
-            {data.shift_logs ? <ShiftLogs isCurrentShift={false} shiftData={data} updateCommentsEvent={undefined} /> : ''}
+            {data.shift_logs ? (
+              <ShiftLogs isCurrentShift={false} shiftData={data} updateCommentsEvent={undefined} />
+            ) : (
+              ''
+            )}
           </Grid>
         </Grid>
       </Paper>

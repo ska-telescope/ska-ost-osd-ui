@@ -17,7 +17,7 @@
     "history": "Shift History",
     "logTime": "Log Time",
     "logButton": "Add New Shift",
-    "logCommentLabel":"Please enter log comment",
+    "logCommentLabel": "Please enter log comment",
     "logHistoryTitle": "Shift History",
     "submit": "Submit",
     "operatorName": "Operator Name",
@@ -33,6 +33,7 @@
     "created_by": "Created By",
     "search": "Search",
     "close": "Close",
+    "back": "Back",
     "viewHistoryTitle": "Shift History Data",
     "shiftIDlable": "Shift ID",
     "viewImages": "View Images",
@@ -52,7 +53,16 @@
     "isStatus": "status",
     "ebID": "Execution Block ID",
     "sbiID": "Scheduling Block Instance ID",
-    "noLogsFound": "No logs found"
+    "noLogsFound": "No logs found",
+    "logCommentHistory": "Log Comment History",
+    "add": "Add",
+    "addLogComments": "Add log comments",
+    "viewShiftComments": "View shift comments",
+    "commentedAt": "Commented at",
+    "addCommentsAndImages": "Add shift comments and images",
+    "updateCommentsAndImages": "Update shift comments and add images",
+    "addShiftComments": "Add Shift comments",
+    "updateShiftComments": "Update Shift comments"
   },
   "ariaLabel": {
     "date": "Select Date",
@@ -87,7 +97,13 @@
     "showStatusRecords": "Showing records for status",
     "annotationSubmit": "Annotation submitted successfully",
     "requiredOperator": "Please select operator",
-    "requiredStatus": "Please select status"
+    "requiredStatus": "Please select status",
+    "startNewShiftMsg": "You are about to start new shift.",
+    "confirmStartNewShiftMsg": "Are you sure you want to continue ?",
+    "endNewShiftMsg": "You are about to end current shift.",
+    "confirmEndNewShiftMsg": "Are you sure you want to continue ?",
+    "endNewShiftLabel": "End current shift ?",
+    "startNewShiftLabel": "Start new shift ?"
   },
   "toolTip": {
     "button": {

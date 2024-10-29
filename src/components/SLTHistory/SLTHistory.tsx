@@ -106,7 +106,6 @@ function SLTHistory() {
 
   const onTriggerFunction = (data) => {
     setDisplayTable(false);
-    console.log('qqqqqqqqqqqqqqq',data)
     setDisplayData(data);
   };
 
@@ -128,29 +127,31 @@ function SLTHistory() {
 
   return (
     <>
-     <Box sx={{ marginLeft: 2, marginTop: 0,marginBottom: 0}}>
-     <Grid container  justifyContent="end">
-        <Grid item xs={12} sm={12} md={3}>
-          <h2  style={{margin:0,marginBottom:"10px"}}data-testid="logHistoryLabel">{t('label.logHistoryTitle')}</h2>
+      <Box sx={{ marginLeft: 2, marginTop: 0, marginBottom: 0 }}>
+        <Grid container justifyContent="end">
+          <Grid item xs={12} sm={12} md={3}>
+            <h2 style={{ margin: 0, marginBottom: '10px' }} data-testid="logHistoryLabel">
+              {t('label.logHistoryTitle')}
+            </h2>
+          </Grid>
+          <Grid item xs={12} sm={12} md={7} />
+          <Grid item xs={12} sm={12} md={2}>
+            <Link to="/" style={{ color: ButtonColorTypes.Inherit }}>
+              <Button
+                icon={<AddIcon />}
+                ariaDescription="Button for log tab"
+                label={t('label.logButton')}
+                testId="logButton"
+                color={
+                  location.pathname === '/' ? ButtonColorTypes.Secondary : ButtonColorTypes.Inherit
+                }
+                variant={ButtonVariantTypes.Contained}
+              />
+            </Link>
+          </Grid>
         </Grid>
-        <Grid item xs={12} sm={12} md={7} />
-        <Grid item xs={12} sm={12} md={2}>
-          <Link to="/" style={{ color: ButtonColorTypes.Inherit }}>
-            <Button
-              icon={<AddIcon />}
-              ariaDescription="Button for log tab"
-              label={t('label.logButton')}
-              testId="logButton"
-              color={
-                location.pathname === '/' ? ButtonColorTypes.Secondary : ButtonColorTypes.Inherit
-              }
-              variant={ButtonVariantTypes.Contained}
-            />
-          </Link>
-        </Grid>
-      </Grid>
-     </Box>
-     
+      </Box>
+
       {displayTable ? (
         <Paper elevation={0} sx={{ border: 1, margin: 1, marginTop: 2 }}>
           <Grid container spacing={2} sx={{ padding: 2 }} justifyContent="left">
@@ -189,15 +190,16 @@ function SLTHistory() {
           <>
             <Paper>
               <Grid container justifyContent="center">
-              <Grid item xs={12} sm={12} md={1}>
+                <Grid item xs={12} sm={12} md={1}>
                   <div style={{ float: 'right', padding: '15px' }}>
                     <Button
+                      size={ButtonSizeTypes.Small}
                       color={ButtonColorTypes.Inherit}
                       variant={ButtonVariantTypes.Contained}
                       testId="historyClose"
-                      label='Back'
+                      label="Back"
                       onClick={handleClose}
-                      toolTip={t('label.close')}
+                      toolTip={t('label.back')}
                     />
                   </div>
                 </Grid>
@@ -211,7 +213,6 @@ function SLTHistory() {
                   </h3>
                 </Grid>
                 <Grid item xs={12} sm={12} md={4} />
-         
               </Grid>
             </Paper>
             <ViewShiftData data={displayData} />
