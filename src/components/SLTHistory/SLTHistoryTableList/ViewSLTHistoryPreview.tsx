@@ -1,4 +1,5 @@
 import React from 'react';
+import PreviewIcon from '@mui/icons-material/Preview';
 import sltDataModel from '../../Models/sltDataModel';
 import apiService from '../../../services/apis';
 
@@ -17,14 +18,11 @@ const ViewSLTHistory = ({ shiftData, updatedList }: EntryFieldProps) => {
   };
 
   return (
-    <span
-      aria-hidden="true"
-      id="shiftId"
-      style={{ cursor: 'pointer', textDecoration: 'underline' }}
+    <PreviewIcon
+      data-testid="iconViewShift"
+      style={{ cursor: 'pointer', marginTop: '10px' }}
       onClick={() => fetchSltHistoryByID()}
-    >
-      {shiftData.shift_id}
-    </span>
+    />
   );
 };
 

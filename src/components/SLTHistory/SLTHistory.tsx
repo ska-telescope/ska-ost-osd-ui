@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Grid, Paper } from '@mui/material';
+import { Box, Grid, Paper, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
 import {
@@ -21,7 +21,7 @@ import {
 
 import apiService from '../../services/apis';
 import SLTHistoryTableList from './SLTHistoryTableList/SLTHistoryTable';
-import ViewShiftData from './ViewShiftData';
+import ViewShiftData from './ViewSLTHistory/ViewShiftData';
 import SearchByDates from './SearchComponenet/SearchByDates/SearchByDates';
 import SearchByOperator from './SearchComponenet/SearchByOperator/SearchByOperator';
 import SearchByStatus from './SearchComponenet/SearchByStatus/SearchByStatus';
@@ -189,28 +189,33 @@ function SLTHistory() {
         ) : (
           <>
             <Paper>
-              <Grid container justifyContent="center">
-                <Grid item xs={12} sm={12} md={1}>
-                  <div style={{ float: 'right', padding: '15px' }}>
-                    <Button
-                      size={ButtonSizeTypes.Small}
-                      color={ButtonColorTypes.Inherit}
-                      variant={ButtonVariantTypes.Contained}
-                      testId="historyClose"
-                      label="Back"
-                      onClick={handleClose}
-                      toolTip={t('label.back')}
-                    />
-                  </div>
+              <Grid container justifyContent="left">
+                <Grid item xs={12} sm={12} md={1} padding={1}>
+                  <Button
+                    size={ButtonSizeTypes.Small}
+                    color={ButtonColorTypes.Inherit}
+                    variant={ButtonVariantTypes.Contained}
+                    testId="historyClose"
+                    label={t('label.back')}
+                    onClick={handleClose}
+                    toolTip={t('label.back')}
+                  />
                 </Grid>
                 <Grid item xs={12} sm={12} md={3} />
                 <Grid item xs={12} sm={12} md={4}>
-                  <h3
+                  <Typography
                     id="viewHistoryTitle"
-                    style={{ fontWeight: 'bold', textAlign: 'center', alignItems: 'center' }}
+                    style={{
+                      margin: '10PX',
+                      fontWeight: 'bold',
+                      textAlign: 'center',
+                      alignItems: 'center'
+                    }}
                   >
-                    <b>View Shift ID {displayData.shift_id} </b>
-                  </h3>
+                    <b>
+                      {t('label.viewShift')}: {displayData.shift_id}{' '}
+                    </b>
+                  </Typography>
                 </Grid>
                 <Grid item xs={12} sm={12} md={4} />
               </Grid>

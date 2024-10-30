@@ -1,24 +1,24 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Box } from '@mui/material';
 import { DataGrid } from '@ska-telescope/ska-gui-components';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import ViewSLTHistory from '../ViewSLTHistory/ViewSLTHistory';
 import sltDataModel from '../../Models/sltDataModel';
 import { toUTCDateTimeFormat } from '../../../utils/constants';
+import ViewSLTHistoryByID from './ViewSLTHistoryByID';
+import ViewSLTHistoryPreview from './ViewSLTHistoryPreview';
 
 const COLUMN_WIDTH = 250;
 
 interface EntryFieldProps {
   data: sltDataModel[];
-  updateList: any;
+  updateList;
 }
 
 const SLTHistoryTableList = ({ data, updateList }: EntryFieldProps) => {
   const { t } = useTranslation('translations');
 
-  const onTriggerFunction = (Info) => {
-    updateList(Info);
+  const onTriggerFunction = (sltData) => {
+    updateList(sltData);
   };
   let id = 1;
   if (data && data.length > 0) {
@@ -35,7 +35,7 @@ const SLTHistoryTableList = ({ data, updateList }: EntryFieldProps) => {
       headerName: t('label.shiftId'),
       width: 350,
       renderCell: (params) => (
-        <ViewSLTHistory updatedList={onTriggerFunction} shiftData={params.row} />
+        <ViewSLTHistoryByID updatedList={onTriggerFunction} shiftData={params.row} />
       )
     },
     {
@@ -63,6 +63,14 @@ const SLTHistoryTableList = ({ data, updateList }: EntryFieldProps) => {
       headerName: t('label.operatorName'),
       width: COLUMN_WIDTH,
       renderCell: (params) => params.row.shift_operator
+    },
+    {
+      field: 'view',
+      headerName: t('label.view'),
+      width: 150,
+      renderCell: (params) => (
+        <ViewSLTHistoryPreview updatedList={onTriggerFunction} shiftData={params.row} />
+      )
     }
   ];
   return (

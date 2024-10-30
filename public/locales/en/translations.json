@@ -55,14 +55,19 @@
     "sbiID": "Scheduling Block Instance ID",
     "noLogsFound": "No logs found",
     "logCommentHistory": "Log Comment History",
+    "nologComments": " No log comments found",
     "add": "Add",
     "addLogComments": "Add log comments",
     "viewShiftComments": "View shift comments",
     "commentedAt": "Commented at",
+    "shiftStartedAt": "Shift started at",
+    "shiftEndsAt": "Shift ends at",
     "addCommentsAndImages": "Add shift comments and images",
     "updateCommentsAndImages": "Update shift comments and add images",
     "addShiftComments": "Add Shift comments",
-    "updateShiftComments": "Update Shift comments"
+    "updateShiftComments": "Update Shift comments",
+    "viewShift": "View Shift ID",
+    "view": "View details"
   },
   "ariaLabel": {
     "date": "Select Date",

@@ -427,88 +427,86 @@ const ShiftLogs = ({ shiftData, updateCommentsEvent, isCurrentShift }) => {
                     </>
                   )}
 
-                  {data && data.log_comment && data.log_comment.length > 0 && (
-                    <Box
-                      data-testid="availableData"
-                      sx={{
-                        marginTop: 2,
-                        maxHeight: '500px',
-                        paddingRight: '10px',
-                        overflowY: 'scroll'
-                      }}
-                    >
-                      <Grid container justifyContent="start" style={{ position: 'relative' }}>
-                        <Grid item xs={12} sm={12} md={5}>
-                          <p
-                            style={{
-                              textDecoration: 'underline',
-                              fontWeight: 900,
-                              fontSize: '18px'
-                            }}
-                          >
-                            <b> {t('label.logCommentHistory')}</b>
-                          </p>
-                        </Grid>
-                        <Grid item xs={12} sm={12} md={7}>
-                          <div style={{ position: 'absolute', zIndex: 2 }}>
-                            {displayMessageElement &&
-                            messageType === 'updateLogComments' &&
-                            logIndex === logCommentsIndex
-                              ? renderMessageResponse()
-                              : ''}
-                          </div>
-                        </Grid>
+                  <Box
+                    data-testid="availableData"
+                    sx={{
+                      marginTop: 2,
+                      maxHeight: '500px',
+                      paddingRight: '10px',
+                      overflowY: 'scroll'
+                    }}
+                  >
+                    <Grid container justifyContent="start" style={{ position: 'relative' }}>
+                      <Grid item xs={12} sm={12} md={5}>
+                        <p
+                          style={{
+                            textDecoration: 'underline',
+                            fontWeight: 900,
+                            fontSize: '18px'
+                          }}
+                        >
+                          <b> {t('label.logCommentHistory')}</b>
+                        </p>
                       </Grid>
+                      <Grid item xs={12} sm={12} md={7}>
+                        <div style={{ position: 'absolute', zIndex: 2 }}>
+                          {displayMessageElement &&
+                          messageType === 'updateLogComments' &&
+                          logIndex === logCommentsIndex
+                            ? renderMessageResponse()
+                            : ''}
+                        </div>
+                      </Grid>
+                    </Grid>
 
-                      <Divider />
+                    <Divider />
 
-                      {data &&
-                        data.log_comment &&
-                        data.log_comment.length > 0 &&
-                        data.log_comment.map((commentItem, commentIndex) => (
-                          <div key={commentItem.id}>
-                            <Grid container justifyContent="start">
-                              <Grid item xs={12} sm={12} md={6}>
-                                <p>
-                                  <span style={{ fontWeight: 700, fontSize: '14px' }}>
-                                    {t('label.logTime')}: {toUTCDateTimeFormat(data.log_time)}
-                                  </span>
-                                </p>
-                              </Grid>
-                              <Grid item xs={12} sm={12} md={6}>
-                                <p
-                                  style={{
-                                    color: theme.palette.secondary.main,
-                                    cursor: 'pointer',
-                                    textDecoration: 'underline'
-                                  }}
-                                  aria-hidden="true"
-                                  data-testid="viewImages"
-                                  onClick={handleOpenImage}
-                                >
-                                  {t('label.viewImages')}
-                                </p>
-                              </Grid>
+                    {data &&
+                      data.log_comment &&
+                      data.log_comment.length > 0 &&
+                      data.log_comment.map((commentItem, commentIndex) => (
+                        <div key={commentItem.id}>
+                          <Grid container justifyContent="start">
+                            <Grid item xs={12} sm={12} md={6}>
+                              <p>
+                                <span style={{ fontWeight: 700, fontSize: '14px' }}>
+                                  {t('label.logTime')}: {toUTCDateTimeFormat(data.log_time)}
+                                </span>
+                              </p>
                             </Grid>
+                            <Grid item xs={12} sm={12} md={6}>
+                              <p
+                                style={{
+                                  color: theme.palette.secondary.main,
+                                  cursor: 'pointer',
+                                  textDecoration: 'underline'
+                                }}
+                                aria-hidden="true"
+                                data-testid="viewImages"
+                                onClick={handleOpenImage}
+                              >
+                                {t('label.viewImages')}
+                              </p>
+                            </Grid>
+                          </Grid>
 
-                            <div>
-                              {!commentItem.isEdit &&
-                                displayLogComment(
-                                  logIndex,
-                                  commentIndex,
-                                  logDataDetails,
-                                  commentItem
-                                )}
-                              {commentItem.isEdit &&
-                                isCurrentShift &&
-                                updateLogComment(logIndex, commentIndex, logDataDetails)}
-                            </div>
-                            <p>{/* <b>Images:</b> {dataItem.logcomments} */}</p>
-                            <Divider />
+                          <div>
+                            {!commentItem.isEdit &&
+                              displayLogComment(
+                                logIndex,
+                                commentIndex,
+                                logDataDetails,
+                                commentItem
+                              )}
+                            {commentItem.isEdit &&
+                              isCurrentShift &&
+                              updateLogComment(logIndex, commentIndex, logDataDetails)}
                           </div>
-                        ))}
-                    </Box>
-                  )}
+                          <Divider />
+                        </div>
+                      ))}
+                    {data && !data.log_comment && <p>{t('label.nologComments')}</p>}
+                  </Box>
                 </Grid>
               </Grid>
             </Paper>

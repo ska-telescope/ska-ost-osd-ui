@@ -8,6 +8,7 @@ import {
   Grid,
   Paper,
   Tooltip,
+  Typography,
   useTheme
 } from '@mui/material';
 import {
@@ -23,10 +24,10 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import AddIcon from '@mui/icons-material/Add';
 import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
-import apiService from '../../services/apis';
-import ImageDisplay from '../SLTLogs/ImageDisplay';
-import ShiftLogs from '../SLTLogs/ShiftLogs';
-import { toUTCDateTimeFormat } from '../../utils/constants';
+import apiService from '../../../services/apis';
+import ImageDisplay from '../../SLTLogs/ImageDisplay';
+import ShiftLogs from '../../SLTLogs/ShiftLogs';
+import { toUTCDateTimeFormat } from '../../../utils/constants';
 
 const ViewShiftData = ({ data }) => {
   const { t } = useTranslation('translations');
@@ -40,7 +41,6 @@ const ViewShiftData = ({ data }) => {
   data = {
     shift_id: 'shift-20241028-148',
     shift_start: '2024-10-22T11:24:04.389077Z',
-    shift_end: '2024-10-22T11:22:04.389077Z',
     shift_operator: 'john',
     annotations: 'This is dummy annotations',
     shift_comment: [
@@ -336,13 +336,13 @@ const ViewShiftData = ({ data }) => {
             </Grid>
             <Grid item xs={12} sm={12} md={12}>
               <span id="shiftStart" style={{ fontWeight: 'bold' }}>
-                Shift started at
+                {t('label.shiftStartedAt')}{' '}
               </span>
               <span>: {data.shift_start ? toUTCDateTimeFormat(data.shift_start) : 'NA'}</span>
             </Grid>
             <Grid item xs={12} sm={12} md={12}>
               <span id="shiftEnd" style={{ fontWeight: 'bold', alignItems: 'center' }}>
-                Shift ends at
+                {t('label.shiftEndsAt')}{' '}
               </span>
               <span>: {data.shift_end ? toUTCDateTimeFormat(data.shift_end) : 'NA'}</span>
             </Grid>
@@ -362,6 +362,7 @@ const ViewShiftData = ({ data }) => {
                 {!isAnnotationUpdate && data.annotations && (
                   <Grid item xs={12} sm={12} md={3}>
                     <Button
+                      size={ButtonSizeTypes.Small}
                       icon={<AddIcon />}
                       disabled={!(data && data.shift_end)}
                       ariaDescription="Button for submitting comment"
@@ -407,7 +408,7 @@ const ViewShiftData = ({ data }) => {
                       marginBottom: 0
                     }}
                   >
-                    View shift comments
+                    {t('label.viewShiftComments')}
                   </p>
                 </div>
                 {data &&
@@ -419,7 +420,7 @@ const ViewShiftData = ({ data }) => {
                         <Grid item xs={12} sm={12} md={9}>
                           <p>
                             <span style={{ fontWeight: 700, fontSize: '14px' }}>
-                              Commented at:{' '}
+                              {t('label.commentedAt')} :
                             </span>{' '}
                             <span>{toUTCDateTimeFormat(shiftCommentItem.created_on)}</span>
                           </p>
@@ -455,72 +456,20 @@ const ViewShiftData = ({ data }) => {
               </Grid>
             </Grid>
           )}
-          {/* <span id="comments" style={{ fontWeight: 'bold', alignItems: 'center' }}>
-            Shift comments:{' '}
-          </span>
-          <span style={{ alignItems: 'center' }}>{data.comments}</span> */}
         </Grid>
       </Grid>
 
-      <Grid container spacing={2} sx={{ padding: 2, paddingLeft: 0 }} justifyContent="left">
-        <Grid item xs={12} sm={12} md={3} />
-
-        {/* <Grid item xs={12} sm={12} md={2}>
-          <span
-            aria-hidden="true"
-            id="viewImages"
-            style={{ cursor: 'pointer', textDecoration: 'underline' }}
-            onKeyDown={handleOpen}
-            onClick={handleOpen}
-          >
-            {t('label.viewImages')}
-          </span>
-
-          <Dialog
-            aria-label={t('ariaLabel.dialog')}
-            data-testid="dialogStatus"
-            sx={{
-              '& .MuiDialog-container': {
-                '& .MuiPaper-root': {
-                  width: '100%',
-                  maxWidth: '1000px', // Set your width here
-                },
-              },
-            }}
-            open={openModal}
-            onClose={handleClose}
-            aria-labelledby="responsive-dialog-title"
-          >
-            <DialogTitle>{t('label.viewImages')}</DialogTitle>
-            <DialogContent dividers>
-              {images && images.length > 0 && <ImageDisplay images={images} />}
-            </DialogContent>
-            <DialogActions>
-              <Button
-                color={ButtonColorTypes.Inherit}
-                variant={ButtonVariantTypes.Contained}
-                testId="statusClose"
-                label={t('label.close')}
-                onClick={handleClose}
-                toolTip={t('label.close')}
-              />
-            </DialogActions>
-          </Dialog>
-        </Grid> */}
-      </Grid>
-
       <Grid container sx={{ padding: 2, paddingLeft: 0 }} spacing={2} />
-
-      <Paper sx={{ border: 1 }}>
+      <Paper sx={{ border: 1, margin: 1 }}>
         <Grid container spacing={2} justifyContent="left">
           <Grid item xs={12} sm={12} md={12}>
-            <Paper sx={{ border: 1 }}>
-              <p
+            <Paper sx={{ padding: '10px' }}>
+              <Typography
                 id="viewLogDataIDLabel"
                 style={{ fontWeight: 'bold', textAlign: 'center', alignItems: 'center' }}
               >
                 {t('label.logSummary')}
-              </p>
+              </Typography>
             </Paper>
           </Grid>
 
