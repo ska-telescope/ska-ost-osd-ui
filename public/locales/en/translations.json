@@ -67,7 +67,8 @@
     "addShiftComments": "Add Shift comments",
     "updateShiftComments": "Update Shift comments",
     "viewShift": "View Shift ID",
-    "view": "View details"
+    "view": "View details",
+    "shiftNotStarted": "Shift not yet started"
   },
   "ariaLabel": {
     "date": "Select Date",

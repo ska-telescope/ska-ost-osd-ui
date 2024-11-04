@@ -631,12 +631,14 @@ function CurrentActiveShift() {
             />
           </Grid>
           <Grid item xs={12} sm={12} md={3} sx={{ marginTop: 2 }}>
-            {dataDetails && dataDetails.shift_start && (
-              <Chip
-                label={`Shift started at ${dataDetails && dataDetails.shift_start ? toUTCDateTimeFormat(dataDetails.shift_start) : 'NA'}`}
-                color="primary"
-              />
-            )}
+            <Chip
+              label={
+                dataDetails && dataDetails.shift_start
+                  ? `Shift started at ${toUTCDateTimeFormat(dataDetails.shift_start)}`
+                  : t('label.shiftNotStarted')
+              }
+              color="primary"
+            />
           </Grid>
           <Grid item xs={12} sm={12} md={3} sx={{ marginTop: 2 }}>
             <Button
@@ -651,19 +653,6 @@ function CurrentActiveShift() {
               color={ButtonColorTypes.Secondary}
             />
           </Grid>
-          {/* <Grid item xs={12} sm={12} md={1.3} sx={{ marginTop: 2 }}>
-            <Button
-              size={ButtonSizeTypes.Small}
-              icon={<AddIcon />}
-              disabled={disableButton}
-              ariaDescription="Button for submitting comment"
-              label="Images"
-              testId="commentButton"
-              onClick={handleOpenShiftImagesModal}
-              variant={ButtonVariantTypes.Contained}
-              color={ButtonColorTypes.Secondary}
-            />
-          </Grid> */}
           <Grid item xs={12} sm={12} md={1.3} sx={{ marginTop: 2 }}>
             <Button
               size={ButtonSizeTypes.Small}
@@ -677,51 +666,6 @@ function CurrentActiveShift() {
               color={ButtonColorTypes.Error}
             />
           </Grid>
-
-          {/* <Grid item xs={12} sm={12} md={5}>
-            <Grid container spacing={2} justifyContent="right">
-              <Grid item xs={12} sm={12} md={7}>
-                <p style={{ fontWeight: 'bold', marginLeft: 15, alignItems: 'center' }}>
-                  <span data-testid="shiftStart">{t('label.shiftStart')}</span>: {displayShiftStart}
-                </p>
-              </Grid>
-
-              <Grid sx={{ marginTop: 1 }} item xs={12} sm={12} md={5}>
-                <Button
-                  icon={<AccessTimeIcon />}
-                  size={ButtonSizeTypes.Small}
-                  disabled={disableStartShift()}
-                  ariaDescription="Button for starting shift"
-                  label={t('label.shiftStart')}
-                  testId="shiftStartButton"
-                  onClick={()=>shiftAction('START')}
-                  variant={ButtonVariantTypes.Contained}
-                  color={ButtonColorTypes.Secondary}
-                />
-              </Grid>
-            </Grid>
-            <Grid container spacing={2} justifyContent="center">
-              <Grid item xs={12} sm={12} md={7}>
-                <p style={{ fontWeight: 'bold', marginLeft: 15, alignItems: 'center' }}>
-                  <span data-testid="shiftEnd">{t('label.shiftEnd')}</span>: {displayShiftEnd}
-                </p>
-              </Grid>
-
-              <Grid sx={{ marginTop: 1 }} item xs={12} sm={12} md={5}>
-                <Button
-                  icon={<AccessTimeIcon />}
-                  size={ButtonSizeTypes.Small}
-                  disabled={disableButton}
-                  ariaDescription="Button for ending shift"
-                  label={t('label.shiftEnd')}
-                  testId="shiftEndButton"
-                  onClick={()=>shiftAction('END')}
-                  variant={ButtonVariantTypes.Contained}
-                  color={ButtonColorTypes.Error}
-                />
-              </Grid>
-            </Grid>
-          </Grid> */}
         </Grid>
         {dataDetails && dataDetails.shift_comment && dataDetails.shift_comment.length > 0 && (
           <Divider style={{ marginTop: '20px' }} />
