@@ -9,9 +9,9 @@ import {
   SPACER_VERTICAL
 } from '@ska-telescope/ska-gui-components';
 import { storageObject } from '@ska-telescope/ska-gui-local-storage';
-import Loader from '../Loader/Loader';
 import theme from '../services/theme/theme';
 import Routing from '../components/Routing';
+import Loader from '../components/Loader/Loader';
 
 const HEADER_HEIGHT = 70;
 const FOOTER_HEIGHT = 20;

@@ -10,9 +10,18 @@ export const SEARCH_TYPE = {
   dates: 'dates',
   status: 'status'
 };
+export const SHIFT_STATUS = {
+  START: 'START',
+  END: 'END',
+  YES:'YES'
+};
 
 export const EBRequestResponseStatus = {
   OK: 'OK'
+};
+
+export const KafkaTopic = {
+  serviceToUITopic: 'slt-to-frontend-topic'
 };
 
 export const ENTITY = {

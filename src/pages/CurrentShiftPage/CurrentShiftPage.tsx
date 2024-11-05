@@ -36,12 +36,13 @@ import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
 import moment from 'moment';
 import { Kafka } from 'kafkajs';
-import { ENTITY, operatorName, toUTCDateTimeFormat } from '../../utils/constants';
+import { ENTITY, KafkaTopic, SHIFT_STATUS, operatorName, toUTCDateTimeFormat } from '../../utils/constants';
 import apiService from '../../services/apis';
-import ImageDisplay from './ImageDisplay';
-import ShiftLogs from './ShiftLogs';
+import ImageDisplayComponent from '../../components/ImageDisplayComponent';
+import ShiftLogs from './DisplayShiftLogsComponent';
+import DisplayShiftLogsComponent from './DisplayShiftLogsComponent';
 
-function CurrentActiveShift() {
+function CurrentShiftPage() {
   const theme = useTheme();
   const [shiftStart, setShiftStart] = useState('');
   const [shiftStatus, setShiftStatus] = useState('');
@@ -65,9 +66,7 @@ function CurrentActiveShift() {
   const [openDialog, setOpenDialog] = React.useState(false);
 
   const onEditShiftComment = (shiftCommentIndex, shiftCommentItem) => {
-    console.log('onEditShiftComment', shiftCommentIndex, shiftCommentItem);
     setShiftCommentID(shiftCommentItem);
-    console.log('shiftCommentID', shiftCommentID);
     setOpenSummaryModal(true);
     setShiftCommentUpdate(true);
     setShiftComment(shiftCommentItem.shift_comments);
@@ -125,7 +124,6 @@ function CurrentActiveShift() {
       await consumer.subscribe({ topic, fromBeginning: true });
       await consumer.run({
         eachMessage: async ({ message }) => {
-          console.log('kafkaMessages', kafkaMessages);
           setKafkaMessages((prevMessages) => [...prevMessages, message.value.toString()]);
         }
       });
@@ -378,7 +376,7 @@ function CurrentActiveShift() {
   useEffect(() => {
     fetchSltCurrentShifts();
     updateShiftLogs();
-    useKafkaData('slt-to-frontend-topic');
+    useKafkaData(KafkaTopic.serviceToUITopic);
   }, []);
 
   const endNewShift = async () => {
@@ -405,7 +403,6 @@ function CurrentActiveShift() {
 
   const addShiftComments = async () => {
     if (shiftCommentValue === '') return;
-    console.log('operatoroperator', operator);
     const shiftData = {
       shift_operator: operator,
       comments: `${shiftCommentValue}`
@@ -459,12 +456,10 @@ function CurrentActiveShift() {
     setOpenViewImageModal(false);
   };
   const handleOpenImage = () => {
-    console.log('wwwwwwwwwwwwwww');
     setOpenViewImageModal(true);
     fetchImage();
   };
   const handlesetOpenSummaryModal = () => {
-    console.log('wwwwwwwwwwwwwww');
     setShiftComment('');
     setShiftCommentUpdate(false);
     setOpenSummaryModal(true);
@@ -507,10 +502,10 @@ function CurrentActiveShift() {
     setOpenDialog(true);
   };
   const newShiftConfirmation = (confirmation) => {
-    if (confirmation === 'YES' && shiftStatus === 'START') {
+    if (confirmation === SHIFT_STATUS.YES && shiftStatus === SHIFT_STATUS.START) {
       setOpenDialog(false);
       startNewShift();
-    } else if (confirmation === 'YES' && shiftStatus === 'END') {
+    } else if (confirmation === SHIFT_STATUS.YES && shiftStatus === SHIFT_STATUS.END) {
       setOpenDialog(false);
       endNewShift();
     }
@@ -530,7 +525,7 @@ function CurrentActiveShift() {
     <Grid container direction="row" justifyContent="space-around" alignItems="center">
       <Grid item>
         <Typography>{t('msg.startNewShiftMsg')}</Typography>
-        <Typography>{t('msg.confirmStartNewShiftMsg')}</Typography>
+        <Typography>{t('msg.confirmShiftMsg')}</Typography>
       </Grid>
     </Grid>
   );
@@ -544,15 +539,13 @@ function CurrentActiveShift() {
 
   const onUpdateCommentsEvent = () => {
     // fetchSltCurrentShifts()
-
-    console.log('event event');
     // setShiftData(null);
   };
   const endShiftAlertContent = () => (
     <Grid container direction="row" justifyContent="space-around" alignItems="center">
       <Grid item>
         <Typography>{t('msg.endNewShiftMsg')}</Typography>
-        <Typography>{t('msg.confirmEndNewShiftMsg')}</Typography>
+        <Typography>{t('msg.confirmShiftMsg')}</Typography>
       </Grid>
     </Grid>
   );
@@ -741,7 +734,7 @@ function CurrentActiveShift() {
         </p>
         <Divider />
         {dataDetails && dataDetails.shift_logs && dataDetails.shift_logs.length > 0 ? (
-          <ShiftLogs
+          <DisplayShiftLogsComponent
             isCurrentShift
             updateCommentsEvent={onUpdateCommentsEvent}
             shiftData={dataDetails}
@@ -750,6 +743,7 @@ function CurrentActiveShift() {
           <p style={{ padding: '10px' }}>{t('label.noLogsFound')}</p>
         )}
       </Paper>
+  
       <Dialog
         aria-label={t('ariaLabel.dialog')}
         data-testid="dialogStatus"
@@ -903,10 +897,10 @@ function CurrentActiveShift() {
         aria-labelledby="responsive-dialog-title"
       >
         <DialogTitle>
-          {shiftStatus && shiftStatus === 'START' ? startShiftAlertTitle() : endShiftAlertTitle()}
+          {shiftStatus && shiftStatus === SHIFT_STATUS.START ? startShiftAlertTitle() : endShiftAlertTitle()}
         </DialogTitle>
         <DialogContent>
-          {shiftStatus && shiftStatus === 'START'
+          {shiftStatus && shiftStatus === SHIFT_STATUS.START
             ? startShiftAlertContent()
             : endShiftAlertContent()}
         </DialogContent>
@@ -956,7 +950,7 @@ function CurrentActiveShift() {
       >
         <DialogTitle>{t('label.viewImages')}</DialogTitle>
         <DialogContent dividers>
-          {images && images.length > 0 && <ImageDisplay images={images} />}
+          {images && images.length > 0 && <ImageDisplayComponent images={images} />}
         </DialogContent>
         <DialogActions>
           <Button
@@ -974,4 +968,4 @@ function CurrentActiveShift() {
   );
 }
 
-export default CurrentActiveShift;
+export default CurrentShiftPage;

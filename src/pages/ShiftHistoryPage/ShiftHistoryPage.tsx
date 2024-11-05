@@ -20,13 +20,13 @@ import {
 } from '../../utils/constants';
 
 import apiService from '../../services/apis';
-import SLTHistoryTableList from './SLTHistoryTableList/SLTHistoryTable';
 import ViewShiftData from './ViewSLTHistory/ViewShiftData';
 import SearchByDates from './SearchComponenet/SearchByDates/SearchByDates';
 import SearchByOperator from './SearchComponenet/SearchByOperator/SearchByOperator';
 import SearchByStatus from './SearchComponenet/SearchByStatus/SearchByStatus';
+import ShiftHistoryListComponent from './DisplayShiftHistory/ShiftHistoryListComponent/ShiftHistoryListComponent';
 
-function SLTHistory() {
+function ShiftHistoryPage() {
   const { t } = useTranslation('translations');
   const [dataDetails, setSltHistory] = useState([]);
   const [createdAfter, setCreatedAfter] = useState('');
@@ -185,7 +185,7 @@ function SLTHistory() {
       {displayTable ? <div style={{ marginLeft: '15px' }}>{message()}</div> : ''}
       <Paper sx={{ border: 1, margin: 1 }} data-testid="content">
         {displayTable ? (
-          <SLTHistoryTableList updateList={onTriggerFunction} data={dataDetails} />
+          <ShiftHistoryListComponent updateList={onTriggerFunction} data={dataDetails} />
         ) : (
           <>
             <Paper>
@@ -228,4 +228,4 @@ function SLTHistory() {
   );
 }
 
-export default SLTHistory;
+export default ShiftHistoryPage;

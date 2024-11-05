@@ -2,10 +2,10 @@ import { Box } from '@mui/material';
 import { DataGrid } from '@ska-telescope/ska-gui-components';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import sltDataModel from '../../Models/sltDataModel';
-import { toUTCDateTimeFormat } from '../../../utils/constants';
-import ViewSLTHistoryByID from './ViewSLTHistoryByID';
-import ViewSLTHistoryPreview from './ViewSLTHistoryPreview';
+import sltDataModel from '../../../../DataModels/Models/sltDataModel';
+import { toUTCDateTimeFormat } from '../../../../utils/constants';
+import ViewSLTHistoryByID from '../ViewSLTHistoryByID';
+import ViewSLTHistoryPreview from '../ViewSLTHistoryPreview';
 
 const COLUMN_WIDTH = 250;
 
@@ -14,7 +14,7 @@ interface EntryFieldProps {
   updateList;
 }
 
-const SLTHistoryTableList = ({ data, updateList }: EntryFieldProps) => {
+const ShiftHistoryListComponent = ({ data, updateList }: EntryFieldProps) => {
   const { t } = useTranslation('translations');
 
   const onTriggerFunction = (sltData) => {
@@ -88,4 +88,4 @@ const SLTHistoryTableList = ({ data, updateList }: EntryFieldProps) => {
   );
 };
 
-export default SLTHistoryTableList;
+export default ShiftHistoryListComponent;

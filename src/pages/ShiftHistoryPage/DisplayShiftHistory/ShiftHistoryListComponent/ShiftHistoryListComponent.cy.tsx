@@ -2,18 +2,18 @@ import React from 'react';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { mount } from 'cypress/react18';
 import { THEME_DARK, THEME_LIGHT } from '@ska-telescope/ska-gui-components';
-import theme from '../../../services/theme/theme';
-import SLTHistoryTableList from './SLTHistoryTable';
-import sltDataModel from '../../Models/sltDataModel';
-import sltData from '../../../mockData/sltData';
+import theme from '../../../../services/theme/theme';
+import ShiftHistoryListComponent from './ShiftHistoryListComponent';
+import sltDataModel from '../../../../DataModels/Models/sltDataModel';
+import sltData from '../../../../DataModels/DataFiles/sltData';
 
-describe('<SLTHistoryTableList />', () => {
-  it(`Theme ${THEME_DARK}: Renders SLTHistoryTableList`, () => {
+describe('<ShiftHistoryListComponent />', () => {
+  it(`Theme ${THEME_DARK}: Renders ShiftHistoryListComponent`, () => {
     const mockData: sltDataModel[] = sltData;
     mount(
       <ThemeProvider theme={theme(THEME_DARK)}>
         <CssBaseline />
-        <SLTHistoryTableList data={mockData} updateList={undefined} />
+        <ShiftHistoryListComponent data={mockData} updateList={undefined} />
       </ThemeProvider>
     );
   });
@@ -23,7 +23,7 @@ describe('<SLTHistoryTableList />', () => {
     mount(
       <ThemeProvider theme={theme(THEME_LIGHT)}>
         <CssBaseline />
-        <SLTHistoryTableList data={mockData} updateList={undefined} />
+        <ShiftHistoryListComponent data={mockData} updateList={undefined} />
       </ThemeProvider>
     );
   });

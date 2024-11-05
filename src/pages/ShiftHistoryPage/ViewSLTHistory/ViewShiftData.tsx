@@ -25,14 +25,14 @@ import { useTranslation } from 'react-i18next';
 import AddIcon from '@mui/icons-material/Add';
 import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
 import apiService from '../../../services/apis';
-import ImageDisplay from '../../SLTLogs/ImageDisplay';
-import ShiftLogs from '../../SLTLogs/ShiftLogs';
+import ImageDisplayComponent from '../../../components/ImageDisplayComponent';
+import DisplayShiftLogsComponent from '../../CurrentShiftPage/DisplayShiftLogsComponent';
 import { toUTCDateTimeFormat } from '../../../utils/constants';
 
 const ViewShiftData = ({ data }) => {
   const { t } = useTranslation('translations');
   const [images, setImages] = useState([]);
-  const [value, setValue] = useState(data && data && data.annotations);
+  const [value, setValue] = useState(data && data.annotations);
   const [statusMessage, setStatusMessage] = useState(null);
   const [showElement, setShowElement] = useState(false);
   const [isAnnotationUpdate, setAnnotationUpdate] = useState(!!data.annotations);
@@ -311,7 +311,7 @@ const ViewShiftData = ({ data }) => {
       >
         <DialogTitle>{t('label.viewImages')}</DialogTitle>
         <DialogContent dividers>
-          {images && images.length > 0 && <ImageDisplay images={images} />}
+          {images && images.length > 0 && <ImageDisplayComponent images={images} />}
         </DialogContent>
         <DialogActions>
           <Button
@@ -475,7 +475,7 @@ const ViewShiftData = ({ data }) => {
 
           <Grid item xs={12} sm={12} md={12}>
             {data.shift_logs ? (
-              <ShiftLogs isCurrentShift={false} shiftData={data} updateCommentsEvent={undefined} />
+              <DisplayShiftLogsComponent isCurrentShift={false} shiftData={data} updateCommentsEvent={undefined} />
             ) : (
               ''
             )}

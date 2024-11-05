@@ -17,7 +17,7 @@
     "history": "Shift History",
     "logTime": "Log Time",
     "logButton": "Add New Shift",
-    "logCommentLabel": "Please enter log comment",
+    "logCommentLabel": "Please enter log comments",
     "logHistoryTitle": "Shift History",
     "submit": "Submit",
     "operatorName": "Operator Name",
@@ -68,7 +68,7 @@
     "updateShiftComments": "Update Shift comments",
     "viewShift": "View Shift ID",
     "view": "View details",
-    "shiftNotStarted": "Shift not yet started"
+    "shiftNotStarted": "Shift not started yet"
   },
   "ariaLabel": {
     "date": "Select Date",
@@ -105,9 +105,8 @@
     "requiredOperator": "Please select operator",
     "requiredStatus": "Please select status",
     "startNewShiftMsg": "You are about to start new shift.",
-    "confirmStartNewShiftMsg": "Are you sure you want to continue ?",
     "endNewShiftMsg": "You are about to end current shift.",
-    "confirmEndNewShiftMsg": "Are you sure you want to continue ?",
+    "confirmShiftMsg": "Are you sure you want to continue ?",
     "endNewShiftLabel": "End current shift ?",
     "startNewShiftLabel": "Start new shift ?"
   },

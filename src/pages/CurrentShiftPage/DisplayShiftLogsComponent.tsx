@@ -34,7 +34,7 @@ import {
 import AddIcon from '@mui/icons-material/Add';
 import { EBRequestResponseStatus, toUTCDateTimeFormat } from '../../utils/constants';
 import apiService from '../../services/apis';
-import ImageDisplay from './ImageDisplay';
+import ImageDisplayComponent from '../../components/ImageDisplayComponent';
 
 const RequestResponseDisplay = ({ responseArray }) => {
   const { t } = useTranslation('translations');
@@ -107,7 +107,7 @@ const RequestResponseDisplay = ({ responseArray }) => {
   );
 };
 
-const ShiftLogs = ({ shiftData, updateCommentsEvent, isCurrentShift }) => {
+const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentShift }) => {
   const { t } = useTranslation('translations');
   const [commentValue, setComment] = useState(null);
   const theme = useTheme();
@@ -124,7 +124,6 @@ const ShiftLogs = ({ shiftData, updateCommentsEvent, isCurrentShift }) => {
   let id = 1;
   if (logDataDetails && logDataDetails.length > 0) {
     logDataDetails.map((row) => {
-      console.log('aaa');
       row.id = id++;
       if (!row.newLogComment) {
         row.newLogComment = '';
@@ -152,7 +151,6 @@ const ShiftLogs = ({ shiftData, updateCommentsEvent, isCurrentShift }) => {
   };
 
   const addLogComments = async (index) => {
-    console.log('commentValuecommentValue', index, commentValue);
     if (commentValue === '') return;
 
     const comment = {
@@ -165,7 +163,6 @@ const ShiftLogs = ({ shiftData, updateCommentsEvent, isCurrentShift }) => {
     if (response.status === 200) {
       updateCommentsEvent();
       setLogCommentID(response);
-      console.log('logCommentID', logCommentID);
       setDisplayMessageElement(true);
       setMessageType('addLogComments');
       setMessage('msg.commentSubmit');
@@ -175,7 +172,6 @@ const ShiftLogs = ({ shiftData, updateCommentsEvent, isCurrentShift }) => {
     }
   };
   const updateLogComments = async (logIndex, commentIndex) => {
-    console.log('commentValuecommentValue', commentIndex, updateCommentValue);
     if (commentValue === '') return;
 
     const comment = {
@@ -198,22 +194,16 @@ const ShiftLogs = ({ shiftData, updateCommentsEvent, isCurrentShift }) => {
   };
 
   const handleInputChange = (index, event) => {
-    console.log('handleInputChange', index, event);
     logDataDetails[index].newLogComment = event; // Update the specific input value
-    console.log('logData[index]["newLogComment"]', logDataDetails[index].newLogComment !== '');
     setComment(event); // Set the new state
   };
   const handleUpdateInputChange = (logIndex, logData, commentIndex, commentItem) => {
-    console.log('handleUpdateInputChange', logIndex, commentItem, logData, commentIndex);
-    console.log('qqqqqqqqqqqqqq', logData);
     logData[logIndex].log_comment[commentIndex].logcomments = commentItem;
     setUpdateComment(commentItem); // Set the new state
   };
 
   const onEditComment = (logIndex, commentIndex, logData, commentItem) => {
-    console.log('111111111111111', logIndex, commentIndex, shiftData);
     shiftData.shift_logs[logIndex].log_comment[commentIndex].isEdit = true;
-    console.log('commentsData', commentItem);
     setComment(shiftData.shift_logs[logIndex].log_comment[commentIndex].logcomments);
     // setLogComment(shiftData["shift_logs"][logIndex]["log_comment"][commentIndex])
   };
@@ -530,7 +520,7 @@ const ShiftLogs = ({ shiftData, updateCommentsEvent, isCurrentShift }) => {
       >
         <DialogTitle>{t('label.viewImages')}</DialogTitle>
         <DialogContent dividers>
-          {images && images.length > 0 && <ImageDisplay images={images} />}
+          {images && images.length > 0 && <ImageDisplayComponent images={images} />}
         </DialogContent>
         <DialogActions>
           <Button
@@ -547,4 +537,4 @@ const ShiftLogs = ({ shiftData, updateCommentsEvent, isCurrentShift }) => {
   );
 };
 
-export default ShiftLogs;
+export default DisplayShiftLogsComponent;
