@@ -10,9 +10,18 @@ export const SEARCH_TYPE = {
   dates: 'dates',
   status: 'status'
 };
+export const SHIFT_STATUS = {
+  START: 'START',
+  END: 'END',
+  YES: 'YES'
+};
 
 export const EBRequestResponseStatus = {
   OK: 'OK'
+};
+
+export const KafkaTopic = {
+  serviceToUITopic: 'slt-to-frontend-topic'
 };
 
 export const ENTITY = {
@@ -38,20 +47,29 @@ export const getUrlPath = (data) => {
 };
 
 const getTodayUTCDateRange = (dateString) => {
-  const startDate = moment(dateString, 'YYYY-MM-DD').startOf('day').utc();
-  const endDate = moment(dateString, 'YYYY-MM-DD').endOf('day').utc();
+  const startDate = moment(dateString, 'YYYY-MM-DD')
+    .startOf('day')
+    .utc()
+    .format('YYYY-MM-DD HH:mm:ss.SSSSSS');
+  const endDate = moment(dateString, 'YYYY-MM-DD')
+    .endOf('day')
+    .utc()
+    .format('YYYY-MM-DD HH:mm:ss.SSSSSS');
   return {
-    start: startDate.format(),
-    end: endDate.format()
+    start: startDate,
+    end: endDate
   };
 };
 
 export const getUTCDateRange = (start, end) => {
-  const startDate = moment(start, 'YYYY-MM-DD').startOf('day').utc();
-  const endDate = moment(end, 'YYYY-MM-DD').endOf('day').utc();
+  const startDate = moment(start, 'YYYY-MM-DD')
+    .startOf('day')
+    .utc()
+    .format('YYYY-MM-DD HH:mm:ss.SSSSSS');
+  const endDate = moment(end, 'YYYY-MM-DD').endOf('day').utc().format('YYYY-MM-DD HH:mm:ss.SSSSSS');
   return {
-    start: startDate.format(),
-    end: endDate.format()
+    start: startDate,
+    end: endDate
   };
 };
 

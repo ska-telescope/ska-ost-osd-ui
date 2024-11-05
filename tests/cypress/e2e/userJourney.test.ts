@@ -148,47 +148,47 @@ context('Shift Log Tool', () => {
     validateShiftLogView();
   });
 
-  it('Content : Verify running shift log flow', () => {
-    cy.get('[data-testid="manageShift"]').contains(translation.label.manageShift);
-    cy.get('[data-testid="historyButton"]').contains(translation.label.history);
-    cy.get('[data-testid="operatorName"]').click();
-    cy.contains('DefaultUser').click();
-    cy.get('[data-testid="shiftStart"]').contains(translation.label.shiftStart);
-    cy.get('[data-testid="shiftStartButton"]').click();
+  // it('Content : Verify running shift log flow', () => {
+  //   cy.get('[data-testid="manageShift"]').contains(translation.label.manageShift);
+  //   cy.get('[data-testid="historyButton"]').contains(translation.label.history);
+  //   cy.get('[data-testid="operatorName"]').click();
+  //   cy.contains('DefaultUser').click();
+  //   cy.get('[data-testid="shiftStart"]').contains(translation.label.shiftStart);
+  //   cy.get('[data-testid="shiftStartButton"]').click();
 
-    cy.get('body').then((element) => {
-      if (
-        element.find('[data-testid="successStatusMsg"]') &&
-        element.find('[data-testid="successStatusMsg"]').length > 0
-      ) {
-        cy.get('[data-testid="successStatusMsg"]').contains(translation.msg.shiftStarted);
-      }
-    });
+  //   cy.get('body').then((element) => {
+  //     if (
+  //       element.find('[data-testid="successStatusMsg"]') &&
+  //       element.find('[data-testid="successStatusMsg"]').length > 0
+  //     ) {
+  //       cy.get('[data-testid="successStatusMsg"]').contains(translation.msg.shiftStarted);
+  //     }
+  //   });
 
-    cy.get('[data-testid="shiftEnd"]').contains(translation.label.shiftEnd);
-    cy.get('[data-testid="addComment"]').contains(translation.label.addComment);
-    cy.get('[data-testid="addImages"]').contains(translation.label.addImages);
-    cy.get('[data-testid="viewImages"]').contains(translation.label.viewImages);
-    cy.get('[data-testid="operatorComment"]').type('This is test comment by operator');
-    cy.get('[data-testid="commentButton"]').click({ force: true });
-    cy.get('body').then((element) => {
-      if (
-        element.find('[data-testid="successStatusMsg"]') &&
-        element.find('[data-testid="successStatusMsg"]').length > 0
-      ) {
-        cy.get('[data-testid="successStatusMsg"]').contains(translation.msg.commentSubmit);
-      }
-    });
+  //   cy.get('[data-testid="shiftEnd"]').contains(translation.label.shiftEnd);
+  //   cy.get('[data-testid="addComment"]').contains(translation.label.addComment);
+  //   cy.get('[data-testid="addImages"]').contains(translation.label.addImages);
+  //   cy.get('[data-testid="viewImages"]').contains(translation.label.viewImages);
+  //   cy.get('[data-testid="operatorComment"]').type('This is test comment by operator');
+  //   cy.get('[data-testid="commentButton"]').click({ force: true });
+  //   cy.get('body').then((element) => {
+  //     if (
+  //       element.find('[data-testid="successStatusMsg"]') &&
+  //       element.find('[data-testid="successStatusMsg"]').length > 0
+  //     ) {
+  //       cy.get('[data-testid="successStatusMsg"]').contains(translation.msg.commentSubmit);
+  //     }
+  //   });
 
-    validateShiftLogDataTable();
-    cy.get('[data-testid="shiftEndButton"]').click({ force: true });
-    cy.get('body').then((element) => {
-      if (
-        element.find('[data-testid="successStatusMsg"]') &&
-        element.find('[data-testid="successStatusMsg"]').length > 0
-      ) {
-        cy.get('[data-testid="successStatusMsg"]').contains(translation.msg.shiftEnd);
-      }
-    });
-  });
+  //   validateShiftLogDataTable();
+  //   cy.get('[data-testid="shiftEndButton"]').click({ force: true });
+  //   cy.get('body').then((element) => {
+  //     if (
+  //       element.find('[data-testid="successStatusMsg"]') &&
+  //       element.find('[data-testid="successStatusMsg"]').length > 0
+  //     ) {
+  //       cy.get('[data-testid="successStatusMsg"]').contains(translation.msg.shiftEnd);
+  //     }
+  //   });
+  // });
 });

@@ -1,29 +1,34 @@
 import { Autocomplete, Grid, TextField } from '@mui/material';
-import { Button, ButtonColorTypes, ButtonVariantTypes } from '@ska-telescope/ska-gui-components';
+import {
+  Button,
+  ButtonColorTypes,
+  ButtonSizeTypes,
+  ButtonVariantTypes
+} from '@ska-telescope/ska-gui-components';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import SearchIcon from '@mui/icons-material/Search';
-import { operatorName } from '../../../../utils/constants';
+import { SBIStatus } from '../../../../utils/constants';
 
 interface EntryFieldProps {
   setFilterCirteria;
 }
 
-const SearchByOperator = ({ setFilterCirteria }: EntryFieldProps) => {
+const SearchByStatus = ({ setFilterCirteria }: EntryFieldProps) => {
   const { t } = useTranslation('translations');
-  const [operatorValue, setValue] = React.useState<string>('');
+  const [statusValue, setValue] = React.useState<string>('');
   const [inputValue, setInputValue] = React.useState('');
 
   const disableSearch = () => {
-    if (operatorValue && operatorValue.length > 0) {
+    if (statusValue && statusValue.length > 0) {
       return false;
     }
     return true;
   };
 
-  const emmitOperator = () => {
+  const emmitFilterCriteria = () => {
     const emmitData = {
-      shift_operator: operatorValue
+      status: statusValue
     };
     setFilterCirteria(emmitData);
   };
@@ -31,24 +36,25 @@ const SearchByOperator = ({ setFilterCirteria }: EntryFieldProps) => {
     <Grid container spacing={2} justifyContent="left" sx={{ marginTop: '-15px' }}>
       <Grid item xs={12} sm={12} md={3}>
         <Autocomplete
-          value={operatorValue}
-          onChange={(event, newValue: string) => {
+          value={statusValue}
+          onChange={(event, newValue: string | null) => {
             setValue(newValue);
           }}
           inputValue={inputValue}
           onInputChange={(event, newInputValue) => {
             setInputValue(newInputValue);
           }}
-          data-testid="operatorName"
-          options={operatorName}
+          data-testid="sbiStatus"
+          options={SBIStatus}
           renderInput={(params) => (
-            <TextField {...params} label={t('label.operatorName')} variant="standard" />
+            <TextField {...params} label={t('label.searchByStatus')} variant="standard" />
           )}
         />
       </Grid>
       <Grid item xs={12} sm={12} md={1} />
       <Grid item xs={12} sm={6} md={3} sx={{ marginTop: '15px' }}>
         <Button
+          size={ButtonSizeTypes.Small}
           icon={<SearchIcon />}
           ariaDescription={t('ariaLabel.searchButtonDescription')}
           disabled={disableSearch()}
@@ -56,7 +62,7 @@ const SearchByOperator = ({ setFilterCirteria }: EntryFieldProps) => {
           variant={ButtonVariantTypes.Contained}
           testId="logHistorySearch"
           label={t('label.searchById')}
-          onClick={emmitOperator}
+          onClick={emmitFilterCriteria}
           toolTip={t('toolTip.button.idSearch')}
         />
       </Grid>
@@ -64,4 +70,4 @@ const SearchByOperator = ({ setFilterCirteria }: EntryFieldProps) => {
   );
 };
 
-export default SearchByOperator;
+export default SearchByStatus;

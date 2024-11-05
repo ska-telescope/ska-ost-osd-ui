@@ -17,6 +17,7 @@
     "history": "Shift History",
     "logTime": "Log Time",
     "logButton": "Add New Shift",
+    "logCommentLabel": "Please enter log comments",
     "logHistoryTitle": "Shift History",
     "submit": "Submit",
     "operatorName": "Operator Name",
@@ -32,11 +33,12 @@
     "created_by": "Created By",
     "search": "Search",
     "close": "Close",
+    "back": "Back",
     "viewHistoryTitle": "Shift History Data",
     "shiftIDlable": "Shift ID",
     "viewImages": "View Images",
     "addImages": "Add Images",
-    "viewLogDataIDLabel": "Logs for Shift ID",
+    "viewLogDataIDLabel": "Logs Summary",
     "manageShift": "Manage Shift",
     "addComment": "Add Comment",
     "commandName": "Command",
@@ -44,14 +46,29 @@
     "requestSentAt": "Request sent at",
     "responseReceivedAt": "Response received at",
     "details": "View Detail Information",
-    "logSummary": "Log Summary",
+    "logSummary": "Logs Summary",
     "ebRequestResponse": "EB Request Response",
     "addAnnotation": "Please enter annotation",
     "ebObservations": "Execution Block Observations",
     "isStatus": "status",
     "ebID": "Execution Block ID",
     "sbiID": "Scheduling Block Instance ID",
-    "noLogsFound": "No logs found"
+    "noLogsFound": "No logs found",
+    "logCommentHistory": "Log Comment History",
+    "nologComments": " No log comments found",
+    "add": "Add",
+    "addLogComments": "Add log comments",
+    "viewShiftComments": "View shift comments",
+    "commentedAt": "Commented at",
+    "shiftStartedAt": "Shift started at",
+    "shiftEndsAt": "Shift ends at",
+    "addCommentsAndImages": "Add shift comments and images",
+    "updateCommentsAndImages": "Update shift comments and add images",
+    "addShiftComments": "Add Shift comments",
+    "updateShiftComments": "Update Shift comments",
+    "viewShift": "View Shift ID",
+    "view": "View details",
+    "shiftNotStarted": "Shift not started yet"
   },
   "ariaLabel": {
     "date": "Select Date",
@@ -67,7 +84,7 @@
     "editDescription": "Edit icon to update record",
     "edit": "Edit record",
     "dialog": "Open dialog",
-    "logSummary": "Log Summary"
+    "logSummary": "Logs Summary"
   },
   "msg": {
     "shiftAlreadyStarted": "Shift already started",
@@ -86,7 +103,12 @@
     "showStatusRecords": "Showing records for status",
     "annotationSubmit": "Annotation submitted successfully",
     "requiredOperator": "Please select operator",
-    "requiredStatus": "Please select status"
+    "requiredStatus": "Please select status",
+    "startNewShiftMsg": "You are about to start new shift.",
+    "endNewShiftMsg": "You are about to end current shift.",
+    "confirmShiftMsg": "Are you sure you want to continue ?",
+    "endNewShiftLabel": "End current shift ?",
+    "startNewShiftLabel": "Start new shift ?"
   },
   "toolTip": {
     "button": {

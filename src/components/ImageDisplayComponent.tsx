@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ImageDisplay = ({ images }) => {
+const ImageDisplayComponent = ({ images }) => {
   let id = 1;
   if (images && images.length > 0) {
     images.map((row) => {
@@ -29,4 +29,4 @@ const ImageDisplay = ({ images }) => {
   );
 };
 
-export default ImageDisplay;
+export default ImageDisplayComponent;

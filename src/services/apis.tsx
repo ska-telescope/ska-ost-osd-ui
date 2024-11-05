@@ -27,6 +27,13 @@ function handleAxiosError(error: object) {
 
 const apiService = {
   baseURL: () => window.env.BACKEND_URL,
+
+  getURLPath: async (path): Promise<any> => {
+    const baseUrl = apiService.baseURL();
+    const url = `${baseUrl}/${path}`;
+    return url;
+  },
+
   postShiftData: async (path, shiftData: any): Promise<any> => {
     const baseUrl = apiService.baseURL();
     const url = `${baseUrl}/${path}`;
