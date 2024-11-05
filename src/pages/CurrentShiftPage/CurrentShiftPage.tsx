@@ -36,10 +36,15 @@ import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
 import moment from 'moment';
 import { Kafka } from 'kafkajs';
-import { ENTITY, KafkaTopic, SHIFT_STATUS, operatorName, toUTCDateTimeFormat } from '../../utils/constants';
+import {
+  ENTITY,
+  KafkaTopic,
+  SHIFT_STATUS,
+  operatorName,
+  toUTCDateTimeFormat
+} from '../../utils/constants';
 import apiService from '../../services/apis';
 import ImageDisplayComponent from '../../components/ImageDisplayComponent';
-import ShiftLogs from './DisplayShiftLogsComponent';
 import DisplayShiftLogsComponent from './DisplayShiftLogsComponent';
 
 function CurrentShiftPage() {
@@ -67,6 +72,7 @@ function CurrentShiftPage() {
 
   const onEditShiftComment = (shiftCommentIndex, shiftCommentItem) => {
     setShiftCommentID(shiftCommentItem);
+    console.log(shiftCommentID)
     setOpenSummaryModal(true);
     setShiftCommentUpdate(true);
     setShiftComment(shiftCommentItem.shift_comments);
@@ -743,7 +749,7 @@ function CurrentShiftPage() {
           <p style={{ padding: '10px' }}>{t('label.noLogsFound')}</p>
         )}
       </Paper>
-  
+
       <Dialog
         aria-label={t('ariaLabel.dialog')}
         data-testid="dialogStatus"
@@ -897,7 +903,9 @@ function CurrentShiftPage() {
         aria-labelledby="responsive-dialog-title"
       >
         <DialogTitle>
-          {shiftStatus && shiftStatus === SHIFT_STATUS.START ? startShiftAlertTitle() : endShiftAlertTitle()}
+          {shiftStatus && shiftStatus === SHIFT_STATUS.START
+            ? startShiftAlertTitle()
+            : endShiftAlertTitle()}
         </DialogTitle>
         <DialogContent>
           {shiftStatus && shiftStatus === SHIFT_STATUS.START

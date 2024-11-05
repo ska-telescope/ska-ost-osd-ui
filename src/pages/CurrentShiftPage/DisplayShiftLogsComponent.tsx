@@ -163,6 +163,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
     if (response.status === 200) {
       updateCommentsEvent();
       setLogCommentID(response);
+      console.log(logCommentID)
       setDisplayMessageElement(true);
       setMessageType('addLogComments');
       setMessage('msg.commentSubmit');
@@ -171,7 +172,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
       }, 3000);
     }
   };
-  const updateLogComments = async (logIndex, commentIndex) => {
+  const updateLogComments = async (logIndex) => {
     if (commentValue === '') return;
 
     const comment = {
@@ -200,9 +201,10 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
   const handleUpdateInputChange = (logIndex, logData, commentIndex, commentItem) => {
     logData[logIndex].log_comment[commentIndex].logcomments = commentItem;
     setUpdateComment(commentItem); // Set the new state
+    console.log(updateCommentValue)
   };
 
-  const onEditComment = (logIndex, commentIndex, logData, commentItem) => {
+  const onEditComment = (logIndex, commentIndex) => {
     shiftData.shift_logs[logIndex].log_comment[commentIndex].isEdit = true;
     setComment(shiftData.shift_logs[logIndex].log_comment[commentIndex].logcomments);
     // setLogComment(shiftData["shift_logs"][logIndex]["log_comment"][commentIndex])
@@ -223,7 +225,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
               position: 'relative',
               top: '7px'
             }}
-            onClick={() => onEditComment(logIndex, commentIndex, logData, commentItem)}
+            onClick={() => onEditComment(logIndex, commentIndex)}
           />
         </Tooltip>
       )}

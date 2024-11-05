@@ -13,7 +13,7 @@ export const SEARCH_TYPE = {
 export const SHIFT_STATUS = {
   START: 'START',
   END: 'END',
-  YES:'YES'
+  YES: 'YES'
 };
 
 export const EBRequestResponseStatus = {

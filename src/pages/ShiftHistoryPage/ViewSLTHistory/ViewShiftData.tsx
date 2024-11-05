@@ -475,7 +475,11 @@ const ViewShiftData = ({ data }) => {
 
           <Grid item xs={12} sm={12} md={12}>
             {data.shift_logs ? (
-              <DisplayShiftLogsComponent isCurrentShift={false} shiftData={data} updateCommentsEvent={undefined} />
+              <DisplayShiftLogsComponent
+                isCurrentShift={false}
+                shiftData={data}
+                updateCommentsEvent={undefined}
+              />
             ) : (
               ''
             )}
