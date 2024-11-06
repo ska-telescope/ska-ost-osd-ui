@@ -311,7 +311,7 @@ const ViewShiftData = ({ data }) => {
       >
         <DialogTitle>{t('label.viewImages')}</DialogTitle>
         <DialogContent dividers>
-          {images && images.length > 0 && <ImageDisplayComponent images={images} />}
+        {images && images.length > 0 ? <ImageDisplayComponent images={images} />:<p>{t('label.noImageFound')}</p>}
         </DialogContent>
         <DialogActions>
           <Button

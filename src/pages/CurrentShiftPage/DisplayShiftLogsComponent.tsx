@@ -120,7 +120,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
   const [messageType, setMessageType] = useState('');
   const [logCommentsIndex, setLogCommentsIndex] = useState(0);
   const [logCommentID, setLogCommentID] = useState('');
-
+console.log('shiftDatashiftData',shiftData)
   let id = 1;
   if (logDataDetails && logDataDetails.length > 0) {
     logDataDetails.map((row) => {
@@ -187,7 +187,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
       setDisplayMessageElement(true);
       setMessageType('updateLogComments');
       setMessage('msg.commentSubmit');
-      // shiftData["shift_logs"][logIndex]["log_comment"][commentIndex]["isEdit"]=false;
+      // shiftData["shift_logs"][logIndex]["comments"][commentIndex]["isEdit"]=false;
       setTimeout(() => {
         setDisplayMessageElement(false);
       }, 3000);
@@ -195,25 +195,27 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
   };
 
   const handleInputChange = (index, event) => {
+    console.log('handleInputChange',index,event)
+    setLogCommentsIndex(index)
     logDataDetails[index].newLogComment = event; // Update the specific input value
     setComment(event); // Set the new state
   };
   const handleUpdateInputChange = (logIndex, logData, commentIndex, commentItem) => {
-    logData[logIndex].log_comment[commentIndex].logcomments = commentItem;
+    logData[logIndex].comments[commentIndex].logcomments = commentItem;
     setUpdateComment(commentItem); // Set the new state
     console.log(updateCommentValue)
   };
 
   const onEditComment = (logIndex, commentIndex) => {
-    shiftData.shift_logs[logIndex].log_comment[commentIndex].isEdit = true;
-    setComment(shiftData.shift_logs[logIndex].log_comment[commentIndex].logcomments);
-    // setLogComment(shiftData["shift_logs"][logIndex]["log_comment"][commentIndex])
+    shiftData.shift_logs[logIndex].comments[commentIndex].isEdit = true;
+    setComment(shiftData.shift_logs[logIndex].comments[commentIndex].logcomments);
+    // setLogComment(shiftData["shift_logs"][logIndex]["comments"][commentIndex])
   };
 
   const displayLogComment = (logIndex, commentIndex, logData, commentItem) => (
     <div>
       <span style={{ fontWeight: 700, fontSize: '14px' }}> {t('label.comments')}: </span>
-      <span>{commentItem.logcomments}</span>
+      <span>{commentItem.log_comment}</span>
       {isCurrentShift && (
         <Tooltip title="Edit the log comment" placement="bottom-end">
           <DriveFileRenameOutlineIcon
@@ -239,7 +241,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
           rows={1}
           setValue={(event) => handleUpdateInputChange(logIndex, logData, commentIndex, event)}
           label={t('label.logCommentLabel')}
-          value={logData[logIndex].log_comment[commentIndex].logcomments}
+          value={logData[logIndex].comments[commentIndex].log_comment}
           testId={`logComment${commentIndex}`}
         />
       </Grid>
@@ -249,7 +251,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
           ariaDescription="Button for submitting comment"
           label="Update"
           testId="commentButton"
-          onClick={() => updateLogComments(logIndex, commentIndex)}
+          onClick={() => updateLogComments(logIndex)}
           size={ButtonSizeTypes.Small}
           variant={ButtonVariantTypes.Contained}
           color={ButtonColorTypes.Secondary}
@@ -314,7 +316,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
                       </p>
                       <p>
                         {t('label.sbiID')} <b>{data.info.sbi_ref}</b> {t('label.isStatus')}{' '}
-                        <b>{data.info.sbi_status}</b>
+                        <b>{data.info.sbi_status.toUpperCase()}</b>
                       </p>
                     </Grid>
                   </Grid>
@@ -366,7 +368,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
                             rows={1}
                             setValue={(event) => handleInputChange(logIndex, event)}
                             label={t('label.logCommentLabel')}
-                            value={logDataDetails[logIndex].newLogComment}
+                            value={logCommentsIndex==logIndex?commentValue:''}
                             testId={`logComment${logIndex}`}
                           />
                         </Grid>
@@ -376,9 +378,10 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
                             ariaDescription="Button for submitting comment"
                             label={t('label.add')}
                             disabled={
+                              logCommentsIndex==logIndex &&
                               !(
-                                logDataDetails[logIndex].newLogComment &&
-                                logDataDetails[logIndex].newLogComment !== ''
+                                commentValue &&
+                                commentValue !== ''
                               )
                             }
                             testId="commentButton"
@@ -454,15 +457,15 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
                     <Divider />
 
                     {data &&
-                      data.log_comment &&
-                      data.log_comment.length > 0 &&
-                      data.log_comment.map((commentItem, commentIndex) => (
+                      data.comments &&
+                      data.comments.length > 0 &&
+                      data.comments.map((commentItem, commentIndex) => (
                         <div key={commentItem.id}>
                           <Grid container justifyContent="start">
                             <Grid item xs={12} sm={12} md={6}>
                               <p>
                                 <span style={{ fontWeight: 700, fontSize: '14px' }}>
-                                  {t('label.logTime')}: {toUTCDateTimeFormat(data.log_time)}
+                                  {t('label.logTime')}: {data.created_on?toUTCDateTimeFormat(data.created_on):''}
                                 </span>
                               </p>
                             </Grid>
@@ -497,7 +500,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
                           <Divider />
                         </div>
                       ))}
-                    {data && !data.log_comment && <p>{t('label.nologComments')}</p>}
+                    {data && !data.comments && <p>{t('label.nologComments')}</p>}
                   </Box>
                 </Grid>
               </Grid>
@@ -522,7 +525,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
       >
         <DialogTitle>{t('label.viewImages')}</DialogTitle>
         <DialogContent dividers>
-          {images && images.length > 0 && <ImageDisplayComponent images={images} />}
+        {images && images.length > 0 ? <ImageDisplayComponent images={images} />:<p>{t('label.noImageFound')}</p>}
         </DialogContent>
         <DialogActions>
           <Button

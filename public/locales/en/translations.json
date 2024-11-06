@@ -68,7 +68,8 @@
     "updateShiftComments": "Update Shift comments",
     "viewShift": "View Shift ID",
     "view": "View details",
-    "shiftNotStarted": "Shift not started yet"
+    "shiftNotStarted": "Shift not started yet",
+    "noImageFound":"No images found"
   },
   "ariaLabel": {
     "date": "Select Date",
