@@ -120,7 +120,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
   const [messageType, setMessageType] = useState('');
   const [logCommentsIndex, setLogCommentsIndex] = useState(0);
   const [logCommentID, setLogCommentID] = useState('');
-console.log('shiftDatashiftData',shiftData)
+  console.log('shiftDatashiftData', shiftData);
   let id = 1;
   if (logDataDetails && logDataDetails.length > 0) {
     logDataDetails.map((row) => {
@@ -163,7 +163,7 @@ console.log('shiftDatashiftData',shiftData)
     if (response.status === 200) {
       updateCommentsEvent();
       setLogCommentID(response);
-      console.log(logCommentID)
+      console.log(logCommentID);
       setDisplayMessageElement(true);
       setMessageType('addLogComments');
       setMessage('msg.commentSubmit');
@@ -195,15 +195,15 @@ console.log('shiftDatashiftData',shiftData)
   };
 
   const handleInputChange = (index, event) => {
-    console.log('handleInputChange',index,event)
-    setLogCommentsIndex(index)
+    console.log('handleInputChange', index, event);
+    setLogCommentsIndex(index);
     logDataDetails[index].newLogComment = event; // Update the specific input value
     setComment(event); // Set the new state
   };
   const handleUpdateInputChange = (logIndex, logData, commentIndex, commentItem) => {
     logData[logIndex].comments[commentIndex].logcomments = commentItem;
     setUpdateComment(commentItem); // Set the new state
-    console.log(updateCommentValue)
+    console.log(updateCommentValue);
   };
 
   const onEditComment = (logIndex, commentIndex) => {
@@ -368,7 +368,7 @@ console.log('shiftDatashiftData',shiftData)
                             rows={1}
                             setValue={(event) => handleInputChange(logIndex, event)}
                             label={t('label.logCommentLabel')}
-                            value={logCommentsIndex==logIndex?commentValue:''}
+                            value={logCommentsIndex === logIndex ? commentValue : ''}
                             testId={`logComment${logIndex}`}
                           />
                         </Grid>
@@ -378,11 +378,7 @@ console.log('shiftDatashiftData',shiftData)
                             ariaDescription="Button for submitting comment"
                             label={t('label.add')}
                             disabled={
-                              logCommentsIndex==logIndex &&
-                              !(
-                                commentValue &&
-                                commentValue !== ''
-                              )
+                              logCommentsIndex === logIndex && !(commentValue && commentValue !== '')
                             }
                             testId="commentButton"
                             onClick={() => addLogComments(logIndex)}
@@ -465,7 +461,8 @@ console.log('shiftDatashiftData',shiftData)
                             <Grid item xs={12} sm={12} md={6}>
                               <p>
                                 <span style={{ fontWeight: 700, fontSize: '14px' }}>
-                                  {t('label.logTime')}: {data.created_on?toUTCDateTimeFormat(data.created_on):''}
+                                  {t('label.logTime')}:{' '}
+                                  {data.created_on ? toUTCDateTimeFormat(data.created_on) : ''}
                                 </span>
                               </p>
                             </Grid>
@@ -525,7 +522,11 @@ console.log('shiftDatashiftData',shiftData)
       >
         <DialogTitle>{t('label.viewImages')}</DialogTitle>
         <DialogContent dividers>
-        {images && images.length > 0 ? <ImageDisplayComponent images={images} />:<p>{t('label.noImageFound')}</p>}
+          {images && images.length > 0 ? (
+            <ImageDisplayComponent images={images} />
+          ) : (
+            <p>{t('label.noImageFound')}</p>
+          )}
         </DialogContent>
         <DialogActions>
           <Button

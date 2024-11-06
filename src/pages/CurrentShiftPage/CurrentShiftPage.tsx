@@ -73,7 +73,7 @@ function CurrentShiftPage() {
 
   const onEditShiftComment = (shiftCommentIndex, shiftCommentItem) => {
     setShiftCommentID(shiftCommentItem);
-    console.log(shiftCommentID)
+    console.log(shiftCommentID);
     setOpenSummaryModal(true);
     setShiftCommentUpdate(true);
     setShiftComment(shiftCommentItem.comment);
@@ -147,8 +147,7 @@ function CurrentShiftPage() {
       shift_operator: operator
     };
     const path = `shifts/create`;
-    setShiftData(
-      SHIFT_DATA_LIST[0])
+    setShiftData(SHIFT_DATA_LIST[0]);
     const response = await apiService.postShiftData(path, shiftData);
     if (response.status === 200 && response.data && response.data.length > 0) {
       setMessage('msg.shiftStarted');
@@ -167,201 +166,201 @@ function CurrentShiftPage() {
       );
       setShiftData(
         SHIFT_DATA_LIST[0]
-      //   {
-      //   shift_id: 'shift-20241028-148',
-      //   shift_start: '2024-10-22T11:24:04.389077Z',
-      //   shift_operator: 'john',
-      //   shift_comment: [
-      //     {
-      //       shift_comments:
-      //         'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
-      //       created_on: '2024-10-22T11:24:14.406107Z',
-      //       id: 1,
-      //       isEdit: false
-      //     },
-      //     {
-      //       shift_comments:
-      //         'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
-      //       created_on: '2024-10-22T11:24:14.406107Z',
-      //       id: 2,
-      //       isEdit: false
-      //     }
-      //   ],
-      //   shift_logs: [
-      //     {
-      //       info: {
-      //         eb_id: 'eb-t0001-20241022-00002',
-      //         sbd_ref: 'sbd-t0001-20240822-00008',
-      //         sbi_ref: 'sbi-t0001-20240822-00009',
-      //         metadata: {
-      //           version: 1,
-      //           created_by: 'DefaultUser',
-      //           created_on: '2024-10-22T11:25:36.953526Z',
-      //           pdm_version: '15.4.0',
-      //           last_modified_by: 'DefaultUser',
-      //           last_modified_on: '2024-10-22T11:25:36.953526Z'
-      //         },
-      //         interface: 'https://schema.skao.int/ska-oso-pdm-eb/0.1',
-      //         telescope: 'ska_mid',
-      //         sbi_status: 'failed',
-      //         sbd_version: 1,
-      //         request_responses: [
-      //           {
-      //             status: 'OK',
-      //             request: 'ska_oso_scripting.functions.devicecontrol.assign_resource',
-      //             response: { result: 'this is a result' },
-      //             request_args: { kwargs: { subarray_id: '1' } },
-      //             request_sent_at: '2022-09-23T15:43:53.971548Z',
-      //             response_received_at: '2022-09-23T15:43:53.971548Z'
-      //           },
-      //           {
-      //             status: 'OK',
-      //             request: 'ska_oso_scripting.functions.devicecontrol.configure_resource',
-      //             response: { result: 'this is a result' },
-      //             request_args: { kwargs: { subarray_id: '1' } },
-      //             request_sent_at: '2022-09-23T15:43:53.971548Z',
-      //             response_received_at: '2022-09-23T15:43:53.971548Z'
-      //           },
-      //           {
-      //             status: 'OK',
-      //             request: 'ska_oso_scripting.functions.devicecontrol.scan',
-      //             response: { result: 'this is a result' },
-      //             request_args: { kwargs: { subarray_id: '1' } },
-      //             request_sent_at: '2022-09-23T15:43:53.971548Z',
-      //             response_received_at: '2022-09-23T15:43:53.971548Z'
-      //           },
-      //           {
-      //             status: 'OK',
-      //             request: 'ska_oso_scripting.functions.devicecontrol.release_all_resources',
-      //             response: { result: 'this is a result' },
-      //             request_args: { kwargs: { subarray_id: '1' } },
-      //             request_sent_at: '2022-09-23T15:43:53.971548Z',
-      //             response_received_at: '2022-09-23T15:43:53.971548Z'
-      //           },
-      //           {
-      //             error: { detail: 'this is an error' },
-      //             status: 'ERROR',
-      //             request: 'ska_oso_scripting.functions.devicecontrol.end',
-      //             request_sent_at: '2022-09-23T15:43:53.971548Z'
-      //           }
-      //         ]
-      //       },
-      //       source: 'ODA',
-      //       log_time: '2024-10-22T11:24:14.406107Z',
-      //       log_comment: [
-      //         {
-      //           logcomments: 'Lorem Ipsum is simply dummy text of the printing ',
-      //           logCommentTime: '23-10-2024',
-      //           id: 1,
-      //           isEdit: false
-      //         },
-      //         {
-      //           logcomments:
-      //             'Submitting Comments: We will implement a function to handle the submission of comments, making a POST request to the API for each comment',
-      //           logCommentTime: '23-10-2024',
-      //           id: 2,
-      //           isEdit: false
-      //         },
-      //         {
-      //           logcomments:
-      //             'Handling Input Changes: We will ensure that each text field can be updated independently.',
-      //           logCommentTime: '23-10-2024',
-      //           id: 3,
-      //           isEdit: false
-      //         }
-      //       ]
-      //     },
-      //     {
-      //       info: {
-      //         eb_id: 'eb-t0001-20241022-00002',
-      //         sbd_ref: 'sbd-t0001-20240822-00008',
-      //         sbi_ref: 'sbi-t0001-20240822-00009',
-      //         metadata: {
-      //           version: 1,
-      //           created_by: 'DefaultUser',
-      //           created_on: '2024-10-22T11:25:36.953526Z',
-      //           pdm_version: '15.4.0',
-      //           last_modified_by: 'DefaultUser',
-      //           last_modified_on: '2024-10-22T11:25:36.953526Z'
-      //         },
-      //         interface: 'https://schema.skao.int/ska-oso-pdm-eb/0.1',
-      //         telescope: 'ska_mid',
-      //         sbi_status: 'failed',
-      //         sbd_version: 1,
-      //         request_responses: [
-      //           {
-      //             status: 'OK',
-      //             request: 'ska_oso_scripting.functions.devicecontrol.assign_resource',
-      //             response: { result: 'this is a result' },
-      //             request_args: { kwargs: { subarray_id: '1' } },
-      //             request_sent_at: '2022-09-23T15:43:53.971548Z',
-      //             response_received_at: '2022-09-23T15:43:53.971548Z'
-      //           },
-      //           {
-      //             status: 'OK',
-      //             request: 'ska_oso_scripting.functions.devicecontrol.configure_resource',
-      //             response: { result: 'this is a result' },
-      //             request_args: { kwargs: { subarray_id: '1' } },
-      //             request_sent_at: '2022-09-23T15:43:53.971548Z',
-      //             response_received_at: '2022-09-23T15:43:53.971548Z'
-      //           },
-      //           {
-      //             status: 'OK',
-      //             request: 'ska_oso_scripting.functions.devicecontrol.scan',
-      //             response: { result: 'this is a result' },
-      //             request_args: { kwargs: { subarray_id: '1' } },
-      //             request_sent_at: '2022-09-23T15:43:53.971548Z',
-      //             response_received_at: '2022-09-23T15:43:53.971548Z'
-      //           },
-      //           {
-      //             status: 'OK',
-      //             request: 'ska_oso_scripting.functions.devicecontrol.release_all_resources',
-      //             response: { result: 'this is a result' },
-      //             request_args: { kwargs: { subarray_id: '1' } },
-      //             request_sent_at: '2022-09-23T15:43:53.971548Z',
-      //             response_received_at: '2022-09-23T15:43:53.971548Z'
-      //           },
-      //           {
-      //             error: { detail: 'this is an error' },
-      //             status: 'ERROR',
-      //             request: 'ska_oso_scripting.functions.devicecontrol.end',
-      //             request_sent_at: '2022-09-23T15:43:53.971548Z'
-      //           }
-      //         ]
-      //       },
-      //       source: 'ODA',
-      //       log_time: '2024-10-22T11:24:14.406107Z',
-      //       log_comment: [
-      //         {
-      //           logcomments: '222Lorem Ipsum is simply dummy text of the printing ',
-      //           logCommentTime: '23-10-2024',
-      //           id: 1,
-      //           isEdit: false
-      //         },
-      //         {
-      //           logcomments:
-      //             '22Submitting Comments: We will implement a function to handle the submission of comments, making a POST request to the API for each comment',
-      //           logCommentTime: '23-10-2024',
-      //           id: 2,
-      //           isEdit: false
-      //         },
-      //         {
-      //           logcomments:
-      //             '22Handling Input Changes: We will ensure that each text field can be updated independently.',
-      //           logCommentTime: '23-10-2024',
-      //           id: 3,
-      //           isEdit: false
-      //         }
-      //       ]
-      //     }
-      //   ],
-      //   metadata: {
-      //     created_by: 'john',
-      //     created_on: '2024-10-22T11:24:04.388998Z',
-      //     last_modified_by: 'john',
-      //     last_modified_on: '2024-10-22T11:25:36.971764Z'
-      //   }
-      // }
+        //   {
+        //   shift_id: 'shift-20241028-148',
+        //   shift_start: '2024-10-22T11:24:04.389077Z',
+        //   shift_operator: 'john',
+        //   shift_comment: [
+        //     {
+        //       shift_comments:
+        //         'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+        //       created_on: '2024-10-22T11:24:14.406107Z',
+        //       id: 1,
+        //       isEdit: false
+        //     },
+        //     {
+        //       shift_comments:
+        //         'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+        //       created_on: '2024-10-22T11:24:14.406107Z',
+        //       id: 2,
+        //       isEdit: false
+        //     }
+        //   ],
+        //   shift_logs: [
+        //     {
+        //       info: {
+        //         eb_id: 'eb-t0001-20241022-00002',
+        //         sbd_ref: 'sbd-t0001-20240822-00008',
+        //         sbi_ref: 'sbi-t0001-20240822-00009',
+        //         metadata: {
+        //           version: 1,
+        //           created_by: 'DefaultUser',
+        //           created_on: '2024-10-22T11:25:36.953526Z',
+        //           pdm_version: '15.4.0',
+        //           last_modified_by: 'DefaultUser',
+        //           last_modified_on: '2024-10-22T11:25:36.953526Z'
+        //         },
+        //         interface: 'https://schema.skao.int/ska-oso-pdm-eb/0.1',
+        //         telescope: 'ska_mid',
+        //         sbi_status: 'failed',
+        //         sbd_version: 1,
+        //         request_responses: [
+        //           {
+        //             status: 'OK',
+        //             request: 'ska_oso_scripting.functions.devicecontrol.assign_resource',
+        //             response: { result: 'this is a result' },
+        //             request_args: { kwargs: { subarray_id: '1' } },
+        //             request_sent_at: '2022-09-23T15:43:53.971548Z',
+        //             response_received_at: '2022-09-23T15:43:53.971548Z'
+        //           },
+        //           {
+        //             status: 'OK',
+        //             request: 'ska_oso_scripting.functions.devicecontrol.configure_resource',
+        //             response: { result: 'this is a result' },
+        //             request_args: { kwargs: { subarray_id: '1' } },
+        //             request_sent_at: '2022-09-23T15:43:53.971548Z',
+        //             response_received_at: '2022-09-23T15:43:53.971548Z'
+        //           },
+        //           {
+        //             status: 'OK',
+        //             request: 'ska_oso_scripting.functions.devicecontrol.scan',
+        //             response: { result: 'this is a result' },
+        //             request_args: { kwargs: { subarray_id: '1' } },
+        //             request_sent_at: '2022-09-23T15:43:53.971548Z',
+        //             response_received_at: '2022-09-23T15:43:53.971548Z'
+        //           },
+        //           {
+        //             status: 'OK',
+        //             request: 'ska_oso_scripting.functions.devicecontrol.release_all_resources',
+        //             response: { result: 'this is a result' },
+        //             request_args: { kwargs: { subarray_id: '1' } },
+        //             request_sent_at: '2022-09-23T15:43:53.971548Z',
+        //             response_received_at: '2022-09-23T15:43:53.971548Z'
+        //           },
+        //           {
+        //             error: { detail: 'this is an error' },
+        //             status: 'ERROR',
+        //             request: 'ska_oso_scripting.functions.devicecontrol.end',
+        //             request_sent_at: '2022-09-23T15:43:53.971548Z'
+        //           }
+        //         ]
+        //       },
+        //       source: 'ODA',
+        //       log_time: '2024-10-22T11:24:14.406107Z',
+        //       log_comment: [
+        //         {
+        //           logcomments: 'Lorem Ipsum is simply dummy text of the printing ',
+        //           logCommentTime: '23-10-2024',
+        //           id: 1,
+        //           isEdit: false
+        //         },
+        //         {
+        //           logcomments:
+        //             'Submitting Comments: We will implement a function to handle the submission of comments, making a POST request to the API for each comment',
+        //           logCommentTime: '23-10-2024',
+        //           id: 2,
+        //           isEdit: false
+        //         },
+        //         {
+        //           logcomments:
+        //             'Handling Input Changes: We will ensure that each text field can be updated independently.',
+        //           logCommentTime: '23-10-2024',
+        //           id: 3,
+        //           isEdit: false
+        //         }
+        //       ]
+        //     },
+        //     {
+        //       info: {
+        //         eb_id: 'eb-t0001-20241022-00002',
+        //         sbd_ref: 'sbd-t0001-20240822-00008',
+        //         sbi_ref: 'sbi-t0001-20240822-00009',
+        //         metadata: {
+        //           version: 1,
+        //           created_by: 'DefaultUser',
+        //           created_on: '2024-10-22T11:25:36.953526Z',
+        //           pdm_version: '15.4.0',
+        //           last_modified_by: 'DefaultUser',
+        //           last_modified_on: '2024-10-22T11:25:36.953526Z'
+        //         },
+        //         interface: 'https://schema.skao.int/ska-oso-pdm-eb/0.1',
+        //         telescope: 'ska_mid',
+        //         sbi_status: 'failed',
+        //         sbd_version: 1,
+        //         request_responses: [
+        //           {
+        //             status: 'OK',
+        //             request: 'ska_oso_scripting.functions.devicecontrol.assign_resource',
+        //             response: { result: 'this is a result' },
+        //             request_args: { kwargs: { subarray_id: '1' } },
+        //             request_sent_at: '2022-09-23T15:43:53.971548Z',
+        //             response_received_at: '2022-09-23T15:43:53.971548Z'
+        //           },
+        //           {
+        //             status: 'OK',
+        //             request: 'ska_oso_scripting.functions.devicecontrol.configure_resource',
+        //             response: { result: 'this is a result' },
+        //             request_args: { kwargs: { subarray_id: '1' } },
+        //             request_sent_at: '2022-09-23T15:43:53.971548Z',
+        //             response_received_at: '2022-09-23T15:43:53.971548Z'
+        //           },
+        //           {
+        //             status: 'OK',
+        //             request: 'ska_oso_scripting.functions.devicecontrol.scan',
+        //             response: { result: 'this is a result' },
+        //             request_args: { kwargs: { subarray_id: '1' } },
+        //             request_sent_at: '2022-09-23T15:43:53.971548Z',
+        //             response_received_at: '2022-09-23T15:43:53.971548Z'
+        //           },
+        //           {
+        //             status: 'OK',
+        //             request: 'ska_oso_scripting.functions.devicecontrol.release_all_resources',
+        //             response: { result: 'this is a result' },
+        //             request_args: { kwargs: { subarray_id: '1' } },
+        //             request_sent_at: '2022-09-23T15:43:53.971548Z',
+        //             response_received_at: '2022-09-23T15:43:53.971548Z'
+        //           },
+        //           {
+        //             error: { detail: 'this is an error' },
+        //             status: 'ERROR',
+        //             request: 'ska_oso_scripting.functions.devicecontrol.end',
+        //             request_sent_at: '2022-09-23T15:43:53.971548Z'
+        //           }
+        //         ]
+        //       },
+        //       source: 'ODA',
+        //       log_time: '2024-10-22T11:24:14.406107Z',
+        //       log_comment: [
+        //         {
+        //           logcomments: '222Lorem Ipsum is simply dummy text of the printing ',
+        //           logCommentTime: '23-10-2024',
+        //           id: 1,
+        //           isEdit: false
+        //         },
+        //         {
+        //           logcomments:
+        //             '22Submitting Comments: We will implement a function to handle the submission of comments, making a POST request to the API for each comment',
+        //           logCommentTime: '23-10-2024',
+        //           id: 2,
+        //           isEdit: false
+        //         },
+        //         {
+        //           logcomments:
+        //             '22Handling Input Changes: We will ensure that each text field can be updated independently.',
+        //           logCommentTime: '23-10-2024',
+        //           id: 3,
+        //           isEdit: false
+        //         }
+        //       ]
+        //     }
+        //   ],
+        //   metadata: {
+        //     created_by: 'john',
+        //     created_on: '2024-10-22T11:24:04.388998Z',
+        //     last_modified_by: 'john',
+        //     last_modified_on: '2024-10-22T11:25:36.971764Z'
+        //   }
+        // }
       );
       // updateShiftLogs(response.data[0].shift_id);
     }
@@ -704,7 +703,11 @@ function CurrentShiftPage() {
                           <span style={{ fontWeight: 700, fontSize: '14px' }}>
                             {t('label.commentedAt')} :{' '}
                           </span>{' '}
-                          <span>{shiftCommentItem.created_on?toUTCDateTimeFormat(shiftCommentItem.created_on):''}</span>
+                          <span>
+                            {shiftCommentItem.created_on
+                              ? toUTCDateTimeFormat(shiftCommentItem.created_on)
+                              : ''}
+                          </span>
                         </p>
                       </Grid>
                       <Grid item xs={12} sm={12} md={3}>
@@ -964,7 +967,11 @@ function CurrentShiftPage() {
       >
         <DialogTitle>{t('label.viewImages')}</DialogTitle>
         <DialogContent dividers>
-          {images && images.length > 0 ? <ImageDisplayComponent images={images} />:<p>{t('label.noImageFound')}</p>}
+          {images && images.length > 0 ? (
+            <ImageDisplayComponent images={images} />
+          ) : (
+            <p>{t('label.noImageFound')}</p>
+          )}
         </DialogContent>
         <DialogActions>
           <Button

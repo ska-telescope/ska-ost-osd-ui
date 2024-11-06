@@ -69,7 +69,7 @@
     "viewShift": "View Shift ID",
     "view": "View details",
     "shiftNotStarted": "Shift not started yet",
-    "noImageFound":"No images found"
+    "noImageFound": "No images found"
   },
   "ariaLabel": {
     "date": "Select Date",

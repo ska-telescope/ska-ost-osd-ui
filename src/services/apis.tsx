@@ -28,7 +28,7 @@ function handleAxiosError(error: object) {
 const apiService = {
   // baseURL: () => window.env.BACKEND_URL,
   // baseURL: () => "http://localhost:8000/ska-oso-slt-services/slt/api/v0",
-  baseURL: ()=> "https://k8s.stfc.skao.int/dev-ska-oso-slt-services-test-inegration/slt/api/v0",
+  baseURL: () => 'https://k8s.stfc.skao.int/dev-ska-oso-slt-services-test-inegration/slt/api/v0',
 
   getURLPath: async (path): Promise<any> => {
     const baseUrl = apiService.baseURL();
