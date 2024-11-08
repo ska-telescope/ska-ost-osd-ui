@@ -109,14 +109,16 @@ const RequestResponseDisplay = ({ responseArray }) => {
 
 const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentShift }) => {
   const { t } = useTranslation('translations');
-  const [commentValue, setComment] = useState(null);
+  const [commentValue, setComment] = useState('');
   const theme = useTheme();
-  const [updateCommentValue, setUpdateComment] = useState(null);
+  const [updateCommentValue, setUpdateComment] = useState('');
   const logDataDetails = shiftData.shift_logs;
   const [openModal, setOpenModal] = useState(false);
   const [images, setImages] = useState([]);
   const [message, setMessage] = useState('');
   const [displayMessageElement, setDisplayMessageElement] = useState(false);
+  const [shiftLogCommentID, setShiftLogCommentID] = useState('');
+  const [isUpdateEnable, setIsUpdateEnable] = useState(false);
   const [messageType, setMessageType] = useState('');
   const [logCommentsIndex, setLogCommentsIndex] = useState(0);
   const [logCommentID, setLogCommentID] = useState('');
@@ -150,16 +152,20 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
     updateCommentsEvent();
   };
 
-  const addLogComments = async (index) => {
+  const addLogComments = async (logIndex,data) => {
+    console.log('data',data)
     if (commentValue === '') return;
-
-    const comment = {
-      comments: `${commentValue}`
+   console.log('shiftData',shiftData)
+    const addCommentRequestBody = {
+      log_comment: `${commentValue}`,
+      operator_name:shiftData.shift_operator,
+      shift_id:shiftData.shift_id,
+      eb_id:data["info"].eb_id
     };
-
-    const path = `shifts/update/`;
-    setLogCommentsIndex(index);
-    const response = await apiService.putShiftData(path, comment);
+console.log('commentcomment',addCommentRequestBody)
+    const path = `shift_log_comments/create`;
+    setLogCommentsIndex(logIndex);
+    const response = await apiService.postShiftData(path, addCommentRequestBody);
     if (response.status === 200) {
       updateCommentsEvent();
       setLogCommentID(response);
@@ -172,15 +178,16 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
       }, 3000);
     }
   };
-  const updateLogComments = async (logIndex) => {
-    if (commentValue === '') return;
-
-    const comment = {
-      comments: `${commentValue}`
+  const updateLogComments = async (logIndex,commentItem,commentIndex) => {
+    console.log('commentItemcommentItem',commentItem,commentIndex)
+    if (updateCommentValue === '') return;
+    const updateCommentPayload = {
+      log_comment: `${updateCommentValue}`,
+      operator_name:shiftData.shift_operator,
     };
-    const path = `shifts/update/`;
+    const path = `shift_log_comments/update/${commentItem.id}`;
     setLogCommentsIndex(logIndex);
-    const response = await apiService.putShiftData(path, comment);
+    const response = await apiService.updateLogComments(path,updateCommentPayload);
     if (response.status === 200) {
       updateCommentsEvent();
       setLogCommentID(response);
@@ -190,6 +197,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
       // shiftData["shift_logs"][logIndex]["comments"][commentIndex]["isEdit"]=false;
       setTimeout(() => {
         setDisplayMessageElement(false);
+        setIsUpdateEnable(false)
       }, 3000);
     }
   };
@@ -200,15 +208,20 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
     logDataDetails[index].newLogComment = event; // Update the specific input value
     setComment(event); // Set the new state
   };
-  const handleUpdateInputChange = (logIndex, logData, commentIndex, commentItem) => {
-    logData[logIndex].comments[commentIndex].logcomments = commentItem;
-    setUpdateComment(commentItem); // Set the new state
+  const handleUpdateInputChange = (event) => {
+    // logData[logIndex].comments[commentIndex].logcomments = commentItem;
+    setUpdateComment(event); // Set the new state
     console.log(updateCommentValue);
   };
 
-  const onEditComment = (logIndex, commentIndex) => {
+  const onEditComment = (logIndex, commentIndex,commentItem) => {
+    setIsUpdateEnable(true)
+    setShiftLogCommentID(commentItem.id)
+    setLogCommentsIndex(logIndex);
+    setUpdateComment(commentItem.log_comment)
     shiftData.shift_logs[logIndex].comments[commentIndex].isEdit = true;
     setComment(shiftData.shift_logs[logIndex].comments[commentIndex].logcomments);
+    console.log('shiftLogCommentIDshiftLogCommentID',shiftLogCommentID)
     // setLogComment(shiftData["shift_logs"][logIndex]["comments"][commentIndex])
   };
 
@@ -227,21 +240,21 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
               position: 'relative',
               top: '7px'
             }}
-            onClick={() => onEditComment(logIndex, commentIndex)}
+            onClick={() => onEditComment(logIndex, commentIndex,commentItem)}
           />
         </Tooltip>
       )}
     </div>
   );
 
-  const updateLogComment = (logIndex, commentIndex, logData) => (
+  const displayUpdateLogComment = (logIndex,commentItem, commentIndex, logData) => (
     <Grid container justifyContent="start">
       <Grid item xs={12} sm={12} md={9}>
         <TextEntry
           rows={1}
-          setValue={(event) => handleUpdateInputChange(logIndex, logData, commentIndex, event)}
+          setValue={(event) => handleUpdateInputChange(event)}
           label={t('label.logCommentLabel')}
-          value={logData[logIndex].comments[commentIndex].log_comment}
+          value={shiftLogCommentID === commentItem.id ? updateCommentValue : ''}
           testId={`logComment${commentIndex}`}
         />
       </Grid>
@@ -251,7 +264,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
           ariaDescription="Button for submitting comment"
           label="Update"
           testId="commentButton"
-          onClick={() => updateLogComments(logIndex)}
+          onClick={() => updateLogComments(logIndex,commentItem,commentIndex)}
           size={ButtonSizeTypes.Small}
           variant={ButtonVariantTypes.Contained}
           color={ButtonColorTypes.Secondary}
@@ -381,7 +394,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
                               logCommentsIndex === logIndex && !(commentValue && commentValue !== '')
                             }
                             testId="commentButton"
-                            onClick={() => addLogComments(logIndex)}
+                            onClick={() => addLogComments(logIndex,data)}
                             size={ButtonSizeTypes.Small}
                             variant={ButtonVariantTypes.Contained}
                             color={ButtonColorTypes.Secondary}
@@ -483,16 +496,14 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
                           </Grid>
 
                           <div>
-                            {!commentItem.isEdit &&
-                              displayLogComment(
+                                                   {isUpdateEnable &&
+                              isCurrentShift && shiftLogCommentID === commentItem.id && logIndex === logCommentsIndex ?
+                              displayUpdateLogComment(logIndex,commentItem, commentIndex, logDataDetails): displayLogComment(
                                 logIndex,
                                 commentIndex,
                                 logDataDetails,
                                 commentItem
                               )}
-                            {commentItem.isEdit &&
-                              isCurrentShift &&
-                              updateLogComment(logIndex, commentIndex, logDataDetails)}
                           </div>
                           <Divider />
                         </div>

@@ -47,11 +47,11 @@ export const getUrlPath = (data) => {
 };
 
 const getTodayUTCDateRange = (dateString) => {
-  const startDate = moment(dateString, 'YYYY-MM-DD')
+  const startDate = moment(dateString)
     .startOf('day')
     .utc()
     .format('YYYY-MM-DD HH:mm:ss.SSSSSS');
-  const endDate = moment(dateString, 'YYYY-MM-DD')
+  const endDate = moment(dateString)
     .endOf('day')
     .utc()
     .format('YYYY-MM-DD HH:mm:ss.SSSSSS');
@@ -62,15 +62,19 @@ const getTodayUTCDateRange = (dateString) => {
 };
 
 export const getUTCDateRange = (start, end) => {
-  const startDate = moment(start, 'YYYY-MM-DD')
+  const startDate = moment(start)
     .startOf('day')
     .utc()
     .format('YYYY-MM-DD HH:mm:ss.SSSSSS');
-  const endDate = moment(end, 'YYYY-MM-DD').endOf('day').utc().format('YYYY-MM-DD HH:mm:ss.SSSSSS');
+  const endDate = moment(end).endOf('day').utc().format('YYYY-MM-DD HH:mm:ss.SSSSSS');
   return {
     start: startDate,
     end: endDate
   };
+};
+
+export const SHIFT_END = {
+  END_TIME: moment().utc().format('YYYY-MM-DD HH:mm:ss.SSSSSS')
 };
 
 export const todayDate = moment().utc().toISOString().substring(0, 10);

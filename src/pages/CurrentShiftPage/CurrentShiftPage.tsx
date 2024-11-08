@@ -39,6 +39,7 @@ import { Kafka } from 'kafkajs';
 import {
   ENTITY,
   KafkaTopic,
+  SHIFT_END,
   SHIFT_STATUS,
   operatorName,
   toUTCDateTimeFormat
@@ -72,7 +73,8 @@ function CurrentShiftPage() {
   const [openDialog, setOpenDialog] = React.useState(false);
 
   const onEditShiftComment = (shiftCommentIndex, shiftCommentItem) => {
-    setShiftCommentID(shiftCommentItem);
+    console.log('shiftCommentItemshiftCommentItem',shiftCommentItem)
+    setShiftCommentID(shiftCommentItem.id);
     console.log(shiftCommentID);
     setOpenSummaryModal(true);
     setShiftCommentUpdate(true);
@@ -120,6 +122,16 @@ function CurrentShiftPage() {
     }
   };
 
+  const updateShiftData = async () => {
+      const path = `shift?shift_id=${shiftId}`;
+      const result = await apiService.getSltLogs(path);
+      if (result && result.status === 200) {
+        setShiftData(
+          result && result.data && result.data.length > 0 && result.data[0] ? result.data[0] : []
+        );
+      }
+  };
+
   const useKafkaData = (topic) => {
     const kafka = new Kafka({
       clientId: window.location.hostname,
@@ -147,8 +159,9 @@ function CurrentShiftPage() {
       shift_operator: operator
     };
     const path = `shifts/create`;
-    setShiftData(SHIFT_DATA_LIST[0]);
+    // setShiftData(SHIFT_DATA_LIST[0]);
     const response = await apiService.postShiftData(path, shiftData);
+    console.log('response',response)
     if (response.status === 200 && response.data && response.data.length > 0) {
       setMessage('msg.shiftStarted');
       setDisplayMessageElement(true);
@@ -164,204 +177,7 @@ function CurrentShiftPage() {
           ? response.data[0]
           : []
       );
-      setShiftData(
-        SHIFT_DATA_LIST[0]
-        //   {
-        //   shift_id: 'shift-20241028-148',
-        //   shift_start: '2024-10-22T11:24:04.389077Z',
-        //   shift_operator: 'john',
-        //   shift_comment: [
-        //     {
-        //       shift_comments:
-        //         'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
-        //       created_on: '2024-10-22T11:24:14.406107Z',
-        //       id: 1,
-        //       isEdit: false
-        //     },
-        //     {
-        //       shift_comments:
-        //         'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
-        //       created_on: '2024-10-22T11:24:14.406107Z',
-        //       id: 2,
-        //       isEdit: false
-        //     }
-        //   ],
-        //   shift_logs: [
-        //     {
-        //       info: {
-        //         eb_id: 'eb-t0001-20241022-00002',
-        //         sbd_ref: 'sbd-t0001-20240822-00008',
-        //         sbi_ref: 'sbi-t0001-20240822-00009',
-        //         metadata: {
-        //           version: 1,
-        //           created_by: 'DefaultUser',
-        //           created_on: '2024-10-22T11:25:36.953526Z',
-        //           pdm_version: '15.4.0',
-        //           last_modified_by: 'DefaultUser',
-        //           last_modified_on: '2024-10-22T11:25:36.953526Z'
-        //         },
-        //         interface: 'https://schema.skao.int/ska-oso-pdm-eb/0.1',
-        //         telescope: 'ska_mid',
-        //         sbi_status: 'failed',
-        //         sbd_version: 1,
-        //         request_responses: [
-        //           {
-        //             status: 'OK',
-        //             request: 'ska_oso_scripting.functions.devicecontrol.assign_resource',
-        //             response: { result: 'this is a result' },
-        //             request_args: { kwargs: { subarray_id: '1' } },
-        //             request_sent_at: '2022-09-23T15:43:53.971548Z',
-        //             response_received_at: '2022-09-23T15:43:53.971548Z'
-        //           },
-        //           {
-        //             status: 'OK',
-        //             request: 'ska_oso_scripting.functions.devicecontrol.configure_resource',
-        //             response: { result: 'this is a result' },
-        //             request_args: { kwargs: { subarray_id: '1' } },
-        //             request_sent_at: '2022-09-23T15:43:53.971548Z',
-        //             response_received_at: '2022-09-23T15:43:53.971548Z'
-        //           },
-        //           {
-        //             status: 'OK',
-        //             request: 'ska_oso_scripting.functions.devicecontrol.scan',
-        //             response: { result: 'this is a result' },
-        //             request_args: { kwargs: { subarray_id: '1' } },
-        //             request_sent_at: '2022-09-23T15:43:53.971548Z',
-        //             response_received_at: '2022-09-23T15:43:53.971548Z'
-        //           },
-        //           {
-        //             status: 'OK',
-        //             request: 'ska_oso_scripting.functions.devicecontrol.release_all_resources',
-        //             response: { result: 'this is a result' },
-        //             request_args: { kwargs: { subarray_id: '1' } },
-        //             request_sent_at: '2022-09-23T15:43:53.971548Z',
-        //             response_received_at: '2022-09-23T15:43:53.971548Z'
-        //           },
-        //           {
-        //             error: { detail: 'this is an error' },
-        //             status: 'ERROR',
-        //             request: 'ska_oso_scripting.functions.devicecontrol.end',
-        //             request_sent_at: '2022-09-23T15:43:53.971548Z'
-        //           }
-        //         ]
-        //       },
-        //       source: 'ODA',
-        //       log_time: '2024-10-22T11:24:14.406107Z',
-        //       log_comment: [
-        //         {
-        //           logcomments: 'Lorem Ipsum is simply dummy text of the printing ',
-        //           logCommentTime: '23-10-2024',
-        //           id: 1,
-        //           isEdit: false
-        //         },
-        //         {
-        //           logcomments:
-        //             'Submitting Comments: We will implement a function to handle the submission of comments, making a POST request to the API for each comment',
-        //           logCommentTime: '23-10-2024',
-        //           id: 2,
-        //           isEdit: false
-        //         },
-        //         {
-        //           logcomments:
-        //             'Handling Input Changes: We will ensure that each text field can be updated independently.',
-        //           logCommentTime: '23-10-2024',
-        //           id: 3,
-        //           isEdit: false
-        //         }
-        //       ]
-        //     },
-        //     {
-        //       info: {
-        //         eb_id: 'eb-t0001-20241022-00002',
-        //         sbd_ref: 'sbd-t0001-20240822-00008',
-        //         sbi_ref: 'sbi-t0001-20240822-00009',
-        //         metadata: {
-        //           version: 1,
-        //           created_by: 'DefaultUser',
-        //           created_on: '2024-10-22T11:25:36.953526Z',
-        //           pdm_version: '15.4.0',
-        //           last_modified_by: 'DefaultUser',
-        //           last_modified_on: '2024-10-22T11:25:36.953526Z'
-        //         },
-        //         interface: 'https://schema.skao.int/ska-oso-pdm-eb/0.1',
-        //         telescope: 'ska_mid',
-        //         sbi_status: 'failed',
-        //         sbd_version: 1,
-        //         request_responses: [
-        //           {
-        //             status: 'OK',
-        //             request: 'ska_oso_scripting.functions.devicecontrol.assign_resource',
-        //             response: { result: 'this is a result' },
-        //             request_args: { kwargs: { subarray_id: '1' } },
-        //             request_sent_at: '2022-09-23T15:43:53.971548Z',
-        //             response_received_at: '2022-09-23T15:43:53.971548Z'
-        //           },
-        //           {
-        //             status: 'OK',
-        //             request: 'ska_oso_scripting.functions.devicecontrol.configure_resource',
-        //             response: { result: 'this is a result' },
-        //             request_args: { kwargs: { subarray_id: '1' } },
-        //             request_sent_at: '2022-09-23T15:43:53.971548Z',
-        //             response_received_at: '2022-09-23T15:43:53.971548Z'
-        //           },
-        //           {
-        //             status: 'OK',
-        //             request: 'ska_oso_scripting.functions.devicecontrol.scan',
-        //             response: { result: 'this is a result' },
-        //             request_args: { kwargs: { subarray_id: '1' } },
-        //             request_sent_at: '2022-09-23T15:43:53.971548Z',
-        //             response_received_at: '2022-09-23T15:43:53.971548Z'
-        //           },
-        //           {
-        //             status: 'OK',
-        //             request: 'ska_oso_scripting.functions.devicecontrol.release_all_resources',
-        //             response: { result: 'this is a result' },
-        //             request_args: { kwargs: { subarray_id: '1' } },
-        //             request_sent_at: '2022-09-23T15:43:53.971548Z',
-        //             response_received_at: '2022-09-23T15:43:53.971548Z'
-        //           },
-        //           {
-        //             error: { detail: 'this is an error' },
-        //             status: 'ERROR',
-        //             request: 'ska_oso_scripting.functions.devicecontrol.end',
-        //             request_sent_at: '2022-09-23T15:43:53.971548Z'
-        //           }
-        //         ]
-        //       },
-        //       source: 'ODA',
-        //       log_time: '2024-10-22T11:24:14.406107Z',
-        //       log_comment: [
-        //         {
-        //           logcomments: '222Lorem Ipsum is simply dummy text of the printing ',
-        //           logCommentTime: '23-10-2024',
-        //           id: 1,
-        //           isEdit: false
-        //         },
-        //         {
-        //           logcomments:
-        //             '22Submitting Comments: We will implement a function to handle the submission of comments, making a POST request to the API for each comment',
-        //           logCommentTime: '23-10-2024',
-        //           id: 2,
-        //           isEdit: false
-        //         },
-        //         {
-        //           logcomments:
-        //             '22Handling Input Changes: We will ensure that each text field can be updated independently.',
-        //           logCommentTime: '23-10-2024',
-        //           id: 3,
-        //           isEdit: false
-        //         }
-        //       ]
-        //     }
-        //   ],
-        //   metadata: {
-        //     created_by: 'john',
-        //     created_on: '2024-10-22T11:24:04.388998Z',
-        //     last_modified_by: 'john',
-        //     last_modified_on: '2024-10-22T11:25:36.971764Z'
-        //   }
-        // }
-      );
+      setShiftData(SHIFT_DATA_LIST[0]);
       // updateShiftLogs(response.data[0].shift_id);
     }
   };
@@ -387,17 +203,16 @@ function CurrentShiftPage() {
   useEffect(() => {
     fetchSltCurrentShifts();
     updateShiftLogs();
-    useKafkaData(KafkaTopic.serviceToUITopic);
+    // useKafkaData(KafkaTopic.serviceToUITopic);
   }, []);
 
   const endNewShift = async () => {
+    
     const shiftData = {
       shift_operator: operator,
-      shift_start: shiftStart,
-      shift_end: moment().utc().toISOString(),
-      comments: `${shiftCommentValue}`
+      shift_end:SHIFT_END.END_TIME
     };
-
+console.log('shiftData SHIFT_END',shiftData)
     const path = `shifts/update/${shiftId}`;
     const response = await apiService.putShiftData(path, shiftData);
     if (response.status === 200) {
@@ -415,19 +230,37 @@ function CurrentShiftPage() {
   const addShiftComments = async () => {
     if (shiftCommentValue === '') return;
     const shiftData = {
-      shift_operator: operator,
-      comments: `${shiftCommentValue}`
+      operator_name: operator,
+      comment: `${shiftCommentValue}`,
+      shift_id:shiftId
     };
-    const path = `shifts/update/${shiftId}`;
-    const response = await apiService.putShiftData(path, shiftData);
+    console.log('isShiftCommentUpdate',isShiftCommentUpdate)
+    if(isShiftCommentUpdate){
+    const updatePath = `shift_comments/update/${shiftCommentID}`;
+    const response = await apiService.putShiftData(updatePath, shiftData);
     if (response.status === 200) {
       setMessage('msg.commentSubmit');
       setDisplayModalMessageElement(true);
       setShiftCommentID(response);
+      updateShiftData()
       setTimeout(() => {
         // setShiftComment('')
         setDisplayModalMessageElement(false);
       }, 3000);
+    }
+    }else{
+      const addPath = `shift_comments/create`;
+      const response = await apiService.postShiftData(addPath, shiftData);
+      if (response.status === 200) {
+        setMessage('msg.commentSubmit');
+        setDisplayModalMessageElement(true);
+        setShiftCommentID(response);
+        updateShiftData()
+        setTimeout(() => {
+          // setShiftComment('')
+          setDisplayModalMessageElement(false);
+        }, 3000);
+      }
     }
   };
 
@@ -474,7 +307,6 @@ function CurrentShiftPage() {
     setShiftComment('');
     setShiftCommentUpdate(false);
     setOpenSummaryModal(true);
-    fetchImage();
   };
 
   const handleSummaryModalClose = () => {
