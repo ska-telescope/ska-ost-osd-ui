@@ -70,7 +70,7 @@ function DisplayShiftComponent() {
   const [inputValue, setInputValue] = React.useState('');
   const [openDialog, setOpenDialog] = React.useState(false);
 
-  const onEditShiftComment = (shiftCommentIndex, shiftCommentItem) => {
+  const onEditShiftComment = (shiftCommentItem) => {
     console.log('shiftCommentItemshiftCommentItem', shiftCommentItem);
     setShiftCommentID(shiftCommentItem.id);
     console.log(shiftCommentID);
@@ -83,9 +83,9 @@ function DisplayShiftComponent() {
     // setLogComment(shiftData["shift_logs"][logIndex]["log_comment"][commentIndex])
   };
 
-  const displayShiftComments = (shiftCommentIndex, shiftCommentItem) => (
+  const displayShiftComments = (shiftCommentItem) => (
     <div>
-      <span>{shiftCommentItem.comment}</span>
+    <span style={{ fontWeight: 700, fontSize: '14px' }}>{t('label.comments')}:{' '}</span> <span>{shiftCommentItem.comment}</span>
       <Tooltip title="Edit the log comment" placement="bottom-end">
         <DriveFileRenameOutlineIcon
           color="secondary"
@@ -96,7 +96,7 @@ function DisplayShiftComponent() {
             position: 'relative',
             top: '7px'
           }}
-          onClick={() => onEditShiftComment(shiftCommentIndex, shiftCommentItem)}
+          onClick={() => onEditShiftComment(shiftCommentItem)}
         />
       </Tooltip>{' '}
     </div>
@@ -106,7 +106,11 @@ function DisplayShiftComponent() {
     const path = `shift_comments/download_images/${commentId}`;
     // const path = `shift_comments/download_images/${shiftCommentID}`;
     const result = await apiService.getImage(path);
-    setImages(result && result.data && result.data[0]);
+    if(result.status===200){
+      setImages(result && result.data && result.data[0]?result.data[0]:[]);
+    }else{
+      setImages([{isEmpty:true}])
+    }
   };
 
   const updateShiftLogs = async () => {
@@ -115,7 +119,7 @@ function DisplayShiftComponent() {
       const result = await apiService.getSltLogs(path);
       if (result && result.status === 200) {
         setShiftData(
-          result && result.data && result.data.length > 0 && result.data[0] ? result.data[0] : []
+          result && result.data && result.data.length > 0 ? result.data[0] : []
         );
       }
     }
@@ -158,7 +162,6 @@ function DisplayShiftComponent() {
       shift_operator: operator
     };
     const path = `shifts/create`;
-    setShiftData(SHIFT_DATA_LIST[0]);
     const response = await apiService.postShiftData(path, shiftData);
     console.log('response', response);
     if (response.status === 200 && response.data && response.data.length > 0) {
@@ -169,18 +172,17 @@ function DisplayShiftComponent() {
       }, 3000);
       setDisableButton(false);
       setShiftId(response.data[0].shift_id);
-      setShiftData(
-        response && response.data && response.data.length > 0 && response.data[0]
-          ? response.data[0]
-          : []
-      );
+      // setShiftData(
+      //   response && response.data && response.data.length > 0 && response.data[0]
+      //     ? response.data[0]
+      //     : []
+      // );
       setShiftData(SHIFT_DATA_LIST[0]);
-      // updateShiftLogs(response.data[0].shift_id);
     }
   };
 
   const fetchSltCurrentShifts = async () => {
-    const path = `shifts/current_shift`;
+    const path = `current_shift`;
     const response = await apiService.getSltData(path);
     if (response.status === 200 && !response.data.shift_end) {
       setMessage('msg.shiftAlreadyStarted');
@@ -190,9 +192,7 @@ function DisplayShiftComponent() {
       }, 3000);
       if (response && response.data && response.data.length > 0) {
         setShiftId(response.data[0].shift_id);
-        setOperator(response.data[0].shift_operator.name);
-        setShiftComment(response.data[0].comments ? response.data[0].comments : '');
-        // setShiftData(response.data[0]);
+        setOperator(response.data[0].shift_operator);
         setShiftData(response.data[0]);
       }
     }
@@ -216,6 +216,7 @@ function DisplayShiftComponent() {
       setDisableButton(true);
       setDisplayMessageElement(true);
       setOperator('');
+      setShiftId('')
       setTimeout(() => {
         setDisplayMessageElement(false);
         setShiftComment('');
@@ -273,8 +274,6 @@ function DisplayShiftComponent() {
   };
 
   const postShiftCommentImage = async (file) => {
-    const path = `shift_comments/upload_image/${shiftCommentID}`;
-
     const formData = new FormData();
     formData.append('files', file);
     const config = {
@@ -283,18 +282,38 @@ function DisplayShiftComponent() {
         'content-type': 'multipart/form-data'
       }
     };
-    const result = await apiService.postImage(path, formData, config);
-    if (result.status === 200) {
-      setMessage('msg.imageUpload');
-      setDisplayModalMessageElement(true);
-      setTimeout(() => {
-        setDisplayModalMessageElement(false);
-      }, 3000);
+
+    if(shiftCommentID && shiftCommentID.length>0){
+      const path = `shift_comments/upload_image/${shiftCommentID}`;
+      const result = await apiService.updateImage(path, formData, config);
+      if (result.status === 200) {
+        setMessage('msg.imageUpload');
+        setDisplayModalMessageElement(true);
+        updateShiftData();
+        setTimeout(() => {
+          setDisplayModalMessageElement(false);
+        }, 3000);
+      }
+    }else{  
+      const path = `shift_comments/upload_image?shift_id=${shiftId}&operator_name=${operator}`;
+      const result = await apiService.updateImage(path, formData, config);
+      if (result.status === 200) {
+        setMessage('msg.imageUpload');
+        setDisplayModalMessageElement(true);
+        updateShiftData();
+        setTimeout(() => {
+          setDisplayModalMessageElement(false);
+        }, 3000);
+      } 
     }
+    
+
+    
   };
 
   const handleViewImageClose = () => {
     setOpenViewImageModal(false);
+    setImages([])
   };
   const handleOpenImage = (shiftCommentItem) => {
     console.log('qqqqqqqqqqqqqqqqqqqqqqqqq', shiftCommentItem);
@@ -379,8 +398,7 @@ function DisplayShiftComponent() {
   );
 
   const onUpdateCommentsEvent = () => {
-    // fetchSltCurrentShifts()
-    // setShiftData(null);
+    updateShiftData()
   };
   const endShiftAlertContent = () => (
     <Grid container direction="row" justifyContent="space-around" alignItems="center">
@@ -525,7 +543,7 @@ function DisplayShiftComponent() {
               {dataDetails &&
                 dataDetails.comments &&
                 dataDetails.comments.length > 0 &&
-                dataDetails.comments.map((shiftCommentItem, shiftCommentIndex) => (
+                dataDetails.comments.reverse().map((shiftCommentItem, shiftCommentIndex) => (
                   <div key={shiftCommentItem.id}>
                     <Grid container justifyContent="start">
                       <Grid item xs={12} sm={12} md={4}>
@@ -559,7 +577,7 @@ function DisplayShiftComponent() {
                       <Grid item xs={12} sm={12} md={12}>
                         {shiftCommentItem &&
                           shiftCommentItem.comment &&
-                          displayShiftComments(shiftCommentIndex, shiftCommentItem)}
+                          displayShiftComments(shiftCommentItem)}
                       </Grid>
                     </Grid>
 
@@ -797,7 +815,7 @@ function DisplayShiftComponent() {
       >
         <DialogTitle>{t('label.viewImages')}</DialogTitle>
         <DialogContent dividers>
-          {images && images.length > 0 ? (
+          {images  ? (
             <ImageDisplayComponent images={images} />
           ) : (
             <p>{t('label.noImageFound')}</p>

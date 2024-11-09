@@ -51,7 +51,7 @@ const RequestResponseDisplay = ({ responseArray }) => {
       <span style={{ textDecoration: 'underline', fontWeight: 900, fontSize: '16px' }}>
         {t('label.ebObservations')}
       </span>
-      {responseArray &&
+      {responseArray && responseArray.length>0 &&
         responseArray.map((dataItem) => (
           <div key={dataItem.id}>
             <Accordion defaultExpanded={openPannel}>
@@ -64,9 +64,9 @@ const RequestResponseDisplay = ({ responseArray }) => {
 
                 <Chip
                   size="small"
-                  label={dataItem.status}
+                  label={dataItem.status?dataItem.status:''}
                   style={{ marginLeft: '10px' }}
-                  color={dataItem.status === EBRequestResponseStatus.OK ? 'success' : 'error'}
+                  color={dataItem.status && dataItem.status === EBRequestResponseStatus.OK ? 'success' : 'error'}
                 />
               </AccordionSummary>
               <AccordionDetails>
@@ -74,7 +74,7 @@ const RequestResponseDisplay = ({ responseArray }) => {
                   <Grid item xs={12} sm={12} md={6}>
                     <Typography>
                       {t('label.requestSentAt')}{' '}
-                      <b>{toUTCDateTimeFormat(dataItem.request_sent_at)}</b>
+                      <b>{dataItem.request_sent_at?toUTCDateTimeFormat(dataItem.request_sent_at):'NA'}</b>
                     </Typography>
                   </Grid>
                   <Grid item xs={12} sm={12} md={6}>
@@ -93,9 +93,9 @@ const RequestResponseDisplay = ({ responseArray }) => {
                       <b>{t('label.details')}</b>
                     </Typography>
                     <pre>
-                      {dataItem.status === EBRequestResponseStatus.OK
-                        ? dataItem.response.result
-                        : dataItem.error.detail}
+                      {dataItem.status && dataItem.status === EBRequestResponseStatus.OK
+                        ? dataItem.response && dataItem.response.result?dataItem.response.result:'NA'
+                        : dataItem.error && dataItem.error.detail?dataItem.error.detail:'NA'}
                     </pre>
                   </Grid>
                 </Grid>
@@ -121,7 +121,6 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
   const [isUpdateEnable, setIsUpdateEnable] = useState(false);
   const [messageType, setMessageType] = useState('');
   const [logCommentsIndex, setLogCommentsIndex] = useState(0);
-  const [logCommentID, setLogCommentID] = useState('');
   console.log('shiftDatashiftData', shiftData);
   let id = 1;
   if (logDataDetails && logDataDetails.length > 0) {
@@ -134,26 +133,49 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
     });
   }
   const postLogImage = async (file) => {
-    const path = `shift_log_comments/upload_image?comment_id=${logCommentID}&operator_name=${shiftData.shift_operator}`;
-
-    const formData = new FormData();
-    formData.append('file', file);
-    const config = {
-      headers: {
-        accept: 'application/json',
-        'content-type': 'multipart/form-data'
-      }
-    };
-    const response = await apiService.postImage(path, formData, config);
-    if (response.status === 200) {
-      setMessageType('addLogImage');
-      setMessage('msg.imageUpload');
-      setDisplayMessageElement(true);
-      updateCommentsEvent();
-      setTimeout(() => {
-        setDisplayMessageElement(false);
-      }, 3000);
+    if(shiftLogCommentID && shiftLogCommentID.length>0){
+     const path = `shift_log_comments/upload_image?comment_id=${shiftLogCommentID}&operator_name=${shiftData.shift_operator}`;
+     const formData = new FormData();
+     formData.append('file', file);
+     const config = {
+       headers: {
+         accept: 'application/json',
+         'content-type': 'multipart/form-data'
+       }
+     };
+     const response = await apiService.updateImage(path, formData, config);
+     if (response.status === 200) {
+       setMessageType('addLogImage');
+       setMessage('msg.imageUpload');
+       setDisplayMessageElement(true);
+       updateCommentsEvent();
+       setTimeout(() => {
+         setDisplayMessageElement(false);
+       }, 3000);
+     }
+    }else{
+     const path = `shift_log_comments/upload_image?shift_id=${shiftData.shift_id}&operator_name=${shiftData.shift_operator}&eb_id=data.info.eb_id`;
+     const formData = new FormData();
+     formData.append('file', file);
+     const config = {
+       headers: {
+         accept: 'application/json',
+         'content-type': 'multipart/form-data'
+       }
+     };
+     const response = await apiService.addImage(path, formData, config);
+     if (response.status === 200) {
+       setMessageType('addLogImage');
+       setMessage('msg.imageUpload');
+       setDisplayMessageElement(true);
+       updateCommentsEvent();
+       setTimeout(() => {
+         setDisplayMessageElement(false);
+       }, 3000);
+     }
     }
+   
+ 
   };
 
   const addLogComments = async (logIndex, data) => {
@@ -173,8 +195,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
     if (response.status === 200) {
       updateCommentsEvent();
       console.log('qqqqqqssssssssssssssssssss', response);
-      setLogCommentID(response.data && response.data.length > 0 ? response.data[0].id : '');
-      console.log(logCommentID);
+      setShiftLogCommentID(response.data && response.data.length > 0 ? response.data[0].id : '');
       setDisplayMessageElement(true);
       setMessageType('addLogComments');
       setMessage('msg.commentSubmit');
@@ -195,8 +216,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
     const response = await apiService.updateLogComments(path, updateCommentPayload);
     if (response.status === 200) {
       updateCommentsEvent();
-      setLogCommentID(response.data && response.data.length > 0 ? response.data[0].id : '');
-      console.log(logCommentID);
+      setShiftLogCommentID(response.data && response.data.length > 0 ? response.data[0].id : '');
       setDisplayMessageElement(true);
       setMessageType('updateLogComments');
       setMessage('msg.commentSubmit');
@@ -278,14 +298,20 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
       </Grid>
     </Grid>
   );
-  const fetchImage = async () => {
-    const path = `shifts/download_images/`;
+  const fetchImage = async (commentId) => {
+    console.log('shiftLogCommentIDshiftLogCommentID',commentId)
+    const path = `shift_log_comments/download_images/${commentId}`;
     const result = await apiService.getImage(path);
-    setImages(result && result.data && result.data[0]);
+    if(result.status===200){
+      setImages(result && result.data && result.data[0]?result.data[0]:[]);
+    }else{
+      setImages([{isEmpty:true}])
+    }
+    
   };
-  const handleOpenImage = () => {
+  const handleOpenImage = (commentId) => {
     setOpenModal(true);
-    fetchImage();
+    fetchImage(commentId);
   };
 
   const handleClose = () => {
@@ -312,18 +338,18 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
                 <Grid item xs={12} sm={12} md={6.5}>
                   <Grid container justifyContent="start" style={{ paddingTop: '10px' }}>
                     <Grid item xs={12} sm={12} md={3}>
-                      <Chip size="small" label={`Source:${data.source}`} color="default" />
+                      <Chip size="small" label={`Source:${data.source?data.source:''}`} color="default" />
                     </Grid>
                     <Grid item xs={12} sm={12} md={6}>
                       <span>
-                        {t('label.logTime')} <b>{toUTCDateTimeFormat(data.log_time)}</b>
+                        {t('label.logTime')} <b>{data.log_time?toUTCDateTimeFormat(data.log_time):'NA'}</b>
                       </span>
                     </Grid>
                     <Grid item xs={12} sm={12} md={1} />
                     <Grid item xs={12} sm={12} md={2}>
                       <Chip
                         size="small"
-                        label={`${data.info.sbi_status.toUpperCase()}`}
+                        label={`${data.info && data.info.sbi_status?data.info.sbi_status.toUpperCase():'NA'}`}
                         color="error"
                       />
                     </Grid>
@@ -335,13 +361,13 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
                       </p>
                       <p>
                         {t('label.sbiID')} <b>{data.info.sbi_ref}</b> {t('label.isStatus')}{' '}
-                        <b>{data.info.sbi_status.toUpperCase()}</b>
+                        <b>{data.info && data.info.sbi_status?data.info.sbi_status.toUpperCase():'NA'}</b>
                       </p>
                     </Grid>
                   </Grid>
                   <Grid container justifyContent="start">
                     <Grid item xs={12} sm={12} md={12}>
-                      <RequestResponseDisplay responseArray={data.info.request_responses} />
+                      <RequestResponseDisplay responseArray={data.info && data.info.request_responses?data.info.request_responses:[]} />
                     </Grid>
                   </Grid>
                 </Grid>
@@ -495,7 +521,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
                                 }}
                                 aria-hidden="true"
                                 data-testid="viewImages"
-                                onClick={handleOpenImage}
+                                onClick={()=>handleOpenImage(commentItem.id)}
                               >
                                 {t('label.viewImages')}
                               </p>
@@ -511,7 +537,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
                                   logIndex,
                                   commentItem,
                                   commentIndex,
-                                  logDataDetails
+                                  
                                 )
                               : displayLogComment(
                                   logIndex,
@@ -520,7 +546,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
                                   commentItem
                                 )}
                           </div>
-                          <Divider />
+                          <Divider style={{ marginTop: '15px' }} />
                         </div>
                       ))}
                     {data && !data.comments && <p>{t('label.nologComments')}</p>}

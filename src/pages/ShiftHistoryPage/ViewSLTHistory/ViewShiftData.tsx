@@ -36,7 +36,7 @@ const ViewShiftData = ({ data }) => {
   const [value, setValue] = useState(data && data.annotations);
   const [statusMessage, setStatusMessage] = useState(null);
   const [showElement, setShowElement] = useState(false);
-  const [isAnnotationUpdate, setAnnotationUpdate] = useState(!!data.annotations);
+  const [isAnnotationUpdate, setAnnotationUpdate] = useState(true);
   const theme = useTheme();
   const [openViewImageModal, setOpenViewImageModal] = useState(false);
   // data = SHIFT_DATA_LIST[0];
@@ -45,7 +45,13 @@ const ViewShiftData = ({ data }) => {
     setValue(shiftCommentItem.annotations);
     setAnnotationUpdate(false);
   };
-  const displayShiftComments = (shiftCommentItem) => <span>{shiftCommentItem.comment}</span>;
+  const displayShiftComments = (shiftCommentItem) => (
+    <>
+     <span style={{ fontWeight: 700, fontSize: '14px' }}>{t('label.comments')}:{' '}</span> <span>{shiftCommentItem.comment}</span>
+    </>
+    
+  )
+  
 
   const displayShiftAnnotation = (shiftCommentItem) => (
     <div>
@@ -65,14 +71,18 @@ const ViewShiftData = ({ data }) => {
       </Tooltip>{' '}
     </div>
   );
-  const fetchImage = async () => {
-    const path = `shifts/download_images/${data.shift_id}`;
+  const fetchImage = async (shiftCommentId) => {
+    const path = `shift_comments/download_images/${shiftCommentId}`;
     const result = await apiService.getImage(path);
-    setImages(result && result.data && result.data[0]);
+    if(result.status===200){
+      setImages(result && result.data && result.data[0]?result.data[0]:[]);
+    }else{
+      setImages([{isEmpty:true}])
+    }
   };
-  const handleOpenImage = () => {
+  const handleOpenImage = (shiftCommentId) => {
     setOpenViewImageModal(true);
-    fetchImage();
+    fetchImage(shiftCommentId);
   };
 
   const addAnnotation = async () => {
@@ -180,8 +190,11 @@ const ViewShiftData = ({ data }) => {
               <span>: {data.shift_end ? toUTCDateTimeFormat(data.shift_end) : 'Active shift'}</span>
             </Grid>
             <Grid item xs={12} sm={12} md={12}>
+            <h3>
+            {t('label.addAnnotationLabel')}
+            </h3>
               <Grid container spacing={2} justifyContent="left" style={{ position: 'relative' }}>
-                {!isAnnotationUpdate && (
+                {isAnnotationUpdate && !data.annotations && (
                   <Grid item xs={12} sm={12} md={12}>
                     <TextEntry
                       setValue={setAnnotationValue}
@@ -192,7 +205,7 @@ const ViewShiftData = ({ data }) => {
                     />
                   </Grid>
                 )}
-                {!isAnnotationUpdate && (
+                {isAnnotationUpdate && !data.annotations &&(
                   <Grid item xs={12} sm={12} md={3}>
                     <Button
                       size={ButtonSizeTypes.Small}
@@ -271,7 +284,7 @@ const ViewShiftData = ({ data }) => {
                             }}
                             aria-hidden="true"
                             data-testid="viewImages"
-                            onClick={handleOpenImage}
+                            onClick={()=>handleOpenImage(shiftCommentItem.id)}
                           >
                             {t('label.viewImages')}
                           </p>

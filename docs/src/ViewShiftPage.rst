@@ -32,10 +32,9 @@ User can click on |viewImages| link to view all the images as shown in below ima
    :width: 13%
    :alt: Search Button
 
-.. figure:: /images/endConfirmModal.png
+.. figure:: /images/viewImagesModal.png
    :width: 100%
    :align: center
-   :alt: Shift history
 
 
 |

@@ -43,7 +43,7 @@ function ShiftHistoryPage() {
     const path = `shifts?query_type=created_between&shift_start=${getTodayDateRange.start}&shift_end=${getTodayDateRange.end}`;
     const result = await apiService.getSltData(path);
     if (result.status === 200) {
-      setSltHistory(result.data[0]);
+      setSltHistory(result.data[0].reverse());
       setsearchType(SEARCH_TYPE.today);
     }
   };
@@ -94,7 +94,7 @@ function ShiftHistoryPage() {
     const path = getUrlPath(data);
     const response = await apiService.getSltData(path);
     if (response.status === 200 && response.data && response.data.length > 0) {
-      setSltHistory(response.data[0]);
+      setSltHistory(response.data[0].reverse());
     } else {
       setSltHistory([]);
     }
