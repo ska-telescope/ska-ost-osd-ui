@@ -27,8 +27,8 @@ function handleAxiosError(error: object) {
 
 const apiService = {
   // baseURL: () => window.env.BACKEND_URL,
-  // baseURL: () => "http://localhost:8000/ska-oso-slt-services/slt/api/v0",
-  baseURL: () => 'https://k8s.stfc.skao.int/dev-ska-oso-slt-services-test-inegration/slt/api/v0',
+  // baseURL: () => 'http://127.0.0.1:8000/ska-oso-slt-services/slt/api/v0',
+  baseURL: () => 'https://k8s.stfc.skao.int/dev-ska-oso-slt-services-nak-1031-ui-testing/slt/api/v0',
 
   getURLPath: async (path): Promise<any> => {
     const baseUrl = apiService.baseURL();
@@ -55,6 +55,19 @@ const apiService = {
 
     try {
       const result = await axios.put<JSON>(url, shiftData);
+      return { data: result.data, status: 200, error: null };
+    } catch (err) {
+      const errorResponse = handleAxiosError(err);
+      return { data: null, status: errorResponse.status, error: errorResponse.error };
+    }
+  },
+
+  updateLogComments: async (path, payload): Promise<any> => {
+    const baseUrl = apiService.baseURL();
+    const url = `${baseUrl}/${path}`;
+
+    try {
+      const result = await axios.put<JSON>(url, payload);
       return { data: result.data, status: 200, error: null };
     } catch (err) {
       const errorResponse = handleAxiosError(err);
