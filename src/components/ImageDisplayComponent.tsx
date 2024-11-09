@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 const ImageDisplayComponent = ({ images }) => {
   const { t } = useTranslation('translations');
   let id = 1;
-  console.log(images)
   if (images && images.length > 0) {
     images.map((row) => {
       row.id = id++;
@@ -14,8 +13,9 @@ const ImageDisplayComponent = ({ images }) => {
 
   return (
     <div>
-      {images  &&
-        images.length > 0 && !images[0].isEmpty &&
+      {images &&
+        images.length > 0 &&
+        !images[0].isEmpty &&
         images.map((image, index) => (
           <div key={image.id}>
             <img
@@ -27,11 +27,8 @@ const ImageDisplayComponent = ({ images }) => {
             <hr />
           </div>
         ))}
-         {images && images.length > 0  && images[0].isEmpty &&  <p>{t('label.noImageFound')}</p>
-}
-        {images &&
-        images.length === 0 && <p>Loading please wait...</p>
-}
+      {images && images.length > 0 && images[0].isEmpty && <p>{t('label.noImageFound')}</p>}
+      {images && images.length === 0 && <p>Loading please wait...</p>}
     </div>
   );
 };

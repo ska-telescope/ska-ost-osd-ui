@@ -47,11 +47,10 @@ const ViewShiftData = ({ data }) => {
   };
   const displayShiftComments = (shiftCommentItem) => (
     <>
-     <span style={{ fontWeight: 700, fontSize: '14px' }}>{t('label.comments')}:{' '}</span> <span>{shiftCommentItem.comment}</span>
+      <span style={{ fontWeight: 700, fontSize: '14px' }}>{t('label.comments')}: </span>{' '}
+      <span>{shiftCommentItem.comment}</span>
     </>
-    
-  )
-  
+  );
 
   const displayShiftAnnotation = (shiftCommentItem) => (
     <div>
@@ -74,10 +73,10 @@ const ViewShiftData = ({ data }) => {
   const fetchImage = async (shiftCommentId) => {
     const path = `shift_comments/download_images/${shiftCommentId}`;
     const result = await apiService.getImage(path);
-    if(result.status===200){
-      setImages(result && result.data && result.data[0]?result.data[0]:[]);
-    }else{
-      setImages([{isEmpty:true}])
+    if (result.status === 200) {
+      setImages(result && result.data && result.data[0] ? result.data[0] : []);
+    } else {
+      setImages([{ isEmpty: true }]);
     }
   };
   const handleOpenImage = (shiftCommentId) => {
@@ -190,9 +189,7 @@ const ViewShiftData = ({ data }) => {
               <span>: {data.shift_end ? toUTCDateTimeFormat(data.shift_end) : 'Active shift'}</span>
             </Grid>
             <Grid item xs={12} sm={12} md={12}>
-            <h3>
-            {t('label.addAnnotationLabel')}
-            </h3>
+              <h3>{t('label.addAnnotationLabel')}</h3>
               <Grid container spacing={2} justifyContent="left" style={{ position: 'relative' }}>
                 {isAnnotationUpdate && !data.annotations && (
                   <Grid item xs={12} sm={12} md={12}>
@@ -205,7 +202,7 @@ const ViewShiftData = ({ data }) => {
                     />
                   </Grid>
                 )}
-                {isAnnotationUpdate && !data.annotations &&(
+                {isAnnotationUpdate && !data.annotations && (
                   <Grid item xs={12} sm={12} md={3}>
                     <Button
                       size={ButtonSizeTypes.Small}
@@ -284,7 +281,7 @@ const ViewShiftData = ({ data }) => {
                             }}
                             aria-hidden="true"
                             data-testid="viewImages"
-                            onClick={()=>handleOpenImage(shiftCommentItem.id)}
+                            onClick={() => handleOpenImage(shiftCommentItem.id)}
                           >
                             {t('label.viewImages')}
                           </p>
