@@ -1,9 +1,8 @@
 import React from 'react';
-import sltDataModel from '../../../DataModels/Models/sltDataModel';
-import apiService from '../../../services/apis';
+import apiService from '../../../../services/apis';
 
 interface EntryFieldProps {
-  shiftData: sltDataModel;
+  shiftData;
   updatedList;
 }
 

@@ -32,9 +32,9 @@ import {
   TextEntry
 } from '@ska-telescope/ska-gui-components';
 import AddIcon from '@mui/icons-material/Add';
-import { EBRequestResponseStatus, toUTCDateTimeFormat } from '../../utils/constants';
-import apiService from '../../services/apis';
-import ImageDisplayComponent from '../../components/ImageDisplayComponent';
+import { EBRequestResponseStatus, toUTCDateTimeFormat } from '../../../utils/constants';
+import apiService from '../../../services/apis';
+import ImageDisplayComponent from '../../../components/ImageDisplayComponent';
 
 const RequestResponseDisplay = ({ responseArray }) => {
   const { t } = useTranslation('translations');
@@ -134,41 +134,46 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
     });
   }
   const postLogImage = async (file) => {
-    const path = `shift/shifts/upload_image/`;
+    const path = `shift_log_comments/upload_image?comment_id=${logCommentID}&operator_name=${shiftData.shift_operator}`;
 
     const formData = new FormData();
     formData.append('file', file);
-    formData.append('fileName', file.name);
     const config = {
       headers: {
         accept: 'application/json',
         'content-type': 'multipart/form-data'
       }
     };
-    await apiService.postImage(path, formData, config);
-    setMessageType('addLogImage');
-    setMessage('msg.imageUpload');
-    setDisplayMessageElement(true);
-    updateCommentsEvent();
+    const response = await apiService.postImage(path, formData, config);
+    if (response.status === 200) {
+      setMessageType('addLogImage');
+      setMessage('msg.imageUpload');
+      setDisplayMessageElement(true);
+      updateCommentsEvent();
+      setTimeout(() => {
+        setDisplayMessageElement(false);
+      }, 3000);
+    }
   };
 
-  const addLogComments = async (logIndex,data) => {
-    console.log('data',data)
+  const addLogComments = async (logIndex, data) => {
+    console.log('data', data);
     if (commentValue === '') return;
-   console.log('shiftData',shiftData)
+    console.log('shiftData', shiftData);
     const addCommentRequestBody = {
       log_comment: `${commentValue}`,
-      operator_name:shiftData.shift_operator,
-      shift_id:shiftData.shift_id,
-      eb_id:data["info"].eb_id
+      operator_name: shiftData.shift_operator,
+      shift_id: shiftData.shift_id,
+      eb_id: data.info.eb_id
     };
-console.log('commentcomment',addCommentRequestBody)
+    console.log('commentcomment', addCommentRequestBody);
     const path = `shift_log_comments/create`;
     setLogCommentsIndex(logIndex);
     const response = await apiService.postShiftData(path, addCommentRequestBody);
     if (response.status === 200) {
       updateCommentsEvent();
-      setLogCommentID(response);
+      console.log('qqqqqqssssssssssssssssssss', response);
+      setLogCommentID(response.data && response.data.length > 0 ? response.data[0].id : '');
       console.log(logCommentID);
       setDisplayMessageElement(true);
       setMessageType('addLogComments');
@@ -178,26 +183,27 @@ console.log('commentcomment',addCommentRequestBody)
       }, 3000);
     }
   };
-  const updateLogComments = async (logIndex,commentItem,commentIndex) => {
-    console.log('commentItemcommentItem',commentItem,commentIndex)
+  const updateLogComments = async (logIndex, commentItem, commentIndex) => {
+    console.log('commentItemcommentItem', commentItem, commentIndex);
     if (updateCommentValue === '') return;
     const updateCommentPayload = {
       log_comment: `${updateCommentValue}`,
-      operator_name:shiftData.shift_operator,
+      operator_name: shiftData.shift_operator
     };
     const path = `shift_log_comments/update/${commentItem.id}`;
     setLogCommentsIndex(logIndex);
-    const response = await apiService.updateLogComments(path,updateCommentPayload);
+    const response = await apiService.updateLogComments(path, updateCommentPayload);
     if (response.status === 200) {
       updateCommentsEvent();
-      setLogCommentID(response);
+      setLogCommentID(response.data && response.data.length > 0 ? response.data[0].id : '');
+      console.log(logCommentID);
       setDisplayMessageElement(true);
       setMessageType('updateLogComments');
       setMessage('msg.commentSubmit');
       // shiftData["shift_logs"][logIndex]["comments"][commentIndex]["isEdit"]=false;
       setTimeout(() => {
         setDisplayMessageElement(false);
-        setIsUpdateEnable(false)
+        setIsUpdateEnable(false);
       }, 3000);
     }
   };
@@ -214,14 +220,14 @@ console.log('commentcomment',addCommentRequestBody)
     console.log(updateCommentValue);
   };
 
-  const onEditComment = (logIndex, commentIndex,commentItem) => {
-    setIsUpdateEnable(true)
-    setShiftLogCommentID(commentItem.id)
+  const onEditComment = (logIndex, commentIndex, commentItem) => {
+    setIsUpdateEnable(true);
+    setShiftLogCommentID(commentItem.id);
     setLogCommentsIndex(logIndex);
-    setUpdateComment(commentItem.log_comment)
+    setUpdateComment(commentItem.log_comment);
     shiftData.shift_logs[logIndex].comments[commentIndex].isEdit = true;
     setComment(shiftData.shift_logs[logIndex].comments[commentIndex].logcomments);
-    console.log('shiftLogCommentIDshiftLogCommentID',shiftLogCommentID)
+    console.log('shiftLogCommentIDshiftLogCommentID', shiftLogCommentID);
     // setLogComment(shiftData["shift_logs"][logIndex]["comments"][commentIndex])
   };
 
@@ -240,14 +246,14 @@ console.log('commentcomment',addCommentRequestBody)
               position: 'relative',
               top: '7px'
             }}
-            onClick={() => onEditComment(logIndex, commentIndex,commentItem)}
+            onClick={() => onEditComment(logIndex, commentIndex, commentItem)}
           />
         </Tooltip>
       )}
     </div>
   );
 
-  const displayUpdateLogComment = (logIndex,commentItem, commentIndex, logData) => (
+  const displayUpdateLogComment = (logIndex, commentItem, commentIndex) => (
     <Grid container justifyContent="start">
       <Grid item xs={12} sm={12} md={9}>
         <TextEntry
@@ -264,7 +270,7 @@ console.log('commentcomment',addCommentRequestBody)
           ariaDescription="Button for submitting comment"
           label="Update"
           testId="commentButton"
-          onClick={() => updateLogComments(logIndex,commentItem,commentIndex)}
+          onClick={() => updateLogComments(logIndex, commentItem, commentIndex)}
           size={ButtonSizeTypes.Small}
           variant={ButtonVariantTypes.Contained}
           color={ButtonColorTypes.Secondary}
@@ -273,7 +279,7 @@ console.log('commentcomment',addCommentRequestBody)
     </Grid>
   );
   const fetchImage = async () => {
-    const path = `shifts/download_image/`;
+    const path = `shifts/download_images/`;
     const result = await apiService.getImage(path);
     setImages(result && result.data && result.data[0]);
   };
@@ -391,10 +397,11 @@ console.log('commentcomment',addCommentRequestBody)
                             ariaDescription="Button for submitting comment"
                             label={t('label.add')}
                             disabled={
-                              logCommentsIndex === logIndex && !(commentValue && commentValue !== '')
+                              logCommentsIndex === logIndex &&
+                              !(commentValue && commentValue !== '')
                             }
                             testId="commentButton"
-                            onClick={() => addLogComments(logIndex,data)}
+                            onClick={() => addLogComments(logIndex, data)}
                             size={ButtonSizeTypes.Small}
                             variant={ButtonVariantTypes.Contained}
                             color={ButtonColorTypes.Secondary}
@@ -496,14 +503,22 @@ console.log('commentcomment',addCommentRequestBody)
                           </Grid>
 
                           <div>
-                                                   {isUpdateEnable &&
-                              isCurrentShift && shiftLogCommentID === commentItem.id && logIndex === logCommentsIndex ?
-                              displayUpdateLogComment(logIndex,commentItem, commentIndex, logDataDetails): displayLogComment(
-                                logIndex,
-                                commentIndex,
-                                logDataDetails,
-                                commentItem
-                              )}
+                            {isUpdateEnable &&
+                            isCurrentShift &&
+                            shiftLogCommentID === commentItem.id &&
+                            logIndex === logCommentsIndex
+                              ? displayUpdateLogComment(
+                                  logIndex,
+                                  commentItem,
+                                  commentIndex,
+                                  logDataDetails
+                                )
+                              : displayLogComment(
+                                  logIndex,
+                                  commentIndex,
+                                  logDataDetails,
+                                  commentItem
+                                )}
                           </div>
                           <Divider />
                         </div>

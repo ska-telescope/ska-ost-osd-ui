@@ -34,7 +34,6 @@ import AddIcon from '@mui/icons-material/Add';
 import HistoryIcon from '@mui/icons-material/History';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
-import moment from 'moment';
 import { Kafka } from 'kafkajs';
 import {
   ENTITY,
@@ -43,15 +42,14 @@ import {
   SHIFT_STATUS,
   operatorName,
   toUTCDateTimeFormat
-} from '../../utils/constants';
-import apiService from '../../services/apis';
-import ImageDisplayComponent from '../../components/ImageDisplayComponent';
-import DisplayShiftLogsComponent from './DisplayShiftLogsComponent';
-import SHIFT_DATA_LIST from '../../DataModels/DataFiles/shiftDataList';
+} from '../../../utils/constants';
+import apiService from '../../../services/apis';
+import ImageDisplayComponent from '../../../components/ImageDisplayComponent';
+import DisplayShiftLogsComponent from '../DisplayShiftLogsComponent/DisplayShiftLogsComponent';
+import SHIFT_DATA_LIST from '../../../DataModels/DataFiles/shiftDataList';
 
-function CurrentShiftPage() {
+function DisplayShiftComponent() {
   const theme = useTheme();
-  const [shiftStart, setShiftStart] = useState('');
   const [shiftStatus, setShiftStatus] = useState('');
   const [openViewImageModal, setOpenViewImageModal] = useState(false);
   const [openSummaryModal, setOpenSummaryModal] = useState(false);
@@ -73,7 +71,7 @@ function CurrentShiftPage() {
   const [openDialog, setOpenDialog] = React.useState(false);
 
   const onEditShiftComment = (shiftCommentIndex, shiftCommentItem) => {
-    console.log('shiftCommentItemshiftCommentItem',shiftCommentItem)
+    console.log('shiftCommentItemshiftCommentItem', shiftCommentItem);
     setShiftCommentID(shiftCommentItem.id);
     console.log(shiftCommentID);
     setOpenSummaryModal(true);
@@ -104,8 +102,9 @@ function CurrentShiftPage() {
     </div>
   );
 
-  const fetchImage = async () => {
-    const path = `shifts/download_image/${shiftId}`;
+  const fetchImage = async (commentId) => {
+    const path = `shift_comments/download_images/${commentId}`;
+    // const path = `shift_comments/download_images/${shiftCommentID}`;
     const result = await apiService.getImage(path);
     setImages(result && result.data && result.data[0]);
   };
@@ -123,13 +122,13 @@ function CurrentShiftPage() {
   };
 
   const updateShiftData = async () => {
-      const path = `shift?shift_id=${shiftId}`;
-      const result = await apiService.getSltLogs(path);
-      if (result && result.status === 200) {
-        setShiftData(
-          result && result.data && result.data.length > 0 && result.data[0] ? result.data[0] : []
-        );
-      }
+    const path = `shift?shift_id=${shiftId}`;
+    const result = await apiService.getSltLogs(path);
+    if (result && result.status === 200) {
+      setShiftData(
+        result && result.data && result.data.length > 0 && result.data[0] ? result.data[0] : []
+      );
+    }
   };
 
   const useKafkaData = (topic) => {
@@ -159,9 +158,9 @@ function CurrentShiftPage() {
       shift_operator: operator
     };
     const path = `shifts/create`;
-    // setShiftData(SHIFT_DATA_LIST[0]);
+    setShiftData(SHIFT_DATA_LIST[0]);
     const response = await apiService.postShiftData(path, shiftData);
-    console.log('response',response)
+    console.log('response', response);
     if (response.status === 200 && response.data && response.data.length > 0) {
       setMessage('msg.shiftStarted');
       setDisplayMessageElement(true);
@@ -169,8 +168,6 @@ function CurrentShiftPage() {
         setDisplayMessageElement(false);
       }, 3000);
       setDisableButton(false);
-      setShiftStart(response.data[0].shift_start);
-
       setShiftId(response.data[0].shift_id);
       setShiftData(
         response && response.data && response.data.length > 0 && response.data[0]
@@ -203,16 +200,15 @@ function CurrentShiftPage() {
   useEffect(() => {
     fetchSltCurrentShifts();
     updateShiftLogs();
-    // useKafkaData(KafkaTopic.serviceToUITopic);
+    useKafkaData(KafkaTopic.serviceToUITopic);
   }, []);
 
   const endNewShift = async () => {
-    
     const shiftData = {
       shift_operator: operator,
-      shift_end:SHIFT_END.END_TIME
+      shift_end: SHIFT_END.END_TIME
     };
-console.log('shiftData SHIFT_END',shiftData)
+    console.log('shiftData SHIFT_END', shiftData);
     const path = `shifts/update/${shiftId}`;
     const response = await apiService.putShiftData(path, shiftData);
     if (response.status === 200) {
@@ -232,30 +228,31 @@ console.log('shiftData SHIFT_END',shiftData)
     const shiftData = {
       operator_name: operator,
       comment: `${shiftCommentValue}`,
-      shift_id:shiftId
+      shift_id: shiftId
     };
-    console.log('isShiftCommentUpdate',isShiftCommentUpdate)
-    if(isShiftCommentUpdate){
-    const updatePath = `shift_comments/update/${shiftCommentID}`;
-    const response = await apiService.putShiftData(updatePath, shiftData);
-    if (response.status === 200) {
-      setMessage('msg.commentSubmit');
-      setDisplayModalMessageElement(true);
-      setShiftCommentID(response);
-      updateShiftData()
-      setTimeout(() => {
-        // setShiftComment('')
-        setDisplayModalMessageElement(false);
-      }, 3000);
-    }
-    }else{
+    console.log('isShiftCommentUpdate', isShiftCommentUpdate);
+    if (isShiftCommentUpdate) {
+      const updatePath = `shift_comments/update/${shiftCommentID}`;
+      const response = await apiService.putShiftData(updatePath, shiftData);
+      if (response.status === 200) {
+        setMessage('msg.commentSubmit');
+        setDisplayModalMessageElement(true);
+        console.log('iiiiiiiiiiiiiiiiiiiiiiii', response);
+        setShiftCommentID(response.data[0].id);
+        updateShiftData();
+        setTimeout(() => {
+          // setShiftComment('')
+          setDisplayModalMessageElement(false);
+        }, 3000);
+      }
+    } else {
       const addPath = `shift_comments/create`;
       const response = await apiService.postShiftData(addPath, shiftData);
       if (response.status === 200) {
         setMessage('msg.commentSubmit');
         setDisplayModalMessageElement(true);
-        setShiftCommentID(response);
-        updateShiftData()
+        setShiftCommentID(response.data[0].id);
+        updateShiftData();
         setTimeout(() => {
           // setShiftComment('')
           setDisplayModalMessageElement(false);
@@ -276,32 +273,33 @@ console.log('shiftData SHIFT_END',shiftData)
   };
 
   const postShiftCommentImage = async (file) => {
-    const path = `shifts/upload_image/${shiftId}`;
+    const path = `shift_comments/upload_image/${shiftCommentID}`;
 
     const formData = new FormData();
-    formData.append('file', file);
-    formData.append('fileName', file.name);
+    formData.append('files', file);
     const config = {
       headers: {
         accept: 'application/json',
         'content-type': 'multipart/form-data'
       }
     };
-    await apiService.postImage(path, formData, config);
-
-    setMessage('msg.imageUpload');
-    setDisplayModalMessageElement(true);
-    setTimeout(() => {
-      setDisplayModalMessageElement(false);
-    }, 3000);
+    const result = await apiService.postImage(path, formData, config);
+    if (result.status === 200) {
+      setMessage('msg.imageUpload');
+      setDisplayModalMessageElement(true);
+      setTimeout(() => {
+        setDisplayModalMessageElement(false);
+      }, 3000);
+    }
   };
 
   const handleViewImageClose = () => {
     setOpenViewImageModal(false);
   };
-  const handleOpenImage = () => {
+  const handleOpenImage = (shiftCommentItem) => {
+    console.log('qqqqqqqqqqqqqqqqqqqqqqqqq', shiftCommentItem);
     setOpenViewImageModal(true);
-    fetchImage();
+    fetchImage(shiftCommentItem.id);
   };
   const handlesetOpenSummaryModal = () => {
     setShiftComment('');
@@ -551,7 +549,7 @@ console.log('shiftData SHIFT_END',shiftData)
                           }}
                           aria-hidden="true"
                           data-testid="viewImages"
-                          onClick={handleOpenImage}
+                          onClick={() => handleOpenImage(shiftCommentItem)}
                         >
                           {t('label.viewImages')}
                         </p>
@@ -821,4 +819,4 @@ console.log('shiftData SHIFT_END',shiftData)
   );
 }
 
-export default CurrentShiftPage;
+export default DisplayShiftComponent;

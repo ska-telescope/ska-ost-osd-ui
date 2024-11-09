@@ -3,8 +3,8 @@ import { CssBaseline, ThemeProvider } from '@mui/material';
 import { mount } from 'cypress/react18';
 import { THEME_DARK, THEME_LIGHT } from '@ska-telescope/ska-gui-components';
 import theme from '../../../../services/theme/theme';
-import ShiftHistoryListComponent from './ShiftHistoryListComponent';
 import SHIFT_DATA_LIST from '../../../../DataModels/DataFiles/shiftDataList';
+import ViewSLTHistoryPreview from './ViewSLTHistoryPreview';
 
 describe('<ShiftHistoryListComponent />', () => {
   it(`Theme ${THEME_DARK}: Renders ShiftHistoryListComponent`, () => {
@@ -12,7 +12,7 @@ describe('<ShiftHistoryListComponent />', () => {
     mount(
       <ThemeProvider theme={theme(THEME_DARK)}>
         <CssBaseline />
-        <ShiftHistoryListComponent data={mockData} updateList={undefined} />
+        <ViewSLTHistoryPreview shiftData={mockData} updatedList={undefined} />
       </ThemeProvider>
     );
   });
@@ -22,7 +22,7 @@ describe('<ShiftHistoryListComponent />', () => {
     mount(
       <ThemeProvider theme={theme(THEME_LIGHT)}>
         <CssBaseline />
-        <ShiftHistoryListComponent data={mockData} updateList={undefined} />
+        <ViewSLTHistoryPreview shiftData={mockData} updatedList={undefined} />
       </ThemeProvider>
     );
   });

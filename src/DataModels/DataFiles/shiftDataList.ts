@@ -3,20 +3,20 @@ const SHIFT_DATA_LIST = [
     shift_id: 'shift-20241108-c9a3',
     shift_start: '2024-10-22T11:24:04.389077Z',
     shift_end: '2024-10-22T11:24:04.389077Z',
-    annotations:'This is test annotation',
+    annotations: 'This is test annotation',
     shift_operator: 'TestUser',
     comments: [
       {
-        id:1,
+        id: 1,
         comment: 'This is shift comment one',
         shift_id: 'shift-20241104-0701',
-        created_on:'2024-10-22T11:24:04.389077Z'
+        created_on: '2024-10-22T11:24:04.389077Z'
       },
       {
-        id:2,
+        id: 2,
         comment: 'This is shift comment two',
         shift_id: 'shift-20241104-0701',
-        created_on:'2024-10-22T11:24:04.389077Z'
+        created_on: '2024-10-22T11:24:04.389077Z'
       }
     ],
     shift_logs: [
@@ -71,16 +71,15 @@ const SHIFT_DATA_LIST = [
               error: {
                 detail: 'this is an error'
               },
-              status: 'ERROR',
-            },
-          
+              status: 'ERROR'
+            }
           ]
         },
         source: 'ODA',
         log_time: '2024-10-22T11:24:14.406107Z',
         comments: [
           {
-            id:1,
+            id: 1,
             log_comment: 'This is log comment one',
             operator_name: 'john',
             shift_id: 'shift-e71a091c-0841-47f0-9f57-8ee97c08bb77',
@@ -91,7 +90,7 @@ const SHIFT_DATA_LIST = [
             eb_id: 'eb-t0001-20241022-00004'
           },
           {
-            id:2,
+            id: 2,
             log_comment: 'This is log comment two',
             operator_name: 'peter',
             shift_id: 'shift-e71a091c-0841-47f0-9f57-8ee97c08bb77',
@@ -187,7 +186,7 @@ const SHIFT_DATA_LIST = [
         log_time: '2024-10-22T11:24:14.406107Z',
         comments: [
           {
-            id:3,
+            id: 3,
             log_comment: 'updated nov4 comment',
             operator_name: 'john',
             shift_id: 'shift-e71a091c-0841-47f0-9f57-8ee97c08bb77',
@@ -198,7 +197,7 @@ const SHIFT_DATA_LIST = [
             eb_id: 'eb-t0001-20241022-00004'
           },
           {
-            id:4,
+            id: 4,
             log_comment: 'this is comment',
             operator_name: 'peter',
             shift_id: 'shift-e71a091c-0841-47f0-9f57-8ee97c08bb77',
@@ -294,7 +293,7 @@ const SHIFT_DATA_LIST = [
         log_time: '2024-10-22T11:24:14.406107Z',
         comments: [
           {
-            id:5,
+            id: 5,
             log_comment: 'updated nov4 comment',
             operator_name: 'john',
             shift_id: 'shift-e71a091c-0841-47f0-9f57-8ee97c08bb77',
@@ -305,7 +304,7 @@ const SHIFT_DATA_LIST = [
             eb_id: 'eb-t0001-20241022-00004'
           },
           {
-            id:6,
+            id: 6,
             log_comment: 'this is comment',
             operator_name: 'peter',
             shift_id: 'shift-e71a091c-0841-47f0-9f57-8ee97c08bb77',
@@ -429,7 +428,7 @@ const SHIFT_DATA_LIST = [
         log_time: '2024-10-22T11:24:14.406107Z',
         comments: [
           {
-            id:7,
+            id: 7,
             log_comment: 'updated nov4 comment',
             operator_name: 'john',
             shift_id: 'shift-e71a091c-0841-47f0-9f57-8ee97c08bb77',
@@ -440,7 +439,7 @@ const SHIFT_DATA_LIST = [
             eb_id: 'eb-t0001-20241022-00004'
           },
           {
-            id:8,
+            id: 8,
             log_comment: 'this is comment',
             operator_name: 'peter',
             shift_id: 'shift-e71a091c-0841-47f0-9f57-8ee97c08bb77',

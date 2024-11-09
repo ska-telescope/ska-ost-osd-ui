@@ -1,10 +1,9 @@
 import React from 'react';
 import PreviewIcon from '@mui/icons-material/Preview';
-import sltDataModel from '../../../DataModels/Models/sltDataModel';
-import apiService from '../../../services/apis';
+import apiService from '../../../../services/apis';
 
 interface EntryFieldProps {
-  shiftData: sltDataModel;
+  shiftData;
   updatedList;
 }
 

@@ -13,7 +13,7 @@ module.exports = {
   'report-dir': COVERAGE_OUTPUT_DIR,
   'temp-dir': COVERAGE_OUTPUT_DIR + '/.nyc_output',
   extension: ['.js', '.cjs', '.mjs', '.ts', '.tsx', '.jsx'],
-  include: ['src/components/**/*.{js,jsx,ts,tsx}'],
+  include: ['src/components/**/*.{js,jsx,ts,tsx}', 'src/pages/**/*.{js,jsx,ts,tsx}'],
   branches: 0,
   lines: 0,
   functions: 0,

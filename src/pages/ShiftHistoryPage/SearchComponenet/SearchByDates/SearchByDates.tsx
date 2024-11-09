@@ -83,7 +83,7 @@ const SearchByDates = ({ setFilterCirteria }: EntryFieldProps) => {
           size={ButtonSizeTypes.Small}
           icon={<SearchIcon />}
           ariaDescription={t('ariaLabel.searchButtonDescription')}
-          // disabled={disableSearch()}
+          disabled={disableSearch()}
           color={ButtonColorTypes.Secondary}
           variant={ButtonVariantTypes.Contained}
           testId="logHistorySearch"
