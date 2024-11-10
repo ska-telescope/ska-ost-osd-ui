@@ -25,8 +25,7 @@ import {
   Paper,
   TextField,
   Tooltip,
-  Typography,
-  useTheme
+  Typography
 } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
@@ -49,12 +48,11 @@ import DisplayShiftLogsComponent from '../DisplayShiftLogsComponent/DisplayShift
 import SHIFT_DATA_LIST from '../../../DataModels/DataFiles/shiftDataList';
 
 function DisplayShiftComponent() {
-  const theme = useTheme();
   const [shiftStatus, setShiftStatus] = useState('');
   const [openViewImageModal, setOpenViewImageModal] = useState(false);
   const [openSummaryModal, setOpenSummaryModal] = useState(false);
   const [isShiftCommentUpdate, setShiftCommentUpdate] = useState(false);
-  const [shiftCommentID, setShiftCommentID] = useState('');
+  const [shiftCommentID, setShiftCommentID] = useState(0);
   const [successMessage, setMessage] = useState('');
   const [kafkaMessages, setKafkaMessages] = useState([]);
   const [dataDetails, setShiftData] = useState(null);
@@ -176,7 +174,7 @@ function DisplayShiftComponent() {
       //     ? response.data[0]
       //     : []
       // );
-      setShiftData(SHIFT_DATA_LIST[0]);
+      setShiftData(SHIFT_DATA_LIST[1]);
     }
   };
 
@@ -219,6 +217,7 @@ function DisplayShiftComponent() {
       setTimeout(() => {
         setDisplayMessageElement(false);
         setShiftComment('');
+        setShiftData(null);
       }, 3000);
     }
   };
@@ -274,15 +273,15 @@ function DisplayShiftComponent() {
 
   const postShiftCommentImage = async (file) => {
     const formData = new FormData();
-    formData.append('files', file);
     const config = {
       headers: {
         accept: 'application/json',
         'content-type': 'multipart/form-data'
       }
     };
-
-    if (shiftCommentID && shiftCommentID.length > 0) {
+    console.log('shiftCommentIDshiftCommentID', shiftCommentID);
+    if (shiftCommentID && shiftCommentID > 0) {
+      formData.append('files', file);
       const path = `shift_comments/upload_image/${shiftCommentID}`;
       const result = await apiService.updateImage(path, formData, config);
       if (result.status === 200) {
@@ -294,8 +293,9 @@ function DisplayShiftComponent() {
         }, 3000);
       }
     } else {
-      const path = `shift_comments/upload_image?shift_id=${shiftId}&operator_name=${operator}`;
-      const result = await apiService.updateImage(path, formData, config);
+      formData.append('file', file);
+      const path = `shift_comments/upload_image?shift_id=${shiftId}&shift_operator=${operator}`;
+      const result = await apiService.addImage(path, formData, config);
       if (result.status === 200) {
         setMessage('msg.imageUpload');
         setDisplayModalMessageElement(true);
@@ -328,8 +328,8 @@ function DisplayShiftComponent() {
 
   const renderMessageResponse = () => (
     <InfoCard
-      minHeight="20px"
-      fontSize={18}
+      minHeight="15px"
+      fontSize={16}
       color={InfoCardColorTypes.Success}
       message={t(successMessage)}
       testId="successStatusMsg"
@@ -338,8 +338,8 @@ function DisplayShiftComponent() {
 
   const renderModalMessageResponse = () => (
     <InfoCard
-      minHeight="20px"
-      fontSize={18}
+      minHeight="15px"
+      fontSize={16}
       color={InfoCardColorTypes.Success}
       message={t(successMessage)}
       testId="successStatusMsg"
@@ -439,8 +439,8 @@ function DisplayShiftComponent() {
         </Grid>
       </Box>
 
-      <Paper sx={{ border: 1, margin: 2, marginTop: 0, marginBottom: 1 }}>
-        <Grid container spacing={2} sx={{ padding: 2, paddingBottom: 0 }}>
+      <Paper sx={{ border: '1px solid darkgrey', margin: 2, marginTop: 0, marginBottom: 1 }}>
+        <Grid container spacing={2} sx={{ padding: 2 }}>
           <Grid item xs={12} sm={12} md={2.7}>
             <Autocomplete
               value={operator}
@@ -548,25 +548,27 @@ function DisplayShiftComponent() {
                             {t('label.commentedAt')} :{' '}
                           </span>{' '}
                           <span>
-                            {shiftCommentItem.created_on
-                              ? toUTCDateTimeFormat(shiftCommentItem.created_on)
-                              : ''}
+                            {shiftCommentItem &&
+                            shiftCommentItem.metadata &&
+                            shiftCommentItem.metadata.created_on
+                              ? toUTCDateTimeFormat(shiftCommentItem.metadata.created_on)
+                              : 'NA'}
                           </span>
                         </p>
                       </Grid>
                       <Grid item xs={12} sm={12} md={3}>
-                        <p
+                        <Chip
+                          size="small"
+                          color="info"
                           style={{
-                            color: theme.palette.secondary.main,
                             cursor: 'pointer',
-                            textDecoration: 'underline'
+                            marginTop: '10px'
                           }}
-                          aria-hidden="true"
-                          data-testid="viewImages"
+                          data-testid="viewShiftCommentImages"
                           onClick={() => handleOpenImage(shiftCommentItem)}
-                        >
-                          {t('label.viewImages')}
-                        </p>
+                          label={`${t('label.viewImages')} (${shiftCommentItem.image ? shiftCommentItem.image.length : 0})`}
+                          variant="outlined"
+                        />
                       </Grid>
                     </Grid>
                     <Grid container justifyContent="start">
@@ -587,7 +589,7 @@ function DisplayShiftComponent() {
         )}
       </Paper>
 
-      <Paper sx={{ border: 1, margin: 2, marginTop: 0 }}>
+      <Paper sx={{ border: '1px solid darkgrey', margin: 2, marginTop: 0 }}>
         <p style={{ fontWeight: 'bold', textAlign: 'center', alignItems: 'center' }}>
           {t('label.logSummary')}
         </p>
@@ -599,7 +601,15 @@ function DisplayShiftComponent() {
             shiftData={dataDetails}
           />
         ) : (
-          <p style={{ padding: '10px' }}>{t('label.noLogsFound')}</p>
+          <div style={{ margin: '15px', width: '50%' }}>
+            <InfoCard
+              minHeight="15px"
+              fontSize={16}
+              color={InfoCardColorTypes.Info}
+              message={t('label.noLogsFound')}
+              testId="successStatusMsg"
+            />
+          </div>
         )}
       </Paper>
 

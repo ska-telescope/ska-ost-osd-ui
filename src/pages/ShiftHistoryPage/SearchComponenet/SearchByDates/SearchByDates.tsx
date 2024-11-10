@@ -78,7 +78,7 @@ const SearchByDates = ({ setFilterCirteria }: EntryFieldProps) => {
 
       <Grid item xs={12} sm={12} md={1} />
 
-      <Grid item xs={12} sm={6} md={3} sx={{ marginTop: '25px' }}>
+      <Grid item xs={12} sm={6} md={3} sx={{ marginTop: '30px' }}>
         <Button
           size={ButtonSizeTypes.Small}
           icon={<SearchIcon />}

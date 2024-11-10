@@ -20,7 +20,7 @@ import {
 } from '../../utils/constants';
 
 import apiService from '../../services/apis';
-import ViewShiftData from './ViewSLTHistory/ViewShiftData';
+import ViewShiftData from './ViewShiftData/ViewShiftData';
 import SearchByDates from './SearchComponenet/SearchByDates/SearchByDates';
 import SearchByOperator from './SearchComponenet/SearchByOperator/SearchByOperator';
 import SearchByStatus from './SearchComponenet/SearchByStatus/SearchByStatus';
@@ -153,7 +153,7 @@ function ShiftHistoryPage() {
       </Box>
 
       {displayTable ? (
-        <Paper elevation={0} sx={{ border: 1, margin: 1, marginTop: 2 }}>
+        <Paper elevation={0} sx={{ border: '1px solid darkgrey', margin: 1, marginTop: 2 }}>
           <Grid container spacing={2} sx={{ padding: 2 }} justifyContent="left">
             <Grid item xs={12} sm={12} md={2}>
               <DropDown
@@ -183,7 +183,7 @@ function ShiftHistoryPage() {
         ''
       )}
       {displayTable ? <div style={{ marginLeft: '15px' }}>{message()}</div> : ''}
-      <Paper sx={{ border: 1, margin: 1 }} data-testid="content">
+      <Paper sx={{ border: '1px solid darkgrey', margin: 1 }} data-testid="content">
         {displayTable ? (
           <ShiftHistoryListComponent updateList={onTriggerFunction} data={dataDetails} />
         ) : (

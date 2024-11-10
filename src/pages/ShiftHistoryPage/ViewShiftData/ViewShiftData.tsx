@@ -1,5 +1,6 @@
 import {
   Box,
+  Chip,
   Dialog,
   DialogActions,
   DialogContent,
@@ -8,8 +9,7 @@ import {
   Grid,
   Paper,
   Tooltip,
-  Typography,
-  useTheme
+  Typography
 } from '@mui/material';
 import {
   Button,
@@ -37,7 +37,6 @@ const ViewShiftData = ({ data }) => {
   const [statusMessage, setStatusMessage] = useState(null);
   const [showElement, setShowElement] = useState(false);
   const [isAnnotationUpdate, setAnnotationUpdate] = useState(true);
-  const theme = useTheme();
   const [openViewImageModal, setOpenViewImageModal] = useState(false);
   // data = SHIFT_DATA_LIST[0];
 
@@ -97,6 +96,7 @@ const ViewShiftData = ({ data }) => {
         setShowElement(true);
         setStatusMessage('msg.annotationSubmit');
         setTimeout(() => {
+          // setAnnotationUpdate(false);
           setAnnotationUpdate(true);
           setShowElement(false);
         }, 3000);
@@ -121,8 +121,8 @@ const ViewShiftData = ({ data }) => {
   const renderMessageResponse = () => (
     <div>
       <InfoCard
-        minHeight="20px"
-        fontSize={18}
+        minHeight="15px"
+        fontSize={16}
         color={InfoCardColorTypes.Success}
         message={t(statusMessage)}
         testId="successStatusMsg"
@@ -131,7 +131,7 @@ const ViewShiftData = ({ data }) => {
   );
 
   return (
-    <Box sx={{ padding: 2 }}>
+    <Box sx={{ paddingBottom: 2 }}>
       <Dialog
         aria-label={t('ariaLabel.dialog')}
         data-testid="dialogStatus"
@@ -168,8 +168,8 @@ const ViewShiftData = ({ data }) => {
         </DialogActions>
       </Dialog>
       <Grid container spacing={2} justifyContent="left">
-        <Grid item xs={12} sm={12} md={5}>
-          <Grid container spacing={2} justifyContent="left">
+        <Grid item xs={12} sm={12} md={4}>
+          <Grid style={{ margin: 2 }} container spacing={2} justifyContent="left">
             <Grid item xs={12} sm={12} md={12}>
               <span id="operatorName" style={{ fontWeight: 'bold', alignItems: 'center' }}>
                 {t('label.operatorName')}{' '}
@@ -217,6 +217,32 @@ const ViewShiftData = ({ data }) => {
                     />
                   </Grid>
                 )}
+                {!isAnnotationUpdate && data.annotations && (
+                  <Grid item xs={12} sm={12} md={12}>
+                    <TextEntry
+                      setValue={setAnnotationValue}
+                      rows={2}
+                      label={t('label.addAnnotation')}
+                      value={value}
+                      testId="annotation"
+                    />
+                  </Grid>
+                )}
+                {!isAnnotationUpdate && data.annotations && (
+                  <Grid item xs={12} sm={12} md={3}>
+                    <Button
+                      size={ButtonSizeTypes.Small}
+                      icon={<AddIcon />}
+                      disabled={!(data && data.shift_end)}
+                      ariaDescription="Button for submitting comment"
+                      label="Add"
+                      testId="commentButton"
+                      onClick={addAnnotation}
+                      variant={ButtonVariantTypes.Contained}
+                      color={ButtonColorTypes.Secondary}
+                    />
+                  </Grid>
+                )}
                 <Grid
                   item
                   xs={12}
@@ -235,79 +261,83 @@ const ViewShiftData = ({ data }) => {
             </Grid>
           </Grid>
         </Grid>
+        <Grid item xs={12} sm={12} md={1} />
         <Grid item xs={12} sm={12} md={7}>
-          {data && data.comments && data.comments.length > 0 && (
-            <Grid
-              container
-              sx={{ padding: 2, paddingTop: 0, maxHeight: '500px', overflowY: 'scroll' }}
-            >
-              <Grid item xs={12} sm={12} md={12}>
-                <div>
-                  <p
-                    style={{
-                      textDecoration: 'underline',
-                      fontWeight: 900,
-                      fontSize: '18px',
-                      marginBottom: 0
-                    }}
-                  >
-                    {t('label.viewShiftComments')}
-                  </p>
-                </div>
-                {data &&
-                  data.comments &&
-                  data.comments.length > 0 &&
-                  data.comments.map((shiftCommentItem, shiftCommentIndex) => (
-                    <div key={shiftCommentItem.id}>
-                      <Grid container justifyContent="start">
-                        <Grid item xs={12} sm={12} md={9}>
-                          <p>
-                            <span style={{ fontWeight: 700, fontSize: '14px' }}>
-                              {t('label.commentedAt')} :
-                            </span>{' '}
-                            <span>
-                              {shiftCommentItem.created_on
-                                ? toUTCDateTimeFormat(shiftCommentItem.created_on)
-                                : 'NA'}
-                            </span>
-                          </p>
-                        </Grid>
-                        <Grid item xs={12} sm={12} md={3}>
-                          <p
-                            style={{
-                              color: theme.palette.secondary.main,
-                              cursor: 'pointer',
-                              textDecoration: 'underline'
-                            }}
-                            aria-hidden="true"
-                            data-testid="viewImages"
-                            onClick={() => handleOpenImage(shiftCommentItem.id)}
-                          >
-                            {t('label.viewImages')}
-                          </p>
-                        </Grid>
+          <Grid
+            container
+            sx={{ padding: 2, paddingTop: 0, maxHeight: '500px', overflowY: 'scroll' }}
+          >
+            <Grid item xs={12} sm={12} md={12}>
+              <div>
+                <p
+                  style={{
+                    textDecoration: 'underline',
+                    fontWeight: 900,
+                    fontSize: '18px',
+                    marginBottom: 0
+                  }}
+                >
+                  {t('label.viewShiftComments')}
+                </p>
+              </div>
+              {data &&
+                data.comments &&
+                data.comments.length > 0 &&
+                data.comments.map((shiftCommentItem, shiftCommentIndex) => (
+                  <div key={shiftCommentItem.id}>
+                    <Grid container justifyContent="start">
+                      <Grid item xs={12} sm={12} md={9}>
+                        <p>
+                          <span style={{ fontWeight: 700, fontSize: '14px' }}>
+                            {t('label.commentedAt')} :
+                          </span>{' '}
+                          <span>
+                            {shiftCommentItem &&
+                            shiftCommentItem.metadata &&
+                            shiftCommentItem.metadata.created_on
+                              ? toUTCDateTimeFormat(shiftCommentItem.metadata.created_on)
+                              : 'NA'}
+                          </span>
+                        </p>
                       </Grid>
-                      <Grid container justifyContent="start">
-                        <Grid item xs={12} sm={12} md={12}>
-                          {shiftCommentItem &&
-                            shiftCommentItem.comment &&
-                            displayShiftComments(shiftCommentItem)}
-                        </Grid>
+                      <Grid item xs={12} sm={12} md={3}>
+                        <Chip
+                          size="small"
+                          color="info"
+                          style={{
+                            cursor: 'pointer',
+                            marginTop: '10px'
+                          }}
+                          data-testid="viewShiftHistoryImages"
+                          onClick={() => handleOpenImage(shiftCommentItem.id)}
+                          label={`${t('label.viewImages')} (${shiftCommentItem.image ? shiftCommentItem.image.length : 0})`}
+                          variant="outlined"
+                        />
                       </Grid>
+                    </Grid>
+                    <Grid container justifyContent="start">
+                      <Grid item xs={12} sm={12} md={12}>
+                        {shiftCommentItem &&
+                          shiftCommentItem.comment &&
+                          displayShiftComments(shiftCommentItem)}
+                      </Grid>
+                    </Grid>
 
-                      {shiftCommentIndex !== data.comments.length - 1 && (
-                        <Divider style={{ marginTop: '15px' }} />
-                      )}
-                    </div>
-                  ))}
-              </Grid>
+                    {shiftCommentIndex !== data.comments.length - 1 && (
+                      <Divider style={{ marginTop: '15px' }} />
+                    )}
+                  </div>
+                ))}
+              {data && data.comments && data.comments.length === 0 && (
+                <p>{t('label.noCommentsFound')}</p>
+              )}
             </Grid>
-          )}
+          </Grid>
         </Grid>
       </Grid>
 
       <Grid container sx={{ padding: 2, paddingLeft: 0 }} spacing={2} />
-      <Paper sx={{ border: 1, margin: 1 }}>
+      <Paper sx={{ border: '1px solid darkgrey' }}>
         <Grid container spacing={2} justifyContent="left">
           <Grid item xs={12} sm={12} md={12}>
             <Paper sx={{ padding: '10px' }}>
@@ -328,7 +358,15 @@ const ViewShiftData = ({ data }) => {
                 updateCommentsEvent={undefined}
               />
             ) : (
-              ''
+              <div style={{ margin: '15px', width: '50%' }}>
+                <InfoCard
+                  minHeight="15px"
+                  fontSize={16}
+                  color={InfoCardColorTypes.Info}
+                  message={t('label.noLogsFound')}
+                  testId="successStatusMsg"
+                />
+              </div>
             )}
           </Grid>
         </Grid>

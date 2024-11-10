@@ -52,7 +52,7 @@ context('Shift Log Tool', () => {
           .contains(translation.label.sbiStatus);
         cy.get('[data-testid="sltLogTableView"]')
           .get('[data-field="logTime"]')
-          .contains(translation.label.logTime);
+          .contains(translation.label.dateTime);
       }
     });
   };
@@ -84,7 +84,7 @@ context('Shift Log Tool', () => {
             cy.get('#operatorName').contains(translation.label.operatorName);
             cy.get('#shiftIDlable').contains(translation.label.shiftId);
             cy.get('#viewImages').contains(translation.label.viewImages);
-            cy.get('#viewLogDataIDLabel').contains(translation.label.viewLogDataIDLabel);
+            cy.get('#viewLogDataIDLabel').contains(translation.label.logSummary);
             cy.get('[data-testid="annotation"]').should('be.visible');
             cy.get('#comments').should('be.visible');
             validateLogDataTable();

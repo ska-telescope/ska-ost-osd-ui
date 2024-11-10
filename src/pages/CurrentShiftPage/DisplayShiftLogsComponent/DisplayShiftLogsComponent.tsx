@@ -10,8 +10,7 @@ import {
   Divider,
   Grid,
   Paper,
-  Tooltip,
-  useTheme
+  Tooltip
 } from '@mui/material';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -119,16 +118,16 @@ const RequestResponseDisplay = ({ responseArray }) => {
 const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentShift }) => {
   const { t } = useTranslation('translations');
   const [commentValue, setComment] = useState('');
-  const theme = useTheme();
   const [updateCommentValue, setUpdateComment] = useState('');
   const logDataDetails = shiftData.shift_logs;
   const [openModal, setOpenModal] = useState(false);
   const [images, setImages] = useState([]);
   const [message, setMessage] = useState('');
   const [displayMessageElement, setDisplayMessageElement] = useState(false);
-  const [shiftLogCommentID, setShiftLogCommentID] = useState('');
+  const [shiftLogCommentID, setShiftLogCommentID] = useState(0);
   const [isUpdateEnable, setIsUpdateEnable] = useState(false);
   const [messageType, setMessageType] = useState('');
+  const [selectedLogDetails, setSelectedLogDetails] = useState('');
   const [logCommentsIndex, setLogCommentsIndex] = useState(0);
   console.log('shiftDatashiftData', shiftData);
   let id = 1;
@@ -142,10 +141,10 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
     });
   }
   const postLogImage = async (file) => {
-    if (shiftLogCommentID && shiftLogCommentID.length > 0) {
-      const path = `shift_log_comments/upload_image?comment_id=${shiftLogCommentID}&operator_name=${shiftData.shift_operator}`;
+    if (shiftLogCommentID && shiftLogCommentID > 0) {
+      const path = `shift_log_comments/upload_image/${shiftLogCommentID}`;
       const formData = new FormData();
-      formData.append('file', file);
+      formData.append('files', file);
       const config = {
         headers: {
           accept: 'application/json',
@@ -163,7 +162,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
         }, 3000);
       }
     } else {
-      const path = `shift_log_comments/upload_image?shift_id=${shiftData.shift_id}&operator_name=${shiftData.shift_operator}&eb_id=data.info.eb_id`;
+      const path = `shift_log_comments/upload_image?shift_id=${shiftData.shift_id}&shift_operator=${shiftData.shift_operator}&eb_id=${selectedLogDetails.info.eb_id}`;
       const formData = new FormData();
       formData.append('file', file);
       const config = {
@@ -281,29 +280,45 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
   );
 
   const displayUpdateLogComment = (logIndex, commentItem, commentIndex) => (
-    <Grid container justifyContent="start">
-      <Grid item xs={12} sm={12} md={9}>
-        <TextEntry
-          rows={1}
-          setValue={(event) => handleUpdateInputChange(event)}
-          label={t('label.logCommentLabel')}
-          value={shiftLogCommentID === commentItem.id ? updateCommentValue : ''}
-          testId={`logComment${commentIndex}`}
-        />
+    <>
+      <Grid container justifyContent="start">
+        <Grid item xs={12} sm={12} md={9}>
+          <TextEntry
+            rows={1}
+            setValue={(event) => handleUpdateInputChange(event)}
+            label={t('label.logCommentLabel')}
+            value={shiftLogCommentID === commentItem.id ? updateCommentValue : ''}
+            testId={`logComment${commentIndex}`}
+          />
+        </Grid>
+        <Grid marginTop={4} marginLeft={1} item xs={12} sm={12} md={2}>
+          <Button
+            icon={<AddIcon />}
+            ariaDescription="Button for submitting comment"
+            label="Update"
+            testId="commentButton"
+            onClick={() => updateLogComments(logIndex, commentItem, commentIndex)}
+            size={ButtonSizeTypes.Small}
+            variant={ButtonVariantTypes.Contained}
+            color={ButtonColorTypes.Secondary}
+          />
+        </Grid>
       </Grid>
-      <Grid marginTop={4} marginLeft={1} item xs={12} sm={12} md={2}>
-        <Button
-          icon={<AddIcon />}
-          ariaDescription="Button for submitting comment"
-          label="Update"
-          testId="commentButton"
-          onClick={() => updateLogComments(logIndex, commentItem, commentIndex)}
-          size={ButtonSizeTypes.Small}
-          variant={ButtonVariantTypes.Contained}
-          color={ButtonColorTypes.Secondary}
-        />
+
+      <Grid container justifyContent="start">
+        <Grid item xs={12} sm={12} md={12} style={{ flex: 'none', marginTop: '10px' }}>
+          <FileUpload
+            chooseColor={ButtonColorTypes.Secondary}
+            chooseVariant={ButtonVariantTypes.Contained}
+            clearLabel="Remove"
+            clearVariant={ButtonVariantTypes.Outlined}
+            buttonSize={ButtonSizeTypes.Small}
+            testId={`updateLlogImage${logIndex}`}
+            uploadFunction={postLogImage}
+          />
+        </Grid>
       </Grid>
-    </Grid>
+    </>
   );
   const fetchImage = async (commentId) => {
     console.log('shiftLogCommentIDshiftLogCommentID', commentId);
@@ -320,14 +335,19 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
     fetchImage(commentId);
   };
 
+  const setLogDetails = (logDetails) => {
+    console.log('qqqqqqqqqqqqqq', logDetails);
+    setSelectedLogDetails(logDetails);
+  };
+
   const handleClose = () => {
     setOpenModal(false);
   };
 
   const renderMessageResponse = () => (
     <InfoCard
-      minHeight="20px"
-      fontSize={18}
+      minHeight="15px"
+      fontSize={16}
       color={InfoCardColorTypes.Success}
       message={t(message)}
       testId="successStatusMsg"
@@ -347,12 +367,12 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
                       <Chip
                         size="small"
                         label={`Source:${data.source ? data.source : ''}`}
-                        color="default"
+                        color="info"
                       />
                     </Grid>
                     <Grid item xs={12} sm={12} md={6}>
                       <span>
-                        {t('label.logTime')}{' '}
+                        {t('label.dateTime')}{' '}
                         <b>{data.log_time ? toUTCDateTimeFormat(data.log_time) : 'NA'}</b>
                       </span>
                     </Grid>
@@ -361,7 +381,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
                       <Chip
                         size="small"
                         label={`${data.info && data.info.sbi_status ? data.info.sbi_status.toUpperCase() : 'NA'}`}
-                        color="error"
+                        color={`${data.info && data.info.sbi_status && data.info.sbi_status === 'failed' ? 'error' : 'success'}`}
                       />
                     </Grid>
                   </Grid>
@@ -468,7 +488,12 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
                               {t('label.addImages')}
                             </p>
                           </div>
-                          <div style={{ float: 'left' }}>
+                          <div
+                            aria-hidden="true"
+                            style={{ float: 'left' }}
+                            onKeyDown={() => setLogDetails(data)}
+                            onClick={() => setLogDetails(data)}
+                          >
                             <FileUpload
                               chooseColor={ButtonColorTypes.Secondary}
                               chooseVariant={ButtonVariantTypes.Contained}
@@ -503,7 +528,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
                             fontSize: '18px'
                           }}
                         >
-                          <b> {t('label.logCommentHistory')}</b>
+                          <b> {t('label.viewLogComments')}</b>
                         </p>
                       </Grid>
                       <Grid item xs={12} sm={12} md={7}>
@@ -528,24 +553,28 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
                             <Grid item xs={12} sm={12} md={6}>
                               <p>
                                 <span style={{ fontWeight: 700, fontSize: '14px' }}>
-                                  {t('label.logTime')}:{' '}
-                                  {data.created_on ? toUTCDateTimeFormat(data.created_on) : ''}
+                                  {t('label.dateTime')}:{' '}
+                                </span>
+                                <span>
+                                  {data && data.metadata && data.metadata.created_on
+                                    ? toUTCDateTimeFormat(data.metadata.created_on)
+                                    : 'NA'}
                                 </span>
                               </p>
                             </Grid>
                             <Grid item xs={12} sm={12} md={6}>
-                              <p
+                              <Chip
+                                size="small"
+                                color="info"
                                 style={{
-                                  color: theme.palette.secondary.main,
                                   cursor: 'pointer',
-                                  textDecoration: 'underline'
+                                  marginTop: '12px'
                                 }}
-                                aria-hidden="true"
-                                data-testid="viewImages"
+                                data-testid="viewSHiftLogCommentsImages"
                                 onClick={() => handleOpenImage(commentItem.id)}
-                              >
-                                {t('label.viewImages')}
-                              </p>
+                                label={`${t('label.viewImages')} (${commentItem.image ? commentItem.image.length : 0})`}
+                                variant="outlined"
+                              />
                             </Grid>
                           </Grid>
 
