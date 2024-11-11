@@ -260,6 +260,14 @@ const SHIFT_DATA_LIST = [
                 timestamp: '2024-11-10T10:42:36.327Z'
               }
             ],
+            metadata: {
+              version: 1,
+              created_by: 'DefaultUser',
+              created_on: '2024-10-22T11:25:36.953526Z',
+              pdm_version: '15.4.0',
+              last_modified_by: 'DefaultUser',
+              last_modified_on: '2024-10-22T11:25:36.953526Z'
+            },
             eb_id: 'eb-t0001-20241022-000066'
           },
           {
@@ -267,7 +275,15 @@ const SHIFT_DATA_LIST = [
             log_comment: 'This is log comment two',
             operator_name: 'TestUser',
             shift_id: 'shift-20241108-c9a3',
-            eb_id: 'eb-t0001-20241022-000066'
+            eb_id: 'eb-t0001-20241022-000066',
+            metadata: {
+              version: 1,
+              created_by: 'DefaultUser',
+              created_on: '2024-10-22T11:25:36.953526Z',
+              pdm_version: '15.4.0',
+              last_modified_by: 'DefaultUser',
+              last_modified_on: '2024-10-22T11:25:36.953526Z'
+            }
           }
         ]
       }

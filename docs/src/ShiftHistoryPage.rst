@@ -61,7 +61,7 @@ User will be able to select search type "Search By operator" from dropdown then 
 
 User will be able to view the results in tabular format as shown below image. 
 
-.. figure:: /images/todayShiftHistory.png
+.. figure:: /images/searchByOperatorData.png
    :width: 100%
    :align: center
    :alt: Shift history

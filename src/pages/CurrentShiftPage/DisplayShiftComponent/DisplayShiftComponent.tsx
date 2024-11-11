@@ -174,7 +174,7 @@ function DisplayShiftComponent() {
       //     ? response.data[0]
       //     : []
       // );
-      setShiftData(SHIFT_DATA_LIST[1]);
+      setShiftData(SHIFT_DATA_LIST[0]);
     }
   };
 
@@ -559,7 +559,7 @@ function DisplayShiftComponent() {
                       <Grid item xs={12} sm={12} md={3}>
                         <Chip
                           size="small"
-                          color="info"
+                          color="secondary"
                           style={{
                             cursor: 'pointer',
                             marginTop: '10px'

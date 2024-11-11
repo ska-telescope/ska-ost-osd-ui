@@ -32,18 +32,3 @@ From the project directory, you can run any of the following:
 - `> yarn audit`
 
   Checks the dependencies to see if there are any vulnerabilities.  
-
-Running the application inside a container
-============================================
-
-There are two ways that this can be done as below:
-
-1. Build the docker file in the root directory and run the container exposing port 8090.
-
-- `> docker build -t ska-oso-ptt .`
-- `> docker run -p 8090:8090 ska-oso-ptt`
-
-
-The project will then be accessible at the url http://localhost:8090/ 
-To use a back-end deployed elsewhere (e.g. localhost), include the back-end URL in the yarn start
-command, for example BACKEND_URL=http://localhost/ska-oso-ptt-services/ptt/api/v0.

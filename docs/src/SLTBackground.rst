@@ -1,18 +1,11 @@
 Introduction
 ~~~~~~~~~~~~
 
+The Shift Log Tool (SLT) is envisioned as both an “on-line” tool, used in real-time by the operators at the two telescope sites, and as an “off-line” tool,
+used at any of the three SKA sites. Its intention is to collate and then provide access to a record of the major events occurring during an operator’s shift.
 
-Project Tracking Tool (PTT) allows users like telescope operators to query ODA using PTT backend to view the details for Projects, SBIs, SBDs and EBs.
-
-It communicates with ska-oso-ptt-services via a REST API
-see the `REST API <https://developer.skao.int/projects/ska-oso-ptt-services/en/latest/restapi.html>`_
-
-
-User will be able to search records for respective entities by selecting radio button options on UI  as shown below
-
-|navigation|
+For instructions on developing the SLT UI, see the `README <https://gitlab.com/ska-telescope/oso/ska-oso-slt-ui/-/blob/main/README.md>`_
 
 
-.. |navigation| image:: /images/navigation.png
-   :width: 100%
-   :alt: Navigation
+It communicates with ska-oso-slt-services via a REST API
+see the `REST API <https://developer.skao.int/projects/ska-oso-slt-services/en/latest/api/rest_api.html>`_

@@ -68,7 +68,7 @@ const RequestResponseDisplay = ({ responseArray }) => {
                   style={{ marginLeft: '10px' }}
                   color={
                     dataItem.status && dataItem.status === EBRequestResponseStatus.OK
-                      ? 'success'
+                      ? 'secondary'
                       : 'error'
                   }
                 />
@@ -119,7 +119,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
   const { t } = useTranslation('translations');
   const [commentValue, setComment] = useState('');
   const [updateCommentValue, setUpdateComment] = useState('');
-  const logDataDetails = shiftData.shift_logs;
+  const [logDataDetails, setLogDataDetails] = useState(shiftData.shift_logs);
   const [openModal, setOpenModal] = useState(false);
   const [images, setImages] = useState([]);
   const [message, setMessage] = useState('');
@@ -162,7 +162,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
         }, 3000);
       }
     } else {
-      const path = `shift_log_comments/upload_image?shift_id=${shiftData.shift_id}&shift_operator=${shiftData.shift_operator}&eb_id=${selectedLogDetails.info.eb_id}`;
+      const path = `shift_log_comments/upload_image?shift_id=${shiftData.shift_id}&shift_operator=${shiftData.shift_operator}&eb_id=${selectedLogDetails['info']['eb_id']}`;
       const formData = new FormData();
       formData.append('file', file);
       const config = {
@@ -367,7 +367,8 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
                       <Chip
                         size="small"
                         label={`Source:${data.source ? data.source : ''}`}
-                        color="info"
+                        color="secondary"
+                        variant="outlined"
                       />
                     </Grid>
                     <Grid item xs={12} sm={12} md={6}>
@@ -506,10 +507,12 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
                           </div>
                         </Grid>
                       </Grid>
-                      <Divider style={{ marginTop: '15px' }} />
+                 
                     </>
                   )}
-
+   {data &&
+                      data.comments &&
+                      data.comments.length > 0 &&
                   <Box
                     data-testid="availableData"
                     sx={{
@@ -519,9 +522,12 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
                       overflowY: 'scroll'
                     }}
                   >
+                         <Divider style={{ marginTop: '15px' }} />
                     <Grid container justifyContent="start" style={{ position: 'relative' }}>
                       <Grid item xs={12} sm={12} md={5}>
+                   
                         <p
+                        
                           style={{
                             textDecoration: 'underline',
                             fontWeight: 900,
@@ -530,6 +536,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
                         >
                           <b> {t('label.viewLogComments')}</b>
                         </p>
+
                       </Grid>
                       <Grid item xs={12} sm={12} md={7}>
                         <div style={{ position: 'absolute', zIndex: 2 }}>
@@ -540,9 +547,10 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
                             : ''}
                         </div>
                       </Grid>
+                      <Divider />
                     </Grid>
 
-                    <Divider />
+                    
 
                     {data &&
                       data.comments &&
@@ -556,16 +564,17 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
                                   {t('label.dateTime')}:{' '}
                                 </span>
                                 <span>
-                                  {data && data.metadata && data.metadata.created_on
-                                    ? toUTCDateTimeFormat(data.metadata.created_on)
+                                  {commentItem && commentItem['metadata'] && commentItem['metadata']['created_on']
+                                    ? toUTCDateTimeFormat(commentItem['metadata']['created_on'])
                                     : 'NA'}
                                 </span>
                               </p>
                             </Grid>
-                            <Grid item xs={12} sm={12} md={6}>
+                            <Grid item xs={12} sm={12} md={3} />
+                            <Grid item xs={12} sm={12} md={3}>
                               <Chip
                                 size="small"
-                                color="info"
+                                color="secondary"
                                 style={{
                                   cursor: 'pointer',
                                   marginTop: '12px'
@@ -594,8 +603,9 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
                           <Divider style={{ marginTop: '15px' }} />
                         </div>
                       ))}
-                    {data && !data.comments && <p>{t('label.nologComments')}</p>}
+                    {/* {data && !data.comments && <p>{t('label.nologComments')}</p>} */}
                   </Box>
+}
                 </Grid>
               </Grid>
             </Paper>
