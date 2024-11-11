@@ -119,7 +119,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
   const { t } = useTranslation('translations');
   const [commentValue, setComment] = useState('');
   const [updateCommentValue, setUpdateComment] = useState('');
-  const [logDataDetails, setLogDataDetails] = useState(shiftData.shift_logs);
+  const [logDataDetails] = useState(shiftData.shift_logs);
   const [openModal, setOpenModal] = useState(false);
   const [images, setImages] = useState([]);
   const [message, setMessage] = useState('');
@@ -162,7 +162,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
         }, 3000);
       }
     } else {
-      const path = `shift_log_comments/upload_image?shift_id=${shiftData.shift_id}&shift_operator=${shiftData.shift_operator}&eb_id=${selectedLogDetails['info']['eb_id']}`;
+      const path = `shift_log_comments/upload_image?shift_id=${shiftData.shift_id}&shift_operator=${shiftData.shift_operator}&eb_id=${selectedLogDetails.info.eb_id}`;
       const formData = new FormData();
       formData.append('file', file);
       const config = {
@@ -507,105 +507,99 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
                           </div>
                         </Grid>
                       </Grid>
-                 
                     </>
                   )}
-   {data &&
-                      data.comments &&
-                      data.comments.length > 0 &&
-                  <Box
-                    data-testid="availableData"
-                    sx={{
-                      marginTop: 2,
-                      maxHeight: '500px',
-                      paddingRight: '10px',
-                      overflowY: 'scroll'
-                    }}
-                  >
-                         <Divider style={{ marginTop: '15px' }} />
-                    <Grid container justifyContent="start" style={{ position: 'relative' }}>
-                      <Grid item xs={12} sm={12} md={5}>
-                   
-                        <p
-                        
-                          style={{
-                            textDecoration: 'underline',
-                            fontWeight: 900,
-                            fontSize: '18px'
-                          }}
-                        >
-                          <b> {t('label.viewLogComments')}</b>
-                        </p>
-
-                      </Grid>
-                      <Grid item xs={12} sm={12} md={7}>
-                        <div style={{ position: 'absolute', zIndex: 2 }}>
-                          {displayMessageElement &&
-                          messageType === 'updateLogComments' &&
-                          logIndex === logCommentsIndex
-                            ? renderMessageResponse()
-                            : ''}
-                        </div>
-                      </Grid>
-                      <Divider />
-                    </Grid>
-
-                    
-
-                    {data &&
-                      data.comments &&
-                      data.comments.length > 0 &&
-                      data.comments.map((commentItem, commentIndex) => (
-                        <div key={commentItem.id}>
-                          <Grid container justifyContent="start">
-                            <Grid item xs={12} sm={12} md={6}>
-                              <p>
-                                <span style={{ fontWeight: 700, fontSize: '14px' }}>
-                                  {t('label.dateTime')}:{' '}
-                                </span>
-                                <span>
-                                  {commentItem && commentItem['metadata'] && commentItem['metadata']['created_on']
-                                    ? toUTCDateTimeFormat(commentItem['metadata']['created_on'])
-                                    : 'NA'}
-                                </span>
-                              </p>
-                            </Grid>
-                            <Grid item xs={12} sm={12} md={3} />
-                            <Grid item xs={12} sm={12} md={3}>
-                              <Chip
-                                size="small"
-                                color="secondary"
-                                style={{
-                                  cursor: 'pointer',
-                                  marginTop: '12px'
-                                }}
-                                data-testid="viewSHiftLogCommentsImages"
-                                onClick={() => handleOpenImage(commentItem.id)}
-                                label={`${t('label.viewImages')} (${commentItem.image ? commentItem.image.length : 0})`}
-                                variant="outlined"
-                              />
-                            </Grid>
-                          </Grid>
-
-                          <div>
-                            {isUpdateEnable &&
-                            isCurrentShift &&
-                            shiftLogCommentID === commentItem.id &&
+                  {data && data.comments && data.comments.length > 0 && (
+                    <Box
+                      data-testid="availableData"
+                      sx={{
+                        marginTop: 2,
+                        maxHeight: '500px',
+                        paddingRight: '10px',
+                        overflowY: 'scroll'
+                      }}
+                    >
+                      <Divider style={{ marginTop: '15px' }} />
+                      <Grid container justifyContent="start" style={{ position: 'relative' }}>
+                        <Grid item xs={12} sm={12} md={5}>
+                          <p
+                            style={{
+                              textDecoration: 'underline',
+                              fontWeight: 900,
+                              fontSize: '18px'
+                            }}
+                          >
+                            <b> {t('label.viewLogComments')}</b>
+                          </p>
+                        </Grid>
+                        <Grid item xs={12} sm={12} md={7}>
+                          <div style={{ position: 'absolute', zIndex: 2 }}>
+                            {displayMessageElement &&
+                            messageType === 'updateLogComments' &&
                             logIndex === logCommentsIndex
-                              ? displayUpdateLogComment(logIndex, commentItem, commentIndex)
-                              : displayLogComment(
-                                  logIndex,
-                                  commentIndex,
-                                  logDataDetails,
-                                  commentItem
-                                )}
+                              ? renderMessageResponse()
+                              : ''}
                           </div>
-                          <Divider style={{ marginTop: '15px' }} />
-                        </div>
-                      ))}
-                    {/* {data && !data.comments && <p>{t('label.nologComments')}</p>} */}
-                  </Box>
-}
+                        </Grid>
+                        <Divider />
+                      </Grid>
+
+                      {data &&
+                        data.comments &&
+                        data.comments.length > 0 &&
+                        data.comments.map((commentItem, commentIndex) => (
+                          <div key={commentItem.id}>
+                            <Grid container justifyContent="start">
+                              <Grid item xs={12} sm={12} md={6}>
+                                <p>
+                                  <span style={{ fontWeight: 700, fontSize: '14px' }}>
+                                    {t('label.dateTime')}:{' '}
+                                  </span>
+                                  <span>
+                                    {commentItem &&
+                                    commentItem.metadata &&
+                                    commentItem.metadata.created_on
+                                      ? toUTCDateTimeFormat(commentItem.metadata.created_on)
+                                      : 'NA'}
+                                  </span>
+                                </p>
+                              </Grid>
+                              <Grid item xs={12} sm={12} md={3} />
+                              <Grid item xs={12} sm={12} md={3}>
+                                <Chip
+                                  size="small"
+                                  color="secondary"
+                                  style={{
+                                    cursor: 'pointer',
+                                    marginTop: '12px'
+                                  }}
+                                  data-testid="viewSHiftLogCommentsImages"
+                                  onClick={() => handleOpenImage(commentItem.id)}
+                                  label={`${t('label.viewImages')} (${commentItem.image ? commentItem.image.length : 0})`}
+                                  variant="outlined"
+                                />
+                              </Grid>
+                            </Grid>
+
+                            <div>
+                              {isUpdateEnable &&
+                              isCurrentShift &&
+                              shiftLogCommentID === commentItem.id &&
+                              logIndex === logCommentsIndex
+                                ? displayUpdateLogComment(logIndex, commentItem, commentIndex)
+                                : displayLogComment(
+                                    logIndex,
+                                    commentIndex,
+                                    logDataDetails,
+                                    commentItem
+                                  )}
+                            </div>
+                            <Divider style={{ marginTop: '15px' }} />
+                          </div>
+                        ))}
+                      {/* {data && !data.comments && <p>{t('label.nologComments')}</p>} */}
+                    </Box>
+                  )}
                 </Grid>
               </Grid>
             </Paper>

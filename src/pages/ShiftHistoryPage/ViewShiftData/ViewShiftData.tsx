@@ -28,7 +28,6 @@ import apiService from '../../../services/apis';
 import ImageDisplayComponent from '../../../components/ImageDisplayComponent';
 import DisplayShiftLogsComponent from '../../CurrentShiftPage/DisplayShiftLogsComponent/DisplayShiftLogsComponent';
 import { toUTCDateTimeFormat } from '../../../utils/constants';
-import SHIFT_DATA_LIST from '../../../DataModels/DataFiles/shiftDataList';
 // import SHIFT_DATA_LIST from '../../../DataModels/DataFiles/shiftDataList';
 
 const ViewShiftData = ({ data }) => {
@@ -39,7 +38,7 @@ const ViewShiftData = ({ data }) => {
   const [showElement, setShowElement] = useState(false);
   const [isAnnotationUpdate, setAnnotationUpdate] = useState(true);
   const [openViewImageModal, setOpenViewImageModal] = useState(false);
-  data = SHIFT_DATA_LIST[0];
+  // data = SHIFT_DATA_LIST[0];
 
   const onEditShiftAnnotation = (shiftCommentItem) => {
     setValue(shiftCommentItem.annotations);
