@@ -74,7 +74,7 @@ Once the logs are available, all the logs will be displayed on UI in  "Logs Summ
 Adding log comments and images
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-User can enter log comments and click on |addBtn| button to add comments for each subarray respectively in comment section on UI.
+User can enter log comments and click on |addBtn| button to add comments for each subarray respectively in "Add log comments" section on UI.
 User will also be able to upload images for each subarray by using "File Upload" widget |fileUplaodBtn| as shown in below image.
 User can also view comment history for each subarray in "View Log Comments" section on UI.
 
