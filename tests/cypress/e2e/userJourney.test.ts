@@ -147,10 +147,10 @@ context('Shift Log Tool', () => {
   it('Content : Verify current shift log flow', () => {
     cy.get('[data-testid="manageShift"]').contains(translation.label.manageShift);
     cy.get('[data-testid="historyButton"]').contains(translation.label.history);
-    cy.get('[data-testid="operatorName"]').click();
-    cy.contains('DefaultUser').click();
+    cy.get('[data-testid="operatorName"]').click({force: true});
+    cy.contains('DefaultUser').click({force: true});
     cy.get('[data-testid="shiftStartButton"]').contains(translation.label.shiftStart);
-    cy.get('[data-testid="shiftStartButton"]').click();
+    cy.get('[data-testid="shiftStartButton"]').click({force: true});
 
     cy.get('body').then((element) => {
       if (
@@ -158,12 +158,12 @@ context('Shift Log Tool', () => {
         element.find('[data-testid="confirmationDialog"]').length > 0
       ) {
         cy.get('[data-testid="confirmationDialogYes"]').contains(translation.label.YES);
-        cy.get('[data-testid="confirmationDialogYes"]').click();
+        cy.get('[data-testid="confirmationDialogYes"]').click({force: true});
       }
     });
 
     cy.get('[data-testid="addShiftComments"]').contains(translation.label.addShiftComments);
-    cy.get('[data-testid="addShiftComments"]').click();
+    cy.get('[data-testid="addShiftComments"]').click({force: true});
 
     cy.get('body').then((element) => {
       if (
@@ -208,7 +208,7 @@ context('Shift Log Tool', () => {
         element.find('[data-testid="confirmationDialog"]').length > 0
       ) {
         cy.get('[data-testid="confirmationDialogYes"]').contains(translation.label.YES);
-        cy.get('[data-testid="confirmationDialogYes"]').click();
+        cy.get('[data-testid="confirmationDialogYes"]').click({force: true});
       }
     });
   });

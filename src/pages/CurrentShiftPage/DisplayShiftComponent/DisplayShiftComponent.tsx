@@ -45,7 +45,7 @@ import {
 import apiService from '../../../services/apis';
 import ImageDisplayComponent from '../../../components/ImageDisplayComponent';
 import DisplayShiftLogsComponent from '../DisplayShiftLogsComponent/DisplayShiftLogsComponent';
-import SHIFT_DATA_LIST from '../../../DataModels/DataFiles/shiftDataList';
+// import SHIFT_DATA_LIST from '../../../DataModels/DataFiles/shiftDataList';
 
 function DisplayShiftComponent() {
   const [shiftStatus, setShiftStatus] = useState('');
@@ -171,12 +171,12 @@ function DisplayShiftComponent() {
       }, 3000);
       setDisableButton(false);
       setShiftId(response.data[0].shift_id);
-      // setShiftData(
-      //   response && response.data && response.data.length > 0 && response.data[0]
-      //     ? response.data[0]
-      //     : []
-      // );
-      setShiftData(SHIFT_DATA_LIST[1]);
+      setShiftData(
+        response && response.data && response.data.length > 0 && response.data[0]
+          ? response.data[0]
+          : []
+      );
+      // setShiftData(SHIFT_DATA_LIST[1]);
     }
   };
 
@@ -192,7 +192,13 @@ function DisplayShiftComponent() {
       if (response && response.data && response.data.length > 0) {
         setShiftId(response.data[0].shift_id);
         setOperator(response.data[0].shift_operator);
-        setShiftData(response.data[0]);
+        setShiftData(
+          response && response.data && response.data.length > 0 && response.data[0]
+            ? response.data[0]
+            : []
+        );
+        setDisableButton(false);
+        setShiftId(response.data[0].shift_id);
       }
     }
   };
