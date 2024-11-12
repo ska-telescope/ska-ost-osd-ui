@@ -176,7 +176,7 @@ function DisplayShiftComponent() {
       //     ? response.data[0]
       //     : []
       // );
-      setShiftData(SHIFT_DATA_LIST[0]);
+      setShiftData(SHIFT_DATA_LIST[1]);
     }
   };
 

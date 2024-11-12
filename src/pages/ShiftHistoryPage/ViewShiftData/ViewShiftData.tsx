@@ -349,7 +349,7 @@ const ViewShiftData = ({ data }) => {
           <Grid item xs={12} sm={12} md={12}>
             <Paper sx={{ padding: '10px' }}>
               <Typography
-                id="viewLogDataIDLabel"
+                data-testid="viewLogDataIDLabel"
                 style={{ fontWeight: 'bold', textAlign: 'center', alignItems: 'center' }}
               >
                 {t('label.logSummary')}
