@@ -73,7 +73,7 @@ const ShiftHistoryListComponent = ({ data, updateList }: EntryFieldProps) => {
     }
   ];
   return (
-    <Box data-testid="availableData">
+    <Box data-testid="availableShiftData">
       <DataGrid
         height={500}
         ariaDescription={t('ariaLabel.gridTableDescription')}

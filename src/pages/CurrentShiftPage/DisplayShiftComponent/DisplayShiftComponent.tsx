@@ -83,7 +83,9 @@ function DisplayShiftComponent() {
 
   const displayShiftComments = (shiftCommentItem) => (
     <div>
-      <span style={{ fontWeight: 700, fontSize: '14px' }}>{t('label.comments')}: </span>{' '}
+      <span data-testid="shiftComment" style={{ fontWeight: 700, fontSize: '14px' }}>
+        {t('label.comments')}:{' '}
+      </span>{' '}
       <span>{shiftCommentItem.comment}</span>
       <Tooltip title="Edit the log comment" placement="bottom-end">
         <DriveFileRenameOutlineIcon
@@ -312,7 +314,6 @@ function DisplayShiftComponent() {
     setImages([]);
   };
   const handleOpenImage = (shiftCommentItem) => {
-    console.log('qqqqqqqqqqqqqqqqqqqqqqqqq', shiftCommentItem);
     setOpenViewImageModal(true);
     fetchImage(shiftCommentItem.id);
   };
@@ -494,8 +495,8 @@ function DisplayShiftComponent() {
               icon={<AddIcon />}
               disabled={disableButton}
               ariaDescription="Button for submitting comment"
-              label="Add shift comments"
-              testId="summaryButton"
+              label={t('label.addShiftComments')}
+              testId="addShiftComments"
               onClick={handlesetOpenSummaryModal}
               variant={ButtonVariantTypes.Contained}
               color={ButtonColorTypes.Secondary}
@@ -526,6 +527,7 @@ function DisplayShiftComponent() {
             <Grid item xs={12} sm={12} md={12}>
               <div>
                 <p
+                  data-testid="viewShiftComments"
                   style={{
                     textDecoration: 'underline',
                     fontWeight: 900,
@@ -543,7 +545,7 @@ function DisplayShiftComponent() {
                   <div key={shiftCommentItem.id}>
                     <Grid container justifyContent="start">
                       <Grid item xs={12} sm={12} md={4}>
-                        <p>
+                        <p data-testid="commentedAt">
                           <span style={{ fontWeight: 700, fontSize: '14px' }}>
                             {t('label.commentedAt')} :{' '}
                           </span>{' '}
@@ -590,7 +592,10 @@ function DisplayShiftComponent() {
       </Paper>
 
       <Paper sx={{ border: '1px solid darkgrey', margin: 2, marginTop: 0 }}>
-        <p style={{ fontWeight: 'bold', textAlign: 'center', alignItems: 'center' }}>
+        <p
+          data-testid="logSummary"
+          style={{ fontWeight: 'bold', textAlign: 'center', alignItems: 'center' }}
+        >
           {t('label.logSummary')}
         </p>
         <Divider />
@@ -607,7 +612,7 @@ function DisplayShiftComponent() {
               fontSize={16}
               color={InfoCardColorTypes.Info}
               message={t('label.noLogsFound')}
-              testId="successStatusMsg"
+              testId="noShiftLogFound"
             />
           </div>
         )}
@@ -615,7 +620,7 @@ function DisplayShiftComponent() {
 
       <Dialog
         aria-label={t('ariaLabel.dialog')}
-        data-testid="dialogStatus"
+        data-testid="addShiftCommentModal"
         sx={{
           '& .MuiDialog-container': {
             '& .MuiPaper-root': {
@@ -631,7 +636,7 @@ function DisplayShiftComponent() {
         {!isShiftCommentUpdate && (
           <DialogTitle>
             <Grid container spacing={2} justifyContent="left" style={{ position: 'relative' }}>
-              <Grid item xs={12} sm={12} md={4}>
+              <Grid item xs={12} sm={12} md={4} data-testid="addShiftCommentTitle">
                 {t('label.addCommentsAndImages')}
               </Grid>
               <Grid
@@ -649,7 +654,7 @@ function DisplayShiftComponent() {
         {isShiftCommentUpdate && (
           <DialogTitle>
             <Grid container spacing={2} justifyContent="left" style={{ position: 'relative' }}>
-              <Grid item xs={12} sm={12} md={5}>
+              <Grid item xs={12} sm={12} md={5} data-testid="addShiftCommentTitle">
                 {t('label.updateCommentsAndImages')}
               </Grid>
               <Grid
@@ -669,6 +674,7 @@ function DisplayShiftComponent() {
             <Grid item xs={12} sm={12} md={8}>
               {!isShiftCommentUpdate && (
                 <p
+                  data-testid="addShiftComment"
                   style={{
                     textDecoration: 'underline',
                     fontWeight: 900,
@@ -681,6 +687,7 @@ function DisplayShiftComponent() {
               )}
               {isShiftCommentUpdate && (
                 <p
+                  data-testid="addShiftComment"
                   style={{
                     textDecoration: 'underline',
                     fontWeight: 900,
@@ -700,7 +707,7 @@ function DisplayShiftComponent() {
                 rows={3}
                 label="Please enter shift comments"
                 value={shiftCommentValue}
-                testId="operatorComment"
+                testId="operatorShiftComment"
               />
             </Grid>
             <Grid item xs={12} sm={12} md={2} marginTop={10}>
@@ -708,8 +715,8 @@ function DisplayShiftComponent() {
                 size={ButtonSizeTypes.Small}
                 icon={<AddIcon />}
                 ariaDescription="Button for submitting comment"
-                label="Add"
-                testId="commentButton"
+                label={t('label.add')}
+                testId="shiftCommentButton"
                 onClick={addShiftComments}
                 variant={ButtonVariantTypes.Contained}
                 color={ButtonColorTypes.Secondary}
@@ -751,7 +758,7 @@ function DisplayShiftComponent() {
             size={ButtonSizeTypes.Small}
             color={ButtonColorTypes.Inherit}
             variant={ButtonVariantTypes.Contained}
-            testId="statusClose"
+            testId="shiftCommentModalClose"
             label={t('label.close')}
             onClick={handleSummaryModalClose}
             toolTip={t('label.close')}
@@ -760,7 +767,7 @@ function DisplayShiftComponent() {
       </Dialog>
       <Dialog
         aria-label={t('ariaLabel.dialog')}
-        data-testid="dialogStatus"
+        data-testid="confirmationDialog"
         fullWidth
         open={openDialog}
         aria-labelledby="responsive-dialog-title"
@@ -784,7 +791,7 @@ function DisplayShiftComponent() {
                 ariaDescription="Button for history tab"
                 label="NO"
                 color={ButtonColorTypes.Inherit}
-                testId="historyButton"
+                testId="confirmationDialogNo"
                 variant={ButtonVariantTypes.Contained}
                 onClick={() => newShiftConfirmation('NO')}
               />
@@ -797,7 +804,7 @@ function DisplayShiftComponent() {
                 ariaDescription="Button for history tab"
                 label="YES"
                 onClick={() => newShiftConfirmation('YES')}
-                testId="historyButton"
+                testId="confirmationDialogYes"
                 variant={ButtonVariantTypes.Contained}
               />
             </Grid>

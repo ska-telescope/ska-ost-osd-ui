@@ -18,7 +18,7 @@ const ViewSLTHistoryByID = ({ shiftData, updatedList }: EntryFieldProps) => {
   return (
     <span
       aria-hidden="true"
-      id="shiftId"
+      data-testid={`shiftId${shiftData.id}`}
       style={{ cursor: 'pointer', textDecoration: 'underline' }}
       onClick={() => fetchSltHistoryByID()}
     >

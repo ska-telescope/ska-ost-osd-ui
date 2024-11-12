@@ -46,7 +46,9 @@ const ViewShiftData = ({ data }) => {
   };
   const displayShiftComments = (shiftCommentItem) => (
     <>
-      <span style={{ fontWeight: 700, fontSize: '14px' }}>{t('label.comments')}: </span>{' '}
+      <span data-testid="shiftCommentsHistory" style={{ fontWeight: 700, fontSize: '14px' }}>
+        {t('label.comments')}:{' '}
+      </span>{' '}
       <span>{shiftCommentItem.comment}</span>
     </>
   );
@@ -189,7 +191,7 @@ const ViewShiftData = ({ data }) => {
               <span>: {data.shift_end ? toUTCDateTimeFormat(data.shift_end) : 'Active shift'}</span>
             </Grid>
             <Grid item xs={12} sm={12} md={12}>
-              <h3>{t('label.addAnnotationLabel')}</h3>
+              <h3 data-testid="addAnnotationLabel">{t('label.addAnnotationLabel')}</h3>
               <Grid container spacing={2} justifyContent="left" style={{ position: 'relative' }}>
                 {isAnnotationUpdate && !data.annotations && (
                   <Grid item xs={12} sm={12} md={12}>
@@ -198,7 +200,7 @@ const ViewShiftData = ({ data }) => {
                       rows={2}
                       label={t('label.addAnnotation')}
                       value={value}
-                      testId="annotation"
+                      testId="addAnnotation"
                     />
                   </Grid>
                 )}
@@ -210,7 +212,7 @@ const ViewShiftData = ({ data }) => {
                       disabled={!(data && data.shift_end)}
                       ariaDescription="Button for submitting comment"
                       label="Add"
-                      testId="commentButton"
+                      testId="addAnnotationBtn"
                       onClick={addAnnotation}
                       variant={ButtonVariantTypes.Contained}
                       color={ButtonColorTypes.Secondary}
@@ -224,7 +226,7 @@ const ViewShiftData = ({ data }) => {
                       rows={2}
                       label={t('label.addAnnotation')}
                       value={value}
-                      testId="annotation"
+                      testId="updateAnnotation"
                     />
                   </Grid>
                 )}
@@ -270,6 +272,7 @@ const ViewShiftData = ({ data }) => {
             <Grid item xs={12} sm={12} md={12}>
               <div>
                 <p
+                  data-testid="viewShiftCommentsHistory"
                   style={{
                     textDecoration: 'underline',
                     fontWeight: 900,
@@ -285,9 +288,13 @@ const ViewShiftData = ({ data }) => {
                 data.comments.length > 0 &&
                 data.comments.map((shiftCommentItem, shiftCommentIndex) => (
                   <div key={shiftCommentItem.id}>
-                    <Grid container justifyContent="start">
+                    <Grid
+                      container
+                      justifyContent="start"
+                      data-testid="viewShiftCommentsHistoryData"
+                    >
                       <Grid item xs={12} sm={12} md={9}>
-                        <p>
+                        <p data-testid="commentedAtHistory">
                           <span style={{ fontWeight: 700, fontSize: '14px' }}>
                             {t('label.commentedAt')} :
                           </span>{' '}
@@ -308,7 +315,7 @@ const ViewShiftData = ({ data }) => {
                             cursor: 'pointer',
                             marginTop: '10px'
                           }}
-                          data-testid="viewShiftHistoryImages"
+                          data-testid="viewShiftHistoryImagesHistory"
                           onClick={() => handleOpenImage(shiftCommentItem.id)}
                           label={`${t('label.viewImages')} (${shiftCommentItem.image ? shiftCommentItem.image.length : 0})`}
                           variant="outlined"

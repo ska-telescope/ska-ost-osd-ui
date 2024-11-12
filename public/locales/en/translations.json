@@ -34,6 +34,8 @@
     "search": "Search",
     "close": "Close",
     "back": "Back",
+    "NO": "NO",
+    "YES": "YES",
     "viewHistoryTitle": "Shift History Data",
     "shiftIDlable": "Shift ID",
     "viewImages": "View Images",

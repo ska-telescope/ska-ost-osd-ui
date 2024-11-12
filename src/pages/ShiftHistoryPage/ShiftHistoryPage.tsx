@@ -204,7 +204,7 @@ function ShiftHistoryPage() {
                 <Grid item xs={12} sm={12} md={3} />
                 <Grid item xs={12} sm={12} md={4}>
                   <Typography
-                    id="viewHistoryTitle"
+                    data-testid="viewHistoryTitle"
                     style={{
                       margin: '10PX',
                       fontWeight: 'bold',

@@ -74,7 +74,7 @@ Search by Status
 
 User will be able to select search type "Search by Status" from dropdown then user can select Status from the dropdown on UI and click on |searchLogsBtn| button as shown below
 
-.. figure:: /images/searchByOperator.png
+.. figure:: /images/searchByStatus.png
    :width: 100%
    :align: center
    :alt: Search entity by Entity ID
@@ -84,7 +84,7 @@ User will be able to select search type "Search by Status" from dropdown then us
 
 User will be able to view the results in tabular format as shown below image. 
 
-.. figure:: /images/todayShiftHistory.png
+.. figure:: /images/searchByStatusData.png
    :width: 100%
    :align: center
    :alt: Shift history
