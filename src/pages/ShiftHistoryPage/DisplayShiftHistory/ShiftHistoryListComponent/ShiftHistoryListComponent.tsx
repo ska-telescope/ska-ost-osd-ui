@@ -2,15 +2,14 @@ import { Box } from '@mui/material';
 import { DataGrid } from '@ska-telescope/ska-gui-components';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import sltDataModel from '../../../../DataModels/Models/sltDataModel';
 import { toUTCDateTimeFormat } from '../../../../utils/constants';
-import ViewSLTHistoryByID from '../ViewSLTHistoryByID';
-import ViewSLTHistoryPreview from '../ViewSLTHistoryPreview';
+import ViewSLTHistoryByID from '../ViewSLTHistoryByID/ViewSLTHistoryByID';
+import ViewSLTHistoryPreview from '../ViewSLTHistoryPreview/ViewSLTHistoryPreview';
 
 const COLUMN_WIDTH = 250;
 
 interface EntryFieldProps {
-  data: sltDataModel[];
+  data;
   updateList;
 }
 
@@ -74,7 +73,7 @@ const ShiftHistoryListComponent = ({ data, updateList }: EntryFieldProps) => {
     }
   ];
   return (
-    <Box data-testid="availableData">
+    <Box data-testid="availableShiftData">
       <DataGrid
         height={500}
         ariaDescription={t('ariaLabel.gridTableDescription')}

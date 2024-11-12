@@ -25,8 +25,7 @@ import {
   Paper,
   TextField,
   Tooltip,
-  Typography,
-  useTheme
+  Typography
 } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
@@ -34,27 +33,26 @@ import AddIcon from '@mui/icons-material/Add';
 import HistoryIcon from '@mui/icons-material/History';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
-import moment from 'moment';
 import { Kafka } from 'kafkajs';
 import {
   ENTITY,
   KafkaTopic,
+  SHIFT_END,
   SHIFT_STATUS,
   operatorName,
   toUTCDateTimeFormat
-} from '../../utils/constants';
-import apiService from '../../services/apis';
-import ImageDisplayComponent from '../../components/ImageDisplayComponent';
-import DisplayShiftLogsComponent from './DisplayShiftLogsComponent';
+} from '../../../utils/constants';
+import apiService from '../../../services/apis';
+import ImageDisplayComponent from '../../../components/ImageDisplayComponent';
+import DisplayShiftLogsComponent from '../DisplayShiftLogsComponent/DisplayShiftLogsComponent';
+// import SHIFT_DATA_LIST from '../../../DataModels/DataFiles/shiftDataList';
 
-function CurrentShiftPage() {
-  const theme = useTheme();
-  const [shiftStart, setShiftStart] = useState('');
+function DisplayShiftComponent() {
   const [shiftStatus, setShiftStatus] = useState('');
   const [openViewImageModal, setOpenViewImageModal] = useState(false);
   const [openSummaryModal, setOpenSummaryModal] = useState(false);
   const [isShiftCommentUpdate, setShiftCommentUpdate] = useState(false);
-  const [shiftCommentID, setShiftCommentID] = useState('');
+  const [shiftCommentID, setShiftCommentID] = useState(0);
   const [successMessage, setMessage] = useState('');
   const [kafkaMessages, setKafkaMessages] = useState([]);
   const [dataDetails, setShiftData] = useState(null);
@@ -70,21 +68,25 @@ function CurrentShiftPage() {
   const [inputValue, setInputValue] = React.useState('');
   const [openDialog, setOpenDialog] = React.useState(false);
 
-  const onEditShiftComment = (shiftCommentIndex, shiftCommentItem) => {
-    setShiftCommentID(shiftCommentItem);
-    console.log(shiftCommentID)
+  const onEditShiftComment = (shiftCommentItem) => {
+    console.log('shiftCommentItemshiftCommentItem', shiftCommentItem);
+    setShiftCommentID(shiftCommentItem.id);
+    console.log(shiftCommentID);
     setOpenSummaryModal(true);
     setShiftCommentUpdate(true);
-    setShiftComment(shiftCommentItem.shift_comments);
+    setShiftComment(shiftCommentItem.comment);
 
     // dataDetails["shift_comment"][shiftCommentIndex]["shift_comments"]["isEdit"]=true;
     // setShiftComment(shiftCommentItem["shift_comments"])
     // setLogComment(shiftData["shift_logs"][logIndex]["log_comment"][commentIndex])
   };
 
-  const displayShiftComments = (shiftCommentIndex, shiftCommentItem) => (
+  const displayShiftComments = (shiftCommentItem) => (
     <div>
-      <span>{shiftCommentItem.shift_comments}</span>
+      <span data-testid="shiftComment" style={{ fontWeight: 700, fontSize: '14px' }}>
+        {t('label.comments')}:{' '}
+      </span>{' '}
+      <span>{shiftCommentItem.comment}</span>
       <Tooltip title="Edit the log comment" placement="bottom-end">
         <DriveFileRenameOutlineIcon
           color="secondary"
@@ -95,16 +97,21 @@ function CurrentShiftPage() {
             position: 'relative',
             top: '7px'
           }}
-          onClick={() => onEditShiftComment(shiftCommentIndex, shiftCommentItem)}
+          onClick={() => onEditShiftComment(shiftCommentItem)}
         />
       </Tooltip>{' '}
     </div>
   );
 
-  const fetchImage = async () => {
-    const path = `shifts/download_image/${shiftId}`;
+  const fetchImage = async (commentId) => {
+    const path = `shift_comments/download_images/${commentId}`;
+    // const path = `shift_comments/download_images/${shiftCommentID}`;
     const result = await apiService.getImage(path);
-    setImages(result && result.data && result.data[0]);
+    if (result.status === 200) {
+      setImages(result && result.data && result.data[0] ? result.data[0] : []);
+    } else {
+      setImages([{ isEmpty: true }]);
+    }
   };
 
   const updateShiftLogs = async () => {
@@ -112,10 +119,18 @@ function CurrentShiftPage() {
       const path = `shift?shift_id=${shiftId}`;
       const result = await apiService.getSltLogs(path);
       if (result && result.status === 200) {
-        setShiftData(
-          result && result.data && result.data.length > 0 && result.data[0] ? result.data[0] : []
-        );
+        setShiftData(result && result.data && result.data.length > 0 ? result.data[0] : []);
       }
+    }
+  };
+
+  const updateShiftData = async () => {
+    const path = `shift?shift_id=${shiftId}`;
+    const result = await apiService.getSltLogs(path);
+    if (result && result.status === 200) {
+      setShiftData(
+        result && result.data && result.data.length > 0 && result.data[0] ? result.data[0] : []
+      );
     }
   };
 
@@ -147,6 +162,7 @@ function CurrentShiftPage() {
     };
     const path = `shifts/create`;
     const response = await apiService.postShiftData(path, shiftData);
+    console.log('response', response);
     if (response.status === 200 && response.data && response.data.length > 0) {
       setMessage('msg.shiftStarted');
       setDisplayMessageElement(true);
@@ -154,215 +170,18 @@ function CurrentShiftPage() {
         setDisplayMessageElement(false);
       }, 3000);
       setDisableButton(false);
-      setShiftStart(response.data[0].shift_start);
-
       setShiftId(response.data[0].shift_id);
       setShiftData(
         response && response.data && response.data.length > 0 && response.data[0]
           ? response.data[0]
           : []
       );
-      setShiftData({
-        shift_id: 'shift-20241028-148',
-        shift_start: '2024-10-22T11:24:04.389077Z',
-        shift_operator: 'john',
-        shift_comment: [
-          {
-            shift_comments:
-              'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
-            created_on: '2024-10-22T11:24:14.406107Z',
-            id: 1,
-            isEdit: false
-          },
-          {
-            shift_comments:
-              'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
-            created_on: '2024-10-22T11:24:14.406107Z',
-            id: 2,
-            isEdit: false
-          }
-        ],
-        shift_logs: [
-          {
-            info: {
-              eb_id: 'eb-t0001-20241022-00002',
-              sbd_ref: 'sbd-t0001-20240822-00008',
-              sbi_ref: 'sbi-t0001-20240822-00009',
-              metadata: {
-                version: 1,
-                created_by: 'DefaultUser',
-                created_on: '2024-10-22T11:25:36.953526Z',
-                pdm_version: '15.4.0',
-                last_modified_by: 'DefaultUser',
-                last_modified_on: '2024-10-22T11:25:36.953526Z'
-              },
-              interface: 'https://schema.skao.int/ska-oso-pdm-eb/0.1',
-              telescope: 'ska_mid',
-              sbi_status: 'failed',
-              sbd_version: 1,
-              request_responses: [
-                {
-                  status: 'OK',
-                  request: 'ska_oso_scripting.functions.devicecontrol.assign_resource',
-                  response: { result: 'this is a result' },
-                  request_args: { kwargs: { subarray_id: '1' } },
-                  request_sent_at: '2022-09-23T15:43:53.971548Z',
-                  response_received_at: '2022-09-23T15:43:53.971548Z'
-                },
-                {
-                  status: 'OK',
-                  request: 'ska_oso_scripting.functions.devicecontrol.configure_resource',
-                  response: { result: 'this is a result' },
-                  request_args: { kwargs: { subarray_id: '1' } },
-                  request_sent_at: '2022-09-23T15:43:53.971548Z',
-                  response_received_at: '2022-09-23T15:43:53.971548Z'
-                },
-                {
-                  status: 'OK',
-                  request: 'ska_oso_scripting.functions.devicecontrol.scan',
-                  response: { result: 'this is a result' },
-                  request_args: { kwargs: { subarray_id: '1' } },
-                  request_sent_at: '2022-09-23T15:43:53.971548Z',
-                  response_received_at: '2022-09-23T15:43:53.971548Z'
-                },
-                {
-                  status: 'OK',
-                  request: 'ska_oso_scripting.functions.devicecontrol.release_all_resources',
-                  response: { result: 'this is a result' },
-                  request_args: { kwargs: { subarray_id: '1' } },
-                  request_sent_at: '2022-09-23T15:43:53.971548Z',
-                  response_received_at: '2022-09-23T15:43:53.971548Z'
-                },
-                {
-                  error: { detail: 'this is an error' },
-                  status: 'ERROR',
-                  request: 'ska_oso_scripting.functions.devicecontrol.end',
-                  request_sent_at: '2022-09-23T15:43:53.971548Z'
-                }
-              ]
-            },
-            source: 'ODA',
-            log_time: '2024-10-22T11:24:14.406107Z',
-            log_comment: [
-              {
-                logcomments: 'Lorem Ipsum is simply dummy text of the printing ',
-                logCommentTime: '23-10-2024',
-                id: 1,
-                isEdit: false
-              },
-              {
-                logcomments:
-                  'Submitting Comments: We will implement a function to handle the submission of comments, making a POST request to the API for each comment',
-                logCommentTime: '23-10-2024',
-                id: 2,
-                isEdit: false
-              },
-              {
-                logcomments:
-                  'Handling Input Changes: We will ensure that each text field can be updated independently.',
-                logCommentTime: '23-10-2024',
-                id: 3,
-                isEdit: false
-              }
-            ]
-          },
-          {
-            info: {
-              eb_id: 'eb-t0001-20241022-00002',
-              sbd_ref: 'sbd-t0001-20240822-00008',
-              sbi_ref: 'sbi-t0001-20240822-00009',
-              metadata: {
-                version: 1,
-                created_by: 'DefaultUser',
-                created_on: '2024-10-22T11:25:36.953526Z',
-                pdm_version: '15.4.0',
-                last_modified_by: 'DefaultUser',
-                last_modified_on: '2024-10-22T11:25:36.953526Z'
-              },
-              interface: 'https://schema.skao.int/ska-oso-pdm-eb/0.1',
-              telescope: 'ska_mid',
-              sbi_status: 'failed',
-              sbd_version: 1,
-              request_responses: [
-                {
-                  status: 'OK',
-                  request: 'ska_oso_scripting.functions.devicecontrol.assign_resource',
-                  response: { result: 'this is a result' },
-                  request_args: { kwargs: { subarray_id: '1' } },
-                  request_sent_at: '2022-09-23T15:43:53.971548Z',
-                  response_received_at: '2022-09-23T15:43:53.971548Z'
-                },
-                {
-                  status: 'OK',
-                  request: 'ska_oso_scripting.functions.devicecontrol.configure_resource',
-                  response: { result: 'this is a result' },
-                  request_args: { kwargs: { subarray_id: '1' } },
-                  request_sent_at: '2022-09-23T15:43:53.971548Z',
-                  response_received_at: '2022-09-23T15:43:53.971548Z'
-                },
-                {
-                  status: 'OK',
-                  request: 'ska_oso_scripting.functions.devicecontrol.scan',
-                  response: { result: 'this is a result' },
-                  request_args: { kwargs: { subarray_id: '1' } },
-                  request_sent_at: '2022-09-23T15:43:53.971548Z',
-                  response_received_at: '2022-09-23T15:43:53.971548Z'
-                },
-                {
-                  status: 'OK',
-                  request: 'ska_oso_scripting.functions.devicecontrol.release_all_resources',
-                  response: { result: 'this is a result' },
-                  request_args: { kwargs: { subarray_id: '1' } },
-                  request_sent_at: '2022-09-23T15:43:53.971548Z',
-                  response_received_at: '2022-09-23T15:43:53.971548Z'
-                },
-                {
-                  error: { detail: 'this is an error' },
-                  status: 'ERROR',
-                  request: 'ska_oso_scripting.functions.devicecontrol.end',
-                  request_sent_at: '2022-09-23T15:43:53.971548Z'
-                }
-              ]
-            },
-            source: 'ODA',
-            log_time: '2024-10-22T11:24:14.406107Z',
-            log_comment: [
-              {
-                logcomments: '222Lorem Ipsum is simply dummy text of the printing ',
-                logCommentTime: '23-10-2024',
-                id: 1,
-                isEdit: false
-              },
-              {
-                logcomments:
-                  '22Submitting Comments: We will implement a function to handle the submission of comments, making a POST request to the API for each comment',
-                logCommentTime: '23-10-2024',
-                id: 2,
-                isEdit: false
-              },
-              {
-                logcomments:
-                  '22Handling Input Changes: We will ensure that each text field can be updated independently.',
-                logCommentTime: '23-10-2024',
-                id: 3,
-                isEdit: false
-              }
-            ]
-          }
-        ],
-        metadata: {
-          created_by: 'john',
-          created_on: '2024-10-22T11:24:04.388998Z',
-          last_modified_by: 'john',
-          last_modified_on: '2024-10-22T11:25:36.971764Z'
-        }
-      });
-      // updateShiftLogs(response.data[0].shift_id);
+      // setShiftData(SHIFT_DATA_LIST[1]);
     }
   };
 
   const fetchSltCurrentShifts = async () => {
-    const path = `shifts/current_shift`;
+    const path = `current_shift`;
     const response = await apiService.getSltData(path);
     if (response.status === 200 && !response.data.shift_end) {
       setMessage('msg.shiftAlreadyStarted');
@@ -372,10 +191,14 @@ function CurrentShiftPage() {
       }, 3000);
       if (response && response.data && response.data.length > 0) {
         setShiftId(response.data[0].shift_id);
-        setOperator(response.data[0].shift_operator.name);
-        setShiftComment(response.data[0].comments ? response.data[0].comments : '');
-        // setShiftData(response.data[0]);
-        setShiftData(response.data[0]);
+        setOperator(response.data[0].shift_operator);
+        setShiftData(
+          response && response.data && response.data.length > 0 && response.data[0]
+            ? response.data[0]
+            : []
+        );
+        setDisableButton(false);
+        setShiftId(response.data[0].shift_id);
       }
     }
   };
@@ -388,11 +211,9 @@ function CurrentShiftPage() {
   const endNewShift = async () => {
     const shiftData = {
       shift_operator: operator,
-      shift_start: shiftStart,
-      shift_end: moment().utc().toISOString(),
-      comments: `${shiftCommentValue}`
+      shift_end: SHIFT_END.END_TIME
     };
-
+    console.log('shiftData SHIFT_END', shiftData);
     const path = `shifts/update/${shiftId}`;
     const response = await apiService.putShiftData(path, shiftData);
     if (response.status === 200) {
@@ -400,9 +221,11 @@ function CurrentShiftPage() {
       setDisableButton(true);
       setDisplayMessageElement(true);
       setOperator('');
+      setShiftId('');
       setTimeout(() => {
         setDisplayMessageElement(false);
         setShiftComment('');
+        setShiftData(null);
       }, 3000);
     }
   };
@@ -410,19 +233,38 @@ function CurrentShiftPage() {
   const addShiftComments = async () => {
     if (shiftCommentValue === '') return;
     const shiftData = {
-      shift_operator: operator,
-      comments: `${shiftCommentValue}`
+      operator_name: operator,
+      comment: `${shiftCommentValue}`,
+      shift_id: shiftId
     };
-    const path = `shifts/update/${shiftId}`;
-    const response = await apiService.putShiftData(path, shiftData);
-    if (response.status === 200) {
-      setMessage('msg.commentSubmit');
-      setDisplayModalMessageElement(true);
-      setShiftCommentID(response);
-      setTimeout(() => {
-        // setShiftComment('')
-        setDisplayModalMessageElement(false);
-      }, 3000);
+    console.log('isShiftCommentUpdate', isShiftCommentUpdate);
+    if (isShiftCommentUpdate) {
+      const updatePath = `shift_comments/update/${shiftCommentID}`;
+      const response = await apiService.putShiftData(updatePath, shiftData);
+      if (response.status === 200) {
+        setMessage('msg.commentSubmit');
+        setDisplayModalMessageElement(true);
+        console.log('iiiiiiiiiiiiiiiiiiiiiiii', response);
+        setShiftCommentID(response.data[0].id);
+        updateShiftData();
+        setTimeout(() => {
+          // setShiftComment('')
+          setDisplayModalMessageElement(false);
+        }, 3000);
+      }
+    } else {
+      const addPath = `shift_comments/create`;
+      const response = await apiService.postShiftData(addPath, shiftData);
+      if (response.status === 200) {
+        setMessage('msg.commentSubmit');
+        setDisplayModalMessageElement(true);
+        setShiftCommentID(response.data[0].id);
+        updateShiftData();
+        setTimeout(() => {
+          // setShiftComment('')
+          setDisplayModalMessageElement(false);
+        }, 3000);
+      }
     }
   };
 
@@ -438,38 +280,53 @@ function CurrentShiftPage() {
   };
 
   const postShiftCommentImage = async (file) => {
-    const path = `shifts/upload_image/${shiftId}`;
-
     const formData = new FormData();
-    formData.append('file', file);
-    formData.append('fileName', file.name);
     const config = {
       headers: {
         accept: 'application/json',
         'content-type': 'multipart/form-data'
       }
     };
-    await apiService.postImage(path, formData, config);
-
-    setMessage('msg.imageUpload');
-    setDisplayModalMessageElement(true);
-    setTimeout(() => {
-      setDisplayModalMessageElement(false);
-    }, 3000);
+    console.log('shiftCommentIDshiftCommentID', shiftCommentID);
+    if (shiftCommentID && shiftCommentID > 0) {
+      formData.append('files', file);
+      const path = `shift_comments/upload_image/${shiftCommentID}`;
+      const result = await apiService.updateImage(path, formData, config);
+      if (result.status === 200) {
+        setMessage('msg.imageUpload');
+        setDisplayModalMessageElement(true);
+        updateShiftData();
+        setTimeout(() => {
+          setDisplayModalMessageElement(false);
+        }, 3000);
+      }
+    } else {
+      formData.append('file', file);
+      const path = `shift_comments/upload_image?shift_id=${shiftId}&shift_operator=${operator}`;
+      const result = await apiService.addImage(path, formData, config);
+      if (result.status === 200) {
+        setMessage('msg.imageUpload');
+        setDisplayModalMessageElement(true);
+        updateShiftData();
+        setTimeout(() => {
+          setDisplayModalMessageElement(false);
+        }, 3000);
+      }
+    }
   };
 
   const handleViewImageClose = () => {
     setOpenViewImageModal(false);
+    setImages([]);
   };
-  const handleOpenImage = () => {
+  const handleOpenImage = (shiftCommentItem) => {
     setOpenViewImageModal(true);
-    fetchImage();
+    fetchImage(shiftCommentItem.id);
   };
   const handlesetOpenSummaryModal = () => {
     setShiftComment('');
     setShiftCommentUpdate(false);
     setOpenSummaryModal(true);
-    fetchImage();
   };
 
   const handleSummaryModalClose = () => {
@@ -478,8 +335,8 @@ function CurrentShiftPage() {
 
   const renderMessageResponse = () => (
     <InfoCard
-      minHeight="20px"
-      fontSize={18}
+      minHeight="15px"
+      fontSize={16}
       color={InfoCardColorTypes.Success}
       message={t(successMessage)}
       testId="successStatusMsg"
@@ -488,8 +345,8 @@ function CurrentShiftPage() {
 
   const renderModalMessageResponse = () => (
     <InfoCard
-      minHeight="20px"
-      fontSize={18}
+      minHeight="15px"
+      fontSize={16}
       color={InfoCardColorTypes.Success}
       message={t(successMessage)}
       testId="successStatusMsg"
@@ -544,8 +401,7 @@ function CurrentShiftPage() {
   );
 
   const onUpdateCommentsEvent = () => {
-    // fetchSltCurrentShifts()
-    // setShiftData(null);
+    updateShiftData();
   };
   const endShiftAlertContent = () => (
     <Grid container direction="row" justifyContent="space-around" alignItems="center">
@@ -590,8 +446,8 @@ function CurrentShiftPage() {
         </Grid>
       </Box>
 
-      <Paper sx={{ border: 1, margin: 2, marginTop: 0, marginBottom: 1 }}>
-        <Grid container spacing={2} sx={{ padding: 2, paddingBottom: 0 }}>
+      <Paper sx={{ border: '1px solid darkgrey', margin: 2, marginTop: 0, marginBottom: 1 }}>
+        <Grid container spacing={2} sx={{ padding: 2 }}>
           <Grid item xs={12} sm={12} md={2.7}>
             <Autocomplete
               value={operator}
@@ -645,8 +501,8 @@ function CurrentShiftPage() {
               icon={<AddIcon />}
               disabled={disableButton}
               ariaDescription="Button for submitting comment"
-              label="Add shift comments"
-              testId="summaryButton"
+              label={t('label.addShiftComments')}
+              testId="addShiftComments"
               onClick={handlesetOpenSummaryModal}
               variant={ButtonVariantTypes.Contained}
               color={ButtonColorTypes.Secondary}
@@ -666,10 +522,10 @@ function CurrentShiftPage() {
             />
           </Grid>
         </Grid>
-        {dataDetails && dataDetails.shift_comment && dataDetails.shift_comment.length > 0 && (
+        {dataDetails && dataDetails.comments && dataDetails.comments.length > 0 && (
           <Divider style={{ marginTop: '20px' }} />
         )}
-        {dataDetails && dataDetails.shift_comment && dataDetails.shift_comment.length > 0 && (
+        {dataDetails && dataDetails.comments && dataDetails.comments.length > 0 && (
           <Grid
             container
             sx={{ padding: 2, paddingTop: 0, maxHeight: '500px', overflowY: 'scroll' }}
@@ -677,6 +533,7 @@ function CurrentShiftPage() {
             <Grid item xs={12} sm={12} md={12}>
               <div>
                 <p
+                  data-testid="viewShiftComments"
                   style={{
                     textDecoration: 'underline',
                     fontWeight: 900,
@@ -688,43 +545,49 @@ function CurrentShiftPage() {
                 </p>
               </div>
               {dataDetails &&
-                dataDetails.shift_comment &&
-                dataDetails.shift_comment.length > 0 &&
-                dataDetails.shift_comment.map((shiftCommentItem, shiftCommentIndex) => (
+                dataDetails.comments &&
+                dataDetails.comments.length > 0 &&
+                dataDetails.comments.reverse().map((shiftCommentItem, shiftCommentIndex) => (
                   <div key={shiftCommentItem.id}>
                     <Grid container justifyContent="start">
                       <Grid item xs={12} sm={12} md={4}>
-                        <p>
+                        <p data-testid="commentedAt">
                           <span style={{ fontWeight: 700, fontSize: '14px' }}>
                             {t('label.commentedAt')} :{' '}
                           </span>{' '}
-                          <span>{toUTCDateTimeFormat(shiftCommentItem.created_on)}</span>
+                          <span>
+                            {shiftCommentItem &&
+                            shiftCommentItem.metadata &&
+                            shiftCommentItem.metadata.created_on
+                              ? toUTCDateTimeFormat(shiftCommentItem.metadata.created_on)
+                              : 'NA'}
+                          </span>
                         </p>
                       </Grid>
                       <Grid item xs={12} sm={12} md={3}>
-                        <p
+                        <Chip
+                          size="small"
+                          color="secondary"
                           style={{
-                            color: theme.palette.secondary.main,
                             cursor: 'pointer',
-                            textDecoration: 'underline'
+                            marginTop: '10px'
                           }}
-                          aria-hidden="true"
-                          data-testid="viewImages"
-                          onClick={handleOpenImage}
-                        >
-                          {t('label.viewImages')}
-                        </p>
+                          data-testid="viewShiftCommentImages"
+                          onClick={() => handleOpenImage(shiftCommentItem)}
+                          label={`${t('label.viewImages')} (${shiftCommentItem.image ? shiftCommentItem.image.length : 0})`}
+                          variant="outlined"
+                        />
                       </Grid>
                     </Grid>
                     <Grid container justifyContent="start">
                       <Grid item xs={12} sm={12} md={12}>
                         {shiftCommentItem &&
-                          shiftCommentItem.shift_comments &&
-                          displayShiftComments(shiftCommentIndex, shiftCommentItem)}
+                          shiftCommentItem.comment &&
+                          displayShiftComments(shiftCommentItem)}
                       </Grid>
                     </Grid>
 
-                    {shiftCommentIndex !== dataDetails.shift_comment.length - 1 && (
+                    {shiftCommentIndex !== dataDetails.comments.length - 1 && (
                       <Divider style={{ marginTop: '15px' }} />
                     )}
                   </div>
@@ -734,8 +597,11 @@ function CurrentShiftPage() {
         )}
       </Paper>
 
-      <Paper sx={{ border: 1, margin: 2, marginTop: 0 }}>
-        <p style={{ fontWeight: 'bold', textAlign: 'center', alignItems: 'center' }}>
+      <Paper sx={{ border: '1px solid darkgrey', margin: 2, marginTop: 0 }}>
+        <p
+          data-testid="logSummary"
+          style={{ fontWeight: 'bold', textAlign: 'center', alignItems: 'center' }}
+        >
           {t('label.logSummary')}
         </p>
         <Divider />
@@ -746,13 +612,21 @@ function CurrentShiftPage() {
             shiftData={dataDetails}
           />
         ) : (
-          <p style={{ padding: '10px' }}>{t('label.noLogsFound')}</p>
+          <div style={{ margin: '15px', width: '50%' }}>
+            <InfoCard
+              minHeight="15px"
+              fontSize={16}
+              color={InfoCardColorTypes.Info}
+              message={t('label.noLogsFound')}
+              testId="noShiftLogFound"
+            />
+          </div>
         )}
       </Paper>
 
       <Dialog
         aria-label={t('ariaLabel.dialog')}
-        data-testid="dialogStatus"
+        data-testid="addShiftCommentModal"
         sx={{
           '& .MuiDialog-container': {
             '& .MuiPaper-root': {
@@ -768,7 +642,7 @@ function CurrentShiftPage() {
         {!isShiftCommentUpdate && (
           <DialogTitle>
             <Grid container spacing={2} justifyContent="left" style={{ position: 'relative' }}>
-              <Grid item xs={12} sm={12} md={4}>
+              <Grid item xs={12} sm={12} md={4} data-testid="addShiftCommentTitle">
                 {t('label.addCommentsAndImages')}
               </Grid>
               <Grid
@@ -786,7 +660,7 @@ function CurrentShiftPage() {
         {isShiftCommentUpdate && (
           <DialogTitle>
             <Grid container spacing={2} justifyContent="left" style={{ position: 'relative' }}>
-              <Grid item xs={12} sm={12} md={5}>
+              <Grid item xs={12} sm={12} md={5} data-testid="addShiftCommentTitle">
                 {t('label.updateCommentsAndImages')}
               </Grid>
               <Grid
@@ -806,6 +680,7 @@ function CurrentShiftPage() {
             <Grid item xs={12} sm={12} md={8}>
               {!isShiftCommentUpdate && (
                 <p
+                  data-testid="addShiftComment"
                   style={{
                     textDecoration: 'underline',
                     fontWeight: 900,
@@ -818,6 +693,7 @@ function CurrentShiftPage() {
               )}
               {isShiftCommentUpdate && (
                 <p
+                  data-testid="addShiftComment"
                   style={{
                     textDecoration: 'underline',
                     fontWeight: 900,
@@ -837,7 +713,7 @@ function CurrentShiftPage() {
                 rows={3}
                 label="Please enter shift comments"
                 value={shiftCommentValue}
-                testId="operatorComment"
+                testId="operatorShiftComment"
               />
             </Grid>
             <Grid item xs={12} sm={12} md={2} marginTop={10}>
@@ -845,8 +721,8 @@ function CurrentShiftPage() {
                 size={ButtonSizeTypes.Small}
                 icon={<AddIcon />}
                 ariaDescription="Button for submitting comment"
-                label="Add"
-                testId="commentButton"
+                label={t('label.add')}
+                testId="shiftCommentButton"
                 onClick={addShiftComments}
                 variant={ButtonVariantTypes.Contained}
                 color={ButtonColorTypes.Secondary}
@@ -888,7 +764,7 @@ function CurrentShiftPage() {
             size={ButtonSizeTypes.Small}
             color={ButtonColorTypes.Inherit}
             variant={ButtonVariantTypes.Contained}
-            testId="statusClose"
+            testId="shiftCommentModalClose"
             label={t('label.close')}
             onClick={handleSummaryModalClose}
             toolTip={t('label.close')}
@@ -897,7 +773,7 @@ function CurrentShiftPage() {
       </Dialog>
       <Dialog
         aria-label={t('ariaLabel.dialog')}
-        data-testid="dialogStatus"
+        data-testid="confirmationDialog"
         fullWidth
         open={openDialog}
         aria-labelledby="responsive-dialog-title"
@@ -921,7 +797,7 @@ function CurrentShiftPage() {
                 ariaDescription="Button for history tab"
                 label="NO"
                 color={ButtonColorTypes.Inherit}
-                testId="historyButton"
+                testId="confirmationDialogNo"
                 variant={ButtonVariantTypes.Contained}
                 onClick={() => newShiftConfirmation('NO')}
               />
@@ -934,7 +810,7 @@ function CurrentShiftPage() {
                 ariaDescription="Button for history tab"
                 label="YES"
                 onClick={() => newShiftConfirmation('YES')}
-                testId="historyButton"
+                testId="confirmationDialogYes"
                 variant={ButtonVariantTypes.Contained}
               />
             </Grid>
@@ -958,7 +834,7 @@ function CurrentShiftPage() {
       >
         <DialogTitle>{t('label.viewImages')}</DialogTitle>
         <DialogContent dividers>
-          {images && images.length > 0 && <ImageDisplayComponent images={images} />}
+          {images ? <ImageDisplayComponent images={images} /> : <p>{t('label.noImageFound')}</p>}
         </DialogContent>
         <DialogActions>
           <Button
@@ -976,4 +852,4 @@ function CurrentShiftPage() {
   );
 }
 
-export default CurrentShiftPage;
+export default DisplayShiftComponent;

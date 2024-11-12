@@ -4,12 +4,11 @@ import { mount } from 'cypress/react18';
 import { THEME_DARK, THEME_LIGHT } from '@ska-telescope/ska-gui-components';
 import theme from '../../../../services/theme/theme';
 import ShiftHistoryListComponent from './ShiftHistoryListComponent';
-import sltDataModel from '../../../../DataModels/Models/sltDataModel';
 import SHIFT_DATA_LIST from '../../../../DataModels/DataFiles/shiftDataList';
 
 describe('<ShiftHistoryListComponent />', () => {
   it(`Theme ${THEME_DARK}: Renders ShiftHistoryListComponent`, () => {
-    const mockData: sltDataModel[] = SHIFT_DATA_LIST;
+    const mockData = SHIFT_DATA_LIST;
     mount(
       <ThemeProvider theme={theme(THEME_DARK)}>
         <CssBaseline />
@@ -19,7 +18,7 @@ describe('<ShiftHistoryListComponent />', () => {
   });
 
   it(`Theme ${THEME_LIGHT}: Renders SLTHistoryTableList`, () => {
-    const mockData: sltDataModel[] = SHIFT_DATA_LIST;
+    const mockData = SHIFT_DATA_LIST;
     mount(
       <ThemeProvider theme={theme(THEME_LIGHT)}>
         <CssBaseline />

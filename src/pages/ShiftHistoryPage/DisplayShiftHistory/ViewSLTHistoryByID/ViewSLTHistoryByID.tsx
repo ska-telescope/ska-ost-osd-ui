@@ -1,14 +1,12 @@
 import React from 'react';
-import PreviewIcon from '@mui/icons-material/Preview';
-import sltDataModel from '../../../DataModels/Models/sltDataModel';
-import apiService from '../../../services/apis';
+import apiService from '../../../../services/apis';
 
 interface EntryFieldProps {
-  shiftData: sltDataModel;
+  shiftData;
   updatedList;
 }
 
-const ViewSLTHistory = ({ shiftData, updatedList }: EntryFieldProps) => {
+const ViewSLTHistoryByID = ({ shiftData, updatedList }: EntryFieldProps) => {
   const fetchSltHistoryByID = async () => {
     const path = `shift?shift_id=${shiftData.shift_id}`;
     const response = await apiService.getSltData(path);
@@ -18,12 +16,15 @@ const ViewSLTHistory = ({ shiftData, updatedList }: EntryFieldProps) => {
   };
 
   return (
-    <PreviewIcon
-      data-testid="iconViewShift"
-      style={{ cursor: 'pointer', marginTop: '10px' }}
+    <span
+      aria-hidden="true"
+      data-testid={`shiftId${shiftData.id}`}
+      style={{ cursor: 'pointer', textDecoration: 'underline' }}
       onClick={() => fetchSltHistoryByID()}
-    />
+    >
+      {shiftData.shift_id}
+    </span>
   );
 };
 
-export default ViewSLTHistory;
+export default ViewSLTHistoryByID;
