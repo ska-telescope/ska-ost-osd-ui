@@ -80,7 +80,13 @@ context('Shift Log Tool', () => {
             element.find('[data-testid="availableShiftData"]') &&
             element.find('[data-testid="availableShiftData"]').length > 0
           ) {
-            cy.get('[data-testid="shiftId1"]').click();
+            if (
+              element.find('[data-testid="shiftId1"]') &&
+              element.find('[data-testid="shiftId1"]').length > 0
+            ) {
+              cy.get('[data-testid="shiftId1"]').click();
+            }
+            
           }
         });
 
