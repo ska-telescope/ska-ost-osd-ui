@@ -85,36 +85,43 @@ context('Shift Log Tool', () => {
               element.find('[data-testid="shiftId1"]').length > 0
             ) {
               cy.get('[data-testid="shiftId1"]').click();
+              cy.wait(waitTime);
+              cy.get('[data-testid="viewHistoryTitle"]').should('be.visible');
+              // cy.get('#').contains(translation.label.viewHistoryTitle);
+              cy.get('#shiftStart').contains(translation.label.shiftStartedAt);
+              cy.get('#shiftEnd').contains(translation.label.shiftEndsAt);
+              cy.get('#operatorName').contains(translation.label.operatorName);
+              cy.get('[data-testid="viewShiftCommentsHistory"]').contains(
+                translation.label.viewShiftComments,
+              );
+
+              cy.get('body').then((element) => {
+                if (
+                  element.find('[data-testid="viewShiftCommentsHistoryData"]') &&
+                  element.find('[data-testid="viewShiftCommentsHistoryData"]').length > 0
+                ) {
+                  cy.get('[data-testid="commentedAtHistory"]').contains(
+                    translation.label.commentedAt,
+                  );
+                  cy.get('[data-testid="viewShiftHistoryImagesHistory"]').should('be.visible');
+                  cy.get('[data-testid="shiftCommentsHistory"]').contains(
+                    translation.label.comments,
+                  );
+                }
+              });
+
+              cy.get('[data-testid="addAnnotationLabel"]').contains(
+                translation.label.addAnnotationLabel,
+              );
+
+              cy.get('[data-testid="addAnnotation"]').type(
+                'This is test shift annotation by operator',
+              );
+              cy.get('[data-testid="addAnnotationBtn"]').contains(translation.label.add);
+              cy.get('[data-testid="addAnnotationBtn"]').click({ force: true });
             }
-            
           }
         });
-
-        cy.get('[data-testid="viewHistoryTitle"]').should('be.visible');
-        // cy.get('#').contains(translation.label.viewHistoryTitle);
-        cy.get('#shiftStart').contains(translation.label.shiftStartedAt);
-        cy.get('#shiftEnd').contains(translation.label.shiftEndsAt);
-        cy.get('#operatorName').contains(translation.label.operatorName);
-        cy.get('[data-testid="viewShiftCommentsHistory"]').contains(
-          translation.label.viewShiftComments,
-        );
-
-        cy.get('body').then((element) => {
-          if (
-            element.find('[data-testid="viewShiftCommentsHistoryData"]') &&
-            element.find('[data-testid="viewShiftCommentsHistoryData"]').length > 0
-          ) {
-            cy.get('[data-testid="commentedAtHistory"]').contains(translation.label.commentedAt);
-            cy.get('[data-testid="viewShiftHistoryImagesHistory"]').should('be.visible');
-            cy.get('[data-testid="shiftCommentsHistory"]').contains(translation.label.comments);
-          }
-        });
-
-        cy.get('[data-testid="addAnnotationLabel"]').contains(translation.label.addAnnotationLabel);
-
-        cy.get('[data-testid="addAnnotation"]').type('This is test shift annotation by operator');
-        cy.get('[data-testid="addAnnotationBtn"]').contains(translation.label.add);
-        cy.get('[data-testid="addAnnotationBtn"]').click({ force: true });
       }
     });
   };
