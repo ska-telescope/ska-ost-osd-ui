@@ -76,23 +76,27 @@ function DisplayShiftComponent() {
 
   const displayShiftComments = (shiftCommentItem) => (
     <div>
-      <span data-testid="shiftComment" style={{ fontWeight: 700, fontSize: '14px' }}>
-        {t('label.comments')}:{' '}
-      </span>{' '}
+      {shiftCommentItem.comment && (
+        <span data-testid="shiftComment" style={{ fontWeight: 700, fontSize: '14px' }}>
+          {t('label.comments')}:{' '}
+        </span>
+      )}
       <span>{shiftCommentItem.comment}</span>
-      <Tooltip title="Edit the log comment" placement="bottom-end">
-        <DriveFileRenameOutlineIcon
-          color="secondary"
-          aria-label={t('ariaLabel.edit')}
-          data-testid="manageEntityStatus"
-          style={{
-            cursor: 'pointer',
-            position: 'relative',
-            top: '7px'
-          }}
-          onClick={() => onEditShiftComment(shiftCommentItem)}
-        />
-      </Tooltip>{' '}
+      {shiftCommentItem.comment && (
+        <Tooltip title="Edit the log comment" placement="bottom-end">
+          <DriveFileRenameOutlineIcon
+            color="secondary"
+            aria-label={t('ariaLabel.edit')}
+            data-testid="manageEntityStatus"
+            style={{
+              cursor: 'pointer',
+              position: 'relative',
+              top: '7px'
+            }}
+            onClick={() => onEditShiftComment(shiftCommentItem)}
+          />
+        </Tooltip>
+      )}
     </div>
   );
 
