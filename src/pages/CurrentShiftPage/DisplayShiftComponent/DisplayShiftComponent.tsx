@@ -50,7 +50,7 @@ function DisplayShiftComponent() {
   const [openViewImageModal, setOpenViewImageModal] = useState(false);
   const [openSummaryModal, setOpenSummaryModal] = useState(false);
   const [isShiftCommentUpdate, setShiftCommentUpdate] = useState(false);
-  const [shiftCommentID, setShiftCommentID] = useState(0);
+  const [shiftCommentID, setShiftCommentID] = useState(null);
   const [successMessage, setMessage] = useState('');
   // const [kafkaMessages, setKafkaMessages] = useState([]);
   const [dataDetails, setShiftData] = useState(null);
@@ -344,6 +344,7 @@ function DisplayShiftComponent() {
     fetchImage(shiftCommentItem.id);
   };
   const handlesetOpenSummaryModal = () => {
+    setShiftCommentID(null)
     setShiftComment('');
     setShiftCommentUpdate(false);
     setOpenSummaryModal(true);
