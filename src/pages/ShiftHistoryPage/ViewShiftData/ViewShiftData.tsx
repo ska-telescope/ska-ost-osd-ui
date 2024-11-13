@@ -33,15 +33,19 @@ import { toUTCDateTimeFormat } from '../../../utils/constants';
 const ViewShiftData = ({ data }) => {
   const { t } = useTranslation('translations');
   const [images, setImages] = useState([]);
-  const [value, setValue] = useState(data && data.annotations);
+  const [annotation, setAnnotation] = useState(data && data.annotations);
   const [statusMessage, setStatusMessage] = useState(null);
   const [showElement, setShowElement] = useState(false);
   const [isAnnotationUpdate, setAnnotationUpdate] = useState(true);
   const [openViewImageModal, setOpenViewImageModal] = useState(false);
   // data = SHIFT_DATA_LIST[0];
 
-  const onEditShiftAnnotation = (shiftCommentItem) => {
-    setValue(shiftCommentItem.annotations);
+  const setAnnotationValue = (event) => {
+    setAnnotation(event);
+  };
+
+  const onEditShiftAnnotation = () => {
+    setAnnotationValue(annotation);
     setAnnotationUpdate(false);
   };
   const displayShiftComments = (shiftCommentItem) => (
@@ -53,9 +57,9 @@ const ViewShiftData = ({ data }) => {
     </>
   );
 
-  const displayShiftAnnotation = (shiftCommentItem) => (
+  const displayShiftAnnotation = () => (
     <div>
-      <span>{shiftCommentItem.annotations}</span>
+      <span>{annotation}</span>
       <Tooltip title="Edit the log comment" placement="bottom-end">
         <DriveFileRenameOutlineIcon
           color="secondary"
@@ -66,7 +70,7 @@ const ViewShiftData = ({ data }) => {
             position: 'relative',
             top: '7px'
           }}
-          onClick={() => onEditShiftAnnotation(shiftCommentItem)}
+          onClick={() => onEditShiftAnnotation()}
         />
       </Tooltip>{' '}
     </div>
@@ -86,15 +90,15 @@ const ViewShiftData = ({ data }) => {
   };
 
   const addAnnotation = async () => {
-    if (value) {
+    if (annotation) {
       const shiftData = {
-        annotations: `${value}`
+        annotations: `${annotation}`
       };
 
       const path = `shifts/update/${data.shift_id}`;
       const response = await apiService.putShiftData(path, shiftData);
       if (response.status === 200) {
-        setValue(response.data[0].annotations);
+        setAnnotationValue(response.data[0].annotations);
         setShowElement(true);
         setStatusMessage('msg.annotationSubmit');
         setTimeout(() => {
@@ -114,9 +118,6 @@ const ViewShiftData = ({ data }) => {
     });
   }
 
-  const setAnnotationValue = (event) => {
-    setValue(event);
-  };
   const handleViewImageClose = () => {
     setOpenViewImageModal(false);
   };
@@ -199,7 +200,7 @@ const ViewShiftData = ({ data }) => {
                       setValue={setAnnotationValue}
                       rows={2}
                       label={t('label.addAnnotation')}
-                      value={value}
+                      value={annotation}
                       testId="addAnnotation"
                     />
                   </Grid>
@@ -225,7 +226,7 @@ const ViewShiftData = ({ data }) => {
                       setValue={setAnnotationValue}
                       rows={2}
                       label={t('label.addAnnotation')}
-                      value={value}
+                      value={annotation}
                       testId="updateAnnotation"
                     />
                   </Grid>
@@ -256,7 +257,7 @@ const ViewShiftData = ({ data }) => {
                 </Grid>
                 <Grid container spacing={2} justifyContent="left">
                   <Grid item xs={12} sm={12} md={9} marginLeft={2}>
-                    {isAnnotationUpdate && data.annotations && displayShiftAnnotation(data)}
+                    {isAnnotationUpdate && data.annotations && displayShiftAnnotation()}
                   </Grid>
                 </Grid>
               </Grid>

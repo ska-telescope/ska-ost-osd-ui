@@ -33,10 +33,9 @@ import AddIcon from '@mui/icons-material/Add';
 import HistoryIcon from '@mui/icons-material/History';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
-import { Kafka } from 'kafkajs';
+// import { Kafka } from 'kafkajs';
 import {
   ENTITY,
-  KafkaTopic,
   SHIFT_END,
   SHIFT_STATUS,
   operatorName,
@@ -54,7 +53,7 @@ function DisplayShiftComponent() {
   const [isShiftCommentUpdate, setShiftCommentUpdate] = useState(false);
   const [shiftCommentID, setShiftCommentID] = useState(0);
   const [successMessage, setMessage] = useState('');
-  const [kafkaMessages, setKafkaMessages] = useState([]);
+  // const [kafkaMessages, setKafkaMessages] = useState([]);
   const [dataDetails, setShiftData] = useState(null);
   const [displayMessageElement, setDisplayMessageElement] = useState(false);
   const [displayModalMessageElement, setDisplayModalMessageElement] = useState(false);
@@ -67,6 +66,7 @@ function DisplayShiftComponent() {
   const location = useLocation();
   const [inputValue, setInputValue] = React.useState('');
   const [openDialog, setOpenDialog] = React.useState(false);
+  const [interval, setItervalLogs] = useState(null);
 
   const onEditShiftComment = (shiftCommentItem) => {
     console.log('shiftCommentItemshiftCommentItem', shiftCommentItem);
@@ -75,10 +75,6 @@ function DisplayShiftComponent() {
     setOpenSummaryModal(true);
     setShiftCommentUpdate(true);
     setShiftComment(shiftCommentItem.comment);
-
-    // dataDetails["shift_comment"][shiftCommentIndex]["shift_comments"]["isEdit"]=true;
-    // setShiftComment(shiftCommentItem["shift_comments"])
-    // setLogComment(shiftData["shift_logs"][logIndex]["log_comment"][commentIndex])
   };
 
   const displayShiftComments = (shiftCommentItem) => (
@@ -114,15 +110,15 @@ function DisplayShiftComponent() {
     }
   };
 
-  const updateShiftLogs = async () => {
-    if (kafkaMessages && kafkaMessages.length > 0) {
-      const path = `shift?shift_id=${shiftId}`;
-      const result = await apiService.getSltLogs(path);
-      if (result && result.status === 200) {
-        setShiftData(result && result.data && result.data.length > 0 ? result.data[0] : []);
-      }
-    }
-  };
+  // const updateShiftLogs = async () => {
+  //   if (kafkaMessages && kafkaMessages.length > 0) {
+  //     const path = `shift?shift_id=${shiftId}`;
+  //     const result = await apiService.getSltLogs(path);
+  //     if (result && result.status === 200) {
+  //       setShiftData(result && result.data && result.data.length > 0 ? result.data[0] : []);
+  //     }
+  //   }
+  // };
 
   const updateShiftData = async () => {
     const path = `shift?shift_id=${shiftId}`;
@@ -134,26 +130,38 @@ function DisplayShiftComponent() {
     }
   };
 
-  const useKafkaData = (topic) => {
-    const kafka = new Kafka({
-      clientId: window.location.hostname,
-      brokers: ['localhost:9092']
-    });
-    const consumer = kafka.consumer({ groupId: 'my_consumer_group' });
-    const run = async () => {
-      await consumer.connect();
-      await consumer.subscribe({ topic, fromBeginning: true });
-      await consumer.run({
-        eachMessage: async ({ message }) => {
-          setKafkaMessages((prevMessages) => [...prevMessages, message.value.toString()]);
-        }
-      });
-    };
-    updateShiftLogs();
-    run().catch(console.error);
-    return () => {
-      consumer.disconnect();
-    };
+  // const useKafkaData = (topic) => {
+  //   const kafka = new Kafka({
+  //     clientId: window.location.hostname,
+  //     brokers: ['localhost:9092']
+  //   });
+  //   const consumer = kafka.consumer({ groupId: 'my_consumer_group' });
+  //   const run = async () => {
+  //     await consumer.connect();
+  //     await consumer.subscribe({ topic, fromBeginning: true });
+  //     await consumer.run({
+  //       eachMessage: async ({ message }) => {
+  //         setKafkaMessages((prevMessages) => [...prevMessages, message.value.toString()]);
+  //       }
+  //     });
+  //   };
+  //   updateShiftLogs();
+  //   run().catch(console.error);
+  //   return () => {
+  //     consumer.disconnect();
+  //   };
+  // };
+
+  const fetchShiftWithRecentLogs = async () => {
+    const path = `current_shift`;
+    const response = await apiService.getSltData(path);
+    if (response && response.status === 200 && response.data && response.data.length > 0) {
+      setShiftData(
+        response && response.data && response.data.length > 0 && response.data[0]
+          ? response.data[0]
+          : []
+      );
+    }
   };
 
   const startNewShift = async () => {
@@ -176,6 +184,11 @@ function DisplayShiftComponent() {
           ? response.data[0]
           : []
       );
+      const intervel = setInterval(() => {
+        fetchShiftWithRecentLogs();
+      }, 25000);
+      setItervalLogs(intervel);
+
       // setShiftData(SHIFT_DATA_LIST[1]);
     }
   };
@@ -198,14 +211,17 @@ function DisplayShiftComponent() {
             : []
         );
         setDisableButton(false);
-        setShiftId(response.data[0].shift_id);
+        const intervel = setInterval(() => {
+          fetchShiftWithRecentLogs();
+        }, 25000);
+        setItervalLogs(intervel);
       }
     }
   };
   useEffect(() => {
     fetchSltCurrentShifts();
     updateShiftLogs();
-    useKafkaData(KafkaTopic.serviceToUITopic);
+    // useKafkaData(KafkaTopic.serviceToUITopic);
   }, []);
 
   const endNewShift = async () => {
@@ -222,6 +238,7 @@ function DisplayShiftComponent() {
       setDisplayMessageElement(true);
       setOperator('');
       setShiftId('');
+      clearInterval(interval);
       setTimeout(() => {
         setDisplayMessageElement(false);
         setShiftComment('');
