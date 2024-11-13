@@ -104,6 +104,7 @@ function ShiftHistoryPage() {
 
   const handleClose = () => {
     setDisplayTable(true);
+    fetchSltHistoryByFilters(searchFilterData);
   };
 
   const onTriggerFunction = (data) => {
