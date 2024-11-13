@@ -119,6 +119,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
   const [message, setMessage] = useState('');
   const [displayMessageElement, setDisplayMessageElement] = useState(false);
   const [shiftLogCommentID, setShiftLogCommentID] = useState(0);
+  const [shiftNewLogCommentID, setShiftNewLogCommentID] = useState(null);
   const [isUpdateEnable, setIsUpdateEnable] = useState(false);
   const [messageType, setMessageType] = useState('');
   const [selectedLogDetails, setSelectedLogDetails] = useState(null);
@@ -134,8 +135,8 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
     });
   }
   const postLogImage = async (file) => {
-    if (shiftLogCommentID && shiftLogCommentID > 0) {
-      const path = `shift_log_comments/upload_image/${shiftLogCommentID}`;
+    if (shiftNewLogCommentID) {
+      const path = `shift_log_comments/upload_image/${shiftNewLogCommentID}`;
       const formData = new FormData();
       formData.append('file', file);
       const config = {
@@ -202,7 +203,10 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
     const response = await apiService.postShiftData(path, addCommentRequestBody);
     if (response.status === 200) {
       updateCommentsEvent();
-      setShiftLogCommentID(response.data && response.data.length > 0 ? response.data[0].id : '');
+      setShiftNewLogCommentID(
+        response.data && response.data.length > 0 ? response.data[0].id : null
+      );
+      // setShiftLogCommentID(response.data && response.data.length > 0 ? response.data[0].id : '');
       setDisplayMessageElement(true);
       setMessageType('addLogComments');
       setMessage('msg.commentSubmit');
@@ -223,6 +227,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
     const response = await apiService.updateLogComments(path, updateCommentPayload);
     if (response.status === 200) {
       updateCommentsEvent();
+      setShiftNewLogCommentID(null);
       setShiftLogCommentID(response.data && response.data.length > 0 ? response.data[0].id : '');
       setDisplayMessageElement(true);
       setMessageType('updateLogComments');
@@ -278,14 +283,13 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
   );
 
   const displayUpdateLogComment = (logIndex, commentItem, commentIndex) => (
-    <>
-      <Grid container justifyContent="start">
+    <Grid container justifyContent="start">
         <Grid item xs={12} sm={12} md={9}>
           <TextEntry
             rows={1}
             setValue={(event) => handleUpdateInputChange(event)}
             label={t('label.logCommentLabel')}
-            value={shiftLogCommentID === commentItem.id ? updateCommentValue : ''}
+            value={updateCommentValue || ''}
             testId={`logComment${commentIndex}`}
           />
         </Grid>
@@ -302,21 +306,6 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
           />
         </Grid>
       </Grid>
-
-      <Grid container justifyContent="start">
-        <Grid item xs={12} sm={12} md={12} style={{ flex: 'none', marginTop: '10px' }}>
-          <FileUpload
-            chooseColor={ButtonColorTypes.Secondary}
-            chooseVariant={ButtonVariantTypes.Contained}
-            clearLabel="Remove"
-            clearVariant={ButtonVariantTypes.Outlined}
-            buttonSize={ButtonSizeTypes.Small}
-            testId={`updateLlogImage${logIndex}`}
-            uploadFunction={postLogImage}
-          />
-        </Grid>
-      </Grid>
-    </>
   );
   const fetchImage = async (commentId) => {
     setImages([]);
