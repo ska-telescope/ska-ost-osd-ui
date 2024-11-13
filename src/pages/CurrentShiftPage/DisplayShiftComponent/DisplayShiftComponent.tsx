@@ -152,16 +152,15 @@ function DisplayShiftComponent() {
   //   };
   // };
 
-  const fetchShiftWithRecentLogs = async () => {
-    const path = `current_shift`;
-    const response = await apiService.getSltData(path);
-    if (response && response.status === 200 && response.data && response.data.length > 0) {
+  const fetchShiftWithRecentLogs = async (shiftID) => {
+    const path = `shift?shift_id=${shiftID}`;
+    const result = await apiService.getSltLogs(path);
+    if (result && result.status === 200) {
       setShiftData(
-        response && response.data && response.data.length > 0 && response.data[0]
-          ? response.data[0]
-          : []
+        result && result.data && result.data.length > 0 && result.data[0] ? result.data[0] : []
       );
     }
+
   };
 
   const startNewShift = async () => {
@@ -185,7 +184,7 @@ function DisplayShiftComponent() {
           : []
       );
       const intervel = setInterval(() => {
-        fetchShiftWithRecentLogs();
+        fetchShiftWithRecentLogs(response.data[0].shift_id);
       }, 25000);
       setItervalLogs(intervel);
 
@@ -196,7 +195,8 @@ function DisplayShiftComponent() {
   const fetchSltCurrentShifts = async () => {
     const path = `current_shift`;
     const response = await apiService.getSltData(path);
-    if (response.status === 200 && !response.data.shift_end) {
+    console.log('responseresponse',response)
+    if (response.status === 200 && !response.data[0].shift_end) {
       setMessage('msg.shiftAlreadyStarted');
       setDisplayMessageElement(true);
       setTimeout(() => {
@@ -212,7 +212,7 @@ function DisplayShiftComponent() {
         );
         setDisableButton(false);
         const intervel = setInterval(() => {
-          fetchShiftWithRecentLogs();
+          fetchShiftWithRecentLogs(response.data[0].shift_id);
         }, 25000);
         setItervalLogs(intervel);
       }
@@ -337,6 +337,7 @@ function DisplayShiftComponent() {
     setImages([]);
   };
   const handleOpenImage = (shiftCommentItem) => {
+    console.log('shiftCommentItemshiftCommentItem',shiftCommentItem)
     setOpenViewImageModal(true);
     fetchImage(shiftCommentItem.id);
   };
@@ -542,13 +543,14 @@ function DisplayShiftComponent() {
         {dataDetails && dataDetails.comments && dataDetails.comments.length > 0 && (
           <Divider style={{ marginTop: '20px' }} />
         )}
-        {dataDetails && dataDetails.comments && dataDetails.comments.length > 0 && (
+       
           <Grid
+       
             container
             sx={{ padding: 2, paddingTop: 0, maxHeight: '500px', overflowY: 'scroll' }}
           >
             <Grid item xs={12} sm={12} md={12}>
-              <div>
+            {dataDetails && dataDetails.comments &&
                 <p
                   data-testid="viewShiftComments"
                   style={{
@@ -560,7 +562,7 @@ function DisplayShiftComponent() {
                 >
                   {t('label.viewShiftComments')}
                 </p>
-              </div>
+              }
               {dataDetails &&
                 dataDetails.comments &&
                 dataDetails.comments.length > 0 &&
@@ -611,7 +613,7 @@ function DisplayShiftComponent() {
                 ))}
             </Grid>
           </Grid>
-        )}
+       
       </Paper>
 
       <Paper sx={{ border: '1px solid darkgrey', margin: 2, marginTop: 0 }}>
