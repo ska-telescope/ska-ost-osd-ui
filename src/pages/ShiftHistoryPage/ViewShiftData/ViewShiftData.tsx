@@ -76,6 +76,7 @@ const ViewShiftData = ({ data }) => {
     </div>
   );
   const fetchImage = async (shiftCommentId) => {
+    setImages([]);
     const path = `shift_comments/download_images/${shiftCommentId}`;
     const result = await apiService.getImage(path);
     if (result.status === 200) {
@@ -152,11 +153,7 @@ const ViewShiftData = ({ data }) => {
       >
         <DialogTitle>{t('label.viewImages')}</DialogTitle>
         <DialogContent dividers>
-          {images && images.length > 0 ? (
-            <ImageDisplayComponent images={images} />
-          ) : (
-            <p>{t('label.noImageFound')}</p>
-          )}
+          {images ? <ImageDisplayComponent images={images} /> : <p>{t('label.noImageFound')}</p>}
         </DialogContent>
         <DialogActions>
           <Button

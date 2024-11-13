@@ -97,6 +97,7 @@ function DisplayShiftComponent() {
   );
 
   const fetchImage = async (commentId) => {
+    setImages([]);
     const path = `shift_comments/download_images/${commentId}`;
     // const path = `shift_comments/download_images/${shiftCommentID}`;
     const result = await apiService.getImage(path);
@@ -563,7 +564,7 @@ function DisplayShiftComponent() {
             {dataDetails &&
               dataDetails.comments &&
               dataDetails.comments.length > 0 &&
-              dataDetails.comments.reverse().map((shiftCommentItem, shiftCommentIndex) => (
+              dataDetails.comments.map((shiftCommentItem, shiftCommentIndex) => (
                 <div key={shiftCommentItem.id}>
                   <Grid container justifyContent="start">
                     <Grid item xs={12} sm={12} md={4}>

@@ -320,6 +320,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
     </>
   );
   const fetchImage = async (commentId) => {
+    setImages([]);
     const path = `shift_log_comments/download_images/${commentId}`;
     const result = await apiService.getImage(path);
     if (result.status === 200) {
