@@ -125,7 +125,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
   const [shiftLogCommentID, setShiftLogCommentID] = useState(0);
   const [isUpdateEnable, setIsUpdateEnable] = useState(false);
   const [messageType, setMessageType] = useState('');
-  const [selectedLogDetails, setSelectedLogDetails] = useState('');
+  const [selectedLogDetails, setSelectedLogDetails] = useState(null);
   const [logCommentsIndex, setLogCommentsIndex] = useState(0);
   let id = 1;
   if (logDataDetails && logDataDetails.length > 0) {
@@ -296,7 +296,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
             ariaDescription="Button for submitting comment"
             label="Update"
             testId="commentButton"
-            onClick={() => updateLogComments(logIndex, commentItem, commentIndex)}
+            onClick={() => updateLogComments(logIndex, commentItem)}
             size={ButtonSizeTypes.Small}
             variant={ButtonVariantTypes.Contained}
             color={ButtonColorTypes.Secondary}
