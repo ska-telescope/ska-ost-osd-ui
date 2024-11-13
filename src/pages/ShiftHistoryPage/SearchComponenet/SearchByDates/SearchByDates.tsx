@@ -65,7 +65,7 @@ const SearchByDates = ({ setFilterCirteria, searchFilter }: EntryFieldProps) => 
           ariaTitle={t('ariaLabel.date')}
           helperText={t('msg.requiredStartDate')}
           testId="dateEntryStart"
-          // errorText={validateDates()}
+          errorText={validateDates()}
           label={t('label.startDate')}
           value={startDate}
           setValue={setStartDate}
@@ -78,7 +78,7 @@ const SearchByDates = ({ setFilterCirteria, searchFilter }: EntryFieldProps) => 
           ariaTitle={t('ariaLabel.date')}
           helperText={t('msg.requiredEndDate')}
           testId="dateEntryEnd"
-          // errorText={validateDates()}
+          errorText={validateDates()}
           label={t('label.endDate')}
           value={endDate}
           setValue={setEndDate}
