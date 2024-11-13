@@ -377,7 +377,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
                       <Chip
                         size="small"
                         label={`${data.info && data.info.sbi_status ? data.info.sbi_status.toUpperCase() : 'NA'}`}
-                        color={`${data.info && data.info.sbi_status && data.info.sbi_status === 'failed' ? 'error' : 'success'}`}
+                        color={`${data.info && data.info.sbi_status && data.info.sbi_status === 'Failed' ? 'error' : 'success'}`}
                       />
                     </Grid>
                   </Grid>
