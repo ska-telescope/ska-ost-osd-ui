@@ -49,9 +49,6 @@ const RequestResponseDisplay = ({ responseArray }) => {
         responseArray.length > 0 &&
         responseArray.map((dataItem) => (
           <div key={dataItem.id}>
-            <span style={{ textDecoration: 'underline', fontWeight: 900, fontSize: '16px' }}>
-              {t('label.ebObservations')}
-            </span>
             <Accordion defaultExpanded={openPannel}>
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
@@ -400,6 +397,11 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
                     </Grid>
                   </Grid>
                   <Grid container justifyContent="start">
+                    <span
+                      style={{ textDecoration: 'underline', fontWeight: 900, fontSize: '16px' }}
+                    >
+                      {t('label.ebObservations')}
+                    </span>
                     <Grid item xs={12} sm={12} md={12}>
                       <RequestResponseDisplay
                         responseArray={

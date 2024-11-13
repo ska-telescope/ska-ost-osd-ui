@@ -344,7 +344,7 @@ function DisplayShiftComponent() {
     fetchImage(shiftCommentItem.id);
   };
   const handlesetOpenSummaryModal = () => {
-    setShiftCommentID(null)
+    setShiftCommentID(null);
     setShiftComment('');
     setShiftCommentUpdate(false);
     setOpenSummaryModal(true);
