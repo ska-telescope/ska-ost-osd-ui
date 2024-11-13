@@ -168,7 +168,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
         }, 3000);
       }
     } else {
-      const path = `shift_log_comments/upload_image?shift_id=${shiftData.shift_id}&shift_operator=${shiftData.shift_operator}&eb_id=${selectedLogDetails.info.eb_id}`;
+      const path = `shift_log_comments/upload_image?shift_id=${shiftData.shift_id}&shift_operator=${shiftData.shift_operator}&eb_id=${selectedLogDetails['info']['eb_id']}`;
       const formData = new FormData();
       formData.append('file', file);
       const config = {
