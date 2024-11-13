@@ -249,7 +249,7 @@ function DisplayShiftComponent() {
       shift_id: shiftId
     };
     if (isShiftCommentUpdate) {
-      const updatePath = `shift_comments/update/${shiftCommentID}`;
+      const updatePath = `shift_comments/${shiftCommentID}`;
       const response = await apiService.putShiftData(updatePath, shiftData);
       if (response.status === 200) {
         setMessage('msg.commentSubmit');
@@ -262,7 +262,7 @@ function DisplayShiftComponent() {
         }, 3000);
       }
     } else {
-      const addPath = `shift_comments/create`;
+      const addPath = `shift_comments`;
       const response = await apiService.postShiftData(addPath, shiftData);
       if (response.status === 200) {
         setMessage('msg.commentSubmit');
