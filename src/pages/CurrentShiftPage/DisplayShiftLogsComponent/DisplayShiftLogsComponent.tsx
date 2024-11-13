@@ -160,6 +160,12 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
         setTimeout(() => {
           setDisplayMessageElement(false);
         }, 3000);
+      }else{
+        setMessage('msg.imageNotUpload');
+        setDisplayMessageElement(true);
+        setTimeout(() => {
+          setDisplayMessageElement(false);
+        }, 3000);
       }
     } else {
       const path = `shift_log_comments/upload_image?shift_id=${shiftData.shift_id}&shift_operator=${shiftData.shift_operator}&eb_id=${selectedLogDetails.info.eb_id}`;
@@ -177,6 +183,12 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
         setMessage('msg.imageUpload');
         setDisplayMessageElement(true);
         updateCommentsEvent();
+        setTimeout(() => {
+          setDisplayMessageElement(false);
+        }, 3000);
+      }else{
+        setMessage('msg.imageNotUpload');
+        setDisplayMessageElement(true);
         setTimeout(() => {
           setDisplayMessageElement(false);
         }, 3000);

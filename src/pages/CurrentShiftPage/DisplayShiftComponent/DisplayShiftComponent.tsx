@@ -316,6 +316,12 @@ function DisplayShiftComponent() {
         setTimeout(() => {
           setDisplayModalMessageElement(false);
         }, 3000);
+      }else{
+        setMessage('msg.imageNotUpload');
+        setDisplayModalMessageElement(true);
+        setTimeout(() => {
+          setDisplayModalMessageElement(false);
+        }, 3000);
       }
     } else {
       formData.append('file', file);
@@ -325,6 +331,12 @@ function DisplayShiftComponent() {
         setMessage('msg.imageUpload');
         setDisplayModalMessageElement(true);
         updateShiftData();
+        setTimeout(() => {
+          setDisplayModalMessageElement(false);
+        }, 3000);
+      }else{
+        setMessage('msg.imageNotUpload');
+        setDisplayModalMessageElement(true);
         setTimeout(() => {
           setDisplayModalMessageElement(false);
         }, 3000);
