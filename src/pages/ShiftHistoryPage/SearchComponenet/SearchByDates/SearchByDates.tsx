@@ -9,16 +9,25 @@ import {
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import SearchIcon from '@mui/icons-material/Search';
-import { getUTCDateRange, todayDate } from '../../../../utils/constants';
+import { getFormatedDate, getUTCDateRange, todayDate } from '../../../../utils/constants';
 
 interface EntryFieldProps {
   setFilterCirteria;
+  searchFilter;
 }
 
-const SearchByDates = ({ setFilterCirteria }: EntryFieldProps) => {
+const SearchByDates = ({ setFilterCirteria, searchFilter }: EntryFieldProps) => {
   const { t } = useTranslation('translations');
-  const [startDate, setStartDate] = useState(todayDate);
-  const [endDate, setEndDate] = useState(todayDate);
+  const [startDate, setStartDate] = useState(
+    searchFilter && searchFilter.createdAfter
+      ? getFormatedDate(searchFilter.createdAfter)
+      : todayDate
+  );
+  const [endDate, setEndDate] = useState(
+    searchFilter && searchFilter.createdBefore
+      ? getFormatedDate(searchFilter.createdBefore)
+      : todayDate
+  );
 
   const validateDates = () => {
     if (

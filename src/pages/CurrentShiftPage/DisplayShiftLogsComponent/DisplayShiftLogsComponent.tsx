@@ -45,13 +45,13 @@ const RequestResponseDisplay = ({ responseArray }) => {
   }
   return (
     <div>
-      <span style={{ textDecoration: 'underline', fontWeight: 900, fontSize: '16px' }}>
-        {t('label.ebObservations')}
-      </span>
       {responseArray &&
         responseArray.length > 0 &&
         responseArray.map((dataItem) => (
           <div key={dataItem.id}>
+            <span style={{ textDecoration: 'underline', fontWeight: 900, fontSize: '16px' }}>
+              {t('label.ebObservations')}
+            </span>
             <Accordion defaultExpanded={openPannel}>
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}

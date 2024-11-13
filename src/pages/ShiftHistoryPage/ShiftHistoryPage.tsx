@@ -29,6 +29,8 @@ import ShiftHistoryListComponent from './DisplayShiftHistory/ShiftHistoryListCom
 function ShiftHistoryPage() {
   const { t } = useTranslation('translations');
   const [dataDetails, setSltHistory] = useState([]);
+  const [searchFilterData, setSearchFilterData] = useState([]);
+
   const [createdAfter, setCreatedAfter] = useState('');
   const [createdBefore, setCreatedBefore] = useState('');
   const [operator, setOperator] = useState('');
@@ -110,6 +112,7 @@ function ShiftHistoryPage() {
   };
 
   const getFilterCriteria = (data) => {
+    setSearchFilterData(data);
     if (data.createdAfter && data.createdBefore) {
       setsearchType(SEARCH_TYPE.dates);
       setCreatedAfter(data.createdAfter);
@@ -168,13 +171,22 @@ function ShiftHistoryPage() {
             <Grid item xs={12} sm={12} md={1} />
             <Grid item xs={12} sm={12} md={9}>
               {displayTable && logSearchBy === logTypeEnum.searchByDate && (
-                <SearchByDates setFilterCirteria={getFilterCriteria} />
+                <SearchByDates
+                  searchFilter={searchFilterData}
+                  setFilterCirteria={getFilterCriteria}
+                />
               )}
               {displayTable && logSearchBy === logTypeEnum.searchByOperator && (
-                <SearchByOperator setFilterCirteria={getFilterCriteria} />
+                <SearchByOperator
+                  searchFilter={searchFilterData}
+                  setFilterCirteria={getFilterCriteria}
+                />
               )}
               {displayTable && logSearchBy === logTypeEnum.searchByStatus && (
-                <SearchByStatus setFilterCirteria={getFilterCriteria} />
+                <SearchByStatus
+                  searchFilter={searchFilterData}
+                  setFilterCirteria={getFilterCriteria}
+                />
               )}
             </Grid>
           </Grid>

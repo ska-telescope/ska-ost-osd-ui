@@ -12,13 +12,15 @@ import { SBIStatus } from '../../../../utils/constants';
 
 interface EntryFieldProps {
   setFilterCirteria;
+  searchFilter;
 }
 
-const SearchByStatus = ({ setFilterCirteria }: EntryFieldProps) => {
+const SearchByStatus = ({ setFilterCirteria, searchFilter }: EntryFieldProps) => {
   const { t } = useTranslation('translations');
-  const [statusValue, setValue] = React.useState<string>('');
+  const [statusValue, setValue] = React.useState<string>(
+    searchFilter && searchFilter.status ? searchFilter.status : ''
+  );
   const [inputValue, setInputValue] = React.useState('');
-
   const disableSearch = () => {
     if (statusValue && statusValue.length > 0) {
       return false;

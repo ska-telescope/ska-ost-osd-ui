@@ -12,12 +12,17 @@ import { operatorName } from '../../../../utils/constants';
 
 interface EntryFieldProps {
   setFilterCirteria;
+  searchFilter;
 }
 
-const SearchByOperator = ({ setFilterCirteria }: EntryFieldProps) => {
+const SearchByOperator = ({ setFilterCirteria, searchFilter }: EntryFieldProps) => {
   const { t } = useTranslation('translations');
-  const [operatorValue, setValue] = React.useState<string>('');
-  const [inputValue, setInputValue] = React.useState('');
+  const [operatorValue, setValue] = React.useState<string>(
+    searchFilter && searchFilter.shift_operator ? searchFilter.shift_operator : ''
+  );
+  const [inputValue, setInputValue] = React.useState(
+    searchFilter && searchFilter.shift_operator ? searchFilter.shift_operator : ''
+  );
 
   const disableSearch = () => {
     if (operatorValue && operatorValue.length > 0) {
