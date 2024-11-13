@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import React, { useEffect, useState } from 'react';
 import {
   Button,
@@ -69,9 +68,7 @@ function DisplayShiftComponent() {
   const [interval, setItervalLogs] = useState(null);
 
   const onEditShiftComment = (shiftCommentItem) => {
-    console.log('shiftCommentItemshiftCommentItem', shiftCommentItem);
     setShiftCommentID(shiftCommentItem.id);
-    console.log(shiftCommentID);
     setOpenSummaryModal(true);
     setShiftCommentUpdate(true);
     setShiftComment(shiftCommentItem.comment);
@@ -160,7 +157,6 @@ function DisplayShiftComponent() {
         result && result.data && result.data.length > 0 && result.data[0] ? result.data[0] : []
       );
     }
-
   };
 
   const startNewShift = async () => {
@@ -169,7 +165,6 @@ function DisplayShiftComponent() {
     };
     const path = `shifts/create`;
     const response = await apiService.postShiftData(path, shiftData);
-    console.log('response', response);
     if (response.status === 200 && response.data && response.data.length > 0) {
       setMessage('msg.shiftStarted');
       setDisplayMessageElement(true);
@@ -195,7 +190,6 @@ function DisplayShiftComponent() {
   const fetchSltCurrentShifts = async () => {
     const path = `current_shift`;
     const response = await apiService.getSltData(path);
-    console.log('responseresponse',response)
     if (response.status === 200 && !response.data[0].shift_end) {
       setMessage('msg.shiftAlreadyStarted');
       setDisplayMessageElement(true);
@@ -229,7 +223,6 @@ function DisplayShiftComponent() {
       shift_operator: operator,
       shift_end: SHIFT_END.END_TIME
     };
-    console.log('shiftData SHIFT_END', shiftData);
     const path = `shifts/update/${shiftId}`;
     const response = await apiService.putShiftData(path, shiftData);
     if (response.status === 200) {
@@ -254,14 +247,12 @@ function DisplayShiftComponent() {
       comment: `${shiftCommentValue}`,
       shift_id: shiftId
     };
-    console.log('isShiftCommentUpdate', isShiftCommentUpdate);
     if (isShiftCommentUpdate) {
       const updatePath = `shift_comments/update/${shiftCommentID}`;
       const response = await apiService.putShiftData(updatePath, shiftData);
       if (response.status === 200) {
         setMessage('msg.commentSubmit');
         setDisplayModalMessageElement(true);
-        console.log('iiiiiiiiiiiiiiiiiiiiiiii', response);
         setShiftCommentID(response.data[0].id);
         updateShiftData();
         setTimeout(() => {
@@ -304,7 +295,6 @@ function DisplayShiftComponent() {
         'content-type': 'multipart/form-data'
       }
     };
-    console.log('shiftCommentIDshiftCommentID', shiftCommentID);
     if (shiftCommentID && shiftCommentID > 0) {
       formData.append('files', file);
       const path = `shift_comments/upload_image/${shiftCommentID}`;
@@ -316,7 +306,7 @@ function DisplayShiftComponent() {
         setTimeout(() => {
           setDisplayModalMessageElement(false);
         }, 3000);
-      }else{
+      } else {
         setMessage('msg.imageNotUpload');
         setDisplayModalMessageElement(true);
         setTimeout(() => {
@@ -334,7 +324,7 @@ function DisplayShiftComponent() {
         setTimeout(() => {
           setDisplayModalMessageElement(false);
         }, 3000);
-      }else{
+      } else {
         setMessage('msg.imageNotUpload');
         setDisplayModalMessageElement(true);
         setTimeout(() => {
@@ -349,7 +339,6 @@ function DisplayShiftComponent() {
     setImages([]);
   };
   const handleOpenImage = (shiftCommentItem) => {
-    console.log('shiftCommentItemshiftCommentItem',shiftCommentItem)
     setOpenViewImageModal(true);
     fetchImage(shiftCommentItem.id);
   };
@@ -555,77 +544,72 @@ function DisplayShiftComponent() {
         {dataDetails && dataDetails.comments && dataDetails.comments.length > 0 && (
           <Divider style={{ marginTop: '20px' }} />
         )}
-       
-          <Grid
-       
-            container
-            sx={{ padding: 2, paddingTop: 0, maxHeight: '500px', overflowY: 'scroll' }}
-          >
-            <Grid item xs={12} sm={12} md={12}>
-            {dataDetails && dataDetails.comments &&
-                <p
-                  data-testid="viewShiftComments"
-                  style={{
-                    textDecoration: 'underline',
-                    fontWeight: 900,
-                    fontSize: '18px',
-                    marginBottom: 0
-                  }}
-                >
-                  {t('label.viewShiftComments')}
-                </p>
-              }
-              {dataDetails &&
-                dataDetails.comments &&
-                dataDetails.comments.length > 0 &&
-                dataDetails.comments.reverse().map((shiftCommentItem, shiftCommentIndex) => (
-                  <div key={shiftCommentItem.id}>
-                    <Grid container justifyContent="start">
-                      <Grid item xs={12} sm={12} md={4}>
-                        <p data-testid="commentedAt">
-                          <span style={{ fontWeight: 700, fontSize: '14px' }}>
-                            {t('label.commentedAt')} :{' '}
-                          </span>{' '}
-                          <span>
-                            {shiftCommentItem &&
-                            shiftCommentItem.metadata &&
-                            shiftCommentItem.metadata.created_on
-                              ? toUTCDateTimeFormat(shiftCommentItem.metadata.created_on)
-                              : 'NA'}
-                          </span>
-                        </p>
-                      </Grid>
-                      <Grid item xs={12} sm={12} md={3}>
-                        <Chip
-                          size="small"
-                          color="secondary"
-                          style={{
-                            cursor: 'pointer',
-                            marginTop: '10px'
-                          }}
-                          data-testid="viewShiftCommentImages"
-                          onClick={() => handleOpenImage(shiftCommentItem)}
-                          label={`${t('label.viewImages')} (${shiftCommentItem.image ? shiftCommentItem.image.length : 0})`}
-                          variant="outlined"
-                        />
-                      </Grid>
-                    </Grid>
-                    <Grid container justifyContent="start">
-                      <Grid item xs={12} sm={12} md={12}>
-                        {shiftCommentItem &&
-                          shiftCommentItem.comment &&
-                          displayShiftComments(shiftCommentItem)}
-                      </Grid>
-                    </Grid>
 
-                    {shiftCommentIndex !== dataDetails.comments.length - 1 && (
-                      <Divider style={{ marginTop: '15px' }} />
-                    )}
-                  </div>
-                ))}
-            </Grid>
+        <Grid container sx={{ padding: 2, paddingTop: 0, maxHeight: '500px', overflowY: 'scroll' }}>
+          <Grid item xs={12} sm={12} md={12}>
+            {dataDetails && dataDetails.comments && (
+              <p
+                data-testid="viewShiftComments"
+                style={{
+                  textDecoration: 'underline',
+                  fontWeight: 900,
+                  fontSize: '18px',
+                  marginBottom: 0
+                }}
+              >
+                {t('label.viewShiftComments')}
+              </p>
+            )}
+            {dataDetails &&
+              dataDetails.comments &&
+              dataDetails.comments.length > 0 &&
+              dataDetails.comments.reverse().map((shiftCommentItem, shiftCommentIndex) => (
+                <div key={shiftCommentItem.id}>
+                  <Grid container justifyContent="start">
+                    <Grid item xs={12} sm={12} md={4}>
+                      <p data-testid="commentedAt">
+                        <span style={{ fontWeight: 700, fontSize: '14px' }}>
+                          {t('label.commentedAt')} :{' '}
+                        </span>{' '}
+                        <span>
+                          {shiftCommentItem &&
+                          shiftCommentItem.metadata &&
+                          shiftCommentItem.metadata.created_on
+                            ? toUTCDateTimeFormat(shiftCommentItem.metadata.created_on)
+                            : 'NA'}
+                        </span>
+                      </p>
+                    </Grid>
+                    <Grid item xs={12} sm={12} md={3}>
+                      <Chip
+                        size="small"
+                        color="secondary"
+                        style={{
+                          cursor: 'pointer',
+                          marginTop: '10px'
+                        }}
+                        data-testid="viewShiftCommentImages"
+                        onClick={() => handleOpenImage(shiftCommentItem)}
+                        label={`${t('label.viewImages')} (${shiftCommentItem.image ? shiftCommentItem.image.length : 0})`}
+                        variant="outlined"
+                      />
+                    </Grid>
+                  </Grid>
+                  <Grid container justifyContent="start">
+                    <Grid item xs={12} sm={12} md={12}>
+                      {shiftCommentItem &&
+                        shiftCommentItem.comment &&
+                        displayShiftComments(shiftCommentItem)}
+                    </Grid>
+                  </Grid>
+
+                  {shiftCommentIndex !== dataDetails.comments.length - 1 && (
+                    <Divider style={{ marginTop: '15px' }} />
+                  )}
+                </div>
+              ))}
           </Grid>
-       
+        </Grid>
       </Paper>
 
       <Paper sx={{ border: '1px solid darkgrey', margin: 2, marginTop: 0 }}>

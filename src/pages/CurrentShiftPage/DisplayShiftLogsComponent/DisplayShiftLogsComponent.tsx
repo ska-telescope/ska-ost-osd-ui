@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 import {
   Box,
   Chip,
@@ -129,7 +127,6 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
   const [messageType, setMessageType] = useState('');
   const [selectedLogDetails, setSelectedLogDetails] = useState('');
   const [logCommentsIndex, setLogCommentsIndex] = useState(0);
-  console.log('shiftDatashiftData', shiftData);
   let id = 1;
   if (logDataDetails && logDataDetails.length > 0) {
     logDataDetails.map((row) => {
@@ -160,7 +157,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
         setTimeout(() => {
           setDisplayMessageElement(false);
         }, 3000);
-      }else{
+      } else {
         setMessage('msg.imageNotUpload');
         setDisplayMessageElement(true);
         setTimeout(() => {
@@ -168,7 +165,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
         }, 3000);
       }
     } else {
-      const path = `shift_log_comments/upload_image?shift_id=${shiftData.shift_id}&shift_operator=${shiftData.shift_operator}&eb_id=${selectedLogDetails['info']['eb_id']}`;
+      const path = `shift_log_comments/upload_image?shift_id=${shiftData.shift_id}&shift_operator=${shiftData.shift_operator}&eb_id=${selectedLogDetails.info.eb_id}`;
       const formData = new FormData();
       formData.append('file', file);
       const config = {
@@ -186,7 +183,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
         setTimeout(() => {
           setDisplayMessageElement(false);
         }, 3000);
-      }else{
+      } else {
         setMessage('msg.imageNotUpload');
         setDisplayMessageElement(true);
         setTimeout(() => {
@@ -197,22 +194,18 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
   };
 
   const addLogComments = async (logIndex, data) => {
-    console.log('data', data);
     if (commentValue === '') return;
-    console.log('shiftData', shiftData);
     const addCommentRequestBody = {
       log_comment: `${commentValue}`,
       operator_name: shiftData.shift_operator,
       shift_id: shiftData.shift_id,
       eb_id: data.info.eb_id
     };
-    console.log('commentcomment', addCommentRequestBody);
     const path = `shift_log_comments/create`;
     setLogCommentsIndex(logIndex);
     const response = await apiService.postShiftData(path, addCommentRequestBody);
     if (response.status === 200) {
       updateCommentsEvent();
-      console.log('qqqqqqssssssssssssssssssss', response);
       setShiftLogCommentID(response.data && response.data.length > 0 ? response.data[0].id : '');
       setDisplayMessageElement(true);
       setMessageType('addLogComments');
@@ -222,8 +215,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
       }, 3000);
     }
   };
-  const updateLogComments = async (logIndex, commentItem, commentIndex) => {
-    console.log('commentItemcommentItem', commentItem, commentIndex);
+  const updateLogComments = async (logIndex, commentItem) => {
     if (updateCommentValue === '') return;
     const updateCommentPayload = {
       log_comment: `${updateCommentValue}`,
@@ -247,15 +239,12 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
   };
 
   const handleInputChange = (index, event) => {
-    console.log('handleInputChange', index, event);
     setLogCommentsIndex(index);
-    logDataDetails[index].newLogComment = event; // Update the specific input value
-    setComment(event); // Set the new state
+    logDataDetails[index].newLogComment = event;
+    setComment(event);
   };
   const handleUpdateInputChange = (event) => {
-    // logData[logIndex].comments[commentIndex].logcomments = commentItem;
-    setUpdateComment(event); // Set the new state
-    console.log(updateCommentValue);
+    setUpdateComment(event);
   };
 
   const onEditComment = (logIndex, commentIndex, commentItem) => {
@@ -265,8 +254,6 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
     setUpdateComment(commentItem.log_comment);
     shiftData.shift_logs[logIndex].comments[commentIndex].isEdit = true;
     setComment(shiftData.shift_logs[logIndex].comments[commentIndex].logcomments);
-    console.log('shiftLogCommentIDshiftLogCommentID', shiftLogCommentID);
-    // setLogComment(shiftData["shift_logs"][logIndex]["comments"][commentIndex])
   };
 
   const displayLogComment = (logIndex, commentIndex, logData, commentItem) => (
@@ -333,7 +320,6 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
     </>
   );
   const fetchImage = async (commentId) => {
-    console.log('shiftLogCommentIDshiftLogCommentID', commentId);
     const path = `shift_log_comments/download_images/${commentId}`;
     const result = await apiService.getImage(path);
     if (result.status === 200) {
@@ -348,7 +334,6 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
   };
 
   const setLogDetails = (logDetails) => {
-    console.log('qqqqqqqqqqqqqq', logDetails);
     setSelectedLogDetails(logDetails);
   };
 

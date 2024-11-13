@@ -95,7 +95,7 @@
     "shiftStarted": "Shift started successfully",
     "shiftEnd": "Shift ended successfully",
     "imageUpload": "Image uploaded successfully",
-    "imageNotUpload":"Error in uploading image",
+    "imageNotUpload": "Error in uploading image",
     "commentSubmit": "Comment submitted successfully",
     "selectedDates": "Showing records for selected dates",
     "selectOperator": "Please select operator name",
