@@ -549,7 +549,7 @@ function DisplayShiftComponent() {
 
         <Grid container sx={{ padding: 2, paddingTop: 0, maxHeight: '500px', overflowY: 'scroll' }}>
           <Grid item xs={12} sm={12} md={12}>
-            {dataDetails && dataDetails.comments && (
+            {dataDetails && dataDetails.comments && dataDetails.comments.lenght > 0 && (
               <p
                 data-testid="viewShiftComments"
                 style={{

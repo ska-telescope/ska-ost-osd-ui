@@ -114,7 +114,6 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
   const { t } = useTranslation('translations');
   const [commentValue, setComment] = useState('');
   const [updateCommentValue, setUpdateComment] = useState('');
-  const [logDataDetails] = useState(shiftData.shift_logs);
   const [openModal, setOpenModal] = useState(false);
   const [images, setImages] = useState([]);
   const [message, setMessage] = useState('');
@@ -125,8 +124,8 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
   const [selectedLogDetails, setSelectedLogDetails] = useState(null);
   const [logCommentsIndex, setLogCommentsIndex] = useState(0);
   let id = 1;
-  if (logDataDetails && logDataDetails.length > 0) {
-    logDataDetails.map((row) => {
+  if (shiftData && shiftData.shift_logs.length > 0) {
+    shiftData.shift_logs.map((row) => {
       row.id = id++;
       if (!row.newLogComment) {
         row.newLogComment = '';
@@ -208,6 +207,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
       setMessageType('addLogComments');
       setMessage('msg.commentSubmit');
       setTimeout(() => {
+        setComment('');
         setDisplayMessageElement(false);
       }, 3000);
     }
@@ -237,7 +237,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
 
   const handleInputChange = (index, event) => {
     setLogCommentsIndex(index);
-    logDataDetails[index].newLogComment = event;
+    shiftData.shift_logs[index].newLogComment = event;
     setComment(event);
   };
   const handleUpdateInputChange = (event) => {
@@ -253,7 +253,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
     setComment(shiftData.shift_logs[logIndex].comments[commentIndex].logcomments);
   };
 
-  const displayLogComment = (logIndex, commentIndex, logData, commentItem) => (
+  const displayLogComment = (logIndex, commentIndex, commentItem) => (
     <div>
       <span style={{ fontWeight: 700, fontSize: '14px' }}> {t('label.comments')}: </span>
       <span>{commentItem.log_comment}</span>
@@ -350,9 +350,10 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
   );
   return (
     <div>
-      {logDataDetails &&
-        logDataDetails.length > 0 &&
-        logDataDetails.map((data, logIndex) => (
+      {shiftData &&
+        shiftData.shift_logs &&
+        shiftData.shift_logs.length > 0 &&
+        shiftData.shift_logs.map((data, logIndex) => (
           <div key={data.id}>
             <Paper style={{ padding: '10px', paddingTop: 0, paddingBottom: 0 }}>
               <Grid container justifyContent="start">
@@ -587,12 +588,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
                               shiftLogCommentID === commentItem.id &&
                               logIndex === logCommentsIndex
                                 ? displayUpdateLogComment(logIndex, commentItem, commentIndex)
-                                : displayLogComment(
-                                    logIndex,
-                                    commentIndex,
-                                    logDataDetails,
-                                    commentItem
-                                  )}
+                                : displayLogComment(logIndex, commentIndex, commentItem)}
                             </div>
                             <Divider style={{ marginTop: '15px' }} />
                           </div>
