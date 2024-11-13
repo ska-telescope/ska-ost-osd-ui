@@ -220,7 +220,7 @@ function DisplayShiftComponent() {
   };
   useEffect(() => {
     fetchSltCurrentShifts();
-    updateShiftLogs();
+    // updateShiftLogs();
     // useKafkaData(KafkaTopic.serviceToUITopic);
   }, []);
 
