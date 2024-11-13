@@ -201,7 +201,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
       shift_id: shiftData.shift_id,
       eb_id: data.info.eb_id
     };
-    const path = `shift_log_comments/create`;
+    const path = `shift_log_comments`;
     setLogCommentsIndex(logIndex);
     const response = await apiService.postShiftData(path, addCommentRequestBody);
     if (response.status === 200) {
@@ -221,7 +221,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
       log_comment: `${updateCommentValue}`,
       operator_name: shiftData.shift_operator
     };
-    const path = `shift_log_comments/update/${commentItem.id}`;
+    const path = `shift_log_comments/${commentItem.id}`;
     setLogCommentsIndex(logIndex);
     const response = await apiService.updateLogComments(path, updateCommentPayload);
     if (response.status === 200) {
