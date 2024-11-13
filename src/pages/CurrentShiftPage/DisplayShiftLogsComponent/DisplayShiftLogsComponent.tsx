@@ -255,9 +255,11 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
 
   const displayLogComment = (logIndex, commentIndex, commentItem) => (
     <div>
-      <span style={{ fontWeight: 700, fontSize: '14px' }}> {t('label.comments')}: </span>
+      {commentItem.log_comment && (
+        <span style={{ fontWeight: 700, fontSize: '14px' }}> {t('label.comments')}: </span>
+      )}
       <span>{commentItem.log_comment}</span>
-      {isCurrentShift && (
+      {isCurrentShift && commentItem.log_comment && (
         <Tooltip title="Edit the log comment" placement="bottom-end">
           <DriveFileRenameOutlineIcon
             color="secondary"
