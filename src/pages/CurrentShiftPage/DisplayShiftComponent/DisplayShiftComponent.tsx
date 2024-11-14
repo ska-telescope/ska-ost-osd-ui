@@ -33,9 +33,9 @@ import HistoryIcon from '@mui/icons-material/History';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
 // import { Kafka } from 'kafkajs';
+import moment from 'moment';
 import {
   ENTITY,
-  SHIFT_END,
   SHIFT_STATUS,
   operatorName,
   toUTCDateTimeFormat
@@ -226,7 +226,7 @@ function DisplayShiftComponent() {
   const endNewShift = async () => {
     const shiftData = {
       shift_operator: operator,
-      shift_end: SHIFT_END.END_TIME
+      shift_end: moment().utc().format('YYYY-MM-DD HH:mm:ss.SSSSSS')
     };
     const path = `shifts/update/${shiftId}`;
     const response = await apiService.putShiftData(path, shiftData);
