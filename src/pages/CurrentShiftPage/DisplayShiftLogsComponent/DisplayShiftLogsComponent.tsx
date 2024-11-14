@@ -183,8 +183,10 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
           setDisplayMessageElement(false);
         }, 3000);
       } else {
+        setMessageType('addLogImage');
         setMessage('msg.imageNotUpload');
         setDisplayMessageElement(true);
+        updateCommentsEvent();
         setTimeout(() => {
           setDisplayMessageElement(false);
         }, 3000);
@@ -207,12 +209,16 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
         updateCommentsEvent();
         setTimeout(() => {
           setDisplayMessageElement(false);
+          setIsUpdateEnable(false);
         }, 3000);
       } else {
+        setMessageType('addLogImage');
         setMessage('msg.imageNotUpload');
         setDisplayMessageElement(true);
+        updateCommentsEvent();
         setTimeout(() => {
           setDisplayMessageElement(false);
+          setIsUpdateEnable(false);
         }, 3000);
       }
     }
@@ -480,12 +486,14 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
                           <div style={{ position: 'absolute', zIndex: 2, top: '5px' }}>
                             {displayMessageElement &&
                             messageType === 'addLogComments' &&
-                            logIndex === logCommentsIndex && !isUpdateEnable
+                            logIndex === logCommentsIndex &&
+                            !isUpdateEnable
                               ? renderMessageResponse()
                               : ''}
                             {displayMessageElement &&
                             messageType === 'addLogImage' &&
-                            logIndex === logCommentsIndex  && !isUpdateEnable
+                            logIndex === logCommentsIndex &&
+                            !isUpdateEnable
                               ? renderMessageResponse()
                               : ''}
                           </div>
@@ -575,14 +583,16 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
                           </p>
                         </Grid>
                         <Grid item xs={12} sm={12} md={7}>
-                          <div style={{ position: 'absolute', zIndex: 2 }}>
+                          <div style={{ position: 'absolute', zIndex: 2, top: '5px' }}>
                             {displayMessageElement &&
                             messageType === 'updateLogComments' &&
-                            logIndex === logCommentsIndex  && isUpdateEnable
+                            logIndex === logCommentsIndex &&
+                            isUpdateEnable
                               ? renderMessageResponse()
                               : ''}
-                                     {displayMessageElement &&
-                            messageType === 'addLogImage' &&  isUpdateEnable &&
+                            {displayMessageElement &&
+                            messageType === 'addLogImage' &&
+                            isUpdateEnable &&
                             logIndex === logCommentsIndex
                               ? renderMessageResponse()
                               : ''}
