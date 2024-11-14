@@ -29,7 +29,7 @@ import ShiftHistoryListComponent from './DisplayShiftHistory/ShiftHistoryListCom
 function ShiftHistoryPage() {
   const { t } = useTranslation('translations');
   const [dataDetails, setSltHistory] = useState([]);
-  const [searchFilterData, setSearchFilterData] = useState([]);
+  const [searchFilterData, setSearchFilterData] = useState(null);
 
   const [createdAfter, setCreatedAfter] = useState('');
   const [createdBefore, setCreatedBefore] = useState('');
@@ -104,7 +104,10 @@ function ShiftHistoryPage() {
 
   const handleClose = () => {
     setDisplayTable(true);
-    fetchSltHistoryByFilters(searchFilterData);
+    if (searchFilterData) fetchSltHistoryByFilters(searchFilterData);
+    else {
+      fetchSltTodayShifts();
+    }
   };
 
   const onTriggerFunction = (data) => {
