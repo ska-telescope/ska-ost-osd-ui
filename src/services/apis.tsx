@@ -27,6 +27,13 @@ function handleAxiosError(error: object) {
 
 const apiService = {
   baseURL: () => window.env.BACKEND_URL,
+
+  getURLPath: async (path): Promise<any> => {
+    const baseUrl = apiService.baseURL();
+    const url = `${baseUrl}/${path}`;
+    return url;
+  },
+
   postShiftData: async (path, shiftData: any): Promise<any> => {
     const baseUrl = apiService.baseURL();
     const url = `${baseUrl}/${path}`;
@@ -46,6 +53,19 @@ const apiService = {
 
     try {
       const result = await axios.put<JSON>(url, shiftData);
+      return { data: result.data, status: 200, error: null };
+    } catch (err) {
+      const errorResponse = handleAxiosError(err);
+      return { data: null, status: errorResponse.status, error: errorResponse.error };
+    }
+  },
+
+  updateLogComments: async (path, payload): Promise<any> => {
+    const baseUrl = apiService.baseURL();
+    const url = `${baseUrl}/${path}`;
+
+    try {
+      const result = await axios.put<JSON>(url, payload);
       return { data: result.data, status: 200, error: null };
     } catch (err) {
       const errorResponse = handleAxiosError(err);
@@ -77,12 +97,24 @@ const apiService = {
     }
   },
 
-  postImage: async (path, formData, config): Promise<any> => {
+  updateImage: async (path, formData, config): Promise<any> => {
     const baseUrl = apiService.baseURL();
     const url = `${baseUrl}/${path}`;
 
     try {
       const result = await axios.put(url, formData, config);
+      return { data: result, status: 200, error: null };
+    } catch (err) {
+      const errorResponse = handleAxiosError(err);
+      return { data: null, status: errorResponse.status, error: errorResponse.error };
+    }
+  },
+  addImage: async (path, formData, config): Promise<any> => {
+    const baseUrl = apiService.baseURL();
+    const url = `${baseUrl}/${path}`;
+
+    try {
+      const result = await axios.post(url, formData, config);
       return { data: result, status: 200, error: null };
     } catch (err) {
       const errorResponse = handleAxiosError(err);

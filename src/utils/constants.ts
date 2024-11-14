@@ -10,9 +10,18 @@ export const SEARCH_TYPE = {
   dates: 'dates',
   status: 'status'
 };
+export const SHIFT_STATUS = {
+  START: 'START',
+  END: 'END',
+  YES: 'YES'
+};
 
 export const EBRequestResponseStatus = {
   OK: 'OK'
+};
+
+export const KafkaTopic = {
+  serviceToUITopic: 'slt-to-frontend-topic'
 };
 
 export const ENTITY = {
@@ -23,36 +32,45 @@ export const ENTITY = {
 
 export const getUrlPath = (data) => {
   if (data.status) {
-    const baseURL = `shift/shifts?status=${data.status}&match_type=contains`;
+    const baseURL = `shifts?sbi_status=${data.status}&match_type=contains`;
     return baseURL;
   }
   if (data.shift_operator) {
-    const baseURL = `shift/shifts?shift_operator=${data.shift_operator}&match_type=contains`;
+    const baseURL = `shifts?shift_operator=${data.shift_operator}&match_type=contains`;
     return baseURL;
   }
   if (data.createdAfter && data.createdBefore) {
-    const baseURL = `shift/shifts?shift_start=${data.createdAfter}&shift_end=${data.createdBefore}&query_type=created_between`;
+    const baseURL = `shifts?shift_start=${data.createdAfter}&shift_end=${data.createdBefore}&query_type=created_between`;
     return baseURL;
   }
   return '';
 };
 
 const getTodayUTCDateRange = (dateString) => {
-  const startDate = moment(dateString, 'YYYY-MM-DD').startOf('day').utc();
-  const endDate = moment(dateString, 'YYYY-MM-DD').endOf('day').utc();
+  const startDate = moment(dateString).startOf('day').utc().format('YYYY-MM-DD HH:mm:ss.SSSSSS');
+  const endDate = moment(dateString).endOf('day').utc().format('YYYY-MM-DD HH:mm:ss.SSSSSS');
   return {
-    start: startDate.format(),
-    end: endDate.format()
+    start: startDate,
+    end: endDate
   };
 };
 
 export const getUTCDateRange = (start, end) => {
-  const startDate = moment(start, 'YYYY-MM-DD').startOf('day').utc();
-  const endDate = moment(end, 'YYYY-MM-DD').endOf('day').utc();
+  const startDate = moment(start).startOf('day').utc().format('YYYY-MM-DD HH:mm:ss.SSSSSS');
+  const endDate = moment(end).endOf('day').utc().format('YYYY-MM-DD HH:mm:ss.SSSSSS');
   return {
-    start: startDate.format(),
-    end: endDate.format()
+    start: startDate,
+    end: endDate
   };
+};
+
+export const SHIFT_END = {
+  END_TIME: moment().utc().format('YYYY-MM-DD HH:mm:ss.SSSSSS')
+};
+
+export const getFormatedDate = (date) => {
+  const formatedDate = moment(date).utc().format('YYYY-MM-DD');
+  return formatedDate;
 };
 
 export const todayDate = moment().utc().toISOString().substring(0, 10);
@@ -79,3 +97,6 @@ export const logSearchType: LogSearchType[] = [
 ];
 
 export const SBIStatus = ['Created', 'Executing', 'Observed', 'Failed'];
+
+export const toUTCDateTimeFormat = (value: string) =>
+  moment(value).utc().format('DD-MM-YYYY HH:mm:ss');
