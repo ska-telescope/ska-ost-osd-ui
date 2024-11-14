@@ -115,15 +115,17 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
   const [commentValue, setComment] = useState('');
   const [updateCommentValue, setUpdateComment] = useState('');
   const [openModal, setOpenModal] = useState(false);
+
   const [images, setImages] = useState([]);
   const [message, setMessage] = useState('');
   const [displayMessageElement, setDisplayMessageElement] = useState(false);
-  const [shiftLogCommentID, setShiftLogCommentID] = useState(0);
-  const [shiftNewLogCommentID, setShiftNewLogCommentID] = useState(null);
+  const [shiftLogCommentID, setShiftLogCommentID] = useState('');
+  const [shiftNewLogCommentID, setShiftNewLogCommentID] = useState('');
   const [isUpdateEnable, setIsUpdateEnable] = useState(false);
   const [messageType, setMessageType] = useState('');
   const [selectedLogDetails, setSelectedLogDetails] = useState(null);
   const [logCommentsIndex, setLogCommentsIndex] = useState(0);
+
   let id = 1;
   if (shiftData && shiftData.shift_logs.length > 0) {
     shiftData.shift_logs.map((row) => {
@@ -135,7 +137,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
     });
   }
   const postLogImage = async (file) => {
-    if (shiftNewLogCommentID) {
+    if (shiftNewLogCommentID && commentValue !== '') {
       const path = `shift_log_comments/upload_image/${shiftNewLogCommentID}`;
       const formData = new FormData();
       formData.append('file', file);
@@ -161,8 +163,34 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
           setDisplayMessageElement(false);
         }, 3000);
       }
+    } else if (shiftLogCommentID) {
+      const path = `shift_log_comments/upload_image/${shiftLogCommentID}`;
+      const formData = new FormData();
+      formData.append('file', file);
+      const config = {
+        headers: {
+          accept: 'application/json',
+          'content-type': 'multipart/form-data'
+        }
+      };
+      const response = await apiService.updateImage(path, formData, config);
+      if (response.status === 200) {
+        setMessageType('addLogImage');
+        setMessage('msg.imageUpload');
+        setDisplayMessageElement(true);
+        updateCommentsEvent();
+        setTimeout(() => {
+          setDisplayMessageElement(false);
+        }, 3000);
+      } else {
+        setMessage('msg.imageNotUpload');
+        setDisplayMessageElement(true);
+        setTimeout(() => {
+          setDisplayMessageElement(false);
+        }, 3000);
+      }
     } else {
-      const path = `shift_log_comments/upload_image?shift_id=${shiftData.shift_id}&shift_operator=${shiftData.shift_operator}&eb_id=${selectedLogDetails.info.eb_id}`;
+      const path = `shift_log_comments/upload_image?shift_id=${shiftData.shift_id}&shift_operator=${shiftData.shift_operator}&eb_id=${selectedLogDetails && selectedLogDetails.info && selectedLogDetails.info.eb_id ? selectedLogDetails.info.eb_id : ''}`;
       const formData = new FormData();
       formData.append('file', file);
       const config = {
@@ -203,15 +231,11 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
     const response = await apiService.postShiftData(path, addCommentRequestBody);
     if (response.status === 200) {
       updateCommentsEvent();
-      setShiftNewLogCommentID(
-        response.data && response.data.length > 0 ? response.data[0].id : null
-      );
-      // setShiftLogCommentID(response.data && response.data.length > 0 ? response.data[0].id : '');
+      setShiftNewLogCommentID(response.data && response.data.length > 0 ? response.data[0].id : '');
       setDisplayMessageElement(true);
       setMessageType('addLogComments');
       setMessage('msg.commentSubmit');
       setTimeout(() => {
-        setComment('');
         setDisplayMessageElement(false);
       }, 3000);
     }
@@ -227,12 +251,11 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
     const response = await apiService.updateLogComments(path, updateCommentPayload);
     if (response.status === 200) {
       updateCommentsEvent();
-      setShiftNewLogCommentID(null);
+      setShiftNewLogCommentID('');
       setShiftLogCommentID(response.data && response.data.length > 0 ? response.data[0].id : '');
       setDisplayMessageElement(true);
       setMessageType('updateLogComments');
       setMessage('msg.commentSubmit');
-      // shiftData["shift_logs"][logIndex]["comments"][commentIndex]["isEdit"]=false;
       setTimeout(() => {
         setDisplayMessageElement(false);
         setIsUpdateEnable(false);
@@ -242,7 +265,8 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
 
   const handleInputChange = (index, event) => {
     setLogCommentsIndex(index);
-    shiftData.shift_logs[index].newLogComment = event;
+    setUpdateComment('');
+    setIsUpdateEnable(false);
     setComment(event);
   };
   const handleUpdateInputChange = (event) => {
@@ -251,11 +275,11 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
 
   const onEditComment = (logIndex, commentIndex, commentItem) => {
     setIsUpdateEnable(true);
+    setComment('');
+    setShiftNewLogCommentID('');
     setShiftLogCommentID(commentItem.id);
     setLogCommentsIndex(logIndex);
     setUpdateComment(commentItem.log_comment);
-    shiftData.shift_logs[logIndex].comments[commentIndex].isEdit = true;
-    setComment(shiftData.shift_logs[logIndex].comments[commentIndex].logcomments);
   };
 
   const displayLogComment = (logIndex, commentIndex, commentItem) => (
@@ -282,30 +306,55 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
     </div>
   );
 
-  const displayUpdateLogComment = (logIndex, commentItem, commentIndex) => (
+  const setLogDetails = (logDetails) => {
+    setShiftNewLogCommentID('');
+    setSelectedLogDetails(logDetails);
+  };
+
+  const displayUpdateLogComment = (logIndex, commentItem, commentIndex, data) => (
     <Grid container justifyContent="start">
-        <Grid item xs={12} sm={12} md={9}>
-          <TextEntry
-            rows={1}
-            setValue={(event) => handleUpdateInputChange(event)}
-            label={t('label.logCommentLabel')}
-            value={updateCommentValue || ''}
-            testId={`logComment${commentIndex}`}
-          />
-        </Grid>
-        <Grid marginTop={4} marginLeft={1} item xs={12} sm={12} md={2}>
-          <Button
-            icon={<AddIcon />}
-            ariaDescription="Button for submitting comment"
-            label="Update"
-            testId="commentButton"
-            onClick={() => updateLogComments(logIndex, commentItem)}
-            size={ButtonSizeTypes.Small}
-            variant={ButtonVariantTypes.Contained}
-            color={ButtonColorTypes.Secondary}
-          />
+      <Grid item xs={12} sm={12} md={9}>
+        <TextEntry
+          rows={1}
+          setValue={(event) => handleUpdateInputChange(event)}
+          label={t('label.logCommentLabel')}
+          value={updateCommentValue || ''}
+          testId={`logComment${commentIndex}`}
+        />
+      </Grid>
+      <Grid marginTop={4} marginLeft={1} item xs={12} sm={12} md={2}>
+        <Button
+          icon={<AddIcon />}
+          ariaDescription="Button for submitting comment"
+          label="Update"
+          testId="commentButton"
+          onClick={() => updateLogComments(logIndex, commentItem)}
+          size={ButtonSizeTypes.Small}
+          variant={ButtonVariantTypes.Contained}
+          color={ButtonColorTypes.Secondary}
+        />
+      </Grid>
+      <Grid container justifyContent="start">
+        <Grid item xs={12} sm={12} md={12}>
+          <div
+            onKeyDown={() => setLogDetails(data)}
+            onClick={() => setLogDetails(data)}
+            aria-hidden="true"
+            style={{ float: 'left', marginTop: '10px' }}
+          >
+            <FileUpload
+              chooseColor={ButtonColorTypes.Secondary}
+              chooseVariant={ButtonVariantTypes.Contained}
+              clearLabel="Remove"
+              clearVariant={ButtonVariantTypes.Outlined}
+              buttonSize={ButtonSizeTypes.Small}
+              testId="logCommentImage"
+              uploadFunction={postLogImage}
+            />
+          </div>
         </Grid>
       </Grid>
+    </Grid>
   );
   const fetchImage = async (commentId) => {
     setImages([]);
@@ -322,10 +371,10 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
     fetchImage(commentId);
   };
 
-  const setLogDetails = (logDetails) => {
+  const setLogDetailsNew = (logDetails) => {
+    setShiftLogCommentID('');
     setSelectedLogDetails(logDetails);
   };
-
   const handleClose = () => {
     setOpenModal(false);
   };
@@ -339,6 +388,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
       testId="successStatusMsg"
     />
   );
+
   return (
     <div>
       {shiftData &&
@@ -484,8 +534,8 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
                           <div
                             aria-hidden="true"
                             style={{ float: 'left' }}
-                            onKeyDown={() => setLogDetails(data)}
-                            onClick={() => setLogDetails(data)}
+                            onKeyDown={() => setLogDetailsNew(logIndex)}
+                            onClick={() => setLogDetailsNew(logIndex)}
                           >
                             <FileUpload
                               chooseColor={ButtonColorTypes.Secondary}
@@ -578,13 +628,12 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
                               isCurrentShift &&
                               shiftLogCommentID === commentItem.id &&
                               logIndex === logCommentsIndex
-                                ? displayUpdateLogComment(logIndex, commentItem, commentIndex)
+                                ? displayUpdateLogComment(logIndex, commentItem, commentIndex, data)
                                 : displayLogComment(logIndex, commentIndex, commentItem)}
                             </div>
                             <Divider style={{ marginTop: '15px' }} />
                           </div>
                         ))}
-                      {/* {data && !data.comments && <p>{t('label.nologComments')}</p>} */}
                     </Box>
                   )}
                 </Grid>
