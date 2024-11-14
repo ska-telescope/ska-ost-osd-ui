@@ -534,8 +534,8 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
                           <div
                             aria-hidden="true"
                             style={{ float: 'left' }}
-                            onKeyDown={() => setLogDetailsNew(logIndex)}
-                            onClick={() => setLogDetailsNew(logIndex)}
+                            onKeyDown={() => setLogDetailsNew(data)}
+                            onClick={() => setLogDetailsNew(data)}
                           >
                             <FileUpload
                               chooseColor={ButtonColorTypes.Secondary}
