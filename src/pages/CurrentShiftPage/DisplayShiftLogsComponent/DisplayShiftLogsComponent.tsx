@@ -557,6 +557,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
                           </div>
                         </Grid>
                       </Grid>
+                      <Divider style={{ marginTop: '15px' }} />
                     </>
                   )}
                   {data && data.comments && data.comments.length > 0 && (
@@ -569,7 +570,6 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
                         overflowY: 'scroll'
                       }}
                     >
-                      <Divider style={{ marginTop: '15px' }} />
                       <Grid container justifyContent="start" style={{ position: 'relative' }}>
                         <Grid item xs={12} sm={12} md={5}>
                           <p
