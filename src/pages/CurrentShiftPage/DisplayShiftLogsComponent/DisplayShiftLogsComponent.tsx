@@ -480,12 +480,12 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
                           <div style={{ position: 'absolute', zIndex: 2, top: '5px' }}>
                             {displayMessageElement &&
                             messageType === 'addLogComments' &&
-                            logIndex === logCommentsIndex
+                            logIndex === logCommentsIndex && !isUpdateEnable
                               ? renderMessageResponse()
                               : ''}
                             {displayMessageElement &&
                             messageType === 'addLogImage' &&
-                            logIndex === logCommentsIndex
+                            logIndex === logCommentsIndex  && !isUpdateEnable
                               ? renderMessageResponse()
                               : ''}
                           </div>
@@ -578,6 +578,11 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
                           <div style={{ position: 'absolute', zIndex: 2 }}>
                             {displayMessageElement &&
                             messageType === 'updateLogComments' &&
+                            logIndex === logCommentsIndex  && isUpdateEnable
+                              ? renderMessageResponse()
+                              : ''}
+                                     {displayMessageElement &&
+                            messageType === 'addLogImage' &&  isUpdateEnable &&
                             logIndex === logCommentsIndex
                               ? renderMessageResponse()
                               : ''}
