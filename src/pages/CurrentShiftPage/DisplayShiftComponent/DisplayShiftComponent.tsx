@@ -33,9 +33,9 @@ import HistoryIcon from '@mui/icons-material/History';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
 // import { Kafka } from 'kafkajs';
+import moment from 'moment';
 import {
   ENTITY,
-  SHIFT_END,
   SHIFT_STATUS,
   operatorName,
   toUTCDateTimeFormat
@@ -185,7 +185,7 @@ function DisplayShiftComponent() {
       );
       const intervel = setInterval(() => {
         fetchShiftWithRecentLogs(response.data[0].shift_id);
-      }, 25000);
+      }, 10000);
       setItervalLogs(intervel);
 
       // setShiftData(SHIFT_DATA_LIST[1]);
@@ -212,7 +212,7 @@ function DisplayShiftComponent() {
         setDisableButton(false);
         const intervel = setInterval(() => {
           fetchShiftWithRecentLogs(response.data[0].shift_id);
-        }, 25000);
+        }, 10000);
         setItervalLogs(intervel);
       }
     }
@@ -226,7 +226,7 @@ function DisplayShiftComponent() {
   const endNewShift = async () => {
     const shiftData = {
       shift_operator: operator,
-      shift_end: SHIFT_END.END_TIME
+      shift_end: moment().utc().format('YYYY-MM-DD HH:mm:ss.SSSSSS')
     };
     const path = `shifts/update/${shiftId}`;
     const response = await apiService.putShiftData(path, shiftData);
@@ -553,7 +553,7 @@ function DisplayShiftComponent() {
 
         <Grid container sx={{ padding: 2, paddingTop: 0, maxHeight: '500px', overflowY: 'scroll' }}>
           <Grid item xs={12} sm={12} md={12}>
-            {dataDetails && dataDetails.comments && dataDetails.comments.lenght > 0 && (
+            {dataDetails && dataDetails.comments && dataDetails.comments.length > 0 && (
               <p
                 data-testid="viewShiftComments"
                 style={{

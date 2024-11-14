@@ -7,7 +7,7 @@ FAQs for the Minimal Viable Product (MVP)
 
 .. admonition:: How can user add comments for the next operator?
 
-   User will be able to add shift comments by clicking on "ADD SHIFT COMMENTS" button on UI.
+   User will be able to add shift  summary comments by clicking on "ADD SHIFT SUMMARY" button on UI.
 
 .. admonition:: Is uploading image is mandatory to add any commnets.
 
