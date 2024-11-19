@@ -77,7 +77,7 @@ const ViewShiftData = ({ data }) => {
   );
   const fetchImage = async (shiftCommentId) => {
     setImages([]);
-    const path = `shift_comments/download_images/${shiftCommentId}`;
+    const path = `shift_comment/download_images/${shiftCommentId}`;
     const result = await apiService.getImage(path);
     if (result.status === 200) {
       setImages(result && result.data && result.data[0] ? result.data[0] : []);
