@@ -9,7 +9,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 0.2.0
 -----------
 
-- Added search filters to search for SLT history data.
+- Added search filters to search shift history.
 - Added SLT UI functionality for log comments and shift comments.
 - Removed ODA dependency from Shift Log Tool UI.
 
