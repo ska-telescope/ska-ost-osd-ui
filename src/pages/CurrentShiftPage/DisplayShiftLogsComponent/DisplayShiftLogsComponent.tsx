@@ -140,7 +140,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
     if (shiftNewLogCommentID && commentValue !== '') {
       const path = `shift_log_comments/upload_image/${shiftNewLogCommentID}`;
       const formData = new FormData();
-      formData.append('file', file);
+      formData.append('files', file);
       const config = {
         headers: {
           accept: 'application/json',
