@@ -102,8 +102,7 @@ function DisplayShiftComponent() {
 
   const fetchImage = async (commentId) => {
     setImages([]);
-    const path = `shift_comments/download_images/${commentId}`;
-    // const path = `shift_comments/download_images/${shiftCommentID}`;
+    const path = `shift_comment/download_images/${commentId}`;
     const result = await apiService.getImage(path);
     if (result.status === 200) {
       setImages(result && result.data && result.data[0] ? result.data[0] : []);
@@ -253,7 +252,7 @@ function DisplayShiftComponent() {
       shift_id: shiftId
     };
     if (isShiftCommentUpdate) {
-      const updatePath = `shift_comments/${shiftCommentID}`;
+      const updatePath = `shift_comment/${shiftCommentID}`;
       const response = await apiService.putShiftData(updatePath, shiftData);
       if (response.status === 200) {
         setMessage('msg.commentSubmit');
@@ -266,7 +265,7 @@ function DisplayShiftComponent() {
         }, 3000);
       }
     } else {
-      const addPath = `shift_comments`;
+      const addPath = `shift_comment`;
       const response = await apiService.postShiftData(addPath, shiftData);
       if (response.status === 200) {
         setMessage('msg.commentSubmit');
@@ -302,7 +301,7 @@ function DisplayShiftComponent() {
     };
     if (shiftCommentID && shiftCommentID > 0) {
       formData.append('files', file);
-      const path = `shift_comments/upload_image/${shiftCommentID}`;
+      const path = `shift_comment/upload_image/${shiftCommentID}`;
       const result = await apiService.updateImage(path, formData, config);
       if (result.status === 200) {
         setMessage('msg.imageUpload');
@@ -320,7 +319,7 @@ function DisplayShiftComponent() {
       }
     } else {
       formData.append('file', file);
-      const path = `shift_comments/upload_image?shift_id=${shiftId}&shift_operator=${operator}`;
+      const path = `shift_comment/upload_image?shift_id=${shiftId}&shift_operator=${operator}`;
       const result = await apiService.addImage(path, formData, config);
       if (result.status === 200) {
         setMessage('msg.imageUpload');
