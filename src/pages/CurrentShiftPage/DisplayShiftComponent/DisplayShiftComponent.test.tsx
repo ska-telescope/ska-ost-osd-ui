@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 import React from 'react';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { mount } from 'cypress/react18';

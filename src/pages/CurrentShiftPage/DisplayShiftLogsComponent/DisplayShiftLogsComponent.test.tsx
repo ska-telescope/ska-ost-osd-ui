@@ -1,10 +1,10 @@
+/* eslint-disable no-restricted-syntax */
 import React from 'react';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { mount } from 'cypress/react18';
 import { THEME_DARK, THEME_LIGHT } from '@ska-telescope/ska-gui-components';
 import theme from '../../../services/theme/theme';
 import DisplayShiftLogsComponent from './DisplayShiftLogsComponent';
-import SHIFT_DATA_LIST from '../../../DataModels/DataFiles/shiftDataList';
 
 const THEME = [THEME_DARK, THEME_LIGHT];
 
@@ -37,7 +37,7 @@ describe('<DisplayShiftLogsComponent />', () => {
             <DisplayShiftLogsComponent
               shiftData={mockShiftData}
               updateCommentsEvent={cy.stub().as('updateCommentsEvent')}
-              isCurrentShift={true}
+              isCurrentShift
             />
           </ThemeProvider>
         );
@@ -83,7 +83,7 @@ describe('<DisplayShiftLogsComponent />', () => {
             <DisplayShiftLogsComponent
               shiftData={{ shift_logs: [] }}
               updateCommentsEvent={cy.stub()}
-              isCurrentShift={true}
+              isCurrentShift
             />
           </ThemeProvider>
         );
@@ -100,7 +100,7 @@ describe('<DisplayShiftLogsComponent />', () => {
             <DisplayShiftLogsComponent
               shiftData={null}
               updateCommentsEvent={cy.stub()}
-              isCurrentShift={true}
+              isCurrentShift
             />
           </ThemeProvider>
         );
@@ -127,7 +127,7 @@ describe('<DisplayShiftLogsComponent />', () => {
             <DisplayShiftLogsComponent
               shiftData={failedShiftData}
               updateCommentsEvent={cy.stub()}
-              isCurrentShift={true}
+              isCurrentShift
             />
           </ThemeProvider>
         );
