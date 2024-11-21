@@ -6,8 +6,12 @@ import theme from '../../../services/theme/theme';
 import DisplayShiftLogsComponent from './DisplayShiftLogsComponent';
 import SHIFT_DATA_LIST from '../../../DataModels/DataFiles/shiftDataList';
 
+const THEME = [THEME_DARK, THEME_LIGHT];
+
 describe('<DisplayShiftLogsComponent />', () => {
-  it(`Theme ${THEME_DARK}: Renders DisplayShiftLogsComponent`, () => {
+
+  for (const theTheme of THEME) {
+  it(`Theme ${theTheme}: Renders DisplayShiftLogsComponent`, () => {
     const mockData = SHIFT_DATA_LIST[0];
     mount(
       <ThemeProvider theme={theme(THEME_DARK)}>
@@ -21,17 +25,5 @@ describe('<DisplayShiftLogsComponent />', () => {
     );
   });
 
-  it(`Theme ${THEME_LIGHT}: Renders DisplayShiftLogsComponent`, () => {
-    const mockData = SHIFT_DATA_LIST[0];
-    mount(
-      <ThemeProvider theme={theme(THEME_LIGHT)}>
-        <CssBaseline />
-        <DisplayShiftLogsComponent
-          shiftData={mockData}
-          updateCommentsEvent={undefined}
-          isCurrentShift={undefined}
-        />
-      </ThemeProvider>
-    );
-  });
+}
 });

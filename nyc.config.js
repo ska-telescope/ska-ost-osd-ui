@@ -8,7 +8,7 @@ let COVERAGE_OUTPUT_DIR = process.env.COVERAGE_OUTPUT_DIR || './build/reports';
 module.exports = {
   all: true,
   'check-coverage': true,
-  exclude: ['**/*.cy.{js,jsx,ts,tsx}'],
+  exclude: ['**/*.test.{js,jsx,ts,tsx}'],
   reporter: ['cobertura', 'html', 'text'],
   'report-dir': COVERAGE_OUTPUT_DIR,
   'temp-dir': COVERAGE_OUTPUT_DIR + '/.nyc_output',
