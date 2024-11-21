@@ -161,7 +161,7 @@ context('Shift Log Tool', () => {
 
     cy.get('body').then((element) => {
       if (
-        element.find('[data-testid="confirmationdialog"]') &&
+        element.find('[data-testid="confirmationDialog"]') &&
         element.find('[data-testid="confirmationDialog"]').length > 0
       ) {
         cy.get('[data-testid="confirmationDialogYes"]').contains(translation.label.YES);
@@ -264,3 +264,5 @@ context('Shift Log Tool', () => {
     validateShiftLogView();
   });
 });
+
+

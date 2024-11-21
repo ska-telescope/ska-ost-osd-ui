@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 import React from 'react';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { mount } from 'cypress/react18';
@@ -6,8 +7,12 @@ import theme from '../../../services/theme/theme';
 import ViewShiftData from './ViewShiftData';
 import SHIFT_DATA_LIST from '../../../DataModels/DataFiles/shiftDataList';
 
+const THEME = [THEME_DARK, THEME_LIGHT];
+
 describe('<ViewShiftData />', () => {
-  it(`Theme ${THEME_DARK}: Renders ViewShiftData`, () => {
+
+  for (const theTheme of THEME) {
+    it(`Theme ${theTheme}: Renders ViewShiftData`, () => {
     const mockData = SHIFT_DATA_LIST[0];
     mount(
       <ThemeProvider theme={theme(THEME_DARK)}>
@@ -15,15 +20,16 @@ describe('<ViewShiftData />', () => {
         <ViewShiftData data={mockData} />
       </ThemeProvider>
     );
-  });
+    cy.get('#operatorName').should('contain', 'label.operatorName');
+    
+    cy.get('#shiftStart').should('contain', 'label.shiftStartedAt');
+    
+    cy.get('#shiftEnd').should('contain', 'label.shiftEndsAt');
 
-  it(`Theme ${THEME_LIGHT}: Renders ViewShiftData`, () => {
-    const mockData = SHIFT_DATA_LIST[0];
-    mount(
-      <ThemeProvider theme={theme(THEME_LIGHT)}>
-        <CssBaseline />
-        <ViewShiftData data={mockData} />
-      </ThemeProvider>
-    );
+    cy.get('[data-testid="shiftCommentsHistory"]').should('exist');
+    cy.get('[data-testid="shiftCommentsHistory"]').should('contain', 'label.comments');
   });
+}
 });
+
+
