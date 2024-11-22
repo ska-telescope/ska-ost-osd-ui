@@ -264,5 +264,3 @@ context('Shift Log Tool', () => {
     validateShiftLogView();
   });
 });
-
-

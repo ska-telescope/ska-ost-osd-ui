@@ -20,9 +20,7 @@ describe('<DisplayShiftLogsComponent />', () => {
           sbi_status: 'Success',
           eb_id: 'EB123',
           sbi_ref: 'SBI456',
-          request_responses: [
-            { request: 'Test Request', response: 'Test Response' }
-          ]
+          request_responses: [{ request: 'Test Request', response: 'Test Response' }]
         }
       }
     ]
@@ -87,7 +85,7 @@ describe('<DisplayShiftLogsComponent />', () => {
             />
           </ThemeProvider>
         );
-        
+
         // Verify that no logs are displayed
         cy.contains('Source:').should('not.exist');
       });
@@ -104,7 +102,7 @@ describe('<DisplayShiftLogsComponent />', () => {
             />
           </ThemeProvider>
         );
-        
+
         // Verify that no logs are displayed
         cy.contains('Source:').should('not.exist');
       });
@@ -112,13 +110,15 @@ describe('<DisplayShiftLogsComponent />', () => {
       // Test failed status
       it('displays error status correctly', () => {
         const failedShiftData = {
-          shift_logs: [{
-            ...mockShiftData.shift_logs[0],
-            info: {
-              ...mockShiftData.shift_logs[0].info,
-              sbi_status: 'Failed'
+          shift_logs: [
+            {
+              ...mockShiftData.shift_logs[0],
+              info: {
+                ...mockShiftData.shift_logs[0].info,
+                sbi_status: 'Failed'
+              }
             }
-          }]
+          ]
         };
 
         mount(
@@ -156,4 +156,3 @@ describe('<DisplayShiftLogsComponent />', () => {
     });
   }
 });
-

@@ -85,7 +85,7 @@ module.exports = () => {
         filename: 'remoteEntry.js',
         remotes: {},
         exposes: {
-          './slt': './src/components/Routing.tsx',
+          './slt': './src/components/Routing/Routing.tsx',
         },
         shared: {
           ...deps,

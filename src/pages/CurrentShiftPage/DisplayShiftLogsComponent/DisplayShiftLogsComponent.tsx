@@ -31,7 +31,7 @@ import {
 import AddIcon from '@mui/icons-material/Add';
 import { EBRequestResponseStatus, toUTCDateTimeFormat } from '../../../utils/constants';
 import apiService from '../../../services/apis';
-import ImageDisplayComponent from '../../../components/ImageDisplayComponent';
+import ImageDisplayComponent from '../../../components/ImageDisplayComponent/ImageDisplayComponent';
 
 const RequestResponseDisplay = ({ responseArray }) => {
   const { t } = useTranslation('translations');

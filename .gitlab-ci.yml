@@ -8,7 +8,6 @@ variables:
   JS_NODE_VERSION: 21
   TEST_IMAGE: cypress/browsers:node-20.12.2-chrome-124.0.6367.60-1-ff-125.0.2-edge-124.0.2478.51-1
 
-
 stages:
   - dependencies
   - lint
@@ -22,18 +21,13 @@ stages:
   - accessibility
   - publish
 
-
 js-test:
-  stage: test
-  tags:
-    - k8srunner
   image: ${TEST_IMAGE}
   before_script:
     - apt update && apt install -y make ## needed because base image does not have these packages
     - '[ -f .make/js.mk ] || (echo "File js.mk not included in Makefile"; exit 1;)'
     - 'make help | grep js-test'
     - make js-install-reinstall ## needed to re-install cypress
-
 
 #Install basic dependencies using yarn
 install_dependencies:
@@ -219,7 +213,7 @@ include:
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/docs.gitlab-ci.yml'
 
-   # TS linting and unit testing
+    # TS linting and unit testing
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/js.gitlab-ci.yml'
     # OCI Images

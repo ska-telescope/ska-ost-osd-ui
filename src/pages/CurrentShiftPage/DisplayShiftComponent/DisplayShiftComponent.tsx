@@ -34,14 +34,9 @@ import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
 // import { Kafka } from 'kafkajs';
 import moment from 'moment';
-import {
-  ENTITY,
-  SHIFT_STATUS,
-  operatorName,
-  toUTCDateTimeFormat
-} from '../../../utils/constants';
+import { ENTITY, SHIFT_STATUS, operatorName, toUTCDateTimeFormat } from '../../../utils/constants';
 import apiService from '../../../services/apis';
-import ImageDisplayComponent from '../../../components/ImageDisplayComponent';
+import ImageDisplayComponent from '../../../components/ImageDisplayComponent/ImageDisplayComponent';
 import DisplayShiftLogsComponent from '../DisplayShiftLogsComponent/DisplayShiftLogsComponent';
 // import SHIFT_DATA_LIST from '../../../DataModels/DataFiles/shiftDataList';
 

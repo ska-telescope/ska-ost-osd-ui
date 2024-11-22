@@ -25,7 +25,7 @@ import { useTranslation } from 'react-i18next';
 import AddIcon from '@mui/icons-material/Add';
 import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
 import apiService from '../../../services/apis';
-import ImageDisplayComponent from '../../../components/ImageDisplayComponent';
+import ImageDisplayComponent from '../../../components/ImageDisplayComponent/ImageDisplayComponent';
 import DisplayShiftLogsComponent from '../../CurrentShiftPage/DisplayShiftLogsComponent/DisplayShiftLogsComponent';
 import { toUTCDateTimeFormat } from '../../../utils/constants';
 // import SHIFT_DATA_LIST from '../../../DataModels/DataFiles/shiftDataList';
