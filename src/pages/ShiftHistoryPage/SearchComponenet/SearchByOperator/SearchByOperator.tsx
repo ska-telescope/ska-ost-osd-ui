@@ -17,7 +17,9 @@ interface EntryFieldProps {
 
 const SearchByOperator = ({ setFilterCirteria, searchFilter }: EntryFieldProps) => {
   const { t } = useTranslation('translations');
-  const [operatorValue, setValue] = React.useState<string>(searchFilter.shift_operator);
+  const [operatorValue, setValue] = React.useState<string>(
+    searchFilter && searchFilter.shift_operator ? searchFilter.shift_operator : ''
+  );
   const [inputValue, setInputValue] = React.useState(
     searchFilter && searchFilter.shift_operator ? searchFilter.shift_operator : ''
   );
