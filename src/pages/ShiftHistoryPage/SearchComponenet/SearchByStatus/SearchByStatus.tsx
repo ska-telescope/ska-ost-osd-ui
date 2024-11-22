@@ -17,9 +17,7 @@ interface EntryFieldProps {
 
 const SearchByStatus = ({ setFilterCirteria, searchFilter }: EntryFieldProps) => {
   const { t } = useTranslation('translations');
-  const [statusValue, setValue] = React.useState<string>(
-    searchFilter && searchFilter.status ? searchFilter.status : ''
-  );
+  const [statusValue, setValue] = React.useState<string>(searchFilter.status);
   const [inputValue, setInputValue] = React.useState('');
   const disableSearch = () => {
     if (statusValue && statusValue.length > 0) {
