@@ -1,7 +1,7 @@
 import React from 'react';
 import { Routes, Route, BrowserRouter as Router } from 'react-router-dom';
-import DisplayShiftComponent from '../pages/CurrentShiftPage/DisplayShiftComponent/DisplayShiftComponent';
-import ShiftHistoryPage from '../pages/ShiftHistoryPage/ShiftHistoryPage';
+import DisplayShiftComponent from '../../pages/CurrentShiftPage/DisplayShiftComponent/DisplayShiftComponent';
+import ShiftHistoryPage from '../../pages/ShiftHistoryPage/ShiftHistoryPage';
 
 export const Routing = () => {
   const basename = window.env?.BASE_URL;

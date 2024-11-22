@@ -10,26 +10,23 @@ import SHIFT_DATA_LIST from '../../../DataModels/DataFiles/shiftDataList';
 const THEME = [THEME_DARK, THEME_LIGHT];
 
 describe('<ViewShiftData />', () => {
-
   for (const theTheme of THEME) {
     it(`Theme ${theTheme}: Renders ViewShiftData`, () => {
-    const mockData = SHIFT_DATA_LIST[0];
-    mount(
-      <ThemeProvider theme={theme(THEME_DARK)}>
-        <CssBaseline />
-        <ViewShiftData data={mockData} />
-      </ThemeProvider>
-    );
-    cy.get('#operatorName').should('contain', 'label.operatorName');
-    
-    cy.get('#shiftStart').should('contain', 'label.shiftStartedAt');
-    
-    cy.get('#shiftEnd').should('contain', 'label.shiftEndsAt');
+      const mockData = SHIFT_DATA_LIST[0];
+      mount(
+        <ThemeProvider theme={theme(THEME_DARK)}>
+          <CssBaseline />
+          <ViewShiftData data={mockData} />
+        </ThemeProvider>
+      );
+      cy.get('#operatorName').should('contain', 'label.operatorName');
 
-    cy.get('[data-testid="shiftCommentsHistory"]').should('exist');
-    cy.get('[data-testid="shiftCommentsHistory"]').should('contain', 'label.comments');
-  });
-}
+      cy.get('#shiftStart').should('contain', 'label.shiftStartedAt');
+
+      cy.get('#shiftEnd').should('contain', 'label.shiftEndsAt');
+
+      cy.get('[data-testid="shiftCommentsHistory"]').should('exist');
+      cy.get('[data-testid="shiftCommentsHistory"]').should('contain', 'label.comments');
+    });
+  }
 });
-
-
