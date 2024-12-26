@@ -33,7 +33,6 @@ import HistoryIcon from '@mui/icons-material/History';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
 // import { Kafka } from 'kafkajs';
-import moment from 'moment';
 import { ENTITY, SHIFT_STATUS, operatorName, toUTCDateTimeFormat } from '../../../utils/constants';
 import apiService from '../../../services/apis';
 import ImageDisplayComponent from '../../../components/ImageDisplayComponent/ImageDisplayComponent';
@@ -60,7 +59,7 @@ function DisplayShiftComponent() {
   const location = useLocation();
   const [inputValue, setInputValue] = React.useState('');
   const [openDialog, setOpenDialog] = React.useState(false);
-  const [interval, setItervalLogs] = useState(null);
+  const [interval, setIntervalLogs] = useState(null);
 
   const onEditShiftComment = (shiftCommentItem) => {
     setShiftCommentID(shiftCommentItem.id);
@@ -177,10 +176,10 @@ function DisplayShiftComponent() {
           ? response.data[0]
           : []
       );
-      const intervel = setInterval(() => {
+      const interval = setInterval(() => {
         fetchShiftWithRecentLogs(response.data[0].shift_id);
       }, 10000);
-      setItervalLogs(intervel);
+      setIntervalLogs(interval);
 
       // setShiftData(SHIFT_DATA_LIST[1]);
     }
@@ -204,13 +203,14 @@ function DisplayShiftComponent() {
             : []
         );
         setDisableButton(false);
-        const intervel = setInterval(() => {
+        const interval = setInterval(() => {
           fetchShiftWithRecentLogs(response.data[0].shift_id);
         }, 10000);
-        setItervalLogs(intervel);
+        setIntervalLogs(interval);
       }
     }
   };
+
   useEffect(() => {
     fetchSltCurrentShifts();
     // updateShiftLogs();
@@ -219,10 +219,9 @@ function DisplayShiftComponent() {
 
   const endNewShift = async () => {
     const shiftData = {
-      shift_operator: operator,
-      shift_end: moment().utc().format('YYYY-MM-DD HH:mm:ss.SSSSSS')
+      shift_operator: operator
     };
-    const path = `shifts/update/${shiftId}`;
+    const path = `shift/end/${shiftId}`;
     const response = await apiService.putShiftData(path, shiftData);
     if (response.status === 200) {
       setMessage('msg.shiftEnd');
@@ -337,11 +336,13 @@ function DisplayShiftComponent() {
     setOpenViewImageModal(false);
     setImages([]);
   };
+
   const handleOpenImage = (shiftCommentItem) => {
     setOpenViewImageModal(true);
     fetchImage(shiftCommentItem.id);
   };
-  const handlesetOpenSummaryModal = () => {
+
+  const handleSetOpenSummaryModal = () => {
     setShiftCommentID(null);
     setShiftComment('');
     setShiftCommentUpdate(false);
@@ -383,6 +384,7 @@ function DisplayShiftComponent() {
     setShiftStatus(value);
     setOpenDialog(true);
   };
+
   const newShiftConfirmation = (confirmation) => {
     if (confirmation === SHIFT_STATUS.YES && shiftStatus === SHIFT_STATUS.START) {
       setOpenDialog(false);
@@ -411,6 +413,7 @@ function DisplayShiftComponent() {
       </Grid>
     </Grid>
   );
+
   const endShiftAlertTitle = () => (
     <Grid container direction="row" justifyContent="space-around" alignItems="center">
       <Grid item>
@@ -422,6 +425,7 @@ function DisplayShiftComponent() {
   const onUpdateCommentsEvent = () => {
     updateShiftData();
   };
+
   const endShiftAlertContent = () => (
     <Grid container direction="row" justifyContent="space-around" alignItems="center">
       <Grid item>
@@ -522,7 +526,7 @@ function DisplayShiftComponent() {
               ariaDescription="Button for submitting comment"
               label={t('label.addShiftComments')}
               testId="addShiftComments"
-              onClick={handlesetOpenSummaryModal}
+              onClick={handleSetOpenSummaryModal}
               variant={ButtonVariantTypes.Contained}
               color={ButtonColorTypes.Secondary}
             />
