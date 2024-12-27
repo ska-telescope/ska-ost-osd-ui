@@ -176,10 +176,10 @@ function DisplayShiftComponent() {
           ? response.data[0]
           : []
       );
-      const interval = setInterval(() => {
+      const intervalLogs = setInterval(() => {
         fetchShiftWithRecentLogs(response.data[0].shift_id);
       }, 10000);
-      setIntervalLogs(interval);
+      setIntervalLogs(intervalLogs);
 
       // setShiftData(SHIFT_DATA_LIST[1]);
     }
@@ -203,10 +203,10 @@ function DisplayShiftComponent() {
             : []
         );
         setDisableButton(false);
-        const interval = setInterval(() => {
+        const intervalLogs = setInterval(() => {
           fetchShiftWithRecentLogs(response.data[0].shift_id);
         }, 10000);
-        setIntervalLogs(interval);
+        setIntervalLogs(intervalLogs);
       }
     }
   };

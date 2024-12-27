@@ -109,6 +109,7 @@ const apiService = {
       return { data: null, status: errorResponse.status, error: errorResponse.error };
     }
   },
+
   addImage: async (path, formData, config): Promise<any> => {
     const baseUrl = apiService.baseURL();
     const url = `${baseUrl}/${path}`;
