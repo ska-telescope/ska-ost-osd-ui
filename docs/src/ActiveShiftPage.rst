@@ -42,8 +42,8 @@ User will be able to view the logs in "Logs Summary" section.
 Adding shift comments and images
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-User can add shift summary comments by cliking on |addShiftCommentBtn| button.A modal window will open in which user can enter shift summary comments in input field and click on |addBtn| button to add the comments.
-User will also be able to upload images for current active shift by using "File Upload" widget |fileUplaodBtn| as shown in below image.
+User can add shift summary comments by clicking on |addShiftCommentBtn| button.A modal window will open in which user can enter shift summary comments in input field and click on |addBtn| button to add the comments.
+User will also be able to upload images for current active shift by using "File Upload" widget |fileUploadBtn| as shown in below image.
 
 .. |addShiftCommentBtn| image:: /images/addShiftCommentBtn.png
    :width: 25%
@@ -75,10 +75,10 @@ Adding log comments and images
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 User can enter log comments and click on |addBtn| button to add comments for each subarray respectively in "Add log comments" section on UI.
-User will also be able to upload images for each subarray by using "File Upload" widget |fileUplaodBtn| as shown in below image.
+User will also be able to upload images for each subarray by using "File Upload" widget |fileUploadBtn| as shown in below image.
 User can also view comment history for each subarray in "View Log Comments" section on UI.
 
-.. |fileUplaodBtn| image:: /images/fileUplaodBtn.png
+.. |fileUploadBtn| image:: /images/fileUploadBtn.png
    :width: 15%
    :alt: Search Button
 
