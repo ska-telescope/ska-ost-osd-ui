@@ -177,19 +177,19 @@ function ShiftHistoryPage() {
               {displayTable && logSearchBy === logTypeEnum.searchByDate && (
                 <SearchByDates
                   searchFilter={searchFilterData}
-                  setFilterCirteria={getFilterCriteria}
+                  setFilterCriteria={getFilterCriteria}
                 />
               )}
               {displayTable && logSearchBy === logTypeEnum.searchByOperator && (
                 <SearchByOperator
                   searchFilter={searchFilterData}
-                  setFilterCirteria={getFilterCriteria}
+                  setFilterCriteria={getFilterCriteria}
                 />
               )}
               {displayTable && logSearchBy === logTypeEnum.searchByStatus && (
                 <SearchByStatus
                   searchFilter={searchFilterData}
-                  setFilterCirteria={getFilterCriteria}
+                  setFilterCriteria={getFilterCriteria}
                 />
               )}
             </Grid>

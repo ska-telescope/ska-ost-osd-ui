@@ -19,7 +19,7 @@ describe('<SearchByDates />', () => {
     mount(
       <ThemeProvider theme={theme(THEME_DARK)}>
         <CssBaseline />
-        <SearchByDates setFilterCirteria={undefined} searchFilter={emmitData} />
+        <SearchByDates setFilterCriteria={undefined} searchFilter={emmitData} />
       </ThemeProvider>
     );
     cy.get('body').then(() => {
@@ -36,7 +36,7 @@ describe('<SearchByDates />', () => {
     mount(
       <ThemeProvider theme={theme(THEME_DARK)}>
         <CssBaseline />
-        <SearchByDates setFilterCirteria={undefined} searchFilter={undefined} />
+        <SearchByDates setFilterCriteria={undefined} searchFilter={undefined} />
       </ThemeProvider>
     );
     cy.get('body').then(() => {
