@@ -30,6 +30,7 @@ import {
 } from '@ska-telescope/ska-gui-components';
 import AddIcon from '@mui/icons-material/Add';
 import { EBRequestResponseStatus, toUTCDateTimeFormat } from '../../../utils/constants';
+import { config } from '../../../utils/api_constants';
 import apiService from '../../../services/apis';
 import ImageDisplayComponent from '../../../components/ImageDisplayComponent/ImageDisplayComponent';
 
@@ -141,12 +142,6 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
       const path = `shift_log_comments/upload_image/${shiftNewLogCommentID}`;
       const formData = new FormData();
       formData.append('files', file);
-      const config = {
-        headers: {
-          accept: 'application/json',
-          'content-type': 'multipart/form-data'
-        }
-      };
       const response = await apiService.updateImage(path, formData, config);
       if (response.status === 200) {
         setMessageType('addLogImage');
@@ -167,12 +162,6 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
       const path = `shift_log_comments/upload_image/${shiftLogCommentID}`;
       const formData = new FormData();
       formData.append('files', file);
-      const config = {
-        headers: {
-          accept: 'application/json',
-          'content-type': 'multipart/form-data'
-        }
-      };
       const response = await apiService.updateImage(path, formData, config);
       if (response.status === 200) {
         setMessageType('addLogImage');
@@ -195,12 +184,6 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
       const path = `shift_log_comments/upload_image?shift_id=${shiftData.shift_id}&shift_operator=${shiftData.shift_operator}&eb_id=${selectedLogDetails && selectedLogDetails.info && selectedLogDetails.info.eb_id ? selectedLogDetails.info.eb_id : ''}`;
       const formData = new FormData();
       formData.append('file', file);
-      const config = {
-        headers: {
-          accept: 'application/json',
-          'content-type': 'multipart/form-data'
-        }
-      };
       const response = await apiService.addImage(path, formData, config);
       if (response.status === 200) {
         setMessageType('addLogImage');

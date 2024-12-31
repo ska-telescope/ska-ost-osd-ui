@@ -21,9 +21,9 @@ import {
 
 import apiService from '../../services/apis';
 import ViewShiftData from './ViewShiftData/ViewShiftData';
-import SearchByDates from './SearchComponenet/SearchByDates/SearchByDates';
-import SearchByOperator from './SearchComponenet/SearchByOperator/SearchByOperator';
-import SearchByStatus from './SearchComponenet/SearchByStatus/SearchByStatus';
+import SearchByDates from './SearchComponent/SearchByDates/SearchByDates';
+import SearchByOperator from './SearchComponent/SearchByOperator/SearchByOperator';
+import SearchByStatus from './SearchComponent/SearchByStatus/SearchByStatus';
 import ShiftHistoryListComponent from './DisplayShiftHistory/ShiftHistoryListComponent/ShiftHistoryListComponent';
 
 function ShiftHistoryPage() {
@@ -37,7 +37,7 @@ function ShiftHistoryPage() {
   const [status, setStatus] = useState('');
   const [displayTable, setDisplayTable] = useState(true);
   const [displayData, setDisplayData] = useState(null);
-  const [searchType, setsearchType] = useState('');
+  const [searchType, setSearchType] = useState('');
   const [logSearchBy, setLogSearchBy] = useState(logTypeEnum.searchByDate);
   const location = useLocation();
 
@@ -46,7 +46,7 @@ function ShiftHistoryPage() {
     const result = await apiService.getSltData(path);
     if (result.status === 200) {
       setSltHistory(result.data[0].reverse());
-      setsearchType(SEARCH_TYPE.today);
+      setSearchType(SEARCH_TYPE.today);
     }
   };
 
@@ -118,14 +118,14 @@ function ShiftHistoryPage() {
   const getFilterCriteria = (data) => {
     setSearchFilterData(data);
     if (data.createdAfter && data.createdBefore) {
-      setsearchType(SEARCH_TYPE.dates);
+      setSearchType(SEARCH_TYPE.dates);
       setCreatedAfter(data.createdAfter);
       setCreatedBefore(data.createdBefore);
     } else if (data.shift_operator) {
-      setsearchType(SEARCH_TYPE.operator);
+      setSearchType(SEARCH_TYPE.operator);
       setOperator(data.shift_operator);
     } else if (data.status) {
-      setsearchType(SEARCH_TYPE.status);
+      setSearchType(SEARCH_TYPE.status);
       setStatus(data.status);
     }
 

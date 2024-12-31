@@ -34,6 +34,7 @@ import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
 // import { Kafka } from 'kafkajs';
 import { ENTITY, SHIFT_STATUS, operatorName, toUTCDateTimeFormat } from '../../../utils/constants';
+import { shiftIdPath, config, downloadImagePath } from '../../../utils/api_constants';
 import apiService from '../../../services/apis';
 import ImageDisplayComponent from '../../../components/ImageDisplayComponent/ImageDisplayComponent';
 import DisplayShiftLogsComponent from '../DisplayShiftLogsComponent/DisplayShiftLogsComponent';
@@ -96,7 +97,7 @@ function DisplayShiftComponent() {
 
   const fetchImage = async (commentId) => {
     setImages([]);
-    const path = `shift_comment/download_images/${commentId}`;
+    const path = downloadImagePath(commentId);
     const result = await apiService.getImage(path);
     if (result.status === 200) {
       setImages(result && result.data && result.data[0] ? result.data[0] : []);
@@ -107,7 +108,7 @@ function DisplayShiftComponent() {
 
   // const updateShiftLogs = async () => {
   //   if (kafkaMessages && kafkaMessages.length > 0) {
-  //     const path = `shift?shift_id=${shiftId}`;
+  //     const path = shiftIdPath(shiftId);
   //     const result = await apiService.getSltLogs(path);
   //     if (result && result.status === 200) {
   //       setShiftData(result && result.data && result.data.length > 0 ? result.data[0] : []);
@@ -116,7 +117,7 @@ function DisplayShiftComponent() {
   // };
 
   const updateShiftData = async () => {
-    const path = `shift?shift_id=${shiftId}`;
+    const path = shiftIdPath(shiftId);
     const result = await apiService.getSltLogs(path);
     if (result && result.status === 200) {
       setShiftData(
@@ -148,7 +149,7 @@ function DisplayShiftComponent() {
   // };
 
   const fetchShiftWithRecentLogs = async (shiftID) => {
-    const path = `shift?shift_id=${shiftID}`;
+    const path = shiftIdPath(shiftID);
     const result = await apiService.getSltLogs(path);
     if (result && result.status === 200) {
       setShiftData(
@@ -287,12 +288,6 @@ function DisplayShiftComponent() {
 
   const postShiftCommentImage = async (file) => {
     const formData = new FormData();
-    const config = {
-      headers: {
-        accept: 'application/json',
-        'content-type': 'multipart/form-data'
-      }
-    };
     if (shiftCommentID && shiftCommentID > 0) {
       formData.append('files', file);
       const path = `shift_comment/upload_image/${shiftCommentID}`;
