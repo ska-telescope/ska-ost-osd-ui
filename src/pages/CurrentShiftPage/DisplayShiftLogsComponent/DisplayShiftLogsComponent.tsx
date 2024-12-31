@@ -30,7 +30,7 @@ import {
 } from '@ska-telescope/ska-gui-components';
 import AddIcon from '@mui/icons-material/Add';
 import { EBRequestResponseStatus, toUTCDateTimeFormat } from '../../../utils/constants';
-import { config } from '../../../utils/api_constants';
+import { config, createShiftLogCommentPath } from '../../../utils/api_constants';
 import apiService from '../../../services/apis';
 import ImageDisplayComponent from '../../../components/ImageDisplayComponent/ImageDisplayComponent';
 
@@ -139,7 +139,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
   }
   const postLogImage = async (file) => {
     if (shiftNewLogCommentID && commentValue !== '') {
-      const path = `shift_log_comments/upload_image/${shiftNewLogCommentID}`;
+      const path = createShiftLogCommentPath(shiftNewLogCommentID, 'image');
       const formData = new FormData();
       formData.append('files', file);
       const response = await apiService.updateImage(path, formData, config);
@@ -159,7 +159,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
         }, 3000);
       }
     } else if (shiftLogCommentID) {
-      const path = `shift_log_comments/upload_image/${shiftLogCommentID}`;
+      const path = createShiftLogCommentPath(shiftLogCommentID, 'image');
       const formData = new FormData();
       formData.append('files', file);
       const response = await apiService.updateImage(path, formData, config);
@@ -215,7 +215,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
       shift_id: shiftData.shift_id,
       eb_id: data.info.eb_id
     };
-    const path = `shift_log_comments`;
+    const path = createShiftLogCommentPath(shiftLogCommentID, 'basePath');
     setLogCommentsIndex(logIndex);
     const response = await apiService.postShiftData(path, addCommentRequestBody);
     if (response.status === 200) {
@@ -235,7 +235,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
       log_comment: `${updateCommentValue}`,
       operator_name: shiftData.shift_operator
     };
-    const path = `shift_log_comments/${commentItem.id}`;
+    const path = createShiftLogCommentPath(commentItem.id, 'id');
     setLogCommentsIndex(logIndex);
     const response = await apiService.updateLogComments(path, updateCommentPayload);
     if (response.status === 200) {
@@ -347,7 +347,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
   );
   const fetchImage = async (commentId) => {
     setImages([]);
-    const path = `shift_log_comments/download_images/${commentId}`;
+    const path = createShiftLogCommentPath(commentId, 'imageDownload');
     const result = await apiService.getImage(path);
     if (result.status === 200) {
       setImages(result && result.data && result.data[0] ? result.data[0] : []);

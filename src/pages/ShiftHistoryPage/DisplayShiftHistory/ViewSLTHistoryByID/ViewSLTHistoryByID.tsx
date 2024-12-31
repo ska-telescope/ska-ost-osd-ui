@@ -1,6 +1,6 @@
 import React from 'react';
 import apiService from '../../../../services/apis';
-import { shiftIdPath } from '../../../../utils/api_constants';
+import { createShiftPath } from '../../../../utils/api_constants';
 
 interface EntryFieldProps {
   shiftData;
@@ -9,7 +9,7 @@ interface EntryFieldProps {
 
 const ViewSLTHistoryByID = ({ shiftData, updatedList }: EntryFieldProps) => {
   const fetchSltHistoryByID = async () => {
-    const path = shiftIdPath(shiftData.shift_id);
+    const path = createShiftPath(shiftData.shift_id, 'id');
     const response = await apiService.getSltData(path);
     if (response.status === 200 && response.data && response.data.length > 0) {
       updatedList(response.data[0]);

@@ -34,7 +34,13 @@ import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
 // import { Kafka } from 'kafkajs';
 import { ENTITY, SHIFT_STATUS, operatorName, toUTCDateTimeFormat } from '../../../utils/constants';
-import { shiftIdPath, config, downloadImagePath } from '../../../utils/api_constants';
+import {
+  config,
+  shiftCreatePath,
+  shiftCurrentPath,
+  createShiftPath,
+  createShiftCommentPath
+} from '../../../utils/api_constants';
 import apiService from '../../../services/apis';
 import ImageDisplayComponent from '../../../components/ImageDisplayComponent/ImageDisplayComponent';
 import DisplayShiftLogsComponent from '../DisplayShiftLogsComponent/DisplayShiftLogsComponent';
@@ -97,7 +103,7 @@ function DisplayShiftComponent() {
 
   const fetchImage = async (commentId) => {
     setImages([]);
-    const path = downloadImagePath(commentId);
+    const path = createShiftCommentPath(commentId, 'imageDownload');
     const result = await apiService.getImage(path);
     if (result.status === 200) {
       setImages(result && result.data && result.data[0] ? result.data[0] : []);
@@ -108,7 +114,7 @@ function DisplayShiftComponent() {
 
   // const updateShiftLogs = async () => {
   //   if (kafkaMessages && kafkaMessages.length > 0) {
-  //     const path = shiftIdPath(shiftId);
+  //     const path = createShiftPath(shiftId, 'id);
   //     const result = await apiService.getSltLogs(path);
   //     if (result && result.status === 200) {
   //       setShiftData(result && result.data && result.data.length > 0 ? result.data[0] : []);
@@ -117,7 +123,7 @@ function DisplayShiftComponent() {
   // };
 
   const updateShiftData = async () => {
-    const path = shiftIdPath(shiftId);
+    const path = createShiftPath(shiftId, 'id');
     const result = await apiService.getSltLogs(path);
     if (result && result.status === 200) {
       setShiftData(
@@ -149,7 +155,7 @@ function DisplayShiftComponent() {
   // };
 
   const fetchShiftWithRecentLogs = async (shiftID) => {
-    const path = shiftIdPath(shiftID);
+    const path = createShiftPath(shiftID, 'id');
     const result = await apiService.getSltLogs(path);
     if (result && result.status === 200) {
       setShiftData(
@@ -162,8 +168,8 @@ function DisplayShiftComponent() {
     const shiftData = {
       shift_operator: operator
     };
-    const path = `shifts/create`;
-    const response = await apiService.postShiftData(path, shiftData);
+
+    const response = await apiService.postShiftData(shiftCreatePath, shiftData);
     if (response.status === 200 && response.data && response.data.length > 0) {
       setMessage('msg.shiftStarted');
       setDisplayMessageElement(true);
@@ -187,8 +193,7 @@ function DisplayShiftComponent() {
   };
 
   const fetchSltCurrentShifts = async () => {
-    const path = `current_shift`;
-    const response = await apiService.getSltData(path);
+    const response = await apiService.getSltData(shiftCurrentPath);
     if (response.status === 200 && !response.data[0].shift_end) {
       setMessage('msg.shiftAlreadyStarted');
       setDisplayMessageElement(true);
@@ -222,7 +227,7 @@ function DisplayShiftComponent() {
     const shiftData = {
       shift_operator: operator
     };
-    const path = `shift/end/${shiftId}`;
+    const path = createShiftPath(shiftId, 'end');
     const response = await apiService.putShiftData(path, shiftData);
     if (response.status === 200) {
       setMessage('msg.shiftEnd');
@@ -247,7 +252,7 @@ function DisplayShiftComponent() {
       shift_id: shiftId
     };
     if (isShiftCommentUpdate) {
-      const updatePath = `shift_comment/${shiftCommentID}`;
+      const updatePath = createShiftCommentPath(shiftCommentID, 'id');
       const response = await apiService.putShiftData(updatePath, shiftData);
       if (response.status === 200) {
         setMessage('msg.commentSubmit');
@@ -260,7 +265,7 @@ function DisplayShiftComponent() {
         }, 3000);
       }
     } else {
-      const addPath = `shift_comment`;
+      const addPath = createShiftCommentPath(shiftCommentID, 'basePath');
       const response = await apiService.postShiftData(addPath, shiftData);
       if (response.status === 200) {
         setMessage('msg.commentSubmit');
@@ -290,7 +295,7 @@ function DisplayShiftComponent() {
     const formData = new FormData();
     if (shiftCommentID && shiftCommentID > 0) {
       formData.append('files', file);
-      const path = `shift_comment/upload_image/${shiftCommentID}`;
+      const path = createShiftCommentPath(shiftCommentID, 'image');
       const result = await apiService.updateImage(path, formData, config);
       if (result.status === 200) {
         setMessage('msg.imageUpload');

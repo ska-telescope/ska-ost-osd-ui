@@ -1,7 +1,6 @@
-export const shiftIdPath = (shiftId: string) => {
-  const path = `shift?shift_id=${shiftId}`;
-  return path;
-};
+export const shiftCreatePath = `shifts/create`;
+
+export const shiftCurrentPath = `current_shift`;
 
 export const config = {
   headers: {
@@ -10,25 +9,48 @@ export const config = {
   }
 };
 
-export const downloadImagePath = (commentId: string) => {
-  const path = `shift_comment/download_images/${commentId}`;
-  return path;
+export const createShiftPath = (shiftId: string, pathToCreate: string): string => {
+  switch (pathToCreate) {
+    case 'id':
+      return `shift?shift_id=${shiftId}`;
+    case 'end':
+      return `shift/end/${shiftId}`;
+    case 'update':
+      return `shift/update/${shiftId}`;
+    default:
+      throw new Error(`Invalid path type: ${pathToCreate}`);
+  }
 };
 
-// const path = `shifts/create`;
-// const path = `current_shift`;
-// const path = `shift/end/${shiftId}`;
-// const path = `shifts?query_type=created_between&shift_start=${getTodayDateRange.start}&shift_end=${getTodayDateRange.end}`;
-// const path = `shifts/update/${data.shift_id}`;
+export const createShiftCommentPath = (shiftCommentId: string, pathToCreate: string): string => {
+  switch (pathToCreate) {
+    case 'basePath':
+      return `shift_comment`;
+    case 'id':
+      return `shift_comment/${shiftCommentId}`;
+    case 'image':
+      return `shift_comment/upload_image/${shiftCommentId}`;
+    case 'imageDownload':
+      return `shift_comment/download_images/${shiftCommentId}`;
+    default:
+      throw new Error(`Invalid path type: ${pathToCreate}`);
+  }
+};
 
-// const addPath = `shift_comment`;
-// const updatePath = `shift_comment/${shiftCommentID}`;
-// const path = `shift_comment/upload_image/${shiftCommentID}`;
-// const path = `shift_comment/upload_image?shift_id=${shiftId}&shift_operator=${operator}`;
-
-// const path = `shift_log_comments`;
-// const path = `shift_log_comments/upload_image/${shiftNewLogCommentID}`;
-// const path = `shift_log_comments/upload_image/${shiftLogCommentID}`;
-// const path = `shift_log_comments/upload_image?shift_id=${shiftData.shift_id}&shift_operator=${shiftData.shift_operator}&eb_id=${selectedLogDetails && selectedLogDetails.info && selectedLogDetails.info.eb_id ? selectedLogDetails.info.eb_id : ''}`;
-// const path = `shift_log_comments/${commentItem.id}`;
-// const path = `shift_log_comments/download_images/${commentId}`;
+export const createShiftLogCommentPath = (
+  shiftLogCommentId: string,
+  pathToCreate: string
+): string => {
+  switch (pathToCreate) {
+    case 'basePath':
+      return `shift_log_comments`;
+    case 'id':
+      return `shift_log_comments/${shiftLogCommentId}`;
+    case 'image':
+      return `shift_log_comments/upload_image/${shiftLogCommentId}`;
+    case 'imageDownload':
+      return `shift_log_comments/download_images/${shiftLogCommentId}`;
+    default:
+      throw new Error(`Invalid path type: ${pathToCreate}`);
+  }
+};
