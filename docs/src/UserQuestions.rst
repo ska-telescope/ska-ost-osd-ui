@@ -9,7 +9,7 @@ FAQs for the Minimal Viable Product (MVP)
 
    User will be able to add shift  summary comments by clicking on "ADD SHIFT SUMMARY" button on UI.
 
-.. admonition:: Is uploading image is mandatory to add any commnets.
+.. admonition:: Is uploading image is mandatory to add any comments.
 
    No. Uploading image is not mandatory to add any comments.
 
@@ -17,7 +17,7 @@ FAQs for the Minimal Viable Product (MVP)
 
    Yes. You can upload images without adding comments
 
-.. admonition:: Can user be able to update the commnets once shift is ended.
+.. admonition:: Can user be able to update the comments once shift is ended.
    
    No. User will not be able to update the comments once shift is ended.
 

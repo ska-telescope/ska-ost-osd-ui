@@ -11,11 +11,11 @@ import SearchIcon from '@mui/icons-material/Search';
 import { SBIStatus } from '../../../../utils/constants';
 
 interface EntryFieldProps {
-  setFilterCirteria;
+  setFilterCriteria;
   searchFilter;
 }
 
-const SearchByStatus = ({ setFilterCirteria, searchFilter }: EntryFieldProps) => {
+const SearchByStatus = ({ setFilterCriteria, searchFilter }: EntryFieldProps) => {
   const { t } = useTranslation('translations');
   const [statusValue, setValue] = React.useState<string>(
     searchFilter && searchFilter.status ? searchFilter.status : ''
@@ -28,11 +28,11 @@ const SearchByStatus = ({ setFilterCirteria, searchFilter }: EntryFieldProps) =>
     return true;
   };
 
-  const emmitFilterCriteria = () => {
-    const emmitData = {
+  const omitFilterCriteria = () => {
+    const omitData = {
       status: statusValue
     };
-    setFilterCirteria(emmitData);
+    setFilterCriteria(omitData);
   };
   return (
     <Grid container spacing={2} justifyContent="left" sx={{ marginTop: '-15px' }}>
@@ -64,7 +64,7 @@ const SearchByStatus = ({ setFilterCirteria, searchFilter }: EntryFieldProps) =>
           variant={ButtonVariantTypes.Contained}
           testId="logHistorySearch"
           label={t('label.searchById')}
-          onClick={emmitFilterCriteria}
+          onClick={omitFilterCriteria}
           toolTip={t('toolTip.button.idSearch')}
         />
       </Grid>

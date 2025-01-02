@@ -68,9 +68,9 @@ export const SHIFT_END = {
   END_TIME: moment().utc().format('YYYY-MM-DD HH:mm:ss.SSSSSS')
 };
 
-export const getFormatedDate = (date) => {
-  const formatedDate = moment(date).utc().format('YYYY-MM-DD');
-  return formatedDate;
+export const getFormattedDate = (date) => {
+  const formattedDate = moment(date).utc().format('YYYY-MM-DD');
+  return formattedDate;
 };
 
 export const todayDate = moment().utc().toISOString().substring(0, 10);

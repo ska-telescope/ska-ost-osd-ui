@@ -9,23 +9,23 @@ import {
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import SearchIcon from '@mui/icons-material/Search';
-import { getFormatedDate, getUTCDateRange, todayDate } from '../../../../utils/constants';
+import { getFormattedDate, getUTCDateRange, todayDate } from '../../../../utils/constants';
 
 interface EntryFieldProps {
-  setFilterCirteria;
+  setFilterCriteria;
   searchFilter;
 }
 
-const SearchByDates = ({ setFilterCirteria, searchFilter }: EntryFieldProps) => {
+const SearchByDates = ({ setFilterCriteria, searchFilter }: EntryFieldProps) => {
   const { t } = useTranslation('translations');
   const [startDate, setStartDate] = useState(
     searchFilter && searchFilter.createdAfter
-      ? getFormatedDate(searchFilter.createdAfter)
+      ? getFormattedDate(searchFilter.createdAfter)
       : todayDate
   );
   const [endDate, setEndDate] = useState(
     searchFilter && searchFilter.createdBefore
-      ? getFormatedDate(searchFilter.createdBefore)
+      ? getFormattedDate(searchFilter.createdBefore)
       : todayDate
   );
 
@@ -51,11 +51,11 @@ const SearchByDates = ({ setFilterCirteria, searchFilter }: EntryFieldProps) => 
     const getDatedRange = getUTCDateRange(startDate, endDate);
     const createdAfter = getDatedRange.start;
     const createdBefore = getDatedRange.end;
-    const emmitData = {
+    const omitData = {
       createdAfter,
       createdBefore
     };
-    setFilterCirteria(emmitData);
+    setFilterCriteria(omitData);
   };
   return (
     <Grid container spacing={2} justifyContent="left" sx={{ marginTop: '-32px' }}>

@@ -10,7 +10,7 @@ describe('<SearchByStatus />', () => {
     mount(
       <ThemeProvider theme={theme(THEME_DARK)}>
         <CssBaseline />
-        <SearchByStatus setFilterCirteria={undefined} searchFilter={undefined} />
+        <SearchByStatus setFilterCriteria={undefined} searchFilter={undefined} />
       </ThemeProvider>
     );
   });
@@ -19,7 +19,7 @@ describe('<SearchByStatus />', () => {
     mount(
       <ThemeProvider theme={theme(THEME_DARK)}>
         <CssBaseline />
-        <SearchByStatus setFilterCirteria={undefined} searchFilter={undefined} />
+        <SearchByStatus setFilterCriteria={undefined} searchFilter={undefined} />
       </ThemeProvider>
     );
   });

@@ -11,11 +11,11 @@ import SearchIcon from '@mui/icons-material/Search';
 import { operatorName } from '../../../../utils/constants';
 
 interface EntryFieldProps {
-  setFilterCirteria;
+  setFilterCriteria;
   searchFilter;
 }
 
-const SearchByOperator = ({ setFilterCirteria, searchFilter }: EntryFieldProps) => {
+const SearchByOperator = ({ setFilterCriteria, searchFilter }: EntryFieldProps) => {
   const { t } = useTranslation('translations');
   const [operatorValue, setValue] = React.useState<string>(
     searchFilter && searchFilter.shift_operator ? searchFilter.shift_operator : ''
@@ -31,11 +31,11 @@ const SearchByOperator = ({ setFilterCirteria, searchFilter }: EntryFieldProps) 
     return true;
   };
 
-  const emmitOperator = () => {
-    const emmitData = {
+  const omitOperator = () => {
+    const omitData = {
       shift_operator: operatorValue
     };
-    setFilterCirteria(emmitData);
+    setFilterCriteria(omitData);
   };
   return (
     <Grid container spacing={2} justifyContent="left" sx={{ marginTop: '-15px' }}>
@@ -67,7 +67,7 @@ const SearchByOperator = ({ setFilterCirteria, searchFilter }: EntryFieldProps) 
           variant={ButtonVariantTypes.Contained}
           testId="logHistorySearch"
           label={t('label.searchById')}
-          onClick={emmitOperator}
+          onClick={omitOperator}
           toolTip={t('toolTip.button.idSearch')}
         />
       </Grid>

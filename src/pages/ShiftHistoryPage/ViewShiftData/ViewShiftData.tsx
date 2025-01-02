@@ -25,6 +25,7 @@ import { useTranslation } from 'react-i18next';
 import AddIcon from '@mui/icons-material/Add';
 import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
 import apiService from '../../../services/apis';
+import { createShiftCommentPath } from '../../../utils/api_constants';
 import ImageDisplayComponent from '../../../components/ImageDisplayComponent/ImageDisplayComponent';
 import DisplayShiftLogsComponent from '../../CurrentShiftPage/DisplayShiftLogsComponent/DisplayShiftLogsComponent';
 import { toUTCDateTimeFormat } from '../../../utils/constants';
@@ -77,7 +78,7 @@ const ViewShiftData = ({ data }) => {
   );
   const fetchImage = async (shiftCommentId) => {
     setImages([]);
-    const path = `shift_comment/download_images/${shiftCommentId}`;
+    const path = createShiftCommentPath(shiftCommentId, 'imageDownload');
     const result = await apiService.getImage(path);
     if (result.status === 200) {
       setImages(result && result.data && result.data[0] ? result.data[0] : []);
