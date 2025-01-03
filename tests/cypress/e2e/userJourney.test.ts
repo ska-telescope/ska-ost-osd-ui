@@ -140,6 +140,7 @@ context('Shift Log Tool', () => {
       }
     });
   };
+
   it('Header : Verify external link to skao site', () => {
     cy.get('[data-testid="skaoLogo"]').click();
   });

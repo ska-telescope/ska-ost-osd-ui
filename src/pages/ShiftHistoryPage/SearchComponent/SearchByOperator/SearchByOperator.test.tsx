@@ -10,7 +10,7 @@ describe('<SearchByOperator />', () => {
     mount(
       <ThemeProvider theme={theme(THEME_DARK)}>
         <CssBaseline />
-        <SearchByOperator setFilterCirteria={undefined} searchFilter={undefined} />
+        <SearchByOperator setFilterCriteria={undefined} searchFilter={undefined} />
       </ThemeProvider>
     );
   });
@@ -19,7 +19,7 @@ describe('<SearchByOperator />', () => {
     mount(
       <ThemeProvider theme={theme(THEME_DARK)}>
         <CssBaseline />
-        <SearchByOperator setFilterCirteria={undefined} searchFilter={undefined} />
+        <SearchByOperator setFilterCriteria={undefined} searchFilter={undefined} />
       </ThemeProvider>
     );
   });
