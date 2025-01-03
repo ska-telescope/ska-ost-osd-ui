@@ -21,6 +21,8 @@
     "logHistoryTitle": "Shift History",
     "submit": "Submit",
     "operatorName": "Operator Name",
+    "ebId": "Execution Block Id",
+    "sbiId": "Scheduling Block Id",
     "logSearchBy": "Select search type",
     "shiftEnd": "End Shift",
     "sbiStatus": "Status",
