@@ -81,6 +81,30 @@ User will be able to select search type "Search by Status" from dropdown then us
 
 |
 
+Search by Eb Id
+~~~~~~~~~~~~~~~~~~~
+
+User will be able to select search type "Search by eb id" from dropdown then user can add eb id pattern seach string on UI and click on |searchLogsBtn| button as shown below
+
+.. figure:: /images/searchByEbId.png
+   :width: 100%
+   :align: center
+   :alt: Search entity by EbId
+
+|
+
+Search by Sbi Id
+~~~~~~~~~~~~~~~~~~~
+
+User will be able to select search type "Search by sbi id" from dropdown then user can add sbi id pattern seach string on UI on UI and click on |searchLogsBtn| button as shown below
+
+.. figure:: /images/searchBySbiId.png
+   :width: 100%
+   :align: center
+   :alt: Search entity by SbiId
+
+|
+
 
 User will be able to view the results in tabular format as shown below image. 
 
