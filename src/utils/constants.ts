@@ -94,7 +94,6 @@ interface LogSearchType {
 }
 
 export const operatorName = ['DefaultUser', 'TestUser'];
-export const ebId = ['DefaultUser', 'TestUser', 'Test data'];
 
 export const logTypeEnum = {
   searchByDate: 'searchByDate',
