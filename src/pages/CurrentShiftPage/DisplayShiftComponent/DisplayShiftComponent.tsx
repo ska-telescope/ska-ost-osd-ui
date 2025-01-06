@@ -33,7 +33,13 @@ import HistoryIcon from '@mui/icons-material/History';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
 // import { Kafka } from 'kafkajs';
-import { ENTITY, SHIFT_STATUS, operatorName, toUTCDateTimeFormat } from '../../../utils/constants';
+import {
+  ENTITY,
+  SHIFT_STATUS,
+  USE_LOCAL_DATA,
+  operatorName,
+  toUTCDateTimeFormat
+} from '../../../utils/constants';
 import {
   config,
   shiftCreatePath,
@@ -44,7 +50,7 @@ import {
 import apiService from '../../../services/apis';
 import ImageDisplayComponent from '../../../components/ImageDisplayComponent/ImageDisplayComponent';
 import DisplayShiftLogsComponent from '../DisplayShiftLogsComponent/DisplayShiftLogsComponent';
-// import SHIFT_DATA_LIST from '../../../DataModels/DataFiles/shiftDataList';
+import SHIFT_DATA_LIST from '../../../DataModels/DataFiles/shiftDataList';
 
 function DisplayShiftComponent() {
   const [shiftStatus, setShiftStatus] = useState('');
@@ -164,11 +170,17 @@ function DisplayShiftComponent() {
     }
   };
 
+  const useLocalData = () => {
+    setShiftData(SHIFT_DATA_LIST[0]);
+  };
   const startNewShift = async () => {
     const shiftData = {
       shift_operator: operator
     };
-
+    if (USE_LOCAL_DATA) {
+      useLocalData();
+      return true;
+    }
     const response = await apiService.postShiftData(shiftCreatePath, shiftData);
     if (response.status === 200 && response.data && response.data.length > 0) {
       setMessage('msg.shiftStarted');
@@ -219,7 +231,11 @@ function DisplayShiftComponent() {
 
   useEffect(() => {
     // eslint-disable-next-line no-console
-    console.log('window.env.BACKEND_URL',window.env.BACKEND_URL,window.env.REACT_APP_USE_LOCAL_DATA)
+    console.log(
+      'window.env.BACKEND_URL',
+      window.env.BACKEND_URL,
+      window.env.REACT_APP_USE_LOCAL_DATA
+    );
     fetchSltCurrentShifts();
     // updateShiftLogs();
     // useKafkaData(KafkaTopic.serviceToUITopic);
