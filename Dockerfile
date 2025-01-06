@@ -18,6 +18,8 @@ COPY nginx.conf /etc/nginx/
 
 EXPOSE 80
 
-COPY scripts/* /docker-entrypoint.d/
+COPY nginx_env_config.sh .
+COPY nginx_env_config.sh /docker-entrypoint.d/
 
 CMD ["nginx", "-g", "daemon off;"]
+
