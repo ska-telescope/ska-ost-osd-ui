@@ -10,7 +10,7 @@ BACKEND_URL ?= $(KUBE_HOST)/$(KUBE_NAMESPACE)/slt/api/v0
 REACT_APP_USE_LOCAL_DATA = true
 K8S_CHART_PARAMS += \
   --set ska-oso-slt-ui.backendURL=$(BACKEND_URL) \
-  --set ska-oso-ptt.runtimeEnv.useLocalData=$(REACT_APP_USE_LOCAL_DATA)
+  --set ska-oso-slt-ui.runtimeEnv.useLocalData=$(REACT_APP_USE_LOCAL_DATA)
 
 # JS Template Variables
 JS_E2E_TEST_BASE_URL ?= $(KUBE_HOST)/$(KUBE_NAMESPACE)/slt/
