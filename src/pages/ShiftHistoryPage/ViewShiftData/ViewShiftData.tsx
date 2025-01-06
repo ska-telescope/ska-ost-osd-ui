@@ -106,7 +106,7 @@ const ViewShiftData = ({ data }) => {
   const addShiftAnnotations = async () => {
     if (shiftAnnotationValue === '') return;
     const shiftData = {
-      operator_name: data.shift_operator,
+      user_name: data.shift_operator,
       annotation: `${shiftAnnotationValue}`,
       shift_id: data.shift_id
     };
