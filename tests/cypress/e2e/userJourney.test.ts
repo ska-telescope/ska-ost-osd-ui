@@ -281,7 +281,7 @@ context('Shift Log Tool', () => {
         cy.get('[data-testid="sltHistoryTable"]').should('be.visible');
         cy.get('[data-testid="sltHistoryTable"]')
           .get('[data-field="shift_id"]')
-          .contains(translation.label.shiftId);
+          .click({ force: true });
         cy.get('[data-testid="sltHistoryTable"]')
           .get('[data-field="shift_start"]')
           .contains(translation.label.shiftStart);

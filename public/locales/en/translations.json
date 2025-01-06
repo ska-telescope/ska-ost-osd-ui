@@ -1,6 +1,5 @@
 {
   "language": "English",
-  "date_format_one": "{{-date, YYYY/MM/DD}}",
   "dateFormatTwo": "{{date, DD-MM-YYYY}}",
   "dummy": "I am in ENGLISH translation file only",
   "intlNumber": "{{val, number}}",
@@ -35,8 +34,8 @@
     "search": "Search",
     "close": "Close",
     "back": "Back",
-    "NO": "NO",
-    "YES": "YES",
+    "no": "NO",
+    "yes": "YES",
     "viewHistoryTitle": "Shift History Data",
     "shiftIDLabel": "Shift ID",
     "viewImages": "View Images",
@@ -78,8 +77,7 @@
     "viewShift": "View Shift ID",
     "view": "View details",
     "shiftNotStarted": "Shift not started yet",
-    "noImageFound": "No images found",
-    "logCommentWithImages": "Upload images for the comment"
+    "noImageFound": "No images found"
   },
   "ariaLabel": {
     "date": "Select Date",
