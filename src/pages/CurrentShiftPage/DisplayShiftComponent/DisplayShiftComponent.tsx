@@ -218,6 +218,7 @@ function DisplayShiftComponent() {
   };
 
   useEffect(() => {
+    console.log('window.env.BACKEND_URL',window.env.BACKEND_URL,window.env.REACT_APP_USE_LOCAL_DATA)
     fetchSltCurrentShifts();
     // updateShiftLogs();
     // useKafkaData(KafkaTopic.serviceToUITopic);

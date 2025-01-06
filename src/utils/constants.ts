@@ -1,4 +1,8 @@
 import moment from 'moment';
+import { env } from '../env';
+
+
+export const USE_LOCAL_DATA = env.REACT_APP_USE_LOCAL_DATA === 'true';
 
 export const SPACER = 50;
 export const CHARACTER_LIMIT = 1000;

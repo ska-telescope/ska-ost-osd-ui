@@ -71,6 +71,7 @@ test_and_coverage:
   tags:
     - k8srunner
   before_script:
+    - rm -rf node_modules
     - mkdir -p build/reports
     - mkdir -p build/.nyc_output
     - apt update && apt -y install make
@@ -123,6 +124,7 @@ test-counts:
       - node_modules/
     policy: pull
   before_script:
+    - rm -rf node_modules
     - mkdir -p build/tests
     - yarn install --immutable
   script:
