@@ -38,3 +38,20 @@ User can click on |viewImages| link to view all the images as shown in below ima
 
 
 |
+
+Adding shift annotation
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+User can add shift annotation by clicking on |addShiftAnnotationBtn| button. A modal window will open in which user can enter shift annotation in input field and click on |addBtn| button to add the annotations.
+
+.. |addShiftAnnotationBtn| image:: /images/addShiftAnnotationBtn.png
+   :width: 25%
+   :alt: Search Button
+
+
+.. figure:: /images/addShiftAnnotation.png
+   :width: 100%
+   :align: center
+   :alt: Image of Annotation window
+
+|
