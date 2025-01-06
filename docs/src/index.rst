@@ -10,6 +10,10 @@ For instructions on developing the SLT UI, see the `README <https://gitlab.com/s
 It communicates with ska-oso-slt-services via a REST API
 see the `REST API <https://developer.skao.int/projects/ska-oso-slt-services/en/latest/restapi.html>`_
 
+.. admonition:: REACT_APP_USE_LOCAL_DATA
+    
+    This is an option to turn on/off the API call and instead use mocked data.
+
 
 .. figure:: /images/osoWorkFlow.jpg
    :width: 100%
