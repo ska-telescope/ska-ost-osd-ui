@@ -10,7 +10,7 @@ describe('<SearchByEb />', () => {
     mount(
       <ThemeProvider theme={theme(THEME_DARK)}>
         <CssBaseline />
-        <SearchBySbi setFilterCirteria={undefined} searchFilter={undefined} />
+        <SearchBySbi setFilterCriteria={undefined} searchFilter={undefined} />
       </ThemeProvider>
     );
   });
@@ -19,7 +19,7 @@ describe('<SearchByEb />', () => {
     mount(
       <ThemeProvider theme={theme(THEME_DARK)}>
         <CssBaseline />
-        <SearchBySbi setFilterCirteria={undefined} searchFilter={undefined} />
+        <SearchBySbi setFilterCriteria={undefined} searchFilter={undefined} />
       </ThemeProvider>
     );
   });

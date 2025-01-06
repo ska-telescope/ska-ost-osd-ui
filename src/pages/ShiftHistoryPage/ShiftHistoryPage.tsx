@@ -96,7 +96,7 @@ function ShiftHistoryPage() {
       {searchType === SEARCH_TYPE.eb_id && (
         <div>
           <span id="msgStatus">
-            {t('msg.showStatusRecords')}
+            {t('msg.showEbRecords')}
             &nbsp;{eb_id}
           </span>
         </div>
@@ -104,7 +104,7 @@ function ShiftHistoryPage() {
       {searchType === SEARCH_TYPE.sbi_id && (
         <div>
           <span id="msgStatus">
-            {t('msg.showStatusRecords')}
+            {t('msg.showSbiRecords')}
             &nbsp;{sbi_id}
           </span>
         </div>
@@ -221,13 +221,13 @@ function ShiftHistoryPage() {
               {displayTable && logSearchBy === logTypeEnum.searchByEbId && (
                 <SearchByEbId
                   searchFilter={searchFilterData}
-                  setFilterCirteria={getFilterCriteria}
+                  setFilterCriteria={getFilterCriteria}
                 />
               )}
               {displayTable && logSearchBy === logTypeEnum.searchBySbiId && (
                 <SearchBySbiId
                   searchFilter={searchFilterData}
-                  setFilterCirteria={getFilterCriteria}
+                  setFilterCriteria={getFilterCriteria}
                 />
               )}
             </Grid>

@@ -10,11 +10,11 @@ import { useTranslation } from 'react-i18next';
 import SearchIcon from '@mui/icons-material/Search';
 
 interface EntryFieldProps {
-  setFilterCirteria;
+  setFilterCriteria;
   searchFilter;
 }
 
-const SearchBySbiId = ({ setFilterCirteria, searchFilter }: EntryFieldProps) => {
+const SearchBySbiId = ({ setFilterCriteria, searchFilter }: EntryFieldProps) => {
   const { t } = useTranslation('translations');
   const [sbiValue, setValue] = React.useState<string>(
     searchFilter && searchFilter.sbi_id ? searchFilter.sbi_id : ''
@@ -34,7 +34,7 @@ const SearchBySbiId = ({ setFilterCirteria, searchFilter }: EntryFieldProps) => 
     const emmitData = {
       sbi_id: sbiValue
     };
-    setFilterCirteria(emmitData);
+    setFilterCriteria(emmitData);
   };
   return (
     <Grid container spacing={2} justifyContent="left" sx={{ marginTop: '-15px' }}>

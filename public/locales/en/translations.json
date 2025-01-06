@@ -116,7 +116,9 @@
     "endNewShiftMsg": "You are about to end current shift.",
     "confirmShiftMsg": "Are you sure you want to continue ?",
     "endNewShiftLabel": "End current shift ?",
-    "startNewShiftLabel": "Start new shift ?"
+    "startNewShiftLabel": "Start new shift ?",
+    "showEbRecords": "Showing records for Execution block id",
+    "showSbiRecords": "Showing records for Scheduling block id"
   },
   "toolTip": {
     "button": {
