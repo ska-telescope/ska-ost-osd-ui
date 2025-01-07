@@ -11,7 +11,9 @@ export const SEARCH_TYPE = {
   operator: 'operator',
   today: 'today',
   dates: 'dates',
-  status: 'status'
+  status: 'status',
+  eb_id: 'eb_id',
+  sbi_id: 'sbi_id'
 };
 export const SHIFT_STATUS = {
   START: 'START',
@@ -44,6 +46,14 @@ export const getUrlPath = (data) => {
   }
   if (data.createdAfter && data.createdBefore) {
     const baseURL = `shifts?shift_start=${data.createdAfter}&shift_end=${data.createdBefore}&query_type=created_between`;
+    return baseURL;
+  }
+  if (data.eb_id) {
+    const baseURL = `shifts?match_type=contains&eb_id=${data.eb_id}`;
+    return baseURL;
+  }
+  if (data.sbi_id) {
+    const baseURL = `shifts?match_type=contains&sbi_id=${data.sbi_id}`;
     return baseURL;
   }
   return '';
@@ -87,16 +97,21 @@ interface LogSearchType {
 }
 
 export const operatorName = ['DefaultUser', 'TestUser'];
+
 export const logTypeEnum = {
   searchByDate: 'searchByDate',
   searchByOperator: 'searchByOperator',
-  searchByStatus: 'searchByStatus'
+  searchByStatus: 'searchByStatus',
+  searchByEbId: 'searchByEbId',
+  searchBySbiId: 'searchBySbiId'
 };
 
 export const logSearchType: LogSearchType[] = [
   { label: 'Search by dates', value: 'searchByDate' },
   { label: 'Search by operator', value: 'searchByOperator' },
-  { label: 'Search by status', value: 'searchByStatus' }
+  { label: 'Search by status', value: 'searchByStatus' },
+  { label: 'Search by eb id', value: 'searchByEbId' },
+  { label: 'Search by sbi id', value: 'searchBySbiId' }
 ];
 
 export const SBIStatus = ['Created', 'Executing', 'Observed', 'Failed'];

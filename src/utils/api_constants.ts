@@ -54,3 +54,19 @@ export const createShiftLogCommentPath = (
       throw new Error(`Invalid path type: ${pathToCreate}`);
   }
 };
+
+export const createShiftAnnotationPath = (
+  shiftAnnotationId: string,
+  pathToCreate: string
+): string => {
+  switch (pathToCreate) {
+    case 'basePath':
+      return `shift_annotation`;
+    case 'id':
+      return `shift_annotation/${shiftAnnotationId}`;
+    case 'get':
+      return `shift_annotation?shift_id=${shiftAnnotationId}`;
+    default:
+      throw new Error(`Invalid path type: ${pathToCreate}`);
+  }
+};

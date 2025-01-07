@@ -878,7 +878,7 @@ function DisplayShiftComponent() {
                 icon={<CheckIcon />}
                 size={ButtonSizeTypes.Small}
                 ariaDescription="Button for history tab"
-                label="YES"
+                label="yes"
                 onClick={() => newShiftConfirmation('YES')}
                 testId="confirmationDialogYes"
                 variant={ButtonVariantTypes.Contained}

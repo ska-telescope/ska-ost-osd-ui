@@ -22,6 +22,8 @@ import {
 
 import apiService from '../../services/apis';
 import ViewShiftData from './ViewShiftData/ViewShiftData';
+import SearchByEbId from './SearchComponent/SearchByEbId/SearchByEb';
+import SearchBySbiId from './SearchComponent/SearchBySbiId/SearchBySbi';
 import SearchByDates from './SearchComponent/SearchByDates/SearchByDates';
 import SearchByOperator from './SearchComponent/SearchByOperator/SearchByOperator';
 import SearchByStatus from './SearchComponent/SearchByStatus/SearchByStatus';
@@ -37,6 +39,8 @@ function ShiftHistoryPage() {
   const [createdBefore, setCreatedBefore] = useState('');
   const [operator, setOperator] = useState('');
   const [status, setStatus] = useState('');
+  const [eb_id, setEb] = useState('');
+  const [sbi_id, setSbi] = useState('');
   const [displayTable, setDisplayTable] = useState(true);
   const [displayData, setDisplayData] = useState(null);
   const [searchType, setSearchType] = useState('');
@@ -98,6 +102,22 @@ function ShiftHistoryPage() {
           </span>
         </div>
       )}
+      {searchType === SEARCH_TYPE.eb_id && (
+        <div>
+          <span id="msgStatus">
+            {t('msg.showEbRecords')}
+            &nbsp;{eb_id}
+          </span>
+        </div>
+      )}
+      {searchType === SEARCH_TYPE.sbi_id && (
+        <div>
+          <span id="msgStatus">
+            {t('msg.showSbiRecords')}
+            &nbsp;{sbi_id}
+          </span>
+        </div>
+      )}
     </div>
   );
 
@@ -140,6 +160,12 @@ function ShiftHistoryPage() {
     } else if (data.status) {
       setSearchType(SEARCH_TYPE.status);
       setStatus(data.status);
+    } else if (data.eb_id) {
+      setSearchType(SEARCH_TYPE.eb_id);
+      setEb(data.eb_id);
+    } else if (data.sbi_id) {
+      setSearchType(SEARCH_TYPE.sbi_id);
+      setSbi(data.sbi_id);
     }
 
     fetchSltHistoryByFilters(data);
@@ -201,6 +227,18 @@ function ShiftHistoryPage() {
               )}
               {displayTable && logSearchBy === logTypeEnum.searchByStatus && (
                 <SearchByStatus
+                  searchFilter={searchFilterData}
+                  setFilterCriteria={getFilterCriteria}
+                />
+              )}
+              {displayTable && logSearchBy === logTypeEnum.searchByEbId && (
+                <SearchByEbId
+                  searchFilter={searchFilterData}
+                  setFilterCriteria={getFilterCriteria}
+                />
+              )}
+              {displayTable && logSearchBy === logTypeEnum.searchBySbiId && (
+                <SearchBySbiId
                   searchFilter={searchFilterData}
                   setFilterCriteria={getFilterCriteria}
                 />
