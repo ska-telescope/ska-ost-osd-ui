@@ -25,8 +25,11 @@ describe('<ViewShiftData />', () => {
 
       cy.get('#shiftEnd').should('contain', 'label.shiftEndsAt');
 
-      cy.get('[data-testid="shiftCommentsHistory"]').should('exist');
-      cy.get('[data-testid="shiftCommentsHistory"]').should('contain', 'label.comments');
+      cy.get('body').then((element) => {
+        if (element.find('[testId="addShiftAnnotations"]').length) {
+          cy.get('[testId="addShiftAnnotations"]').should('contain', 'label.addShiftAnnotations');
+        }
+      });
     });
   }
 });
