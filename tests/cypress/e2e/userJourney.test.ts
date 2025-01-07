@@ -304,4 +304,27 @@ context('Shift Log Tool', () => {
       }
     });
   });
+
+  it('Content : Verify shift history search by eb id', () => {
+    cy.get('[data-testid="historyButton"]').click();
+    cy.get('[data-testid="logHistoryLabel"]').contains(translation.label.logHistoryTitle);
+    cy.get('[data-testid="logButton"]').contains(translation.label.logButton);
+    cy.get('[data-testid="logSearchBy"]').click();
+    cy.contains('Search by eb id').click();
+    cy.get('[data-testid="EbId"]').click({ force: true });
+    cy.get('[data-testid="EbId"]').type('Executing');
+    cy.get('[data-testid="logHistorySearch"]').click({ force: true });
+    validateShiftLogDataTable();
+  });
+  it('Content : Verify shift history search by sbi id', () => {
+    cy.get('[data-testid="historyButton"]').click();
+    cy.get('[data-testid="logHistoryLabel"]').contains(translation.label.logHistoryTitle);
+    cy.get('[data-testid="logButton"]').contains(translation.label.logButton);
+    cy.get('[data-testid="logSearchBy"]').click();
+    cy.contains('Search by sbi id').click();
+    cy.get('[data-testid="sbiId"]').click({ force: true });
+    cy.get('[data-testid="sbiId"]').type('Executing');
+    cy.get('[data-testid="logHistorySearch"]').click({ force: true });
+    validateShiftLogDataTable();
+  });
 });
