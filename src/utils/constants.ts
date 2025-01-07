@@ -110,8 +110,8 @@ export const logSearchType: LogSearchType[] = [
   { label: 'Search by dates', value: 'searchByDate' },
   { label: 'Search by operator', value: 'searchByOperator' },
   { label: 'Search by status', value: 'searchByStatus' },
-  { label: 'Search by eb id', value: 'searchByEbId' },
-  { label: 'Search by sbi id', value: 'searchBySbiId' }
+  { label: 'Search by EB ID', value: 'searchByEbId' },
+  { label: 'Search by SBI ID', value: 'searchBySbiId' }
 ];
 
 export const SBIStatus = ['Created', 'Executing', 'Observed', 'Failed'];

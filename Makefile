@@ -7,7 +7,7 @@ K8S_CHART ?= ska-oso-slt-ui-umbrella
 
 # The default SLT_BACKEND_URL points to the umbrella chart SLT back-end deployment
 BACKEND_URL ?= $(KUBE_HOST)/$(KUBE_NAMESPACE)/slt/api/v0
-REACT_APP_USE_LOCAL_DATA = true
+REACT_APP_USE_LOCAL_DATA = false
 K8S_CHART_PARAMS += \
   --set ska-oso-slt-ui.backendURL=$(BACKEND_URL) \
   --set ska-oso-slt-ui.runtimeEnv.useLocalData=$(REACT_APP_USE_LOCAL_DATA)

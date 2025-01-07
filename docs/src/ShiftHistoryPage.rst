@@ -81,10 +81,10 @@ User will be able to select search type "Search by Status" from dropdown then us
 
 |
 
-Search by Eb Id
+Search by EB ID
 ~~~~~~~~~~~~~~~~~~~
 
-User will be able to select search type "Search by eb id" from dropdown then user can add eb id pattern search string on UI and click on |searchLogsBtn| button as shown below
+User will be able to select search type "Search by EB ID" from dropdown then user can add eb id pattern search string on UI and click on |searchLogsBtn| button as shown below
 
 .. figure:: /images/searchByEbId.png
    :width: 100%
@@ -93,10 +93,10 @@ User will be able to select search type "Search by eb id" from dropdown then use
 
 |
 
-Search by Sbi Id
+Search by SBI ID
 ~~~~~~~~~~~~~~~~~~~
 
-User will be able to select search type "Search by sbi id" from dropdown then user can add sbi id pattern search string on UI and click on |searchLogsBtn| button as shown below
+User will be able to select search type "Search by SBI ID" from dropdown then user can add sbi id pattern search string on UI and click on |searchLogsBtn| button as shown below
 
 .. figure:: /images/searchBySbiId.png
    :width: 100%
