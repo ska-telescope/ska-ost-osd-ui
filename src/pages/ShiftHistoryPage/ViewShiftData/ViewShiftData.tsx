@@ -26,7 +26,8 @@ import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutli
 import apiService from '../../../services/apis';
 import { createShiftAnnotationPath } from '../../../utils/api_constants';
 import DisplayShiftLogsComponent from '../../CurrentShiftPage/DisplayShiftLogsComponent/DisplayShiftLogsComponent';
-import { toUTCDateTimeFormat } from '../../../utils/constants';
+import { toUTCDateTimeFormat, USE_LOCAL_DATA } from '../../../utils/constants';
+import SHIFT_DATA_LIST from '../../../DataModels/DataFiles/shiftDataList';
 
 const ViewShiftData = ({ data }) => {
   const { t } = useTranslation('translations');
@@ -61,8 +62,14 @@ const ViewShiftData = ({ data }) => {
       testId="successStatusMsg"
     />
   );
-
+  const useLocalData = () => {
+    setShiftAnnotationData(SHIFT_DATA_LIST[0]['annotations']);
+  };
   const fetchSltHistoryByID = async () => {
+    if (USE_LOCAL_DATA) {
+      useLocalData();
+      return true;
+    }
     const path = createShiftAnnotationPath(data.shift_id, 'get');
     const response = await apiService.getSltData(path);
     if (response.status === 200 && response.data && response.data.length > 0) {

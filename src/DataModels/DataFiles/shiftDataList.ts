@@ -3,7 +3,32 @@ const SHIFT_DATA_LIST = [
     shift_id: 'slt-20250106-11785506',
     shift_start: '2024-10-22T11:24:04.389077Z',
     shift_end: '2024-10-22T11:24:04.389077Z',
-    annotations: 'This is test annotation',
+    annotations: [
+      {
+        id: 2,
+        annotation: 'This is dummy annotation one',
+        user_name: 'Ross',
+        shift_id: 'txn-local-20250106-787905165',
+        metadata: {
+          created_by: 'DefaultUser',
+          created_on: '2025-01-06T14:44:14.547243+05:30',
+          last_modified_by: 'Ross',
+          last_modified_on: '2025-01-06T14:44:21.158110+05:30'
+        }
+      },
+      {
+        id: 1,
+        annotation: 'This is dummy annotation two',
+        user_name: 'DefaultUser',
+        shift_id: 'txn-local-20250106-787905165',
+        metadata: {
+          created_by: 'Ross',
+          created_on: '2025-01-06T14:43:09.101233+05:30',
+          last_modified_by: 'Ross',
+          last_modified_on: '2025-01-06T14:43:09.101233+05:30'
+        }
+      }
+    ],
     shift_operator: 'TestUser',
     comments: [
       {
