@@ -20,7 +20,7 @@
   "toolTip": {
     "button": {
       "docs": "Click here for SKA-GUI-Components documentation",
-      "docsURL": "https://developer.skao.int/projects/ska-react-webapp-skeleton/en/latest/?badge=latest",
+      "docsURL": "https://developer.skao.int/projects/ska-ost-osd-ui/en/latest/?badge=latest",
       "mode": "Colour Mode Toggle",
       "skao": "SKAO WebSite",
       "telescopeToggle": "Switch between available telescopes"

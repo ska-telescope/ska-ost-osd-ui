@@ -1,0 +1,10 @@
+image:
+  imagePullPolicy: IfNotPresent
+  container: registry.gitlab.com/ska-telescope/templates/ska-ost-osd-ui/ska-ost-osd-ui
+  version: 1.0.3
+
+labels:
+  app: ska-ost-osd-ui
+
+ingress:
+  prependByNamespace: true

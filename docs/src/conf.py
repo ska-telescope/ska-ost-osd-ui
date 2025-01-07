@@ -1,14 +1,14 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'ska-react-webapp-skeleton'
+project = 'ska-ost-osd-ui'
 copyright = '2023, SKAO'
-author = 'SKAO, (Trevor A Swain)'
+author = 'SKAO, (Team NAKSHATRA)'
 
 # The short X.Y version
-version = '0.2.2'
+version = '0.1.0'
 # The full version, including alpha/beta/rc tags
-release = '0.2.2'
+release = '0.1.0'
 
 # -- General configuration ---------------------------------------------------
 
@@ -44,7 +44,7 @@ html_static_path = []
 
 # -- Options for HTMLHelp output ---------------------------------------------
 
-htmlhelp_basename = 'ska-react-webapp-skeleton'
+htmlhelp_basename = 'ska-ost-osd-ui'
 
 # -- Options for LaTeX output ------------------------------------------------
 
@@ -52,22 +52,22 @@ latex_elements = {
 }
 
 latex_documents = [
-    (master_doc, 'ska-react-webapp-skeleton.tex', 'ska-react-webapp-skeleton Documentation',
-     'SKAO, (Trevor A Swain)', 'manual'),
+    (master_doc, 'ska-ost-osd-ui.tex', 'ska-ost-osd-ui Documentation',
+     'SKAO, (Team NAKSHATRA)', 'manual'),
 ]
 
 # -- Options for manual page output ------------------------------------------
 
 man_pages = [
-    (master_doc, 'ska-react-webapp-skeleton', 'ska-react-webapp-skeleton Documentation',
+    (master_doc, 'ska-ost-osd-ui', 'ska-ost-osd-ui Documentation',
      [author], 1)
 ]
 
 # -- Options for Texinfo output ----------------------------------------------
 
 texinfo_documents = [
-    (master_doc, 'ska-react-webapp-skeleton', 'ska-react-webapp-skeleton Documentation',
-     author, 'ska-react-webapp-skeleton', 'SKA Portal',
+    (master_doc, 'ska-ost-osd-ui', 'ska-ost-osd-ui Documentation',
+     author, 'ska-ost-osd-ui', 'SKA Portal',
      'Miscellaneous'),
 ]
 

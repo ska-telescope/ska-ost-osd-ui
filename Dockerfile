@@ -7,11 +7,7 @@ COPY . .
 
 # install app dependencies and build the app
 RUN yarn install && yarn cache clean
-RUN yarn webpack build \
-    --optimization-concatenate-modules \
-    --optimization-minimize \
-    --mode production \
-    --output-clean --output-path /dist/
+RUN yarn build 
 
 # Nginx stage to serve the static files
 FROM nginx:1.25.2 as final

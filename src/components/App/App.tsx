@@ -1,7 +1,5 @@
 import React from 'react';
-import { Alert, CssBaseline, ThemeProvider } from '@mui/material';
-import useTheme from '@mui/material/styles/useTheme';
-import useMediaQuery from '@mui/material/useMediaQuery';
+import { CssBaseline, ThemeProvider } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import {
   CopyrightModal,
@@ -12,20 +10,16 @@ import {
 } from '@ska-telescope/ska-gui-components';
 import { storageObject } from '@ska-telescope/ska-gui-local-storage';
 import Loader from '../Loader/Loader';
-import ReactSkeleton from '../ReactSkeleton/ReactSkeleton';
 import theme from '../../services/theme/theme';
 
 const HEADER_HEIGHT = 70;
 const FOOTER_HEIGHT = 20;
 
 function App() {
-  const { t } = useTranslation('reactSkeleton');
+  const { t } = useTranslation('translations');
   const [showCopyright, setShowCopyright] = React.useState(false);
   const { help, helpToggle, telescope, themeMode, toggleTheme, updateTelescope } =
     storageObject.useStore();
-
-  const LG = () => useMediaQuery(useTheme().breakpoints.down('lg')); // Allows us to code depending upon screen size
-  const REQUIRED_WIDTH = useMediaQuery('(min-width:600px)');
 
   const skao = t('toolTip.button.skao');
   const mode = t('toolTip.button.mode');
@@ -43,8 +37,6 @@ function App() {
     updateTelescope
   };
 
-  const mediaSizeNotSupported = () => <Alert>{t('mediaSize.notSupported')}</Alert>;
-
   return (
     <ThemeProvider theme={theme(themeMode.mode)}>
       <CssBaseline enableColorScheme />
@@ -60,11 +52,10 @@ function App() {
         <Header
           docs={docs}
           testId="headerId"
-          title={LG() ? 'SRK' : 'SKA React Skeleton'} // Use a 3 letter code for smaller screen widths
+          title="SKA OSD UI" // Use a 3 letter code for smaller screen widths
           toolTip={toolTip}
           selectTelescope={false}
           storage={theStorage}
-          useSymbol={LG()}
         />
         {
           // Example of the spacer being used to shift content from behind the Header component
@@ -73,8 +64,6 @@ function App() {
         {
           // This is the ONLY component that is accessible via micro-frontend implementation
         }
-        {REQUIRED_WIDTH && <ReactSkeleton />}
-        {!REQUIRED_WIDTH && mediaSizeNotSupported()}
         {
           // Example of the spacer being used to stop content from being hidden behind the Footer component
         }

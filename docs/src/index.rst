@@ -1,10 +1,12 @@
-Welcome to ska-react-webapp-skeleton's documentation
+Welcome to ska-ost-osd-ui's documentation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This repository is intended to act as a skeleton for any SKA developer looking to make a React based web application.
-
-It includes tools for linting, code formatting, and testing which are easily integrated into various IDEs.
-It also includes modular federation, exposing the ReactSkeleton component, which can be imported into other applications.
+This project is the User Interface for the Observatory Static Data (OSD). In its simplest form OSD consists of 
+a set of science domain configuration files that are required by the OSO tools. These configuration files hold 
+slowly changing information that is used to configure the science domain behavior of each tool. 
+E.g. tools such as the PPT and ODT can use the information for constructing GUIs and validating setups, 
+the Planning Tool can use it to inform itself of the capabilities available. The idea of OSD is to provide a 
+single source of truth for these data.
 
 .. toctree::
    :maxdepth: 1
@@ -12,30 +14,6 @@ It also includes modular federation, exposing the ReactSkeleton component, which
 
    CHANGELOG.rst
 
-.. toctree::
-   :maxdepth: 2
-   :caption: General
-
-   general/General
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Deploying and Configuring
-
-   deploy/Variables
-   deploy/Kubernetes
-   deploy/Environments
-
-.. toctree::
-   :maxdepth: 2
-   :caption: User Guide
-
-   userGuide/UserIntroduction
-
-   userGuide/UserQuestions
-   userGuide/UserTroubleShooting
-   userGuide/UserFeedback
-   userGuide/UserFuture
 
 .. toctree::
    :maxdepth: 2

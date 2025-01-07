@@ -1,9 +1,9 @@
 {
-  "name": "ska-webapps-react-skeleton",
-  "version": "1.0.3",
+  "name": "ska-ost-osd-ui",
+  "version": "0.1.0",
   "private": true,
-  "description": "SKA React Web App Skeleton",
-  "repository": "git@gitlab.com:ska-telescope/templates/ska-react-webapp-skeleton.git",
+  "description": "SKA Observatory Static Data",
+  "repository": "git@gitlab.com:ska-telescope/ska-ost-osd-ui.git",
   "license": "BSD 3-Clause",
   "main": "index.js",
   "scripts": {
@@ -50,8 +50,8 @@
     "@emotion/styled": "^11.8.1",
     "@mui/icons-material": "^5.11.11",
     "@mui/material": "^5.12.1",
-    "@ska-telescope/ska-gui-components": "^2.0.16",
-    "@ska-telescope/ska-gui-local-storage": "^1.0.1",
+    "@ska-telescope/ska-gui-components": "2.0.20",
+    "@ska-telescope/ska-gui-local-storage": "^2.0.0",
     "babel-core": "6",
     "bundle-loader": "^0.5.6",
     "i18next": "^23.10.0",
@@ -83,6 +83,7 @@
     "babel-plugin-import": "^1.13.5",
     "babel-plugin-istanbul": "^6.1.1",
     "babel-plugin-transform-class-properties": "^6.24.1",
+    "copy-webpack-plugin": "^12.0.2",
     "css-loader": "^6.7.1",
     "cypress": "^13.6.6",
     "eslint": "^8.46.0",
@@ -105,6 +106,7 @@
     "sass-loader": "^14.1.1",
     "style-loader": "^3.3.1",
     "webpack": "^5.72.0",
-    "webpack-cli": "^5.1.4"
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^5.2.0"
   }
 }

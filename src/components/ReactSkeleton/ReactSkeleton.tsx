@@ -45,7 +45,7 @@ const STATUS_SIZE = 50;
  */
 
 const ReactSkeleton = () => {
-  const { t } = useTranslation('reactSkeleton');
+  const { t } = useTranslation('translations');
   const [theNumber, setTheNumber] = React.useState(0);
   const [theText, setTheText] = React.useState('');
 
