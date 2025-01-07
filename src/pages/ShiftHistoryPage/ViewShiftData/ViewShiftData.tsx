@@ -1,5 +1,6 @@
 import {
   Box,
+  Chip,
   Dialog,
   DialogActions,
   DialogContent,
@@ -22,6 +23,7 @@ import {
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import AddIcon from '@mui/icons-material/Add';
+import ImageDisplayComponent from '../../../components/ImageDisplayComponent/ImageDisplayComponent';
 import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
 import apiService from '../../../services/apis';
 import { createShiftAnnotationPath } from '../../../utils/api_constants';
@@ -30,6 +32,8 @@ import { toUTCDateTimeFormat } from '../../../utils/constants';
 
 const ViewShiftData = ({ data }) => {
   const { t } = useTranslation('translations');
+  const [images, setImages] = useState([]);
+  const [openViewImageModal, setOpenViewImageModal] = useState(false);
 
   const [dataDetails, setShiftAnnotationData] = useState(null);
   const [shiftAnnotationValue, setShiftAnnotation] = useState('');
@@ -75,6 +79,35 @@ const ViewShiftData = ({ data }) => {
     setOpenSummaryModal(true);
     setShiftAnnotationUpdate(true);
     setShiftAnnotation(shiftAnnotationItem.annotation);
+  };
+
+  const displayShiftComments = (shiftCommentItem) => (
+    <>
+      <span data-testid="shiftCommentsHistory" style={{ fontWeight: 700, fontSize: '14px' }}>
+        {t('label.comments')}:{' '}
+      </span>{' '}
+      <span>{shiftCommentItem.comment}</span>
+    </>
+  );
+
+  const fetchImage = async (shiftCommentId) => {
+    setImages([]);
+    const path = `shift_comment/download_images/${shiftCommentId}`;
+    const result = await apiService.getImage(path);
+    if (result.status === 200) {
+      setImages(result && result.data && result.data[0] ? result.data[0] : []);
+    } else {
+      setImages([{ isEmpty: true }]);
+    }
+  };
+
+  const handleOpenImage = (shiftCommentId) => {
+    setOpenViewImageModal(true);
+    fetchImage(shiftCommentId);
+  };
+
+  const handleViewImageClose = () => {
+    setOpenViewImageModal(false);
   };
 
   const displayShiftAnnotations = (shiftAnnotationItem) => (
@@ -154,90 +187,203 @@ const ViewShiftData = ({ data }) => {
 
   return (
     <Box sx={{ paddingBottom: 2 }}>
-      <Grid container spacing={2} justifyContent="left">
-        <Grid item xs={12} sm={12} md={4}>
-          <Grid style={{ margin: 2 }} container spacing={2} justifyContent="left">
-            <Grid item xs={12} sm={12} md={12}>
-              <span id="operatorName" style={{ fontWeight: 'bold', alignItems: 'center' }}>
-                {t('label.operatorName')}{' '}
-              </span>
-              <span> : {data.shift_operator}</span>
-            </Grid>
-            <Grid item xs={12} sm={12} md={12}>
-              <span id="shiftStart" style={{ fontWeight: 'bold' }}>
-                {t('label.shiftStartedAt')}{' '}
-              </span>
-              <span>: {data.shift_start ? toUTCDateTimeFormat(data.shift_start) : 'NA'}</span>
-            </Grid>
-            <Grid item xs={12} sm={12} md={12}>
-              <span id="shiftEnd" style={{ fontWeight: 'bold', alignItems: 'center' }}>
-                {t('label.shiftEndsAt')}{' '}
-              </span>
-              <span>: {data.shift_end ? toUTCDateTimeFormat(data.shift_end) : 'Active shift'}</span>
-            </Grid>
-            <Grid item xs={12} sm={12} md={12}>
-              <Button
-                size={ButtonSizeTypes.Small}
-                icon={<AddIcon />}
-                ariaDescription="Button for submitting annotation"
-                label={t('label.addShiftAnnotations')}
-                testId="addShiftAnnotations"
-                onClick={handleSetOpenSummaryModal}
-                variant={ButtonVariantTypes.Contained}
-                color={ButtonColorTypes.Secondary}
-              />
+      <Dialog
+        aria-label={t('ariaLabel.dialog')}
+        data-testid="dialogStatus"
+        sx={{
+          '& .MuiDialog-container': {
+            '& .MuiPaper-root': {
+              width: '100%',
+              maxWidth: '1000px'
+            }
+          }
+        }}
+        open={openViewImageModal}
+        onClose={handleViewImageClose}
+        aria-labelledby="responsive-dialog-title"
+      >
+        <DialogTitle>{t('label.viewImages')}</DialogTitle>
+        <DialogContent dividers>
+          {images ? <ImageDisplayComponent images={images} /> : <p>{t('label.noImageFound')}</p>}
+        </DialogContent>
+        <DialogActions>
+          <Button
+            size={ButtonSizeTypes.Small}
+            color={ButtonColorTypes.Inherit}
+            variant={ButtonVariantTypes.Contained}
+            testId="statusClose"
+            label={t('label.close')}
+            onClick={handleViewImageClose}
+            toolTip={t('label.close')}
+          />
+        </DialogActions>
+      </Dialog>
+      <Grid container sx={{ padding: 2 }} justifyContent="left">
+        <Grid item xs={12} sm={12} md={3}>
+          <span id="operatorName" style={{ fontWeight: 'bold', alignItems: 'center' }}>
+            {t('label.operatorName')}{' '}
+          </span>
+          <span> : {data.shift_operator}</span>
+        </Grid>
+        <Grid item xs={12} sm={12} md={3}>
+          <span id="shiftStart" style={{ fontWeight: 'bold' }}>
+            {t('label.shiftStartedAt')}{' '}
+          </span>
+          <span>: {data.shift_start ? toUTCDateTimeFormat(data.shift_start) : 'NA'}</span>
+        </Grid>
+        <Grid item xs={12} sm={12} md={3}>
+          <span id="shiftEnd" style={{ fontWeight: 'bold', alignItems: 'center' }}>
+            {t('label.shiftEndsAt')}{' '}
+          </span>
+          <span>: {data.shift_end ? toUTCDateTimeFormat(data.shift_end) : 'Active shift'}</span>
+        </Grid>
+        <Grid item xs={12} sm={12} md={3}>
+          <Button
+            size={ButtonSizeTypes.Small}
+            icon={<AddIcon />}
+            ariaDescription="Button for submitting annotation"
+            label={t('label.addShiftAnnotations')}
+            testId="addShiftAnnotations"
+            onClick={handleSetOpenSummaryModal}
+            variant={ButtonVariantTypes.Contained}
+            color={ButtonColorTypes.Secondary}
+          />
+        </Grid>
+      </Grid>
+      <hr />
+      <Grid container sx={{ padding: 2 }} justifyContent="left">
+        <Grid item xs={12} sm={12} md={6}>
+          <Grid item xs={12} sm={12} md={12}>
+            <Grid
+              container
+              sx={{ padding: 2, paddingTop: 0, maxHeight: '500px', overflowY: 'scroll' }}
+            >
+              <Grid item xs={12} sm={12} md={12}>
+                <div>
+                  <p
+                    data-testid="viewShiftCommentsHistory"
+                    style={{
+                      textDecoration: 'underline',
+                      fontWeight: 900,
+                      fontSize: '18px',
+                      marginBottom: 0
+                    }}
+                  >
+                    {t('label.viewShiftComments')}
+                  </p>
+                </div>
+                {data &&
+                  data.comments &&
+                  data.comments.length > 0 &&
+                  data.comments.map((shiftCommentItem, shiftCommentIndex) => (
+                    <div key={shiftCommentItem.id}>
+                      <Grid
+                        container
+                        justifyContent="start"
+                        data-testid="viewShiftCommentsHistoryData"
+                      >
+                        <Grid item xs={12} sm={12} md={9}>
+                          <p data-testid="commentedAtHistory">
+                            <span style={{ fontWeight: 700, fontSize: '14px' }}>
+                              {t('label.commentedAt')} :
+                            </span>{' '}
+                            <span>
+                              {shiftCommentItem &&
+                              shiftCommentItem.metadata &&
+                              shiftCommentItem.metadata.created_on
+                                ? toUTCDateTimeFormat(shiftCommentItem.metadata.created_on)
+                                : 'NA'}
+                            </span>
+                          </p>
+                        </Grid>
+                        <Grid item xs={12} sm={12} md={3}>
+                          <Chip
+                            size="small"
+                            color="secondary"
+                            style={{
+                              cursor: 'pointer',
+                              marginTop: '10px'
+                            }}
+                            data-testid="viewShiftHistoryImagesHistory"
+                            onClick={() => handleOpenImage(shiftCommentItem.id)}
+                            label={`${t('label.viewImages')} (${shiftCommentItem.image ? shiftCommentItem.image.length : 0})`}
+                            variant="outlined"
+                          />
+                        </Grid>
+                      </Grid>
+                      <Grid container justifyContent="start">
+                        <Grid item xs={12} sm={12} md={12}>
+                          {shiftCommentItem &&
+                            shiftCommentItem.comment &&
+                            displayShiftComments(shiftCommentItem)}
+                        </Grid>
+                      </Grid>
+
+                      {shiftCommentIndex !== data.comments.length - 1 && (
+                        <Divider style={{ marginTop: '15px' }} />
+                      )}
+                    </div>
+                  ))}
+                {data && data.comments && data.comments.length === 0 && (
+                  <p>{t('label.noCommentsFound')}</p>
+                )}
+              </Grid>
             </Grid>
           </Grid>
         </Grid>
-        <Grid item xs={12} sm={12} md={1} />
-      </Grid>
-      <Grid container sx={{ padding: 2, paddingTop: 0, maxHeight: '500px', overflowY: 'scroll' }}>
-        <Grid item xs={12} sm={12} md={12}>
-          {dataDetails && (
-            <p
-              data-testid="viewShiftAnnotations"
-              style={{
-                textDecoration: 'underline',
-                fontWeight: 900,
-                fontSize: '18px',
-                marginBottom: 0
-              }}
-            >
-              {t('label.viewShiftAnnotations')}
-            </p>
-          )}
-          {dataDetails &&
-            dataDetails.map((shiftAnnotationItem, shiftAnnotationIndex) => (
-              <div key={shiftAnnotationItem.id}>
-                <Grid container justifyContent="start">
-                  <Grid item xs={12} sm={12} md={4}>
-                    <p data-testid="AnnotatedAt">
-                      <span style={{ fontWeight: 700, fontSize: '14px' }}>
-                        {t('label.commentedAt')} :{' '}
-                      </span>{' '}
-                      <span>
+        <Grid item xs={12} sm={12} md={6}>
+          <Grid
+            container
+            sx={{ padding: 2, paddingTop: 0, maxHeight: '500px', overflowY: 'scroll' }}
+          >
+            <Grid item xs={12} sm={12} md={12}>
+              {dataDetails && (
+                <p
+                  data-testid="viewShiftAnnotations"
+                  style={{
+                    textDecoration: 'underline',
+                    fontWeight: 900,
+                    fontSize: '18px',
+                    marginBottom: 0
+                  }}
+                >
+                  {t('label.viewShiftAnnotations')}
+                </p>
+              )}
+              {dataDetails &&
+                dataDetails.map((shiftAnnotationItem, shiftAnnotationIndex) => (
+                  <div key={shiftAnnotationItem.id}>
+                    <Grid container justifyContent="start">
+                      <Grid item xs={12} sm={12} md={4}>
+                        <p data-testid="AnnotatedAt">
+                          <span style={{ fontWeight: 700, fontSize: '14px' }}>
+                            {t('label.commentedAt')} :{' '}
+                          </span>{' '}
+                          <span>
+                            {shiftAnnotationItem &&
+                            shiftAnnotationItem.metadata &&
+                            shiftAnnotationItem.metadata.created_on
+                              ? toUTCDateTimeFormat(shiftAnnotationItem.metadata.created_on)
+                              : 'NA'}
+                          </span>
+                        </p>
+                      </Grid>
+                    </Grid>
+                    <Grid container justifyContent="start">
+                      <Grid item xs={12} sm={12} md={12}>
                         {shiftAnnotationItem &&
-                        shiftAnnotationItem.metadata &&
-                        shiftAnnotationItem.metadata.created_on
-                          ? toUTCDateTimeFormat(shiftAnnotationItem.metadata.created_on)
-                          : 'NA'}
-                      </span>
-                    </p>
-                  </Grid>
-                </Grid>
-                <Grid container justifyContent="start">
-                  <Grid item xs={12} sm={12} md={12}>
-                    {shiftAnnotationItem &&
-                      shiftAnnotationItem.annotation &&
-                      displayShiftAnnotations(shiftAnnotationItem)}
-                  </Grid>
-                </Grid>
+                          shiftAnnotationItem.annotation &&
+                          displayShiftAnnotations(shiftAnnotationItem)}
+                      </Grid>
+                    </Grid>
 
-                {shiftAnnotationIndex !== dataDetails.length - 1 && (
-                  <Divider style={{ marginTop: '15px' }} />
-                )}
-              </div>
-            ))}
+                    {shiftAnnotationIndex !== dataDetails.length - 1 && (
+                      <Divider style={{ marginTop: '15px' }} />
+                    )}
+                  </div>
+                ))}
+            </Grid>
+          </Grid>
         </Grid>
       </Grid>
 
