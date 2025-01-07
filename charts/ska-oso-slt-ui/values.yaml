@@ -4,6 +4,9 @@ image:
   tag:  # Defaults to chart's appVersion when empty
   pullPolicy: IfNotPresent
 
+runtimeEnv:
+  useLocalData: "false"
+
 ingress:
   prependByNamespace: true
   path: slt

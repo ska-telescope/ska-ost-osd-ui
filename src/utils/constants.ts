@@ -1,4 +1,7 @@
 import moment from 'moment';
+import { env } from '../env';
+
+export const USE_LOCAL_DATA = env.REACT_APP_USE_LOCAL_DATA === 'true';
 
 export const SPACER = 50;
 export const CHARACTER_LIMIT = 1000;
@@ -107,8 +110,8 @@ export const logSearchType: LogSearchType[] = [
   { label: 'Search by dates', value: 'searchByDate' },
   { label: 'Search by operator', value: 'searchByOperator' },
   { label: 'Search by status', value: 'searchByStatus' },
-  { label: 'Search by eb id', value: 'searchByEbId' },
-  { label: 'Search by sbi id', value: 'searchBySbiId' }
+  { label: 'Search by EB ID', value: 'searchByEbId' },
+  { label: 'Search by SBI ID', value: 'searchBySbiId' }
 ];
 
 export const SBIStatus = ['Created', 'Executing', 'Observed', 'Failed'];

@@ -33,7 +33,13 @@ import HistoryIcon from '@mui/icons-material/History';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
 // import { Kafka } from 'kafkajs';
-import { ENTITY, SHIFT_STATUS, operatorName, toUTCDateTimeFormat } from '../../../utils/constants';
+import {
+  ENTITY,
+  SHIFT_STATUS,
+  USE_LOCAL_DATA,
+  operatorName,
+  toUTCDateTimeFormat
+} from '../../../utils/constants';
 import {
   config,
   shiftCreatePath,
@@ -44,7 +50,7 @@ import {
 import apiService from '../../../services/apis';
 import ImageDisplayComponent from '../../../components/ImageDisplayComponent/ImageDisplayComponent';
 import DisplayShiftLogsComponent from '../DisplayShiftLogsComponent/DisplayShiftLogsComponent';
-// import SHIFT_DATA_LIST from '../../../DataModels/DataFiles/shiftDataList';
+import SHIFT_DATA_LIST from '../../../DataModels/DataFiles/shiftDataList';
 
 function DisplayShiftComponent() {
   const [shiftStatus, setShiftStatus] = useState('');
@@ -164,11 +170,23 @@ function DisplayShiftComponent() {
     }
   };
 
+  const useLocalData = () => {
+    setShiftData(SHIFT_DATA_LIST[0]);
+  };
   const startNewShift = async () => {
     const shiftData = {
       shift_operator: operator
     };
-
+    if (USE_LOCAL_DATA) {
+      useLocalData();
+      setMessage('msg.shiftStarted');
+      setDisplayMessageElement(true);
+      setTimeout(() => {
+        setDisplayMessageElement(false);
+      }, 3000);
+      setDisableButton(false);
+      return true;
+    }
     const response = await apiService.postShiftData(shiftCreatePath, shiftData);
     if (response.status === 200 && response.data && response.data.length > 0) {
       setMessage('msg.shiftStarted');
@@ -187,8 +205,6 @@ function DisplayShiftComponent() {
         fetchShiftWithRecentLogs(response.data[0].shift_id);
       }, 10000);
       setIntervalLogs(intervalLogs);
-
-      // setShiftData(SHIFT_DATA_LIST[1]);
     }
   };
 
@@ -218,12 +234,34 @@ function DisplayShiftComponent() {
   };
 
   useEffect(() => {
+    // eslint-disable-next-line no-console
+    console.log(
+      'window.env.BACKEND_URL',
+      window.env.BACKEND_URL,
+      window.env.REACT_APP_USE_LOCAL_DATA
+    );
     fetchSltCurrentShifts();
     // updateShiftLogs();
     // useKafkaData(KafkaTopic.serviceToUITopic);
   }, []);
 
   const endNewShift = async () => {
+    if (USE_LOCAL_DATA) {
+      setDisplayMessageElement(false);
+      setShiftComment('');
+      setOperator('');
+      setShiftId('');
+      setMessage('msg.shiftEnd');
+      setDisableButton(true);
+      setDisplayMessageElement(true);
+      setTimeout(() => {
+        setDisplayMessageElement(false);
+        setShiftComment('');
+        setShiftData(null);
+      }, 3000);
+
+      return true;
+    }
     const shiftData = {
       shift_operator: operator
     };
@@ -245,6 +283,15 @@ function DisplayShiftComponent() {
   };
 
   const addShiftComments = async () => {
+    if (USE_LOCAL_DATA) {
+      useLocalData();
+      setMessage('msg.commentSubmit');
+      setDisplayModalMessageElement(true);
+      setTimeout(() => {
+        setDisplayModalMessageElement(false);
+      }, 3000);
+      return true;
+    }
     if (shiftCommentValue === '') return;
     const shiftData = {
       operator_name: operator,
@@ -292,6 +339,10 @@ function DisplayShiftComponent() {
   };
 
   const postShiftCommentImage = async (file) => {
+    if (USE_LOCAL_DATA) {
+      useLocalData();
+      return true;
+    }
     const formData = new FormData();
     if (shiftCommentID && shiftCommentID > 0) {
       formData.append('files', file);

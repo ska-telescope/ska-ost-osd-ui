@@ -16,7 +16,8 @@ import {
   logTypeEnum,
   getUrlPath,
   getTodayDateRange,
-  todayDate
+  todayDate,
+  USE_LOCAL_DATA
 } from '../../utils/constants';
 
 import apiService from '../../services/apis';
@@ -27,6 +28,7 @@ import SearchByDates from './SearchComponent/SearchByDates/SearchByDates';
 import SearchByOperator from './SearchComponent/SearchByOperator/SearchByOperator';
 import SearchByStatus from './SearchComponent/SearchByStatus/SearchByStatus';
 import ShiftHistoryListComponent from './DisplayShiftHistory/ShiftHistoryListComponent/ShiftHistoryListComponent';
+import SHIFT_DATA_LIST from '../../DataModels/DataFiles/shiftDataList';
 
 function ShiftHistoryPage() {
   const { t } = useTranslation('translations');
@@ -45,7 +47,14 @@ function ShiftHistoryPage() {
   const [logSearchBy, setLogSearchBy] = useState(logTypeEnum.searchByDate);
   const location = useLocation();
 
+  const useLocalData = () => {
+    setSltHistory(SHIFT_DATA_LIST);
+  };
   const fetchSltTodayShifts = async () => {
+    if (USE_LOCAL_DATA) {
+      useLocalData();
+      return true;
+    }
     const path = `shifts?query_type=created_between&shift_start=${getTodayDateRange.start}&shift_end=${getTodayDateRange.end}`;
     const result = await apiService.getSltData(path);
     if (result.status === 200) {
@@ -113,6 +122,10 @@ function ShiftHistoryPage() {
   );
 
   const fetchSltHistoryByFilters = async (data) => {
+    if (USE_LOCAL_DATA) {
+      useLocalData();
+      return true;
+    }
     const path = getUrlPath(data);
     const response = await apiService.getSltData(path);
     if (response.status === 200 && response.data && response.data.length > 0) {
