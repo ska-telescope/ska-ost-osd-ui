@@ -1,6 +1,6 @@
 const SHIFT_DATA_LIST = [
   {
-    shift_id: 'shift-20241108-1',
+    shift_id: 'slt-20250106-11785506',
     shift_start: '2024-10-22T11:24:04.389077Z',
     shift_end: '2024-10-22T11:24:04.389077Z',
     annotations: 'This is test annotation',
@@ -10,18 +10,6 @@ const SHIFT_DATA_LIST = [
         id: 1,
         comment: 'This is shift comment one',
         shift_id: 'shift-20241104-0701',
-        image: [
-          {
-            path: 'string',
-            unique_id: 'string',
-            timestamp: '2024-11-10T10:42:36.327Z'
-          },
-          {
-            path: 'string',
-            unique_id: 'string',
-            timestamp: '2024-11-10T10:42:36.327Z'
-          }
-        ],
         metadata: {
           created_by: 'DefaultUser',
           created_on: '2024-10-22T11:24:04.388998Z',
@@ -33,18 +21,6 @@ const SHIFT_DATA_LIST = [
         id: 2,
         comment: 'This is shift comment two',
         shift_id: 'shift-20241104-0701',
-        image: [
-          {
-            path: 'string',
-            unique_id: 'string',
-            timestamp: '2024-11-10T10:42:36.327Z'
-          },
-          {
-            path: 'string',
-            unique_id: 'string',
-            timestamp: '2024-11-10T10:42:36.327Z'
-          }
-        ],
         metadata: {
           created_by: 'DefaultUser',
           created_on: '2024-10-22T11:24:04.388998Z',
@@ -119,18 +95,6 @@ const SHIFT_DATA_LIST = [
             log_comment: 'This is log comment one',
             operator_name: 'DefaultUser',
             shift_id: 'shift-20241108-c9a3',
-            image: [
-              {
-                path: 'string',
-                unique_id: 'string',
-                timestamp: '2024-11-10T10:42:36.327Z'
-              },
-              {
-                path: 'string',
-                unique_id: 'string',
-                timestamp: '2024-11-10T10:42:36.327Z'
-              }
-            ],
             eb_id: 'eb-t0001-20241022-000066',
             metadata: {
               created_by: 'DefaultUser',
@@ -248,18 +212,6 @@ const SHIFT_DATA_LIST = [
             log_comment: 'This is log comment one',
             operator_name: 'DefaultUser',
             shift_id: 'shift-20241108-c9a3',
-            image: [
-              {
-                path: 'string',
-                unique_id: 'string',
-                timestamp: '2024-11-10T10:42:36.327Z'
-              },
-              {
-                path: 'string',
-                unique_id: 'string',
-                timestamp: '2024-11-10T10:42:36.327Z'
-              }
-            ],
             metadata: {
               version: 1,
               created_by: 'DefaultUser',
@@ -296,7 +248,7 @@ const SHIFT_DATA_LIST = [
     }
   },
   {
-    shift_id: 'shift-20241108-2',
+    shift_id: 'slt-20250106-11785507',
     shift_start: '2024-10-22T11:24:04.389077Z',
     shift_operator: 'TestUser',
     shift_end: '2024-10-22T11:24:04.389077Z',
