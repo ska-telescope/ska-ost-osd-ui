@@ -299,6 +299,7 @@ const SHIFT_DATA_LIST = [
     shift_id: 'shift-20241108-2',
     shift_start: '2024-10-22T11:24:04.389077Z',
     shift_operator: 'TestUser',
+    shift_end: '2024-10-22T11:24:04.389077Z',
     shift_logs: [
       {
         info: {

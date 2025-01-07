@@ -179,6 +179,12 @@ function DisplayShiftComponent() {
     };
     if (USE_LOCAL_DATA) {
       useLocalData();
+      setMessage('msg.shiftStarted');
+      setDisplayMessageElement(true);
+      setTimeout(() => {
+        setDisplayMessageElement(false);
+      }, 3000);
+      setDisableButton(false);
       return true;
     }
     const response = await apiService.postShiftData(shiftCreatePath, shiftData);
@@ -199,8 +205,6 @@ function DisplayShiftComponent() {
         fetchShiftWithRecentLogs(response.data[0].shift_id);
       }, 10000);
       setIntervalLogs(intervalLogs);
-
-      // setShiftData(SHIFT_DATA_LIST[1]);
     }
   };
 
@@ -242,6 +246,22 @@ function DisplayShiftComponent() {
   }, []);
 
   const endNewShift = async () => {
+    if (USE_LOCAL_DATA) {
+      setDisplayMessageElement(false);
+      setShiftComment('');
+      setOperator('');
+      setShiftId('');
+      setMessage('msg.shiftEnd');
+      setDisableButton(true);
+      setDisplayMessageElement(true);
+      setTimeout(() => {
+        setDisplayMessageElement(false);
+        setShiftComment('');
+        setShiftData(null);
+      }, 3000);
+
+      return true;
+    }
     const shiftData = {
       shift_operator: operator
     };
@@ -263,6 +283,15 @@ function DisplayShiftComponent() {
   };
 
   const addShiftComments = async () => {
+    if (USE_LOCAL_DATA) {
+      useLocalData();
+      setMessage('msg.commentSubmit');
+      setDisplayModalMessageElement(true);
+      setTimeout(() => {
+        setDisplayModalMessageElement(false);
+      }, 3000);
+      return true;
+    }
     if (shiftCommentValue === '') return;
     const shiftData = {
       operator_name: operator,
@@ -310,6 +339,10 @@ function DisplayShiftComponent() {
   };
 
   const postShiftCommentImage = async (file) => {
+    if (USE_LOCAL_DATA) {
+      useLocalData();
+      return true;
+    }
     const formData = new FormData();
     if (shiftCommentID && shiftCommentID > 0) {
       formData.append('files', file);
