@@ -12,4 +12,4 @@ global:
 ska-oso-slt-services-umbrella:
   ska-oso-slt-services:
     rest:
-      logLevel: dubug
+      logLevel: info
