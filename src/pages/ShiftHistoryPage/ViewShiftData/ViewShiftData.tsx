@@ -35,7 +35,7 @@ const ViewShiftData = ({ data }) => {
   const [images, setImages] = useState([]);
   const [openViewImageModal, setOpenViewImageModal] = useState(false);
 
-  const [dataDetails, setShiftAnnotationData] = useState(null);
+  const [dataDetails, setShiftAnnotationData] = useState([]);
   const [shiftAnnotationValue, setShiftAnnotation] = useState('');
   const [shiftAnnotationID, setShiftAnnotationID] = useState(null);
   const [isShiftAnnotationUpdate, setShiftAnnotationUpdate] = useState(false);
@@ -337,19 +337,21 @@ const ViewShiftData = ({ data }) => {
             sx={{ padding: 2, paddingTop: 0, maxHeight: '500px', overflowY: 'scroll' }}
           >
             <Grid item xs={12} sm={12} md={12}>
-              {dataDetails && (
-                <p
-                  data-testid="viewShiftAnnotations"
-                  style={{
-                    textDecoration: 'underline',
-                    fontWeight: 900,
-                    fontSize: '18px',
-                    marginBottom: 0
-                  }}
-                >
-                  {t('label.viewShiftAnnotations')}
-                </p>
-              )}
+              <div>
+                {dataDetails && (
+                  <p
+                    data-testid="viewShiftAnnotations"
+                    style={{
+                      textDecoration: 'underline',
+                      fontWeight: 900,
+                      fontSize: '18px',
+                      marginBottom: 0
+                    }}
+                  >
+                    {t('label.viewShiftAnnotations')}
+                  </p>
+                )}
+              </div>
               {dataDetails &&
                 dataDetails.map((shiftAnnotationItem, shiftAnnotationIndex) => (
                   <div key={shiftAnnotationItem.id}>
@@ -382,6 +384,7 @@ const ViewShiftData = ({ data }) => {
                     )}
                   </div>
                 ))}
+              {dataDetails && dataDetails.length === 0 && <p>{t('label.noAnnotationsFound')}</p>}
             </Grid>
           </Grid>
         </Grid>

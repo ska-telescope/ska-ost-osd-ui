@@ -8,14 +8,7 @@ let COVERAGE_OUTPUT_DIR = process.env.COVERAGE_OUTPUT_DIR || './build/reports';
 module.exports = {
   all: true,
   'check-coverage': true,
-  exclude: [
-    '**/*.test.{js,jsx,ts,tsx}',
-    'src/pages/CurrentShiftPage/DisplayShiftComponent/DisplayShiftComponent.tsx',
-    'src/pages/ShiftHistoryPage/ShiftHistoryPage.tsx',
-    'src/pages/CurrentShiftPage/DisplayShiftLogsComponent/DisplayShiftLogsComponent.tsx',
-    'src/pages/ShiftHistoryPage/DisplayShiftHistory/ViewSLTHistoryByID/ViewSLTHistoryByID.tsx',
-    'src/pages/ShiftHistoryPage/DisplayShiftHistory/ViewSLTHistoryPreview/ViewSLTHistoryPreview.tsx',
-  ],
+  exclude: ['**/*.test.{js,jsx,ts,tsx}'],
   reporter: ['cobertura', 'html', 'text'],
   'report-dir': COVERAGE_OUTPUT_DIR,
   'temp-dir': COVERAGE_OUTPUT_DIR + '/.nyc_output',
