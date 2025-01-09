@@ -12,7 +12,7 @@ JS_COMMAND_RUNNER ?= yarn
 JS_TEST_COMMAND ?= cypress
 
 # The default PTT_BACKEND_URL points to the umbrella chart PTT back-end deployment
-BACKEND_URL ?= $(KUBE_HOST)/$(KUBE_NAMESPACE)/osd/api/v0
+BACKEND_URL ?= $(KUBE_HOST)/$(KUBE_NAMESPACE)/osd/api/v2
 K8S_CHART_PARAMS += \
   --set ska-ost-osd-ui.backendURL=$(BACKEND_URL) \
 

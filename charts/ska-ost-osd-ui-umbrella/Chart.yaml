@@ -1,6 +1,6 @@
 apiVersion: v2
 name: ska-ost-osd-ui-umbrella
-description: Helm umbrella chart for Project Tracking Toolapplication
+description: Helm umbrella chart for OSD UI application
 type: application
 version: 0.1.0
 appVersion: 0.1.0
