@@ -11,7 +11,7 @@ dependencies:
   repository: file://../ska-ost-osd-ui
 
 - name: ska-ost-osd-umbrella
-  version: 2.3.1
+  version: 2.2.1
   repository: https://artefact.skao.int/repository/helm-internal
 
 
