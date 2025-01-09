@@ -1,28 +1,42 @@
 module.exports = {
-  root: true,
-  parser: '@typescript-eslint/parser',
+  env: {
+    browser: true,
+    es6: true,
+    node: true,
+  },
   extends: [
-    'airbnb',
+    'plugin:react/recommended',
     'prettier',
     'plugin:cypress/recommended',
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',
   ],
-  plugins: ['prettier', 'cypress'],
-  settings: {
-    'import/resolver': {
-      node: {
-        extensions: ['.js', '.jsx', '.ts', '.tsx'],
-      },
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    sourceType: 'module',
+    ecmaVersion: 'latest',
+    ecmaFeatures: {
+      jsx: true,
     },
   },
+  plugins: [
+    'react',
+    'prettier',
+    '@typescript-eslint',
+    'react-hooks',
+    'cypress',
+    'simple-import-sort',
+  ],
+  root: true,
   rules: {
+    'simple-import-sort/imports': 'off',
+    'simple-import-sort/exports': 'error',
     '@typescript-eslint/comma-dangle': 1,
     'class-methods-use-this': 'off',
     'comma-dangle': 0,
     'import/no-cycle': 'off',
     'import/no-extraneous-dependencies': 'off',
-    'import/order': 1,
+    'import/order': 0,
     'import/prefer-default-export': 'off',
     'jsx-a11y/anchor-is-valid': 'off',
     'max-len': 'off',
@@ -43,10 +57,9 @@ module.exports = {
     'react/forbid-prop-types': 'off',
     'react/jsx-props-no-spreading': 'off',
     'react/react-in-jsx-scope': 'off',
-    'react/require-default-props': 1,
+    'react/require-default-props': 'off',
     'react/function-component-definition': 'off',
     'react/display-name': 'off',
-    'consistent-return': 1,
     'jsx-a11y/click-events-have-key-events': 'off',
     'jsx-a11y/no-noninteractive-element-interactions': 'off',
     'react/jsx-filename-extension': [2, { extensions: ['.js', '.jsx', '.ts', '.tsx'] }],
@@ -57,9 +70,14 @@ module.exports = {
     '@typescript-eslint/ban-ts-comment': 'off',
     '@typescript-eslint/no-var-requires': 'off',
   },
-  env: {
-    browser: true,
-    es6: true,
-    node: true,
+  settings: {
+    'import/resolver': {
+      node: {
+        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+      },
+    },
+    react: {
+      version: '18.20.2',
+    },
   },
 };
