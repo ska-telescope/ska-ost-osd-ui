@@ -1,10 +1,12 @@
 image:
-  imagePullPolicy: IfNotPresent
-  container: registry.gitlab.com/ska-telescope/templates/ska-ost-osd-ui/ska-ost-osd-ui
-  version: 1.0.3
-
-labels:
-  app: ska-ost-osd-ui
+  registry: artefact.skao.int
+  image: ska-ost-osd-ui
+  tag:  ~ # Defaults to chart's appVersion when empty
+  pullPolicy: IfNotPresent
 
 ingress:
   prependByNamespace: true
+  path: osd
+
+# Set this in the Makefile
+backendURL:

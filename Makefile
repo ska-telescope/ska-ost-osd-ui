@@ -1,15 +1,37 @@
-## The following should be standard includes
-# include core makefile targets for release management
+# KUBE_HOST defines the IP address of the Minikube ingress.
+KUBE_HOST ?= http://`minikube ip`
+# KUBE_NAMESPACE defines the Kubernetes Namespace that will be deployed to
+# using Helm.  If this does not already exist it will be created
+KUBE_NAMESPACE ?= ska-ost-osd-ui
+K8S_CHART ?= ska-ost-osd-ui-umbrella
+RELEASE_NAME ?= test
 
+JS_E2E_TEST_BASE_URL ?= $(KUBE_HOST)/$(KUBE_NAMESPACE)/osd/
+JS_E2E_COVERAGE_COMMAND_ENABLED = false
+JS_COMMAND_RUNNER ?= yarn
+JS_TEST_COMMAND ?= cypress
+
+# The default PTT_BACKEND_URL points to the umbrella chart PTT back-end deployment
+BACKEND_URL ?= $(KUBE_HOST)/$(KUBE_NAMESPACE)/osd/api/v0
+K8S_CHART_PARAMS += \
+  --set ska-ost-osd-ui.backendURL=$(BACKEND_URL) \
+
+# include core makefile targets for release management
 -include .make/base.mk
 -include .make/oci.mk
 -include .make/helm.mk
 -include .make/k8s.mk
 -include .make/js.mk
 
-k8s-do-test:
-	@echo "Nothing to do here yet!"
-	@mkdir -p build; echo "0" > build/status
+# For the test, dev and integration environment, use the freshly built image in the GitLab registry
+ENV_CHECK := $(shell echo $(CI_ENVIRONMENT_SLUG) | egrep 'test|dev|integration')
+ifneq ($(ENV_CHECK),)
+K8S_CHART_PARAMS += --set ska-ost-osd-ui.image.tag=$(VERSION)-dev.c$(CI_COMMIT_SHORT_SHA) \
+	--set ska-ost-osd-ui.image.registry=$(CI_REGISTRY)/ska-telescope/oso/ska-ost-osd-ui
+endif
+
+set-dev-env-vars:
+	BASE_URL="/" BACKEND_URL=$(BACKEND_URL) ENVJS_FILE=./public/env.js ./nginx_env_config.sh
 
 js-do-test:
 	@mkdir -p $(JS_BUILD_REPORTS_DIRECTORY)
@@ -25,3 +47,5 @@ js-do-test:
 		cp ${JS_BUILD_REPORTS_DIRECTORY}/cobertura-coverage.xml ${JS_BUILD_REPORTS_DIRECTORY}/code-coverage.xml; \
 		exit $$EXIT_CODE; \
 	}
+
+
