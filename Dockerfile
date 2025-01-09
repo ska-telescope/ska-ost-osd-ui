@@ -13,6 +13,10 @@ RUN yarn build
 # Copy built files
 COPY --from=base /app/dist/ /usr/share/nginx/html/
 COPY nginx.conf /etc/nginx/
+ 
 EXPOSE 80
-
+ 
+COPY nginx_env_config.sh .
+COPY nginx_env_config.sh /docker-entrypoint.d/
+ 
 CMD ["nginx", "-g", "daemon off;"]
