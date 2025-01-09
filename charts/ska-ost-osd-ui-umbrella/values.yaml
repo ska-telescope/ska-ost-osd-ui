@@ -7,5 +7,4 @@ global:
 
 ska-ost-osd-umbrella:
   ska-ost-osd:
-    rest:
-      logLevel: info
+
