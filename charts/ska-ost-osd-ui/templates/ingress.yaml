@@ -1,47 +1,22 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: networking.k8s.io/v1
+kind: Ingress
 metadata:
-  name: {{ $.Chart.Name }}
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+  name: {{ $.Chart.Name }}-ingress
+  namespace: {{ .Release.Namespace }}
   labels:
-{{ include "ska-ost-osd-ui.labels" . | indent 4 }}
+{{ include "ska-oso-osd-ui.labels" . | indent 4 }}
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app.kubernetes.io/name: {{ $.Chart.Name }}
-  template:
-    metadata:
-      labels:
-{{ include "ska-ost-osd-ui.labels" . | indent 8 }}
-      annotations:
-    spec:
-      containers:
-        - name: nginx
-          image: "{{ .Values.image.registry }}/{{ .Values.image.image }}:{{$.Values.image.tag | default $.Chart.AppVersion}}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          ports:
-            - name: http
-              containerPort: 80
-              protocol: TCP
-          volumeMounts:
-            - name: config
-              mountPath: /etc/nginx/conf.d/default.conf
-              subPath: default.conf
-          env:
-            - name: REACT_APP_USE_LOCAL_DATA
-              value: {{ .Values.runtimeEnv.useLocalData | quote }}
-          livenessProbe:
-            httpGet:
-              path: /
-              port: http
-            periodSeconds: 60
-          readinessProbe:
-            httpGet:
-              path: /
-              port: http
-            periodSeconds: 60
-      volumes:
-        - name: config
-          configMap:
-            name: {{ $.Chart.Name }}-nginx-config
-
+  rules:
+  - http:
+      paths:
+      - backend:
+          service:
+            name: {{ $.Chart.Name }}-service
+            port:
+              number: 80
+        # Match everything but '/api' which is reserved for back-end
+        path: {{ template "ska-oso-osd-ui.ingress" . }}/(?!api)(.*)
+        pathType: ImplementationSpecific
