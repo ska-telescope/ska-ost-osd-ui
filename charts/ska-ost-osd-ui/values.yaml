@@ -1,7 +1,7 @@
 image:
   imagePullPolicy: IfNotPresent
-  container: registry.gitlab.com/ska-telescope/templates/ska-ost-osd-ui/ska-ost-osd-ui
-  version: 1.0.3
+  container: registry.gitlab.com/ska-telescope/ost/templates/ska-ost-osd-ui/ska-ost-osd-ui
+  version: 0.1.0
 
 labels:
   app: ska-ost-osd-ui
