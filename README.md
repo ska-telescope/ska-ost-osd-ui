@@ -7,7 +7,7 @@ This project is the User Interface for the Observatory Static Data (OSD). In its
 To clone this repository, run
 
 ```
-git clone --recurse-submodules git@gitlab.com:ska-telescope/ska-ost-osd-ui.git
+git clone --recurse-submodules git@gitlab.com:ska-telescope/ost/ska-ost-osd-ui.git
 ```
 
 To refresh the GitLab Submodule, execute below commands:

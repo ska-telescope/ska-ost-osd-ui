@@ -3,7 +3,7 @@ apiVersion: v2
 
 name: ska-ost-osd-ui
 description: A Helm chart to deploy the React Skeleton
-home: https://gitlab.com/ska-telescope/templates/ska-ost-osd-ui
+home: https://gitlab.com/ska-telescope/ost/templates/ska-ost-osd-ui
 
 appVersion: 1.0.3
 version: 1.0.3

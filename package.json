@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "description": "SKA Observatory Static Data",
-  "repository": "git@gitlab.com:ska-telescope/ska-ost-osd-ui.git",
+  "repository": "git@gitlab.com:ska-telescope/ost/ska-ost-osd-ui.git",
   "license": "BSD 3-Clause",
   "main": "index.js",
   "scripts": {
