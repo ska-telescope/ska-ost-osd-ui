@@ -7,7 +7,7 @@ metadata:
   name: {{ $.Chart.Name }}-ingress
   namespace: {{ .Release.Namespace }}
   labels:
-{{ include "ska-oso-osd-ui.labels" . | indent 4 }}
+{{ include "ska-ost-osd-ui.labels" . | indent 4 }}
 spec:
   rules:
   - http:
@@ -18,5 +18,5 @@ spec:
             port:
               number: 80
         # Match everything but '/api' which is reserved for back-end
-        path: {{ template "ska-oso-osd-ui.ingress" . }}/(?!api)(.*)
+        path: {{ template "ska-ost-osd-ui.ingress" . }}/(?!api)(.*)
         pathType: ImplementationSpecific
