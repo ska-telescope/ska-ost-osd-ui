@@ -1,5 +1,6 @@
 const SHIFT_DATA_LIST = [
   {
+    id: 1,
     shift_id: 'slt-20250106-11785506',
     shift_start: '2024-10-22T11:24:04.389077Z',
     shift_end: '2024-10-22T11:24:04.389077Z',
@@ -273,6 +274,7 @@ const SHIFT_DATA_LIST = [
     }
   },
   {
+    id: 2,
     shift_id: 'slt-20250106-11785507',
     shift_start: '2024-10-22T11:24:04.389077Z',
     shift_operator: 'TestUser',

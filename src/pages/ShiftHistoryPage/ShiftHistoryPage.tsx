@@ -28,7 +28,7 @@ import SearchByDates from './SearchComponent/SearchByDates/SearchByDates';
 import SearchByOperator from './SearchComponent/SearchByOperator/SearchByOperator';
 import SearchByStatus from './SearchComponent/SearchByStatus/SearchByStatus';
 import ShiftHistoryListComponent from './DisplayShiftHistory/ShiftHistoryListComponent/ShiftHistoryListComponent';
-import SHIFT_DATA_LIST from '../../DataModels/DataFiles/shiftDataList';
+import SHIFT_DATA_LIST from '../../DataModels/DataFiles/ShiftDataList';
 
 function ShiftHistoryPage() {
   const { t } = useTranslation('translations');

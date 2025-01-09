@@ -50,7 +50,7 @@ import {
 import apiService from '../../../services/apis';
 import ImageDisplayComponent from '../../../components/ImageDisplayComponent/ImageDisplayComponent';
 import DisplayShiftLogsComponent from '../DisplayShiftLogsComponent/DisplayShiftLogsComponent';
-import SHIFT_DATA_LIST from '../../../DataModels/DataFiles/shiftDataList';
+import SHIFT_DATA_LIST from '../../../DataModels/DataFiles/ShiftDataList';
 
 function DisplayShiftComponent() {
   const [shiftStatus, setShiftStatus] = useState('');
@@ -234,12 +234,6 @@ function DisplayShiftComponent() {
   };
 
   useEffect(() => {
-    // eslint-disable-next-line no-console
-    console.log(
-      'window.env.BACKEND_URL',
-      window.env.BACKEND_URL,
-      window.env.REACT_APP_USE_LOCAL_DATA
-    );
     fetchSltCurrentShifts();
     // updateShiftLogs();
     // useKafkaData(KafkaTopic.serviceToUITopic);

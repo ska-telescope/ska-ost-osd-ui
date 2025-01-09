@@ -29,7 +29,7 @@ import apiService from '../../../services/apis';
 import { createShiftAnnotationPath } from '../../../utils/api_constants';
 import DisplayShiftLogsComponent from '../../CurrentShiftPage/DisplayShiftLogsComponent/DisplayShiftLogsComponent';
 import { toUTCDateTimeFormat, USE_LOCAL_DATA } from '../../../utils/constants';
-import SHIFT_DATA_LIST from '../../../DataModels/DataFiles/shiftDataList';
+import SHIFT_DATA_LIST from '../../../DataModels/DataFiles/ShiftDataList';
 
 const ViewShiftData = ({ data }) => {
   const { t } = useTranslation('translations');

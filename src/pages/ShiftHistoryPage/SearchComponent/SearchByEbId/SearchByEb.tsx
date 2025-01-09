@@ -30,11 +30,11 @@ const SearchByEbId = ({ setFilterCriteria, searchFilter }: EntryFieldProps) => {
     return true;
   };
 
-  const emmitOperator = () => {
-    const emmitData = {
+  const omitOperator = () => {
+    const omitData = {
       eb_id: ebValue
     };
-    setFilterCriteria(emmitData);
+    setFilterCriteria(omitData);
   };
   return (
     <Grid container spacing={2} justifyContent="left" sx={{ marginTop: '-15px' }}>
@@ -59,9 +59,9 @@ const SearchByEbId = ({ setFilterCriteria, searchFilter }: EntryFieldProps) => {
           disabled={disableSearch()}
           color={ButtonColorTypes.Secondary}
           variant={ButtonVariantTypes.Contained}
-          testId="logHistorySearch"
+          testId="logHistorySearchByEBID"
           label={t('label.searchById')}
-          onClick={emmitOperator}
+          onClick={omitOperator}
           toolTip={t('toolTip.button.idSearch')}
         />
       </Grid>

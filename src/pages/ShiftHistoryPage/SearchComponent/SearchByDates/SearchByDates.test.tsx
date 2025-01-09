@@ -1,51 +1,49 @@
 import React from 'react';
 import { CssBaseline, ThemeProvider } from '@mui/material';
-import { mount } from 'cypress/react18';
 import { THEME_DARK, THEME_LIGHT } from '@ska-telescope/ska-gui-components';
 import theme from '../../../../services/theme/theme';
 import SearchByDates from './SearchByDates';
+import { viewPort } from '../../../../utils/constants';
+import { StoreProvider } from '@ska-telescope/ska-gui-local-storage';
+import { BrowserRouter } from 'react-router-dom';
 import moment from 'moment';
 
-describe('<SearchByDates />', () => {
+const THEME = [THEME_DARK, THEME_LIGHT];
+
+function mounting(theTheme) {
+  viewPort();
   const startDate = moment().utc().subtract(300, 'days').format('YYYY-MM-DD');
   const endDate = moment().utc().format('YYYY-MM-DD');
   const createdAfter = startDate;
   const createdBefore = endDate;
-  const emmitData = {
+  const omitData = {
     createdAfter,
     createdBefore
   };
-  it(`Theme ${THEME_DARK}: Renders SearchByDates`, () => {
-    mount(
-      <ThemeProvider theme={theme(THEME_DARK)}>
+  cy.mount(
+    <StoreProvider>
+      <ThemeProvider theme={theme(theTheme)}>
         <CssBaseline />
-        <SearchByDates setFilterCriteria={undefined} searchFilter={emmitData} />
+        <BrowserRouter>
+          <SearchByDates setFilterCriteria={omitData} searchFilter={omitData} />
+        </BrowserRouter>
       </ThemeProvider>
-    );
-    cy.get('body').then(() => {
-      cy.get('[data-testid="dateEntryStart"]').should('be.visible');
-      cy.get('[data-testid="dateEntryStart"]').click({ force: true });
-      cy.get('[data-testid="dateEntryEnd"]').should('be.visible');
-      cy.get('[data-testid="dateEntryEnd"]').click({ force: true });
-      cy.get('[data-testid="logHistorySearch"]').should('be.visible');
-      cy.get('[data-testid="logHistorySearch"]').click({ force: true });
-    });
-  });
+    </StoreProvider>
+  );
+}
 
-  it(`Theme ${THEME_LIGHT}: Renders SearchByDates`, () => {
-    mount(
-      <ThemeProvider theme={theme(THEME_DARK)}>
-        <CssBaseline />
-        <SearchByDates setFilterCriteria={undefined} searchFilter={undefined} />
-      </ThemeProvider>
-    );
-    cy.get('body').then(() => {
-      cy.get('[data-testid="dateEntryStart"]').should('be.visible');
-      cy.get('[data-testid="dateEntryStart"]').click({ force: true });
-      cy.get('[data-testid="dateEntryEnd"]').should('be.visible');
-      cy.get('[data-testid="dateEntryEnd"]').click({ force: true });
-      cy.get('[data-testid="logHistorySearch"]').should('be.visible');
-      cy.get('[data-testid="logHistorySearch"]').click({ force: true });
+describe('<DisplayShiftComponent />', () => {
+  for (const theTheme of THEME) {
+    it(`Theme ${theTheme}: Renders`, () => {
+      mounting(theTheme);
+      cy.get('body').then(() => {
+        cy.get('[data-testid="dateEntryStart"]').should('be.visible');
+        cy.get('[data-testid="dateEntryStart"]').click({ force: true });
+        cy.get('[data-testid="dateEntryEnd"]').should('be.visible');
+        cy.get('[data-testid="dateEntryEnd"]').click({ force: true });
+        cy.get('[data-testid="logHistorySearch"]').should('be.visible');
+        cy.get('[data-testid="logHistorySearch"]').click({ force: true });
+      });
     });
-  });
+  }
 });

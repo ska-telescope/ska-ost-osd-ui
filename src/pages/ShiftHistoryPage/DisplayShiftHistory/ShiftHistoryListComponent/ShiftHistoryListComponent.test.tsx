@@ -4,7 +4,7 @@ import { mount } from 'cypress/react18';
 import { THEME_DARK, THEME_LIGHT } from '@ska-telescope/ska-gui-components';
 import theme from '../../../../services/theme/theme';
 import ShiftHistoryListComponent from './ShiftHistoryListComponent';
-import SHIFT_DATA_LIST from '../../../../DataModels/DataFiles/shiftDataList';
+import SHIFT_DATA_LIST from '../../../../DataModels/DataFiles/ShiftDataList';
 
 describe('<ShiftHistoryListComponent />', () => {
   it(`Theme ${THEME_DARK}: Renders ShiftHistoryListComponent`, () => {

@@ -2,7 +2,7 @@ import React from 'react';
 import PreviewIcon from '@mui/icons-material/Preview';
 import apiService from '../../../../services/apis';
 import { createShiftPath } from '../../../../utils/api_constants';
-import SHIFT_DATA_LIST from '../../../../DataModels/DataFiles/shiftDataList';
+import SHIFT_DATA_LIST from '../../../../DataModels/DataFiles/ShiftDataList';
 import { USE_LOCAL_DATA } from '../../../../utils/constants';
 
 interface EntryFieldProps {
@@ -30,7 +30,7 @@ const ViewSLTHistory = ({ shiftData, updatedList }: EntryFieldProps) => {
 
   return (
     <PreviewIcon
-      data-testid="iconViewShift"
+      data-testid={`iconViewShift${shiftData.id}`}
       style={{ cursor: 'pointer', marginTop: '10px' }}
       onClick={() => fetchSltHistoryByID()}
     />
