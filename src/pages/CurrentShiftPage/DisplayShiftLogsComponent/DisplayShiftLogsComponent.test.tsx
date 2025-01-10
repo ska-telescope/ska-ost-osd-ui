@@ -36,6 +36,7 @@ describe('<DisplayShiftLogsComponent />', () => {
 });
 
 describe('<DisplayShiftLogsComponent />', () => {
+  const waitTime = 5000;
   beforeEach(() => {
     mounting(THEME[1]);
   });
@@ -51,27 +52,17 @@ describe('<DisplayShiftLogsComponent />', () => {
       }
     ).as('postComment');
   });
-
   beforeEach(() => {
-    const data = [...SHIFT_DATA_LIST];
-    cy.intercept('POST', 'http://127.0.0.1:8000/ska-oso-slt-services/slt/api/v0/shifts/create', {
-      statusCode: 200,
-      body: { ...data }
-    }).as('getData');
-  });
-
-  beforeEach(() => {
-    const data = [SHIFT_DATA_LIST[0]];
+    const data = [...SHIFT_DATA_LIST[0].shift_logs[0]['comments']];
     cy.intercept(
-      'GET',
-      'http://127.0.0.1:8000/ska-oso-slt-services/slt/api/v0/shift?shift_id=slt-20250106-11785506',
+      'PUT',
+      'http://127.0.0.1:8000/ska-oso-slt-services/slt/api/v0/shift_log_comments/1',
       {
         statusCode: 200,
-        body: data
+        body: { ...data }
       }
-    ).as('getDataById');
+    ).as('putComment');
   });
-
   it('shiftStartButton', () => {
     cy.get('body').then((element) => {
       if (element.find('[data-testid="shiftLogDisplay"]').length) {
@@ -81,6 +72,11 @@ describe('<DisplayShiftLogsComponent />', () => {
         cy.get('[data-testid="successStatusMsg"]').contains('msg.commentSubmit');
         cy.get('[data-testid="editShiftLogs00"]').click({ force: true });
         cy.get('[data-testid="commentButtonUpdate0"]').click({ force: true });
+        cy.wait('@putComment')
+        // eslint-disable-next-line cypress/no-unnecessary-waiting
+        cy.wait(waitTime)
+        cy.get('[data-testid="logImage0ChooseButton"]').click({ force: true });
+        
       }
     });
   });
