@@ -9,8 +9,9 @@ import {
   SPACER_VERTICAL
 } from '@ska-telescope/ska-gui-components';
 import { storageObject } from '@ska-telescope/ska-gui-local-storage';
-import Loader from '../Loader/Loader';
 import theme from '../../services/theme/theme';
+import Loader from '../Loader/Loader';
+import ReactSkeleton from '../ReactSkeleton/ReactSkeleton';
 
 const HEADER_HEIGHT = 70;
 const FOOTER_HEIGHT = 20;
@@ -52,9 +53,8 @@ function App() {
         <Header
           docs={docs}
           testId="headerId"
-          title="SKA OSD UI" // Use a 3 letter code for smaller screen widths
+          title="Shift Log Tool"
           toolTip={toolTip}
-          selectTelescope={false}
           storage={theStorage}
         />
         {
@@ -64,6 +64,7 @@ function App() {
         {
           // This is the ONLY component that is accessible via micro-frontend implementation
         }
+        <ReactSkeleton data-testid="ReactSkeleton" />
         {
           // Example of the spacer being used to stop content from being hidden behind the Footer component
         }

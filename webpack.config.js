@@ -103,6 +103,11 @@ module.exports = () => {
             // singleton: true,
             requiredVersion: deps['i18next-http-backend'],
           },
+          'react-router-dom': {
+            eager: true,
+            singleton: true,
+            requiredVersion: deps['react-router-dom'],
+          },
           // Material UI
           '@mui/material': { singleton: true, requiredVersion: deps['@mui/material'], eager: true },
           '@mui/icons-material': {
