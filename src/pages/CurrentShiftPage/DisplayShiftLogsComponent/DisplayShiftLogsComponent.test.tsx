@@ -72,11 +72,10 @@ describe('<DisplayShiftLogsComponent />', () => {
         cy.get('[data-testid="successStatusMsg"]').contains('msg.commentSubmit');
         cy.get('[data-testid="editShiftLogs00"]').click({ force: true });
         cy.get('[data-testid="commentButtonUpdate0"]').click({ force: true });
-        cy.wait('@putComment')
+        cy.wait('@putComment');
         // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(waitTime)
+        cy.wait(waitTime);
         cy.get('[data-testid="logImage0ChooseButton"]').click({ force: true });
-        
       }
     });
   });

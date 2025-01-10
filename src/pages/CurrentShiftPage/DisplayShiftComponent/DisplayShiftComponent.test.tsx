@@ -35,7 +35,6 @@ describe('<DisplayShiftComponent />', () => {
 });
 
 describe('<DisplayShiftComponent />', () => {
-  const waitTime = 5000;
   beforeEach(() => {
     mounting(THEME[1]);
   });
@@ -53,7 +52,7 @@ describe('<DisplayShiftComponent />', () => {
     cy.intercept('POST', 'http://127.0.0.1:8000/ska-oso-slt-services/slt/api/v0/shifts/create', {
       statusCode: 200,
       body: { ...data }
-    }).as('getData');
+    }).as('startNewShift');
   });
 
   beforeEach(() => {
@@ -75,10 +74,9 @@ describe('<DisplayShiftComponent />', () => {
         cy.get('[data-testid="operatorName"]').type('{downarrow}');
         cy.get('[data-testid="operatorName"]').type('{enter}');
         cy.get('[data-testid="shiftStartButton"]').click({ force: true });
+        cy.wait(2000);
         cy.get('[data-testid="confirmationDialogYes"]').click({ force: true });
-        cy.wait('@getData');
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(waitTime); // Wait for the API call to complete
+        cy.wait('@startNewShift');
         cy.get('[data-testid="addShiftComments"]').click({ force: true });
         cy.get('[data-testid="operatorShiftComment"]').type('This is dummy comments');
         cy.get('[data-testid="shiftCommentButton"]').click({ force: true });

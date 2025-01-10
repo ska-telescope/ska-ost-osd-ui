@@ -278,9 +278,7 @@ context('Shift Log Tool', () => {
     cy.get('body').then((ele) => {
       if (ele.find('[data-testid="sltHistoryTable"]').length > 0) {
         cy.get('[data-testid="sltHistoryTable"]').should('be.visible');
-        cy.get('[data-testid="sltHistoryTable"]')
-          .get('[data-field="shift_id"]')
-          .click({ force: true });
+        cy.get('[data-testid="sltHistoryTable"]').get('[data-field="shift_id"]');
         cy.get('[data-testid="sltHistoryTable"]')
           .get('[data-field="shift_start"]')
           .contains(translation.label.shiftStart);
@@ -290,9 +288,6 @@ context('Shift Log Tool', () => {
         cy.get('[data-testid="sltHistoryTable"]')
           .get('[data-field="operator_name"]')
           .contains(translation.label.operatorName);
-        cy.get('[data-testid="sltHistoryTable"]')
-          .get('[data-field="shift_id"]')
-          .click({ force: true });
       }
 
       if (ele.find('[data-testid="addShiftAnnotations"]').length > 0) {
