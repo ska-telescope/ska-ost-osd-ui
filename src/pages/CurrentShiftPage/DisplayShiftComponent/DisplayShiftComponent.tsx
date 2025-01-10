@@ -94,7 +94,7 @@ function DisplayShiftComponent() {
           <DriveFileRenameOutlineIcon
             color="secondary"
             aria-label={t('ariaLabel.edit')}
-            data-testid="manageEntityStatus"
+            data-testid="editShifComment"
             style={{
               cursor: 'pointer',
               position: 'relative',
@@ -188,7 +188,7 @@ function DisplayShiftComponent() {
       return true;
     }
     const response = await apiService.postShiftData(shiftCreatePath, shiftData);
-    if (response.status === 200 && response.data && response.data.length > 0) {
+    if (response.status === 200 && response.data) {
       setMessage('msg.shiftStarted');
       setDisplayMessageElement(true);
       setTimeout(() => {
@@ -414,7 +414,7 @@ function DisplayShiftComponent() {
       fontSize={16}
       color={InfoCardColorTypes.Success}
       message={t(successMessage)}
-      testId="successStatusMsg"
+      testId="successCommentStatusMsg"
     />
   );
 

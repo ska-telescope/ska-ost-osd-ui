@@ -282,7 +282,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
           <DriveFileRenameOutlineIcon
             color="secondary"
             aria-label={t('ariaLabel.edit')}
-            data-testid="manageEntityStatus"
+            data-testid={`editShiftLogs${logIndex}${commentIndex}`}
             style={{
               cursor: 'pointer',
               position: 'relative',
@@ -316,7 +316,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
           icon={<AddIcon />}
           ariaDescription="Button for submitting comment"
           label="Update"
-          testId="commentButton"
+          testId={`commentButtonUpdate${logIndex}`}
           onClick={() => updateLogComments(logIndex, commentItem)}
           size={ButtonSizeTypes.Small}
           variant={ButtonVariantTypes.Contained}
@@ -385,7 +385,10 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
         shiftData.shift_logs.length > 0 &&
         shiftData.shift_logs.map((data, logIndex) => (
           <div key={data.id}>
-            <Paper style={{ padding: '10px', paddingTop: 0, paddingBottom: 0 }}>
+            <Paper
+              data-testid="shiftLogDisplay"
+              style={{ padding: '10px', paddingTop: 0, paddingBottom: 0 }}
+            >
               <Grid container justifyContent="start">
                 <Grid item xs={12} sm={12} md={6.5}>
                   <Grid container justifyContent="start" style={{ paddingTop: '10px' }}>
@@ -501,7 +504,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
                               logCommentsIndex === logIndex &&
                               !(commentValue && commentValue !== '')
                             }
-                            testId="commentButton"
+                            testId={`commentButtonSave${logIndex}`}
                             onClick={() => addLogComments(logIndex, data)}
                             size={ButtonSizeTypes.Small}
                             variant={ButtonVariantTypes.Contained}

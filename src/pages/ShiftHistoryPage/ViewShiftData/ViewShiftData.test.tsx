@@ -7,7 +7,6 @@ import ViewShiftData from './ViewShiftData';
 import SHIFT_DATA_LIST from '../../../DataModels/DataFiles/ShiftDataList';
 import { viewPort } from '../../../utils/constants';
 import { StoreProvider } from '@ska-telescope/ska-gui-local-storage';
-import { BrowserRouter } from 'react-router-dom';
 
 const THEME = [THEME_DARK, THEME_LIGHT];
 function mounting(theTheme) {
@@ -17,9 +16,7 @@ function mounting(theTheme) {
     <StoreProvider>
       <ThemeProvider theme={theme(theTheme)}>
         <CssBaseline />
-        <BrowserRouter>
-          <ViewShiftData data={SHIFT_DATA_LIST[0]} />
-        </BrowserRouter>
+        <ViewShiftData data={SHIFT_DATA_LIST[0]} />
       </ThemeProvider>
     </StoreProvider>
   );
@@ -39,6 +36,10 @@ describe('<DisplayShiftComponent />', () => {
           'contain',
           'label.addShiftAnnotations'
         );
+        cy.get('[data-testid="addShiftAnnotations"]').click({ force: true });
+        cy.get('[data-testid="operatorShiftAnnotation"]').type('This is dummy ammotation');
+        cy.get('[data-testid="shiftAnnotationButton"]').click({ force: true });
+        cy.get('[data-testid="shiftAnnotationModalClose"]').click({ force: true });
       });
     });
   }
