@@ -18,7 +18,7 @@ JS_E2E_COVERAGE_COMMAND_ENABLED = false
 JS_ESLINT_CONFIG ?= .eslintrc.js
 
 JS_COMMAND_RUNNER ?= yarn
-JS_TEST_COMMAND ?= jest
+JS_TEST_COMMAND ?= cypress
 
 # include core makefile targets for release management
 -include .make/base.mk

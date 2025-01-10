@@ -29,7 +29,7 @@ import apiService from '../../../services/apis';
 import { createShiftAnnotationPath } from '../../../utils/api_constants';
 import DisplayShiftLogsComponent from '../../CurrentShiftPage/DisplayShiftLogsComponent/DisplayShiftLogsComponent';
 import { toUTCDateTimeFormat, USE_LOCAL_DATA } from '../../../utils/constants';
-import SHIFT_DATA_LIST from '../../../DataModels/DataFiles/shiftDataList';
+import SHIFT_DATA_LIST from '../../../DataModels/DataFiles/ShiftDataList';
 
 const ViewShiftData = ({ data }) => {
   const { t } = useTranslation('translations');
@@ -59,11 +59,10 @@ const ViewShiftData = ({ data }) => {
 
   const renderModalMessageResponse = () => (
     <InfoCard
-      minHeight="15px"
       fontSize={16}
       color={InfoCardColorTypes.Success}
       message={t(successMessage)}
-      testId="successStatusMsg"
+      testId="successAnnotationStatusMsg"
     />
   );
   const useLocalData = () => {
@@ -117,7 +116,7 @@ const ViewShiftData = ({ data }) => {
     setOpenViewImageModal(false);
   };
 
-  const displayShiftAnnotations = (shiftAnnotationItem) => (
+  const displayShiftAnnotations = (shiftAnnotationItem, shiftAnnotationIndex) => (
     <div>
       {shiftAnnotationItem.annotation && (
         <span data-testid="shiftAnnotation" style={{ fontWeight: 700, fontSize: '14px' }}>
@@ -130,7 +129,7 @@ const ViewShiftData = ({ data }) => {
           <DriveFileRenameOutlineIcon
             color="secondary"
             aria-label={t('ariaLabel.edit')}
-            data-testid="manageEntityStatus"
+            data-testid={`editShiftAnnotation${shiftAnnotationIndex}`}
             style={{
               cursor: 'pointer',
               position: 'relative',
@@ -218,7 +217,7 @@ const ViewShiftData = ({ data }) => {
             size={ButtonSizeTypes.Small}
             color={ButtonColorTypes.Inherit}
             variant={ButtonVariantTypes.Contained}
-            testId="statusClose"
+            testId="shiftAnnotationModalClose"
             label={t('label.close')}
             onClick={handleViewImageClose}
             toolTip={t('label.close')}
@@ -382,7 +381,7 @@ const ViewShiftData = ({ data }) => {
                       <Grid item xs={12} sm={12} md={12}>
                         {shiftAnnotationItem &&
                           shiftAnnotationItem.annotation &&
-                          displayShiftAnnotations(shiftAnnotationItem)}
+                          displayShiftAnnotations(shiftAnnotationItem, shiftAnnotationIndex)}
                       </Grid>
                     </Grid>
 

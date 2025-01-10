@@ -1,7 +1,7 @@
 import React from 'react';
 import apiService from '../../../../services/apis';
 import { createShiftPath } from '../../../../utils/api_constants';
-import SHIFT_DATA_LIST from '../../../../DataModels/DataFiles/shiftDataList';
+import SHIFT_DATA_LIST from '../../../../DataModels/DataFiles/ShiftDataList';
 import { USE_LOCAL_DATA } from '../../../../utils/constants';
 
 interface EntryFieldProps {
@@ -29,7 +29,7 @@ const ViewSLTHistoryByID = ({ shiftData, updatedList }: EntryFieldProps) => {
   return (
     <span
       aria-hidden="true"
-      data-testid={`shiftId${shiftData.id}`}
+      data-testid={`shiftId`}
       style={{ cursor: 'pointer', textDecoration: 'underline' }}
       onClick={() => fetchSltHistoryByID()}
     >

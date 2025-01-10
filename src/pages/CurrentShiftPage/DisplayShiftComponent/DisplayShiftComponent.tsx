@@ -50,7 +50,7 @@ import {
 import apiService from '../../../services/apis';
 import ImageDisplayComponent from '../../../components/ImageDisplayComponent/ImageDisplayComponent';
 import DisplayShiftLogsComponent from '../DisplayShiftLogsComponent/DisplayShiftLogsComponent';
-import SHIFT_DATA_LIST from '../../../DataModels/DataFiles/shiftDataList';
+import SHIFT_DATA_LIST from '../../../DataModels/DataFiles/ShiftDataList';
 
 function DisplayShiftComponent() {
   const [shiftStatus, setShiftStatus] = useState('');
@@ -94,7 +94,7 @@ function DisplayShiftComponent() {
           <DriveFileRenameOutlineIcon
             color="secondary"
             aria-label={t('ariaLabel.edit')}
-            data-testid="manageEntityStatus"
+            data-testid="editShifComment"
             style={{
               cursor: 'pointer',
               position: 'relative',
@@ -188,7 +188,7 @@ function DisplayShiftComponent() {
       return true;
     }
     const response = await apiService.postShiftData(shiftCreatePath, shiftData);
-    if (response.status === 200 && response.data && response.data.length > 0) {
+    if (response.status === 200 && response.data) {
       setMessage('msg.shiftStarted');
       setDisplayMessageElement(true);
       setTimeout(() => {
@@ -234,12 +234,6 @@ function DisplayShiftComponent() {
   };
 
   useEffect(() => {
-    // eslint-disable-next-line no-console
-    console.log(
-      'window.env.BACKEND_URL',
-      window.env.BACKEND_URL,
-      window.env.REACT_APP_USE_LOCAL_DATA
-    );
     fetchSltCurrentShifts();
     // updateShiftLogs();
     // useKafkaData(KafkaTopic.serviceToUITopic);
@@ -420,7 +414,7 @@ function DisplayShiftComponent() {
       fontSize={16}
       color={InfoCardColorTypes.Success}
       message={t(successMessage)}
-      testId="successStatusMsg"
+      testId="successCommentStatusMsg"
     />
   );
 

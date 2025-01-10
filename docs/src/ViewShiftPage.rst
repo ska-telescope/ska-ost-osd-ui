@@ -7,7 +7,6 @@ View shift details
 
 User can view details of any shift by clicking either on Shift ID or on |previewIcon| icon from Shift History page.
 User will be able to view details of the shift as shown in below image.
-User can also add annotation for closed shift in annotation input text box on UI and the click on |addBtn| button to add annotation.
 
 .. |previewIcon| image:: /images/previewIcon.png
    :width: 4%

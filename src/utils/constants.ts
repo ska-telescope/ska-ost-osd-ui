@@ -118,3 +118,10 @@ export const SBIStatus = ['Created', 'Executing', 'Observed', 'Failed'];
 
 export const toUTCDateTimeFormat = (value: string) =>
   moment(value).utc().format('DD-MM-YYYY HH:mm:ss');
+
+export const viewPort = (format = 'pc') => {
+  const isPC = () => format === 'pc';
+  const xAxis = isPC() ? 1500 : 600;
+  const yAxis = isPC() ? 1500 : 600;
+  cy.viewport(xAxis, yAxis);
+};

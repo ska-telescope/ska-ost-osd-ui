@@ -92,7 +92,6 @@ context('Shift Log Tool', () => {
                   element.find('[data-testid="viewHistoryTitle"]').length > 0
                 ) {
                   cy.get('[data-testid="viewHistoryTitle"]').should('be.visible');
-                  // cy.get('#').contains(translation.label.viewHistoryTitle);
                   cy.get('#shiftStart').contains(translation.label.shiftStartedAt);
                   cy.get('#shiftEnd').contains(translation.label.shiftEndsAt);
                   cy.get('#operatorName').contains(translation.label.operatorName);
@@ -239,7 +238,7 @@ context('Shift Log Tool', () => {
     cy.contains('Search by operator').click();
     cy.get('[data-testid="operatorName"]').click({ force: true });
     cy.get('[data-testid="operatorName"]').type('DefaultUser');
-    cy.get('[data-testid="logHistorySearch"]').click({ force: true });
+    cy.get('[data-testid="logHistorySearchByOperator"]').click({ force: true });
     validateShiftLogDataTable();
   });
 
@@ -251,7 +250,7 @@ context('Shift Log Tool', () => {
     cy.contains('Search by status').click();
     cy.get('[data-testid="sbiStatus"]').click({ force: true });
     cy.get('[data-testid="sbiStatus"]').type('Executing');
-    cy.get('[data-testid="logHistorySearch"]').click({ force: true });
+    cy.get('[data-testid="logHistorySearchByStatus"]').click({ force: true });
     validateShiftLogDataTable();
   });
 
@@ -279,9 +278,7 @@ context('Shift Log Tool', () => {
     cy.get('body').then((ele) => {
       if (ele.find('[data-testid="sltHistoryTable"]').length > 0) {
         cy.get('[data-testid="sltHistoryTable"]').should('be.visible');
-        cy.get('[data-testid="sltHistoryTable"]')
-          .get('[data-field="shift_id"]')
-          .click({ force: true });
+        cy.get('[data-testid="sltHistoryTable"]').get('[data-field="shift_id"]');
         cy.get('[data-testid="sltHistoryTable"]')
           .get('[data-field="shift_start"]')
           .contains(translation.label.shiftStart);
@@ -291,9 +288,6 @@ context('Shift Log Tool', () => {
         cy.get('[data-testid="sltHistoryTable"]')
           .get('[data-field="operator_name"]')
           .contains(translation.label.operatorName);
-        cy.get('[data-testid="sltHistoryTable"]')
-          .get('[data-field="shift_id"]')
-          .click({ force: true });
       }
 
       if (ele.find('[data-testid="addShiftAnnotations"]').length > 0) {
@@ -313,9 +307,10 @@ context('Shift Log Tool', () => {
     cy.contains('Search by EB ID').click();
     cy.get('[data-testid="EbId"]').click({ force: true });
     cy.get('[data-testid="EbId"]').type('Executing');
-    cy.get('[data-testid="logHistorySearch"]').click({ force: true });
+    cy.get('[data-testid="logHistorySearchByEBID"]').click({ force: true });
     validateShiftLogDataTable();
   });
+
   it('Content : Verify shift history Search by SBI ID', () => {
     cy.get('[data-testid="historyButton"]').click();
     cy.get('[data-testid="logHistoryLabel"]').contains(translation.label.logHistoryTitle);
@@ -324,7 +319,7 @@ context('Shift Log Tool', () => {
     cy.contains('Search by SBI ID').click();
     cy.get('[data-testid="sbiId"]').click({ force: true });
     cy.get('[data-testid="sbiId"]').type('Executing');
-    cy.get('[data-testid="logHistorySearch"]').click({ force: true });
+    cy.get('[data-testid="logHistorySearchBySbiID"]').click({ force: true });
     validateShiftLogDataTable();
   });
 });
