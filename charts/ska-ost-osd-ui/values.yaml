@@ -1,0 +1,12 @@
+image:
+  registry: artefact.skao.int
+  image: ska-ost-osd-ui
+  tag:  ~ # Defaults to chart's appVersion when empty
+  pullPolicy: IfNotPresent
+
+ingress:
+  prependByNamespace: true
+  path: osd
+
+# Set this in the Makefile
+backendURL:
