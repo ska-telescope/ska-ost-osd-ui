@@ -1,7 +1,7 @@
 image:
-  registry: artefact.skao.int
-  image: ska-ost-osd-ui
-  tag:  ~ # Defaults to chart's appVersion when empty
+  registry: registry.gitlab.com
+  image: ska-telescope/ost/ska-ost-osd-ui/ska-ost-osd-ui
+  tag:  0.1.0-dev.cbb287bcf # Defaults to chart's appVersion when empty
   pullPolicy: IfNotPresent
 
 ingress:
