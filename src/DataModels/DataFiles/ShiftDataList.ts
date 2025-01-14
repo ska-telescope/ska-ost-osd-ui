@@ -1,7 +1,7 @@
 const SHIFT_DATA_LIST = [
   {
     id: 1,
-    shift_id: 'slt-20250106-11785506',
+    shift_id: 'slt-m0001-20250106-11785506',
     shift_start: '2024-10-22T11:24:04.389077Z',
     shift_end: '2024-10-22T11:24:04.389077Z',
     annotations: [
@@ -35,7 +35,7 @@ const SHIFT_DATA_LIST = [
       {
         id: 1,
         comment: 'This is shift comment one',
-        shift_id: 'slt-20250106-11785506',
+        shift_id: 'slt-m0001-20250106-11785506',
         metadata: {
           created_by: 'DefaultUser',
           created_on: '2024-10-22T11:24:04.388998Z',
@@ -46,7 +46,7 @@ const SHIFT_DATA_LIST = [
       {
         id: 2,
         comment: 'This is shift comment two',
-        shift_id: 'slt-20250106-11785506',
+        shift_id: 'slt-m0001-20250106-11785506',
         metadata: {
           created_by: 'DefaultUser',
           created_on: '2024-10-22T11:24:04.388998Z',
@@ -120,7 +120,7 @@ const SHIFT_DATA_LIST = [
             id: 1,
             log_comment: 'This is log comment one',
             operator_name: 'DefaultUser',
-            shift_id: 'slt-20250106-11785506',
+            shift_id: 'slt-m0001-20250106-11785506',
             eb_id: 'eb-t0001-20241022-000066',
             metadata: {
               created_by: 'DefaultUser',
@@ -133,7 +133,7 @@ const SHIFT_DATA_LIST = [
             id: 2,
             log_comment: 'This is log comment two',
             operator_name: 'TestUser',
-            shift_id: 'slt-20250106-11785506',
+            shift_id: 'slt-m0001-20250106-11785506',
             eb_id: 'eb-t0001-20241022-000066',
             metadata: {
               created_by: 'DefaultUser',
@@ -237,7 +237,7 @@ const SHIFT_DATA_LIST = [
             id: 1,
             log_comment: 'This is log comment one',
             operator_name: 'DefaultUser',
-            shift_id: 'slt-20250106-11785506',
+            shift_id: 'slt-m0001-20250106-11785506',
             metadata: {
               version: 1,
               created_by: 'DefaultUser',
@@ -252,7 +252,7 @@ const SHIFT_DATA_LIST = [
             id: 2,
             log_comment: 'This is log comment two',
             operator_name: 'TestUser',
-            shift_id: 'slt-20250106-11785506',
+            shift_id: 'slt-m0001-20250106-11785506',
             eb_id: 'eb-t0001-20241022-000066',
             metadata: {
               version: 1,
@@ -275,7 +275,7 @@ const SHIFT_DATA_LIST = [
   },
   {
     id: 2,
-    shift_id: 'slt-20250106-11785507',
+    shift_id: 'slt-m0001-20250106-11785507',
     shift_start: '2024-10-22T11:24:04.389077Z',
     shift_operator: 'TestUser',
     shift_end: '2024-10-22T11:24:04.389077Z',

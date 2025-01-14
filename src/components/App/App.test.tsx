@@ -9,7 +9,7 @@ import { BrowserRouter } from 'react-router-dom';
 
 const THEME = [THEME_DARK, THEME_LIGHT];
 
-describe('<Components />', () => {
+describe('App Component Theme Rendering', () => {
   function mount(theTheme) {
     viewPort();
     cy.mount(

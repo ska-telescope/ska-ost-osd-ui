@@ -6,7 +6,7 @@ import theme from '../../../../services/theme/theme';
 import ShiftHistoryListComponent from './ShiftHistoryListComponent';
 import SHIFT_DATA_LIST from '../../../../DataModels/DataFiles/ShiftDataList';
 
-describe('<ShiftHistoryListComponent />', () => {
+describe('ShiftHistoryListComponent Theme Rendering', () => {
   it(`Theme ${THEME_DARK}: Renders ShiftHistoryListComponent`, () => {
     const mockData = SHIFT_DATA_LIST;
     mount(
@@ -17,7 +17,7 @@ describe('<ShiftHistoryListComponent />', () => {
     );
   });
 
-  it(`Theme ${THEME_LIGHT}: Renders SLTHistoryTableList`, () => {
+  it(`Theme ${THEME_LIGHT}: Renders ShiftHistoryListComponent`, () => {
     const mockData = SHIFT_DATA_LIST;
     mount(
       <ThemeProvider theme={theme(THEME_LIGHT)}>

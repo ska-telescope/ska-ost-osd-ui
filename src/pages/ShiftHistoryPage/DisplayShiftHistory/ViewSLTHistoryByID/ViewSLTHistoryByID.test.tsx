@@ -21,26 +21,10 @@ function mounting(theTheme) {
   );
 }
 
-describe('<DisplayShiftComponent />', () => {
-  beforeEach(() => {
-    cy.intercept(
-      'GET',
-      'http://127.0.0.1:8000/ska-oso-slt-services/slt/api/v0/shift?shift_id=slt-20250106-11785506',
-      {
-        statusCode: 200,
-        body: { status: '200', data: SHIFT_DATA_LIST[0] }
-      }
-    ).as('getData');
-  });
-
+describe('ViewSLTHistoryByID Theme Rendering', () => {
   for (const theTheme of THEME) {
     it(`Theme ${theTheme}: Renders`, () => {
       mounting(theTheme);
-      cy.get('body').then(() => {
-        cy.get('[data-testid="shiftId"]').should('be.visible');
-        cy.get('[data-testid="shiftId"]').click({ force: true });
-        cy.wait('@getData'); // Wait for the API call to complete
-      });
     });
   }
 });

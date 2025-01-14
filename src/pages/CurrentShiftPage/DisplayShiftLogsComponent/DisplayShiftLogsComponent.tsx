@@ -36,7 +36,7 @@ import ImageDisplayComponent from '../../../components/ImageDisplayComponent/Ima
 
 const RequestResponseDisplay = ({ responseArray }) => {
   const { t } = useTranslation('translations');
-  const [openPannel] = useState(false);
+  const [openPanel] = useState(false);
   let id = 1;
   if (responseArray && responseArray.length > 0) {
     responseArray.map((row) => {
@@ -50,7 +50,7 @@ const RequestResponseDisplay = ({ responseArray }) => {
         responseArray.length > 0 &&
         responseArray.map((dataItem) => (
           <div key={dataItem.id}>
-            <Accordion defaultExpanded={openPannel}>
+            <Accordion defaultExpanded={openPanel}>
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="panel1-content"

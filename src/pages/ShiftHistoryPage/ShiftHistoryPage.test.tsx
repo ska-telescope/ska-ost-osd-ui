@@ -23,7 +23,7 @@ function mounting(theTheme) {
   );
 }
 
-describe('<DisplayShiftComponent />', () => {
+describe('ShiftHistoryPage Theme Rendering', () => {
   for (const theTheme of THEME) {
     it(`Theme ${theTheme}: Renders`, () => {
       mounting(theTheme);

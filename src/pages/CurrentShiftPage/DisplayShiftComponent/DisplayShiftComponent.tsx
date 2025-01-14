@@ -94,7 +94,7 @@ function DisplayShiftComponent() {
           <DriveFileRenameOutlineIcon
             color="secondary"
             aria-label={t('ariaLabel.edit')}
-            data-testid="editShifComment"
+            data-testid="editShiftComment"
             style={{
               cursor: 'pointer',
               position: 'relative',

@@ -25,7 +25,7 @@ function mounting(theTheme) {
   );
 }
 
-describe('<DisplayShiftComponent />', () => {
+describe('SearchByEb Theme Rendering', () => {
   for (const theTheme of THEME) {
     it(`Theme ${theTheme}: Renders`, () => {
       mounting(theTheme);

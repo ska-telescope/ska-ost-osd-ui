@@ -5,7 +5,7 @@ import theme from '../../services/theme/theme';
 import ImageDisplayComponent from './ImageDisplayComponent';
 import { mount } from 'cypress/react';
 
-describe('<Legend />', () => {
+describe('ImageDisplayComponent Theme Rendering', () => {
   beforeEach(() => {
     cy.stub(require('react-i18next'), 'useTranslation').returns({
       t: (key) => (key === 'label.noImageFound' ? 'No images found' : key)
