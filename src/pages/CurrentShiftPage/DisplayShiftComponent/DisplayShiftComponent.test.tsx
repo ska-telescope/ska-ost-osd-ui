@@ -49,7 +49,7 @@ describe('<DisplayShiftComponent />', () => {
 
   beforeEach(() => {
     const data = [...SHIFT_DATA_LIST];
-    cy.intercept('POST', 'http://127.0.0.1:8000/ska-oso-slt-services/slt/api/v0/shifts/create', {
+    cy.intercept('POST', 'http://127.0.0.1:8000/ska-oso-slt-services/slt/api/v0/shift', {
       statusCode: 200,
       body: { ...data }
     }).as('startNewShift');

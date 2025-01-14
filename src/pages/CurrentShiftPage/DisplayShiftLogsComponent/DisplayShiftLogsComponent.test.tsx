@@ -45,7 +45,7 @@ describe('<DisplayShiftLogsComponent />', () => {
     const data = [...SHIFT_DATA_LIST[0].shift_logs[0]['comments']];
     cy.intercept(
       'POST',
-      'http://127.0.0.1:8000/ska-oso-slt-services/slt/api/v0/shift_log_comments',
+      'http://127.0.0.1:8000/ska-oso-slt-services/slt/api/v0/shift_log_comment',
       {
         statusCode: 200,
         body: { ...data }
@@ -56,7 +56,7 @@ describe('<DisplayShiftLogsComponent />', () => {
     const data = [...SHIFT_DATA_LIST[0].shift_logs[0]['comments']];
     cy.intercept(
       'PUT',
-      'http://127.0.0.1:8000/ska-oso-slt-services/slt/api/v0/shift_log_comments/1',
+      'http://127.0.0.1:8000/ska-oso-slt-services/slt/api/v0/shift_log_comment/1',
       {
         statusCode: 200,
         body: { ...data }

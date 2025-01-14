@@ -1,4 +1,4 @@
-export const shiftCreatePath = `shifts/create`;
+export const shiftCreatePath = `shift`;
 
 export const shiftCurrentPath = `current_shift`;
 
@@ -16,7 +16,7 @@ export const createShiftPath = (shiftId: string, pathToCreate: string): string =
     case 'end':
       return `shift/end/${shiftId}`;
     case 'update':
-      return `shift/update/${shiftId}`;
+      return `shift/${shiftId}`;
     default:
       throw new Error(`Invalid path type: ${pathToCreate}`);
   }
@@ -43,13 +43,13 @@ export const createShiftLogCommentPath = (
 ): string => {
   switch (pathToCreate) {
     case 'basePath':
-      return `shift_log_comments`;
+      return `shift_log_comment`;
     case 'id':
-      return `shift_log_comments/${shiftLogCommentId}`;
+      return `shift_log_comment/${shiftLogCommentId}`;
     case 'image':
-      return `shift_log_comments/upload_image/${shiftLogCommentId}`;
+      return `shift_log_comment/upload_image/${shiftLogCommentId}`;
     case 'imageDownload':
-      return `shift_log_comments/download_images/${shiftLogCommentId}`;
+      return `shift_log_comment/download_images/${shiftLogCommentId}`;
     default:
       throw new Error(`Invalid path type: ${pathToCreate}`);
   }
