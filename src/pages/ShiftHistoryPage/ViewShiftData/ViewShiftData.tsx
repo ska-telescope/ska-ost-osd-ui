@@ -59,15 +59,18 @@ const ViewShiftData = ({ data }) => {
 
   const renderModalMessageResponse = () => (
     <InfoCard
+      minHeight="15px"
       fontSize={16}
       color={InfoCardColorTypes.Success}
       message={t(successMessage)}
       testId="successAnnotationStatusMsg"
     />
   );
+
   const useLocalData = () => {
     setShiftAnnotationData(SHIFT_DATA_LIST[0]['annotations']);
   };
+
   const fetchSltHistoryByID = async () => {
     if (USE_LOCAL_DATA) {
       useLocalData();

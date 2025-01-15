@@ -137,6 +137,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
       return row;
     });
   }
+
   const postLogImage = async (file) => {
     if (shiftNewLogCommentID && commentValue !== '') {
       const path = createShiftLogCommentPath(shiftNewLogCommentID, 'image');
@@ -229,6 +230,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
       }, 3000);
     }
   };
+
   const updateLogComments = async (logIndex, commentItem) => {
     if (updateCommentValue === '') return;
     const updateCommentPayload = {
@@ -258,6 +260,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
     setIsUpdateEnable(false);
     setComment(event);
   };
+
   const handleUpdateInputChange = (event) => {
     setUpdateComment(event);
   };
@@ -345,6 +348,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
       </Grid>
     </Grid>
   );
+
   const fetchImage = async (commentId) => {
     setImages([]);
     const path = createShiftLogCommentPath(commentId, 'imageDownload');
@@ -355,6 +359,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
       setImages([{ isEmpty: true }]);
     }
   };
+
   const handleOpenImage = (commentId) => {
     setOpenModal(true);
     fetchImage(commentId);
@@ -364,6 +369,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
     setShiftLogCommentID('');
     setSelectedLogDetails(logDetails);
   };
+
   const handleClose = () => {
     setOpenModal(false);
   };
