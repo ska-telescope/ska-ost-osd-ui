@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 
+0.3.0
+-----------
+
+- Added End shift API.
+- Added Annotation functionality for adding / updating on shift history page.
+- Added search filters to search using Execution Block (EB) ID and Scheduling Block Instance (SBI) ID.
+- Updated SLT services version to 0.3.1.
+
 
 0.2.0
 -----------
