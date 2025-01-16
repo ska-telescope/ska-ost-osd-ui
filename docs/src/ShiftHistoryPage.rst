@@ -93,6 +93,15 @@ User will be able to select search type "Search by EB ID" from dropdown then use
 
 |
 
+User will be able to view the results in tabular format as shown below image. 
+
+.. figure:: /images/searchByEbIdData.png
+   :width: 100%
+   :align: center
+   :alt: EB Id Data
+
+|
+
 Search by SBI ID
 ~~~~~~~~~~~~~~~~~~~
 
@@ -108,9 +117,9 @@ User will be able to select search type "Search by SBI ID" from dropdown then us
 
 User will be able to view the results in tabular format as shown below image. 
 
-.. figure:: /images/searchByStatusData.png
+.. figure:: /images/searchBySbiIdData.png
    :width: 100%
    :align: center
-   :alt: Shift history
+   :alt: SBI Id Data
 
 |

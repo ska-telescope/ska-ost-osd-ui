@@ -36,7 +36,7 @@ import ImageDisplayComponent from '../../../components/ImageDisplayComponent/Ima
 
 const RequestResponseDisplay = ({ responseArray }) => {
   const { t } = useTranslation('translations');
-  const [openPannel] = useState(false);
+  const [openPanel] = useState(false);
   let id = 1;
   if (responseArray && responseArray.length > 0) {
     responseArray.map((row) => {
@@ -50,7 +50,7 @@ const RequestResponseDisplay = ({ responseArray }) => {
         responseArray.length > 0 &&
         responseArray.map((dataItem) => (
           <div key={dataItem.id}>
-            <Accordion defaultExpanded={openPannel}>
+            <Accordion defaultExpanded={openPanel}>
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="panel1-content"
@@ -92,7 +92,7 @@ const RequestResponseDisplay = ({ responseArray }) => {
                 </Grid>
                 <Grid container justifyContent="start" style={{ paddingTop: '10px' }}>
                   <Grid item xs={12} sm={12} md={12}>
-                    <Typography style={{ textDecoration: 'underline', fontSize: '15px' }}>
+                    <Typography style={{ fontSize: '15px' }}>
                       {' '}
                       <b>{t('label.details')}</b>
                     </Typography>
@@ -137,6 +137,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
       return row;
     });
   }
+
   const postLogImage = async (file) => {
     if (shiftNewLogCommentID && commentValue !== '') {
       const path = createShiftLogCommentPath(shiftNewLogCommentID, 'image');
@@ -181,7 +182,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
         }, 3000);
       }
     } else {
-      const path = `shift_log_comments/upload_image?shift_id=${shiftData.shift_id}&shift_operator=${shiftData.shift_operator}&eb_id=${selectedLogDetails && selectedLogDetails.info && selectedLogDetails.info.eb_id ? selectedLogDetails.info.eb_id : ''}`;
+      const path = `shift_log_comment/upload_image?shift_id=${shiftData.shift_id}&shift_operator=${shiftData.shift_operator}&eb_id=${selectedLogDetails && selectedLogDetails.info && selectedLogDetails.info.eb_id ? selectedLogDetails.info.eb_id : ''}`;
       const formData = new FormData();
       formData.append('file', file);
       const response = await apiService.addImage(path, formData, config);
@@ -229,6 +230,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
       }, 3000);
     }
   };
+
   const updateLogComments = async (logIndex, commentItem) => {
     if (updateCommentValue === '') return;
     const updateCommentPayload = {
@@ -258,6 +260,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
     setIsUpdateEnable(false);
     setComment(event);
   };
+
   const handleUpdateInputChange = (event) => {
     setUpdateComment(event);
   };
@@ -345,6 +348,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
       </Grid>
     </Grid>
   );
+
   const fetchImage = async (commentId) => {
     setImages([]);
     const path = createShiftLogCommentPath(commentId, 'imageDownload');
@@ -355,6 +359,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
       setImages([{ isEmpty: true }]);
     }
   };
+
   const handleOpenImage = (commentId) => {
     setOpenModal(true);
     fetchImage(commentId);
@@ -364,6 +369,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
     setShiftLogCommentID('');
     setSelectedLogDetails(logDetails);
   };
+
   const handleClose = () => {
     setOpenModal(false);
   };
@@ -431,9 +437,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
                     </Grid>
                   </Grid>
                   <Grid container justifyContent="start">
-                    <span
-                      style={{ textDecoration: 'underline', fontWeight: 900, fontSize: '16px' }}
-                    >
+                    <span style={{ fontWeight: 900, fontSize: '16px' }}>
                       {t('label.ebObservations')}
                     </span>
                     <Grid item xs={12} sm={12} md={12}>
@@ -460,7 +464,6 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
                         <Grid item xs={12} sm={12} md={4}>
                           <p
                             style={{
-                              textDecoration: 'underline',
                               fontWeight: 900,
                               fontSize: '18px'
                             }}
@@ -517,7 +520,6 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
                           <div>
                             <p
                               style={{
-                                textDecoration: 'underline',
                                 fontWeight: 900,
                                 fontSize: '18px'
                               }}
@@ -560,7 +562,6 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
                         <Grid item xs={12} sm={12} md={5}>
                           <p
                             style={{
-                              textDecoration: 'underline',
                               fontWeight: 900,
                               fontSize: '18px'
                             }}

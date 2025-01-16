@@ -5,7 +5,7 @@ import theme from '../../services/theme/theme';
 import Loader from './Loader';
 import { mount } from 'cypress/react';
 
-describe('<Legend />', () => {
+describe('Loader Theme Rendering', () => {
   it(`Theme ${THEME_DARK}: Renders`, () => {
     cy.mount(
       <ThemeProvider theme={theme(THEME_DARK)}>
@@ -25,7 +25,7 @@ describe('<Legend />', () => {
   });
 });
 
-describe('Loader Component', () => {
+describe('Loader Component Tests', () => {
   beforeEach(() => {
     mount(<Loader />);
   });

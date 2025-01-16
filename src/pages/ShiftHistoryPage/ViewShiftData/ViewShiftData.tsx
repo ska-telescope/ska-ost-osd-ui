@@ -59,15 +59,18 @@ const ViewShiftData = ({ data }) => {
 
   const renderModalMessageResponse = () => (
     <InfoCard
+      minHeight="15px"
       fontSize={16}
       color={InfoCardColorTypes.Success}
       message={t(successMessage)}
       testId="successAnnotationStatusMsg"
     />
   );
+
   const useLocalData = () => {
     setShiftAnnotationData(SHIFT_DATA_LIST[0]['annotations']);
   };
+
   const fetchSltHistoryByID = async () => {
     if (USE_LOCAL_DATA) {
       useLocalData();
@@ -269,7 +272,6 @@ const ViewShiftData = ({ data }) => {
                   <p
                     data-testid="viewShiftCommentsHistory"
                     style={{
-                      textDecoration: 'underline',
                       fontWeight: 900,
                       fontSize: '18px',
                       marginBottom: 0
@@ -348,7 +350,6 @@ const ViewShiftData = ({ data }) => {
                   <p
                     data-testid="viewShiftAnnotations"
                     style={{
-                      textDecoration: 'underline',
                       fontWeight: 900,
                       fontSize: '18px',
                       marginBottom: 0
@@ -454,7 +455,6 @@ const ViewShiftData = ({ data }) => {
                 <p
                   data-testid="addShiftAnnotation"
                   style={{
-                    textDecoration: 'underline',
                     fontWeight: 900,
                     fontSize: '18px',
                     marginBottom: 0
@@ -467,7 +467,6 @@ const ViewShiftData = ({ data }) => {
                 <p
                   data-testid="addShiftAnnotation"
                   style={{
-                    textDecoration: 'underline',
                     fontWeight: 900,
                     fontSize: '18px',
                     marginBottom: 0

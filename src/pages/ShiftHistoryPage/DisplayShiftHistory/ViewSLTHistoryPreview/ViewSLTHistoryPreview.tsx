@@ -1,5 +1,5 @@
 import React from 'react';
-import PreviewIcon from '@mui/icons-material/Preview';
+import View from '@mui/icons-material/VisibilityRounded';
 import apiService from '../../../../services/apis';
 import { createShiftPath } from '../../../../utils/api_constants';
 import SHIFT_DATA_LIST from '../../../../DataModels/DataFiles/ShiftDataList';
@@ -29,7 +29,7 @@ const ViewSLTHistory = ({ shiftData, updatedList }: EntryFieldProps) => {
   };
 
   return (
-    <PreviewIcon
+    <View
       data-testid={`iconViewShift`}
       style={{ cursor: 'pointer', marginTop: '10px' }}
       onClick={() => fetchSltHistoryByID()}
