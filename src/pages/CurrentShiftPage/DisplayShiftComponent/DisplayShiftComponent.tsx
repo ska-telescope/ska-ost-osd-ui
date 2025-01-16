@@ -600,7 +600,6 @@ function DisplayShiftComponent() {
               <p
                 data-testid="viewShiftComments"
                 style={{
-                  textDecoration: 'underline',
                   fontWeight: 900,
                   fontSize: '18px',
                   marginBottom: 0
@@ -746,7 +745,6 @@ function DisplayShiftComponent() {
                 <p
                   data-testid="addShiftComment"
                   style={{
-                    textDecoration: 'underline',
                     fontWeight: 900,
                     fontSize: '18px',
                     marginBottom: 0
@@ -759,7 +757,6 @@ function DisplayShiftComponent() {
                 <p
                   data-testid="addShiftComment"
                   style={{
-                    textDecoration: 'underline',
                     fontWeight: 900,
                     fontSize: '18px',
                     marginBottom: 0
@@ -797,7 +794,6 @@ function DisplayShiftComponent() {
             <div>
               <p
                 style={{
-                  textDecoration: 'underline',
                   fontWeight: 900,
                   fontSize: '18px',
                   marginLeft: '17px',

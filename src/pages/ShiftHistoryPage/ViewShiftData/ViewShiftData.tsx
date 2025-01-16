@@ -272,7 +272,6 @@ const ViewShiftData = ({ data }) => {
                   <p
                     data-testid="viewShiftCommentsHistory"
                     style={{
-                      textDecoration: 'underline',
                       fontWeight: 900,
                       fontSize: '18px',
                       marginBottom: 0
@@ -351,7 +350,6 @@ const ViewShiftData = ({ data }) => {
                   <p
                     data-testid="viewShiftAnnotations"
                     style={{
-                      textDecoration: 'underline',
                       fontWeight: 900,
                       fontSize: '18px',
                       marginBottom: 0
@@ -457,7 +455,6 @@ const ViewShiftData = ({ data }) => {
                 <p
                   data-testid="addShiftAnnotation"
                   style={{
-                    textDecoration: 'underline',
                     fontWeight: 900,
                     fontSize: '18px',
                     marginBottom: 0
@@ -470,7 +467,6 @@ const ViewShiftData = ({ data }) => {
                 <p
                   data-testid="addShiftAnnotation"
                   style={{
-                    textDecoration: 'underline',
                     fontWeight: 900,
                     fontSize: '18px',
                     marginBottom: 0

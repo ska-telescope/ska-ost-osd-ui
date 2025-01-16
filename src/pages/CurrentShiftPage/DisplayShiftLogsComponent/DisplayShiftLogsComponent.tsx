@@ -92,7 +92,7 @@ const RequestResponseDisplay = ({ responseArray }) => {
                 </Grid>
                 <Grid container justifyContent="start" style={{ paddingTop: '10px' }}>
                   <Grid item xs={12} sm={12} md={12}>
-                    <Typography style={{ textDecoration: 'underline', fontSize: '15px' }}>
+                    <Typography style={{ fontSize: '15px' }}>
                       {' '}
                       <b>{t('label.details')}</b>
                     </Typography>
@@ -437,9 +437,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
                     </Grid>
                   </Grid>
                   <Grid container justifyContent="start">
-                    <span
-                      style={{ textDecoration: 'underline', fontWeight: 900, fontSize: '16px' }}
-                    >
+                    <span style={{ fontWeight: 900, fontSize: '16px' }}>
                       {t('label.ebObservations')}
                     </span>
                     <Grid item xs={12} sm={12} md={12}>
@@ -466,7 +464,6 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
                         <Grid item xs={12} sm={12} md={4}>
                           <p
                             style={{
-                              textDecoration: 'underline',
                               fontWeight: 900,
                               fontSize: '18px'
                             }}
@@ -523,7 +520,6 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
                           <div>
                             <p
                               style={{
-                                textDecoration: 'underline',
                                 fontWeight: 900,
                                 fontSize: '18px'
                               }}
@@ -566,7 +562,6 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
                         <Grid item xs={12} sm={12} md={5}>
                           <p
                             style={{
-                              textDecoration: 'underline',
                               fontWeight: 900,
                               fontSize: '18px'
                             }}
