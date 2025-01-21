@@ -19,6 +19,10 @@ stages:
   - accessibility
   - publish
 
+docs-build-rtd:
+  rules:
+    - exists:
+        - .readthedocs.yaml
 js-test:
   image: ${TEST_IMAGE}
   before_script:
