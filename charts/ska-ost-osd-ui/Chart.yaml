@@ -2,7 +2,7 @@
 apiVersion: v2
 
 name: ska-ost-osd-ui
-description: A Helm chart to deploy the Project Tracking Tool
+description: A Helm chart to deploy the Observatory Static Data UI
 type: application
 home: https://gitlab.com/ska-telescope/ost/ska-ost-osd-ui
 icon: https://www.skatelescope.org/wp-content/uploads/2016/07/09545_NEW_LOGO_2014.png
