@@ -4,6 +4,7 @@ variables:
   a11y_urls: $KUBE_HOST/$KUBE_NAMESPACE/osd
   JS_NODE_VERSION: 21
   TEST_IMAGE: cypress/browsers:node-20.12.2-chrome-124.0.6367.60-1-ff-125.0.2-edge-124.0.2478.51-1
+  DOCS_RTD_PROJECT_SLUG: ska-ost-osd-ui
 
 stages:
   - dependencies
