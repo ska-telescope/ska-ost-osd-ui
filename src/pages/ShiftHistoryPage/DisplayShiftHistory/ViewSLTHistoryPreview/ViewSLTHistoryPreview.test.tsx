@@ -21,10 +21,14 @@ function mounting(theTheme) {
   );
 }
 
-describe('ViewSLTHistoryPreview Theme Rendering', () => {
+describe('<ViewSLTHistoryPreview />', () => {
   for (const theTheme of THEME) {
     it(`Theme ${theTheme}: Renders`, () => {
       mounting(theTheme);
+      cy.get('body').then(() => {
+        cy.get('[data-testid="iconViewShift"]').should('be.visible');
+        cy.get('[data-testid="iconViewShift"]').click({ force: true });
+      });
     });
   }
 });
