@@ -47,7 +47,6 @@ describe('<DisplayShiftComponent />', () => {
       body: { ...data }
     }).as('postComment');
   });
-
   beforeEach(() => {
     const data = [...SHIFT_DATA_LIST];
     cy.intercept('POST', '/__cypress/iframes/undefined/shift', {
@@ -65,9 +64,9 @@ describe('<DisplayShiftComponent />', () => {
   beforeEach(() => {
     const data = [...SHIFT_DATA_LIST];
     cy.intercept('GET', '/__cypress/iframes/undefined/shift?shift_id=sl-m0001-20250106-11785506', {
-      statusCode: 404,
+      statusCode: 200,
       body: { ...data }
-    }).as('getDataById');
+    }).as('getDataBySLTID');
   });
 
   it('shiftStartButton', () => {
@@ -86,13 +85,14 @@ describe('<DisplayShiftComponent />', () => {
         cy.get('[data-testid="operatorShiftComment"]').type('This is dummy comments');
         cy.get('[data-testid="shiftCommentButton"]').click({ force: true });
         cy.wait('@postComment');
-        // cy.wait('@getDataById');
         cy.get('[data-testid="successCommentStatusMsg"]').contains('msg.commentSubmit');
+        cy.wait(2000);
+        cy.wait('@getDataBySLTID');
         cy.get('[data-testid="shiftCommentModalClose"]').click({ force: true });
-        // cy.get('[data-testid="editShiftComment"]').click({ force: true, multiple: true });
-        // cy.get('[data-testid="shiftCommentButton"]').click({ force: true });
-        // cy.wait('@putComment');
-        // cy.get('[data-testid="shiftCommentModalClose"]').click({ force: true });
+        cy.get('[data-testid="editShiftComment"]').click({ force: true, multiple: true });
+        cy.get('[data-testid="shiftCommentButton"]').click({ force: true });
+        cy.wait('@putComment');
+        cy.get('[data-testid="shiftCommentModalClose"]').click({ force: true });
       }
     });
   });
