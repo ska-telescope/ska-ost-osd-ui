@@ -46,7 +46,6 @@ describe('<ShiftHistoryPage />', () => {
         cy.contains('Search by operator').click({ force: true });
         cy.get('[data-testid="operatorName"]').type('DefaultUser');
         cy.get('[data-testid="logHistorySearchByOperator"]').click({ force: true });
-        cy.wait('@getDataByUser');
         cy.get('[data-testid="logSearchBy"]').click();
         cy.contains('Search by status').click({ force: true });
         cy.get('[data-testid="sbiStatus"]').type('Created');
