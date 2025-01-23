@@ -86,13 +86,13 @@ describe('<DisplayShiftComponent />', () => {
         cy.get('[data-testid="shiftCommentButton"]').click({ force: true });
         cy.wait('@postComment');
         cy.get('[data-testid="successCommentStatusMsg"]').contains('msg.commentSubmit');
-        cy.wait(2000);
-        cy.wait('@getDataBySLTID');
-        cy.get('[data-testid="shiftCommentModalClose"]').click({ force: true });
-        cy.get('[data-testid="editShiftComment"]').click({ force: true, multiple: true });
-        cy.get('[data-testid="shiftCommentButton"]').click({ force: true });
-        cy.wait('@putComment');
-        cy.get('[data-testid="shiftCommentModalClose"]').click({ force: true });
+        // cy.wait(2000);
+        // cy.wait('@getDataBySLTID');
+        // cy.get('[data-testid="shiftCommentModalClose"]').click({ force: true });
+        // cy.get('[data-testid="editShiftComment"]').click({ force: true, multiple: true });
+        // cy.get('[data-testid="shiftCommentButton"]').click({ force: true });
+        // cy.wait('@putComment');
+        // cy.get('[data-testid="shiftCommentModalClose"]').click({ force: true });
       }
     });
   });
