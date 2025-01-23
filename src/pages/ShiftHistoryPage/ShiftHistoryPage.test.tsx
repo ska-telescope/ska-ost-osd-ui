@@ -24,15 +24,29 @@ function mounting(theTheme) {
 }
 
 describe('<ShiftHistoryPage />', () => {
+  beforeEach(() => {
+    cy.intercept(
+      {
+        method: 'POST',
+        url: '/__cypress/iframes/undefined/shifts'
+      },
+      {
+        shift_operator: 'DefaultUser',
+        match_type: 'contains'
+      }
+    ).as('getDataByUser');
+  });
+
   for (const theTheme of THEME) {
     it(`Theme ${theTheme}: Renders`, () => {
       mounting(theTheme);
       cy.get('body').then(() => {
+        // eslint-disable-next-line cypress/no-unnecessary-waiting
         cy.get('[data-testid="logSearchBy"]').click();
         cy.contains('Search by operator').click({ force: true });
         cy.get('[data-testid="operatorName"]').type('DefaultUser');
         cy.get('[data-testid="logHistorySearchByOperator"]').click({ force: true });
-
+        cy.wait('@getDataByUser');
         cy.get('[data-testid="logSearchBy"]').click();
         cy.contains('Search by status').click({ force: true });
         cy.get('[data-testid="sbiStatus"]').type('Created');
