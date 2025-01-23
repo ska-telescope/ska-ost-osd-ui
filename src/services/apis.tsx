@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from 'axios';
+import { SKA_PTT_API_URL } from './../utils/constants';
 
 export interface customAxiosResponse {
   data: object;
@@ -26,17 +27,13 @@ function handleAxiosError(error: object) {
 }
 
 const apiService = {
-  baseURL: () => window.env.BACKEND_URL,
-
   getURLPath: async (path): Promise<any> => {
-    const baseUrl = apiService.baseURL();
-    const url = `${baseUrl}/${path}`;
+    const url = `${SKA_PTT_API_URL}/${path}`;
     return url;
   },
 
   postShiftData: async (path, shiftData: any): Promise<any> => {
-    const baseUrl = apiService.baseURL();
-    const url = `${baseUrl}/${path}`;
+    const url = `${SKA_PTT_API_URL}/${path}`;
 
     try {
       const result = await axios.post<JSON>(url, shiftData);
@@ -48,8 +45,7 @@ const apiService = {
   },
 
   putShiftData: async (path, shiftData: any): Promise<any> => {
-    const baseUrl = apiService.baseURL();
-    const url = `${baseUrl}/${path}`;
+    const url = `${SKA_PTT_API_URL}/${path}`;
 
     try {
       const result = await axios.put<JSON>(url, shiftData);
@@ -61,8 +57,7 @@ const apiService = {
   },
 
   updateLogComments: async (path, payload): Promise<any> => {
-    const baseUrl = apiService.baseURL();
-    const url = `${baseUrl}/${path}`;
+    const url = `${SKA_PTT_API_URL}/${path}`;
 
     try {
       const result = await axios.put<JSON>(url, payload);
@@ -74,20 +69,18 @@ const apiService = {
   },
 
   getSltData: async (path: string): Promise<any> => {
-    const baseUrl = apiService.baseURL();
-    const url = `${baseUrl}/${path}`;
+    const url = `${SKA_PTT_API_URL}/${path}`;
     try {
       const result = await axios.get(url);
       return { data: result.data, status: 200, error: null };
     } catch (err) {
-      const errorResponse = handleAxiosError(err);
-      return { data: null, status: errorResponse.status, error: errorResponse.error };
+      const result = await axios.get(url);
+      return { data: result.data, status: 200, error: null };
     }
   },
 
   getSltLogs: async (path: string): Promise<any> => {
-    const baseUrl = apiService.baseURL();
-    const url = `${baseUrl}/${path}`;
+    const url = `${SKA_PTT_API_URL}/${path}`;
     try {
       const result = await axios.get(url);
       return { data: result.data, status: 200, error: null };
@@ -98,8 +91,7 @@ const apiService = {
   },
 
   updateImage: async (path, formData, config): Promise<any> => {
-    const baseUrl = apiService.baseURL();
-    const url = `${baseUrl}/${path}`;
+    const url = `${SKA_PTT_API_URL}/${path}`;
 
     try {
       const result = await axios.put(url, formData, config);
@@ -111,8 +103,7 @@ const apiService = {
   },
 
   addImage: async (path, formData, config): Promise<any> => {
-    const baseUrl = apiService.baseURL();
-    const url = `${baseUrl}/${path}`;
+    const url = `${SKA_PTT_API_URL}/${path}`;
 
     try {
       const result = await axios.post(url, formData, config);
@@ -124,8 +115,7 @@ const apiService = {
   },
 
   getImage: async (path): Promise<any> => {
-    const baseUrl = apiService.baseURL();
-    const url = `${baseUrl}/${path}`;
+    const url = `${SKA_PTT_API_URL}/${path}`;
 
     try {
       const result = await axios.get(url);
