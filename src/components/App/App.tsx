@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import {
@@ -11,7 +11,8 @@ import {
 import { storageObject } from '@ska-telescope/ska-gui-local-storage';
 import theme from '../../services/theme/theme';
 import Loader from '../Loader/Loader';
-import ReactSkeleton from '../ReactSkeleton/ReactSkeleton';
+import JsonEditor from '../JsonEditor/JsonEditor';
+import mockData from '../../utils/mock_data';
 
 const HEADER_HEIGHT = 70;
 const FOOTER_HEIGHT = 20;
@@ -62,9 +63,9 @@ function App() {
         }
         <Spacer size={HEADER_HEIGHT} axis={SPACER_VERTICAL} />
         {
-          // This is the ONLY component that is accessible via micro-frontend implementation
+          // This is where we render the JSON Editor
         }
-        <ReactSkeleton data-testid="ReactSkeleton" />
+        <JsonEditor initialData={mockData} onSave={(data) => console.log('Saved data:', data)} />
         {
           // Example of the spacer being used to stop content from being hidden behind the Footer component
         }
