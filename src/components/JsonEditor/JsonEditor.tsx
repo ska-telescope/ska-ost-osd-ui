@@ -14,7 +14,10 @@ import {
   DialogActions
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import AddIcon from '@mui/icons-material/Add';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import EditIcon from '@mui/icons-material/Edit';
+import CloseIcon from '@mui/icons-material/Close';
+import { isValidJson, formatJson } from './utils';
 import DeleteIcon from '@mui/icons-material/Delete';
 import mockData from '../../utils/mock_data.json';
 
@@ -22,13 +25,12 @@ interface JsonEditorProps {
   onSave: (data: any) => void;
 }
 
-const JsonEditor: React.FC<JsonEditorProps> = ({ onSave }) => {
-  const [data, setData] = useState({
-    telescope: mockData.capabilities.mid.telescope,
-    basic_capabilities: mockData.capabilities.mid.basic_capabilities,
-    ...Object.fromEntries(Object.entries(mockData.capabilities.mid).filter(([key]) => key.startsWith('AA'))),
-    observatory_policy: mockData.observatory_policy
-  });
+const JsonEditor: React.FC<JsonEditorProps> = ({ initialData, onSave }) => {
+  const [data, setData] = useState(initialData?.capabilities?.mid || { basic_capabilities: {} });
+  const [observatoryPolicy, setObservatoryPolicy] = useState(initialData?.observatory_policy || {});
+  const [selectedSection, setSelectedSection] = useState('');
+  const [jsonEditMode, setJsonEditMode] = useState(false);
+  const [jsonEditContent, setJsonEditContent] = useState('');
   const [jsonView, setJsonView] = useState('');
   const [openDialog, setOpenDialog] = useState(false);
   const [currentSection, setCurrentSection] = useState('');
@@ -135,20 +137,64 @@ const JsonEditor: React.FC<JsonEditorProps> = ({ onSave }) => {
     setJsonView(JSON.stringify(data, null, 2));
   };
 
+  const handleJsonViewEdit = (section: string) => {
+    setSelectedSection(section);
+    let contentToEdit = {};
+    
+    if (section === 'basic_capabilities') {
+      contentToEdit = data.basic_capabilities;
+    } else if (section === 'array_assemblies') {
+      contentToEdit = Object.fromEntries(
+        Object.entries(data).filter(([key]) => key.startsWith('AA'))
+      );
+    } else if (section === 'observatory_policy') {
+      contentToEdit = observatoryPolicy;
+    }
+    
+    setJsonEditContent(formatJson(contentToEdit));
+    setJsonEditMode(true);
+  };
+
+  const handleJsonEditSave = () => {
+    try {
+      const updatedContent = JSON.parse(jsonEditContent);
+      
+      if (selectedSection === 'basic_capabilities') {
+        setData({ ...data, basic_capabilities: updatedContent });
+      } else if (selectedSection === 'array_assemblies') {
+        const currentData = { ...data };
+        // Remove existing AA entries
+        Object.keys(currentData).forEach(key => {
+          if (key.startsWith('AA')) {
+            delete currentData[key];
+          }
+        });
+        // Add updated AA entries
+        setData({ ...currentData, ...updatedContent });
+      } else if (selectedSection === 'observatory_policy') {
+        setObservatoryPolicy(updatedContent);
+      }
+      
+      setJsonEditMode(false);
+      setSelectedSection('');
+      setJsonEditContent('');
+    } catch (e) {
+      console.error('Failed to parse JSON:', e);
+    }
+  };
+
   // Handle save
   const handleSave = () => {
     const updatedMockData = {
-      ...mockData,
+      ...initialData,
       capabilities: {
-        ...mockData.capabilities,
-        mid: {
-          ...Object.fromEntries(Object.entries(data).filter(([key]) => key !== 'observatory_policy')),
-        }
+        ...(initialData?.capabilities || {}),
+        mid: data
       },
-      observatory_policy: data.observatory_policy
+      observatory_policy: observatoryPolicy
     };
     onSave(updatedMockData);
-    updateJsonView();
+    setJsonView(JSON.stringify(updatedMockData, null, 2));
   };
 
   return (
@@ -166,7 +212,7 @@ const JsonEditor: React.FC<JsonEditorProps> = ({ onSave }) => {
           <TextField
             fullWidth
             label="Telescope"
-            value={data.telescope}
+            value={data?.telescope || ''}
             onChange={(e) => handleTelescopeChange(e.target.value)}
             margin="normal"
           />
@@ -181,16 +227,16 @@ const JsonEditor: React.FC<JsonEditorProps> = ({ onSave }) => {
         <AccordionDetails>
           <Box sx={{ mb: 2 }}>
             <Button
-              startIcon={<AddIcon />}
+              startIcon={<AddCircleOutlineIcon />}
               onClick={() => openAddFieldDialog('basic_capabilities')}
               variant="outlined"
               size="small"
               sx={{ color: 'red' }}
             >
-              Add Custom Field
+              New Basic Capabilities
             </Button>
           </Box>
-          {Object.entries(data.basic_capabilities).map(([key, value]) => {
+          {Object.entries(data?.basic_capabilities || {}).map(([key, value]) => {
             if (key === 'receiver_information') {
               return (
                 <Box key={key}>
@@ -227,10 +273,11 @@ const JsonEditor: React.FC<JsonEditorProps> = ({ onSave }) => {
                     </Box>
                   ))}
                   <Button
-                    startIcon={<AddIcon />}
+                    startIcon={<AddCircleOutlineIcon />}
                     onClick={addReceiver}
                     variant="outlined"
-                    sx={{ mt: 1 }}
+                    size='small'
+                    sx={{ color: 'red' }}
                   >
                     Add Receiver
                   </Button>
@@ -249,7 +296,7 @@ const JsonEditor: React.FC<JsonEditorProps> = ({ onSave }) => {
                 />
                 <IconButton 
                   onClick={() => {
-                    const { [key]: removed, ...rest } = data.basic_capabilities;
+                    const { [key]: removed, ...rest } = data?.basic_capabilities || {};
                     setData({
                       ...data,
                       basic_capabilities: rest
@@ -279,12 +326,13 @@ const JsonEditor: React.FC<JsonEditorProps> = ({ onSave }) => {
               <AccordionDetails>
                 <Box sx={{ mb: 2 }}>
                   <Button
-                    startIcon={<AddIcon />}
+                    startIcon={<AddCircleOutlineIcon />}
                     onClick={() => openAddFieldDialog(assembly)}
                     variant="outlined"
                     size="small"
+                    sx={{ color: 'red' }}
                   >
-                    Add Custom Field
+                    New Array Assembly Field
                   </Button>
                 </Box>
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
@@ -345,10 +393,11 @@ const JsonEditor: React.FC<JsonEditorProps> = ({ onSave }) => {
             </Accordion>
           ))}
           <Button
-            startIcon={<AddIcon />}
+            startIcon={<AddCircleOutlineIcon />}
             onClick={addArrayAssembly}
             variant="outlined"
-            sx={{ mt: 1 }}
+            size="small"
+            sx={{ color: 'red' }}
           >
             Add Array Assembly
           </Button>
@@ -363,15 +412,16 @@ const JsonEditor: React.FC<JsonEditorProps> = ({ onSave }) => {
         <AccordionDetails>
           <Box sx={{ mb: 2 }}>
             <Button
-              startIcon={<AddIcon />}
+              startIcon={<AddCircleOutlineIcon />}
               onClick={() => openAddFieldDialog('observatory_policy')}
               variant="outlined"
               size="small"
+              sx={{ color: 'red' }}
             >
-              Add Custom Field
+              New Observatory Policy Field
             </Button>
           </Box>
-          {Object.entries(data.observatory_policy).map(([key, value]) => (
+          {Object.entries(observatoryPolicy).map(([key, value]) => (
             <Box key={key} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               {Array.isArray(value) ? (
                 <TextField
@@ -380,38 +430,37 @@ const JsonEditor: React.FC<JsonEditorProps> = ({ onSave }) => {
                   value={value.join(', ')}
                   onChange={(e) => {
                     const updatedPolicy = {
-                      ...data.observatory_policy,
+                      ...observatoryPolicy,
                       [key]: e.target.value.split(', ')
                     };
-                    setData({
-                      ...data,
-                      observatory_policy: updatedPolicy
-                    });
+                    setObservatoryPolicy(updatedPolicy);
                   }}
                   margin="dense"
                 />
               ) : typeof value === 'object' && value !== null ? (
-                <TextField
-                  fullWidth
-                  label={key.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
-                  value={JSON.stringify(value)}
-                  onChange={(e) => {
-                    try {
-                      const parsedValue = JSON.parse(e.target.value);
-                      const updatedPolicy = {
-                        ...data.observatory_policy,
-                        [key]: parsedValue
-                      };
-                      setData({
-                        ...data,
-                        observatory_policy: updatedPolicy
-                      });
-                    } catch (err) {
-                      console.error('Invalid JSON:', err);
-                    }
-                  }}
-                  margin="dense"
-                />
+                <Box sx={{ border: '1px solid #ddd', p: 2, borderRadius: 1, my: 1 }}>
+                  <Typography variant="subtitle2" gutterBottom>
+                    {key.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}:
+                  </Typography>
+                  {Object.entries(value).map(([subKey, subValue]) => (
+                    <TextField
+                      key={subKey}
+                      fullWidth
+                      label={subKey.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                      value={typeof subValue === 'string' ? subValue : JSON.stringify(subValue)}
+                      onChange={(e) => {
+                        const updatedValue = { ...value };
+                        updatedValue[subKey] = e.target.value;
+                        const updatedPolicy = {
+                          ...observatoryPolicy,
+                          [key]: updatedValue
+                        };
+                        setObservatoryPolicy(updatedPolicy);
+                      }}
+                      margin="dense"
+                    />
+                  ))}
+                </Box>
               ) : (
                 <TextField
                   fullWidth
@@ -420,24 +469,18 @@ const JsonEditor: React.FC<JsonEditorProps> = ({ onSave }) => {
                   value={value}
                   onChange={(e) => {
                     const updatedPolicy = {
-                      ...data.observatory_policy,
+                      ...observatoryPolicy,
                       [key]: typeof value === 'number' ? parseFloat(e.target.value) : e.target.value
                     };
-                    setData({
-                      ...data,
-                      observatory_policy: updatedPolicy
-                    });
+                    setObservatoryPolicy(updatedPolicy);
                   }}
                   margin="dense"
                 />
               )}
               <IconButton 
                 onClick={() => {
-                  const { [key]: removed, ...rest } = data.observatory_policy;
-                  setData({
-                    ...data,
-                    observatory_policy: rest
-                  });
+                  const { [key]: removed, ...rest } = observatoryPolicy;
+                  setObservatoryPolicy(rest);
                 }}
                 color="error"
               >
@@ -448,23 +491,75 @@ const JsonEditor: React.FC<JsonEditorProps> = ({ onSave }) => {
         </AccordionDetails>
       </Accordion>
 
-      {/* JSON View Section */}
-      <Accordion>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography variant="h6">JSON View</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <TextField
-            fullWidth
-            multiline
-            rows={10}
-            value={jsonView}
-            InputProps={{
-              readOnly: true,
-            }}
-          />
-        </AccordionDetails>
-      </Accordion>
+      {/* JSON View and Edit Section */}
+      {selectedSection && (
+        <Dialog
+          open={jsonEditMode}
+          onClose={() => setJsonEditMode(false)}
+          maxWidth="md"
+          fullWidth
+        >
+          <DialogTitle>
+            Edit {selectedSection} (JSON)
+            <IconButton
+              aria-label="close"
+              onClick={() => setJsonEditMode(false)}
+              sx={{ position: 'absolute', right: 8, top: 8 }}
+            >
+              <CloseIcon />
+            </IconButton>
+          </DialogTitle>
+          <DialogContent>
+            <TextField
+              fullWidth
+              multiline
+              rows={15}
+              value={jsonEditContent}
+              onChange={(e) => setJsonEditContent(e.target.value)}
+              error={!isValidJson(jsonEditContent)}
+              helperText={!isValidJson(jsonEditContent) ? 'Invalid JSON format' : ''}
+              sx={{ mt: 2 }}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setJsonEditMode(false)} color="secondary">
+              Cancel
+            </Button>
+            <Button 
+              onClick={handleJsonEditSave}
+              disabled={!isValidJson(jsonEditContent)}
+              color="primary"
+            >
+              Save Changes
+            </Button>
+          </DialogActions>
+        </Dialog>
+      )}
+
+      {/* Action Buttons */}
+      <Box sx={{ mt: 2, display: 'flex', gap: 2 }}>
+        <Button
+          variant="contained"
+          onClick={() => handleJsonViewEdit('basic_capabilities')}
+          startIcon={<EditIcon />}
+        >
+          Edit Basic Capabilities (JSON)
+        </Button>
+        <Button
+          variant="contained" 
+          onClick={() => handleJsonViewEdit('array_assemblies')}
+          startIcon={<EditIcon />}
+        >
+          Edit Array Assemblies (JSON)
+        </Button>
+        <Button
+          variant="contained"
+          onClick={() => handleJsonViewEdit('observatory_policy')}
+          startIcon={<EditIcon />}
+        >
+          Edit Observatory Policy (JSON)
+        </Button>
+      </Box>
 
       <Button
         variant="contained"
@@ -472,8 +567,27 @@ const JsonEditor: React.FC<JsonEditorProps> = ({ onSave }) => {
         onClick={handleSave}
         sx={{ mt: 2 }}
       >
-        Save Changes
+        Save All Changes
       </Button>
+
+      {/* Full JSON View */}
+      {jsonView && (
+        <Box sx={{ mt: 2 }}>
+          <Typography variant="h6" gutterBottom>
+            Complete JSON View
+          </Typography>
+          <TextField
+            fullWidth
+            multiline
+            rows={15}
+            value={jsonView}
+            InputProps={{
+              readOnly: true,
+            }}
+            sx={{ mt: 1, mb: 2 }}
+          />
+        </Box>
+      )}
 
       {/* Dialog for adding custom fields */}
       <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
