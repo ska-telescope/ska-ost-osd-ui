@@ -27,7 +27,9 @@ const ImageDisplayComponent = ({ images }) => {
             <hr />
           </div>
         ))}
-      {images && images.length > 0 && images[0].isEmpty && <p>{t('label.noImageFound')}</p>}
+      {images && images.length > 0 && images[0].isEmpty && (
+        <p data-testid="noImageMsg">{t('label.noImageFound')}</p>
+      )}
       {images && images.length === 0 && <p>Loading please wait...</p>}
     </div>
   );

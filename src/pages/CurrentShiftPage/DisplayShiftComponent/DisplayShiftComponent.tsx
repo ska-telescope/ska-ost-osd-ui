@@ -60,6 +60,7 @@ function DisplayShiftComponent() {
   const [shiftCommentID, setShiftCommentID] = useState(null);
   const [successMessage, setMessage] = useState('');
   // const [kafkaMessages, setKafkaMessages] = useState([]);
+  const [shiftComments, setShiftComments] = useState([]);
   const [dataDetails, setShiftData] = useState(null);
   const [displayMessageElement, setDisplayMessageElement] = useState(false);
   const [displayModalMessageElement, setDisplayModalMessageElement] = useState(false);
@@ -135,6 +136,7 @@ function DisplayShiftComponent() {
       setShiftData(
         result && result.data && result.data.length > 0 && result.data[0] ? result.data[0] : []
       );
+      setShiftComments(result.data[0].comments ? result.data[0].comments : []);
     }
   };
 
@@ -167,11 +169,13 @@ function DisplayShiftComponent() {
       setShiftData(
         result && result.data && result.data.length > 0 && result.data[0] ? result.data[0] : []
       );
+      setShiftComments(result.data[0].comments ? result.data[0].comments : []);
     }
   };
 
   const useLocalData = () => {
     setShiftData(SHIFT_DATA_LIST[0]);
+    setShiftComments(SHIFT_DATA_LIST[0].comments ? SHIFT_DATA_LIST[0].comments : []);
   };
   const startNewShift = async () => {
     const shiftData = {
@@ -201,6 +205,7 @@ function DisplayShiftComponent() {
           ? response.data[0]
           : []
       );
+      setShiftComments(response.data[0].comments ? response.data[0].comments : []);
       const intervalLogs = setInterval(() => {
         fetchShiftWithRecentLogs(response.data[0].shift_id);
       }, 10000);
@@ -224,6 +229,7 @@ function DisplayShiftComponent() {
             ? response.data[0]
             : []
         );
+        setShiftComments(response.data[0].comments ? response.data[0].comments : []);
         setDisableButton(false);
         const intervalLogs = setInterval(() => {
           fetchShiftWithRecentLogs(response.data[0].shift_id);
@@ -252,6 +258,7 @@ function DisplayShiftComponent() {
         setDisplayMessageElement(false);
         setShiftComment('');
         setShiftData(null);
+        setShiftComments([]);
       }, 3000);
 
       return true;
@@ -272,6 +279,7 @@ function DisplayShiftComponent() {
         setDisplayMessageElement(false);
         setShiftComment('');
         setShiftData(null);
+        setShiftComments([]);
       }, 3000);
     }
   };
@@ -590,13 +598,13 @@ function DisplayShiftComponent() {
             />
           </Grid>
         </Grid>
-        {dataDetails && dataDetails.comments && dataDetails.comments.length > 0 && (
+        {dataDetails && shiftComments && shiftComments.length > 0 && (
           <Divider style={{ marginTop: '20px' }} />
         )}
 
         <Grid container sx={{ padding: 2, paddingTop: 0, maxHeight: '500px', overflowY: 'scroll' }}>
           <Grid item xs={12} sm={12} md={12}>
-            {dataDetails && dataDetails.comments && dataDetails.comments.length > 0 && (
+            {dataDetails && shiftComments && shiftComments.length > 0 && (
               <p
                 data-testid="viewShiftComments"
                 style={{
@@ -609,9 +617,9 @@ function DisplayShiftComponent() {
               </p>
             )}
             {dataDetails &&
-              dataDetails.comments &&
-              dataDetails.comments.length > 0 &&
-              dataDetails.comments.map((shiftCommentItem, shiftCommentIndex) => (
+              shiftComments &&
+              shiftComments.length > 0 &&
+              shiftComments.map((shiftCommentItem, shiftCommentIndex) => (
                 <div key={shiftCommentItem.id}>
                   <Grid container justifyContent="start">
                     <Grid item xs={12} sm={12} md={4}>
@@ -651,7 +659,7 @@ function DisplayShiftComponent() {
                     </Grid>
                   </Grid>
 
-                  {shiftCommentIndex !== dataDetails.comments.length - 1 && (
+                  {shiftCommentIndex !== shiftComments.length - 1 && (
                     <Divider style={{ marginTop: '15px' }} />
                   )}
                 </div>

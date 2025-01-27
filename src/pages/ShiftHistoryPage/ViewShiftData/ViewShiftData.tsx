@@ -339,7 +339,7 @@ const ViewShiftData = ({ data }) => {
                     </div>
                   ))}
                 {data && data.comments && data.comments.length === 0 && (
-                  <p>{t('label.noCommentsFound')}</p>
+                  <p data-testid="noCommentsFound">{t('label.noCommentsFound')}</p>
                 )}
               </Grid>
             </Grid>
@@ -397,7 +397,9 @@ const ViewShiftData = ({ data }) => {
                     )}
                   </div>
                 ))}
-              {dataDetails && dataDetails.length === 0 && <p>{t('label.noAnnotationsFound')}</p>}
+              {dataDetails && dataDetails.length === 0 && (
+                <p data-testid="noAnnotationsFound">{t('label.noAnnotationsFound')}</p>
+              )}
             </Grid>
           </Grid>
         </Grid>

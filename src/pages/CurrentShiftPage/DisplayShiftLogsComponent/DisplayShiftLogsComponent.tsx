@@ -664,7 +664,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
           {images && images.length > 0 ? (
             <ImageDisplayComponent images={images} />
           ) : (
-            <p>{t('label.noImageFound')}</p>
+            <p data-testid="noImageMsg">{t('label.noImageFound')}</p>
           )}
         </DialogContent>
         <DialogActions>
