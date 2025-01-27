@@ -23,10 +23,44 @@ function mounting(theTheme) {
   );
 }
 
-describe('ShiftHistoryPage Theme Rendering', () => {
+describe('<ShiftHistoryPage />', () => {
+  beforeEach(() => {
+    cy.intercept(
+      {
+        method: 'POST',
+        url: '/__cypress/iframes/undefined/shifts'
+      },
+      {
+        shift_operator: 'DefaultUser',
+        match_type: 'contains'
+      }
+    ).as('getDataByUser');
+  });
+
   for (const theTheme of THEME) {
     it(`Theme ${theTheme}: Renders`, () => {
       mounting(theTheme);
+      cy.get('body').then(() => {
+        // eslint-disable-next-line cypress/no-unnecessary-waiting
+        cy.get('[data-testid="logSearchBy"]').click();
+        cy.contains('Search by operator').click({ force: true });
+        cy.get('[data-testid="operatorName"]').type('DefaultUser');
+        cy.get('[data-testid="logHistorySearchByOperator"]').click({ force: true });
+        cy.get('[data-testid="logSearchBy"]').click();
+        cy.contains('Search by status').click({ force: true });
+        cy.get('[data-testid="sbiStatus"]').type('Created');
+        cy.get('[data-testid="logHistorySearchByStatus"]').click({ force: true });
+
+        cy.get('[data-testid="logSearchBy"]').click();
+        cy.contains('Search by EB ID').click({ force: true });
+        cy.get('[data-testid="EbId"]').type('eb-t0001-20240822-00009');
+        cy.get('[data-testid="logHistorySearchByEBID"]').click({ force: true });
+
+        cy.get('[data-testid="logSearchBy"]').click();
+        cy.contains('Search by SBI ID').click({ force: true });
+        cy.get('[data-testid="sbiId"]').type('sbi-t0001-20240822-00009');
+        cy.get('[data-testid="logHistorySearchBySbiID"]').click({ force: true });
+      });
     });
   }
 });

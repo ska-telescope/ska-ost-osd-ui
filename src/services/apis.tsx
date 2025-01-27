@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from 'axios';
+import { SKA_PTT_API_URL } from './../utils/constants';
 
 export interface customAxiosResponse {
   data: object;
@@ -26,7 +27,7 @@ function handleAxiosError(error: object) {
 }
 
 const apiService = {
-  baseURL: () => window.env.BACKEND_URL,
+  baseURL: () => (SKA_PTT_API_URL ? SKA_PTT_API_URL : window.env?.BACKEND_URL),
 
   getURLPath: async (path): Promise<any> => {
     const baseUrl = apiService.baseURL();
@@ -126,7 +127,6 @@ const apiService = {
   getImage: async (path): Promise<any> => {
     const baseUrl = apiService.baseURL();
     const url = `${baseUrl}/${path}`;
-
     try {
       const result = await axios.get(url);
       return { data: result.data, status: 200, error: null };

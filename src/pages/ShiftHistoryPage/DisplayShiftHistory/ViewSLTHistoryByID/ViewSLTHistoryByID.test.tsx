@@ -21,10 +21,14 @@ function mounting(theTheme) {
   );
 }
 
-describe('ViewSLTHistoryByID Theme Rendering', () => {
+describe('<ViewSLTHistoryByID />', () => {
   for (const theTheme of THEME) {
     it(`Theme ${theTheme}: Renders`, () => {
       mounting(theTheme);
+      cy.get('body').then(() => {
+        cy.get('[data-testid="shiftId"]').should('be.visible');
+        cy.get('[data-testid="shiftId"]').click({ force: true });
+      });
     });
   }
 });
