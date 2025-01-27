@@ -27,7 +27,7 @@ function handleAxiosError(error: object) {
 }
 
 const apiService = {
-  baseURL: () => (SKA_PTT_API_URL ? SKA_PTT_API_URL : window.env?.BACKEND_URL),
+  baseURL: () => window.env?.BACKEND_URL,
 
   getURLPath: async (path): Promise<any> => {
     const baseUrl = apiService.baseURL();
