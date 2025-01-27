@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from 'axios';
-import { SKA_PTT_API_URL } from './../utils/constants';
 
 export interface customAxiosResponse {
   data: object;

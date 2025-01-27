@@ -4,7 +4,7 @@ const SHIFT_DATA_LIST = [
     shift_id: 'sl-m0001-20250106-11785506',
     shift_start: '2024-10-22T11:24:04.389077Z',
     shift_end: '2024-10-22T11:24:04.389077Z',
-    annotations: [
+    annotation: [
       {
         id: 2,
         annotation: 'This is dummy annotation one',

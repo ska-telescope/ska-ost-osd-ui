@@ -814,6 +814,7 @@ function DisplayShiftComponent() {
                   buttonSize={ButtonSizeTypes.Small}
                   testId="shiftImageFileUpload"
                   uploadFunction={postShiftCommentImage}
+                  dropzonePreview={false}
                 />
               </div>
             </Grid>

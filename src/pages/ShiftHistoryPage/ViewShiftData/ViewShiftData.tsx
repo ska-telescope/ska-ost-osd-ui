@@ -36,7 +36,9 @@ const ViewShiftData = ({ data }) => {
   const [images, setImages] = useState([]);
   const [openViewImageModal, setOpenViewImageModal] = useState(false);
 
-  const [dataDetails, setShiftAnnotationData] = useState([]);
+  const [dataDetails, setShiftAnnotationData] = useState(
+    data && data.annotation ? data.annotation : []
+  );
   const [shiftAnnotationValue, setShiftAnnotation] = useState('');
   const [shiftAnnotationID, setShiftAnnotationID] = useState(null);
   const [isShiftAnnotationUpdate, setShiftAnnotationUpdate] = useState(false);
@@ -68,7 +70,7 @@ const ViewShiftData = ({ data }) => {
   );
 
   const useLocalData = () => {
-    setShiftAnnotationData(SHIFT_DATA_LIST[0]['annotations']);
+    setShiftAnnotationData(SHIFT_DATA_LIST[0]['annotation']);
   };
 
   const fetchSltHistoryByID = async () => {
@@ -78,7 +80,7 @@ const ViewShiftData = ({ data }) => {
     }
     const path = createShiftAnnotationPath(data.shift_id, 'get');
     const response = await apiService.getSltData(path);
-    if (response.status === 200 && response.data && response.data.length > 0) {
+    if (response.status === 200) {
       setShiftAnnotationData(response.data[0]);
     }
   };
@@ -213,14 +215,18 @@ const ViewShiftData = ({ data }) => {
       >
         <DialogTitle>{t('label.viewImages')}</DialogTitle>
         <DialogContent dividers>
-          {images ? <ImageDisplayComponent images={images} /> : <p>{t('label.noImageFound')}</p>}
+          {images ? (
+            <ImageDisplayComponent images={images} />
+          ) : (
+            <p data-testid="noImageMsg">{t('label.noImageFound')}</p>
+          )}
         </DialogContent>
         <DialogActions>
           <Button
             size={ButtonSizeTypes.Small}
             color={ButtonColorTypes.Inherit}
             variant={ButtonVariantTypes.Contained}
-            testId="shiftAnnotationModalClose"
+            testId="shiftAnnotationModalImageClose"
             label={t('label.close')}
             onClick={handleViewImageClose}
             toolTip={t('label.close')}
@@ -312,7 +318,7 @@ const ViewShiftData = ({ data }) => {
                               cursor: 'pointer',
                               marginTop: '10px'
                             }}
-                            data-testid="viewShiftHistoryImagesHistory"
+                            data-testid={`viewShiftHistoryImagesHistory${shiftCommentIndex}`}
                             onClick={() => handleOpenImage(shiftCommentItem.id)}
                             label={`${t('label.viewImages')} (${shiftCommentItem.image ? shiftCommentItem.image.length : 0})`}
                             variant="outlined"

@@ -36,7 +36,7 @@ describe('<DisplayShiftComponent />', () => {
   });
 
   beforeEach(() => {
-    const data = [...SHIFT_DATA_LIST[0].annotations];
+    const data = [...SHIFT_DATA_LIST[0].annotation];
     cy.intercept('POST', '/__cypress/iframes/undefined/shift_annotation', {
       statusCode: 200,
       body: { ...data }
@@ -54,8 +54,21 @@ describe('<DisplayShiftComponent />', () => {
       }
     ).as('getDataById');
   });
-
-  it('View Shift Annotation Functionality', () => {
+  beforeEach(() => {
+    const data = [...SHIFT_DATA_LIST[0].shift_logs[0]['comments']];
+    cy.intercept('POST', '/__cypress/iframes/undefined/shift_log_comment', {
+      statusCode: 200,
+      body: { ...data }
+    }).as('postComment');
+  });
+  beforeEach(() => {
+    const data = [...SHIFT_DATA_LIST[0].shift_logs[0]['comments']];
+    cy.intercept('PUT', '/__cypress/iframes/undefined/shift_log_comment/1', {
+      statusCode: 200,
+      body: { ...data }
+    }).as('putComment');
+  });
+  it('View Shift Data Functionality', () => {
     cy.get('body').then(() => {
       cy.get('#operatorName').should('contain', 'label.operatorName');
 
@@ -69,10 +82,13 @@ describe('<DisplayShiftComponent />', () => {
       cy.wait('@postAnnotation');
       // cy.wait('@getDataById');
       cy.get('[data-testid="shiftAnnotationModalClose"]').click({ force: true });
-      // cy.get('[data-testid="editShiftAnnotation0"]').click({ force: true });
-      // cy.get('[data-testid="operatorShiftAnnotation"]').type('This is dummy Annotations');
-      // cy.get('[data-testid="shiftAnnotationButton"]').click({ force: true });
-      // cy.get('[data-testid="shiftAnnotationModalClose"]').click({ force: true });
+      cy.get('[data-testid="editShiftAnnotation0"]').click({ force: true });
+      cy.get('[data-testid="operatorShiftAnnotation"]').type('This is dummy Annotations');
+      cy.get('[data-testid="shiftAnnotationButton"]').click({ force: true });
+      cy.get('[data-testid="shiftAnnotationModalClose"]').click({ force: true });
+      cy.get('[data-testid="viewShiftHistoryImagesHistory0"]').click({ force: true });
+      cy.get('[data-testid="shiftAnnotationModalImageClose"]').click({ force: true });
+      cy.get('[data-testid="viewLogDataIDLabel"]').contains('label.logSummary');
     });
   });
 });
