@@ -27,8 +27,8 @@ function handleAxiosError(error: object) {
 }
 
 const apiService = {
-  baseURL: () => (SKA_PTT_API_URL ? SKA_PTT_API_URL : window.env?.BACKEND_URL),
-
+  // baseURL: () => (SKA_PTT_API_URL ? SKA_PTT_API_URL : window.env?.BACKEND_URL),
+  baseURL: () => SKA_PTT_API_URL,
   getURLPath: async (path): Promise<any> => {
     const baseUrl = apiService.baseURL();
     const url = `${baseUrl}/${path}`;
@@ -74,11 +74,11 @@ const apiService = {
     }
   },
 
-  getSltData: async (path: string, queryParams): Promise<any> => {
+  getSltData: async (path: string): Promise<any> => {
     const baseUrl = apiService.baseURL();
     const url = `${baseUrl}/${path}`;
     try {
-      const result = await axios.get(url, { params: queryParams });
+      const result = await axios.get(url);
       return { data: result.data, status: 200, error: null };
     } catch (err) {
       const errorResponse = handleAxiosError(err);
