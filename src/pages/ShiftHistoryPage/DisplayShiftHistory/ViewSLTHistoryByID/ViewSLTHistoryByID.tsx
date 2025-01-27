@@ -21,7 +21,7 @@ const ViewSLTHistoryByID = ({ shiftData, updatedList }: EntryFieldProps) => {
     }
     const path = createShiftPath(shiftData.shift_id, 'id');
     const response = await apiService.getSltData(path);
-    if (response.status === 200 && response.data && response.data.length > 0) {
+    if (response.status === 200) {
       updatedList(response.data[0]);
     }
   };
