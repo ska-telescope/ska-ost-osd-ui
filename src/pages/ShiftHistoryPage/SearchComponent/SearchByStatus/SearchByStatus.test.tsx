@@ -32,7 +32,7 @@ describe('SearchByStatus Theme Rendering', () => {
       mounting(theTheme);
       cy.get('body').then(() => {
         cy.get('[data-testid="sbiStatus"]').should('be.visible');
-        cy.get('[data-testid="sbiStatus"]').type('Draft');
+        cy.get('[data-testid="sbiStatus"]').type('Failed');
         cy.get('[data-testid="logHistorySearchByStatus"]').click({ force: true });
       });
     });

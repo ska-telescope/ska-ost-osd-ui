@@ -21,7 +21,30 @@ function mounting(theTheme) {
     </StoreProvider>
   );
 }
+function mountingWithNoAnnotation(theTheme) {
+  viewPort();
 
+  cy.mount(
+    <StoreProvider>
+      <ThemeProvider theme={theme(theTheme)}>
+        <CssBaseline />
+        <ViewShiftData data={SHIFT_DATA_LIST[1]} />
+      </ThemeProvider>
+    </StoreProvider>
+  );
+}
+function mountingWithActiveShift(theTheme) {
+  viewPort();
+
+  cy.mount(
+    <StoreProvider>
+      <ThemeProvider theme={theme(theTheme)}>
+        <CssBaseline />
+        <ViewShiftData data={SHIFT_DATA_LIST[2]} />
+      </ThemeProvider>
+    </StoreProvider>
+  );
+}
 describe('<DisplayShiftComponent />', () => {
   for (const theTheme of THEME) {
     it(`Theme ${theTheme}: Renders`, () => {
@@ -36,7 +59,7 @@ describe('<DisplayShiftComponent />', () => {
   });
 
   beforeEach(() => {
-    const data = [...SHIFT_DATA_LIST[0].annotations];
+    const data = [...SHIFT_DATA_LIST[0].annotation];
     cy.intercept('POST', '/__cypress/iframes/undefined/shift_annotation', {
       statusCode: 200,
       body: { ...data }
@@ -54,13 +77,24 @@ describe('<DisplayShiftComponent />', () => {
       }
     ).as('getDataById');
   });
-
-  it('View Shift Annotation Functionality', () => {
+  beforeEach(() => {
+    const data = [...SHIFT_DATA_LIST[0].shift_logs[0]['comments']];
+    cy.intercept('POST', '/__cypress/iframes/undefined/shift_log_comment', {
+      statusCode: 200,
+      body: { ...data }
+    }).as('postComment');
+  });
+  beforeEach(() => {
+    const data = [...SHIFT_DATA_LIST[0].shift_logs[0]['comments']];
+    cy.intercept('PUT', '/__cypress/iframes/undefined/shift_log_comment/1', {
+      statusCode: 200,
+      body: { ...data }
+    }).as('putComment');
+  });
+  it('View Shift Data Functionality', () => {
     cy.get('body').then(() => {
       cy.get('#operatorName').should('contain', 'label.operatorName');
-
       cy.get('#shiftStart').should('contain', 'label.shiftStartedAt');
-
       cy.get('#shiftEnd').should('contain', 'label.shiftEndsAt');
       cy.get('[data-testid="addShiftAnnotations"]').should('contain', 'label.addShiftAnnotations');
       cy.get('[data-testid="addShiftAnnotations"]').click({ force: true });
@@ -69,10 +103,55 @@ describe('<DisplayShiftComponent />', () => {
       cy.wait('@postAnnotation');
       // cy.wait('@getDataById');
       cy.get('[data-testid="shiftAnnotationModalClose"]').click({ force: true });
-      // cy.get('[data-testid="editShiftAnnotation0"]').click({ force: true });
-      // cy.get('[data-testid="operatorShiftAnnotation"]').type('This is dummy Annotations');
-      // cy.get('[data-testid="shiftAnnotationButton"]').click({ force: true });
-      // cy.get('[data-testid="shiftAnnotationModalClose"]').click({ force: true });
+      cy.get('[data-testid="editShiftAnnotation0"]').click({ force: true });
+      cy.get('[data-testid="operatorShiftAnnotation"]').type('This is dummy Annotations');
+      cy.get('[data-testid="shiftAnnotationButton"]').click({ force: true });
+      cy.get('[data-testid="shiftAnnotationModalClose"]').click({ force: true });
+      cy.get('[data-testid="viewShiftHistoryImagesHistory0"]').click({ force: true });
+      cy.get('[data-testid="noImageMsg"]').contains('label.noImageFound');
+
+      cy.get('[data-testid="shiftAnnotationModalImageClose"]').click({ force: true });
+      cy.get('[data-testid="viewLogDataIDLabel"]').contains('label.logSummary');
     });
   });
+});
+
+describe('<DisplayShiftComponent />', () => {
+  for (const theTheme of THEME) {
+    it('View Shift Data Functionality with no annotation', () => {
+      mountingWithNoAnnotation(theTheme);
+    });
+  }
+});
+
+describe('<DisplayShiftComponent />', () => {
+  beforeEach(() => {
+    const data = [...SHIFT_DATA_LIST[0].annotation];
+    cy.intercept('POST', '/__cypress/iframes/undefined/shift_annotation', {
+      statusCode: 200,
+      body: { ...data }
+    }).as('postAnnotation');
+  });
+  for (const theTheme of THEME) {
+    it('View Shift Data Functionality with active', () => {
+      mountingWithActiveShift(theTheme);
+      cy.get('body').then(() => {
+        cy.get('#operatorName').should('contain', 'label.operatorName');
+        cy.get('#shiftStart').should('contain', 'label.shiftStartedAt');
+        cy.get('#shiftEnd').should('contain', 'label.shiftEndsAt');
+        cy.get('[data-testid="addShiftAnnotations"]').should(
+          'contain',
+          'label.addShiftAnnotations'
+        );
+        cy.get('[data-testid="addShiftAnnotations"]').click({ force: true });
+        cy.get('[data-testid="operatorShiftAnnotation"]').type('This is dummy Annotations');
+        cy.get('[data-testid="shiftAnnotationButton"]').click({ force: true });
+        cy.wait('@postAnnotation');
+        cy.get('[data-testid="shiftAnnotationModalClose"]').click({ force: true });
+        cy.get('[data-testid="viewShiftCommentsHistory"]').contains('label.viewShiftComments');
+        cy.get('[data-testid="noAnnotationsFound"]').contains('label.noAnnotationsFound');
+        cy.get('[data-testid="viewLogDataIDLabel"]').contains('label.logSummary');
+      });
+    });
+  }
 });
