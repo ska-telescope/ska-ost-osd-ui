@@ -33,13 +33,7 @@ import HistoryIcon from '@mui/icons-material/History';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
 // import { Kafka } from 'kafkajs';
-import {
-  ENTITY,
-  SHIFT_STATUS,
-  USE_LOCAL_DATA,
-  operatorName,
-  toUTCDateTimeFormat
-} from '../../../utils/constants';
+import { ENTITY, SHIFT_STATUS, operatorName, toUTCDateTimeFormat } from '../../../utils/constants';
 import {
   config,
   shiftCreatePath,
@@ -52,7 +46,7 @@ import ImageDisplayComponent from '../../../components/ImageDisplayComponent/Ima
 import DisplayShiftLogsComponent from '../DisplayShiftLogsComponent/DisplayShiftLogsComponent';
 import SHIFT_DATA_LIST from '../../../DataModels/DataFiles/ShiftDataList';
 
-function DisplayShiftComponent() {
+function DisplayShiftComponent(isLocalData?) {
   const [shiftStatus, setShiftStatus] = useState('');
   const [openViewImageModal, setOpenViewImageModal] = useState(false);
   const [openSummaryModal, setOpenSummaryModal] = useState(false);
@@ -181,7 +175,7 @@ function DisplayShiftComponent() {
     const shiftData = {
       shift_operator: operator
     };
-    if (USE_LOCAL_DATA) {
+    if (isLocalData.isLocalData) {
       useLocalData();
       setMessage('msg.shiftStarted');
       setDisplayMessageElement(true);
@@ -246,7 +240,7 @@ function DisplayShiftComponent() {
   }, []);
 
   const endNewShift = async () => {
-    if (USE_LOCAL_DATA) {
+    if (isLocalData.isLocalData) {
       setDisplayMessageElement(false);
       setShiftComment('');
       setOperator('');
@@ -285,7 +279,7 @@ function DisplayShiftComponent() {
   };
 
   const addShiftComments = async () => {
-    if (USE_LOCAL_DATA) {
+    if (isLocalData.isLocalData) {
       useLocalData();
       setMessage('msg.commentSubmit');
       setDisplayModalMessageElement(true);
@@ -341,7 +335,7 @@ function DisplayShiftComponent() {
   };
 
   const postShiftCommentImage = async (file) => {
-    if (USE_LOCAL_DATA) {
+    if (isLocalData.isLocalData) {
       useLocalData();
       return true;
     }
@@ -644,7 +638,7 @@ function DisplayShiftComponent() {
                           cursor: 'pointer',
                           marginTop: '10px'
                         }}
-                        data-testid="viewShiftCommentImages"
+                        data-testid={`viewShiftCommentImages${shiftCommentIndex}`}
                         onClick={() => handleOpenImage(shiftCommentItem)}
                         label={`${t('label.viewImages')} (${shiftCommentItem.image ? shiftCommentItem.image.length : 0})`}
                         variant="outlined"

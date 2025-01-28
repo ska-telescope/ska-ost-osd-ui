@@ -30,7 +30,7 @@ import SearchByStatus from './SearchComponent/SearchByStatus/SearchByStatus';
 import ShiftHistoryListComponent from './DisplayShiftHistory/ShiftHistoryListComponent/ShiftHistoryListComponent';
 import SHIFT_DATA_LIST from '../../DataModels/DataFiles/ShiftDataList';
 
-function ShiftHistoryPage() {
+function ShiftHistoryPage(isLocalData) {
   const { t } = useTranslation('translations');
   const [dataDetails, setSltHistory] = useState([]);
   const [searchFilterData, setSearchFilterData] = useState(null);
@@ -51,7 +51,7 @@ function ShiftHistoryPage() {
     setSltHistory(SHIFT_DATA_LIST);
   };
   const fetchSltTodayShifts = async () => {
-    if (USE_LOCAL_DATA) {
+    if (isLocalData.isLocalData) {
       useLocalData();
       return true;
     }
@@ -77,7 +77,7 @@ function ShiftHistoryPage() {
           </span>
         </div>
       )}
-      {searchType === SEARCH_TYPE.dates && createdAfter && createdBefore && (
+      {searchType === SEARCH_TYPE.dates && (
         <p>
           {t('msg.selectedDates')}
 
@@ -122,7 +122,7 @@ function ShiftHistoryPage() {
   );
 
   const fetchSltHistoryByFilters = async (data) => {
-    if (USE_LOCAL_DATA) {
+    if (isLocalData.isLocalData) {
       useLocalData();
       return true;
     }
@@ -287,7 +287,7 @@ function ShiftHistoryPage() {
                 <Grid item xs={12} sm={12} md={4} />
               </Grid>
             </Paper>
-            <ViewShiftData data={displayData} />
+            <ViewShiftData data={displayData} isLocalData={USE_LOCAL_DATA} />
           </>
         )}
       </Paper>

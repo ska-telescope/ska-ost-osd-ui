@@ -19,7 +19,20 @@ function mounting(theTheme) {
       <ThemeProvider theme={theme(theTheme)}>
         <CssBaseline />
         <BrowserRouter>
-          <DisplayShiftComponent />
+          <DisplayShiftComponent isLocalData={false} />
+        </BrowserRouter>
+      </ThemeProvider>
+    </StoreProvider>
+  );
+}
+function mountingWithMock(theTheme) {
+  viewPort();
+  cy.mount(
+    <StoreProvider>
+      <ThemeProvider theme={theme(theTheme)}>
+        <CssBaseline />
+        <BrowserRouter>
+          <DisplayShiftComponent isLocalData={true} />
         </BrowserRouter>
       </ThemeProvider>
     </StoreProvider>
@@ -77,7 +90,7 @@ describe('<DisplayShiftComponent />', () => {
     }).as('getDataBySLTID');
   });
 
-  it('shiftStartButton', () => {
+  it('New shift flow with api calls', () => {
     cy.get('body').then((element) => {
       if (element.find('[data-testid="shiftStartButton"]').length) {
         cy.get('[data-testid="manageShift"]').contains('label.manageShift');
@@ -102,11 +115,42 @@ describe('<DisplayShiftComponent />', () => {
         cy.get('[data-testid="shiftCommentButton"]').click({ force: true });
         cy.wait('@putComment');
         cy.get('[data-testid="shiftCommentModalClose"]').click({ force: true });
+        cy.get('[data-testid="viewShiftCommentImages0"]').click({ force: true });
         cy.get('[data-testid="shiftEndButton"]').click({ force: true });
         cy.wait(2000);
         cy.get('[data-testid="confirmationDialogYes"]').click({ force: true });
         cy.wait('@endShift');
         cy.wait(2000);
+      }
+    });
+  });
+});
+
+describe('<DisplayShiftComponent />', () => {
+  beforeEach(() => {
+    mountingWithMock(THEME[1]);
+  });
+
+  it('New shift flow with mock data', () => {
+    cy.get('body').then((element) => {
+      if (element.find('[data-testid="shiftStartButton"]').length) {
+        cy.get('[data-testid="manageShift"]').contains('label.manageShift');
+        cy.get('[data-testid="historyButton"]').contains('label.history');
+        cy.get('[data-testid="operatorName"]').type('DefaultUser');
+        cy.get('[data-testid="operatorName"]').type('{downarrow}');
+        cy.get('[data-testid="operatorName"]').type('{enter}');
+        cy.get('[data-testid="shiftStartButton"]').click({ force: true });
+        cy.get('[data-testid="confirmationDialogYes"]').click({ force: true });
+        cy.get('[data-testid="addShiftComments"]').click({ force: true });
+        cy.get('[data-testid="operatorShiftComment"]').type('This is dummy comments');
+        cy.get('[data-testid="shiftCommentButton"]').click({ force: true });
+        cy.get('[data-testid="successCommentStatusMsg"]').contains('msg.commentSubmit');
+        cy.get('[data-testid="shiftCommentModalClose"]').click({ force: true });
+        cy.get('[data-testid="editShiftComment"]').click({ force: true, multiple: true });
+        cy.get('[data-testid="shiftCommentButton"]').click({ force: true });
+        cy.get('[data-testid="shiftCommentModalClose"]').click({ force: true });
+        cy.get('[data-testid="shiftEndButton"]').click({ force: true });
+        cy.get('[data-testid="confirmationDialogYes"]').click({ force: true });
       }
     });
   });
