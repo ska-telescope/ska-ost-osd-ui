@@ -209,48 +209,52 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
   };
 
   const addLogComments = async (logIndex, data) => {
-    if (commentValue === '') return;
-    const addCommentRequestBody = {
-      log_comment: `${commentValue}`,
-      operator_name: shiftData.shift_operator,
-      shift_id: shiftData.shift_id,
-      eb_id: data.info.eb_id
-    };
-    const path = createShiftLogCommentPath(shiftLogCommentID, 'basePath');
-    setLogCommentsIndex(logIndex);
-    const response = await apiService.postShiftData(path, addCommentRequestBody);
-    if (response.status === 200) {
-      updateCommentsEvent();
-      setShiftNewLogCommentID(response.data && response.data.length > 0 ? response.data[0].id : '');
-      setDisplayMessageElement(true);
-      setMessageType('addLogComments');
-      setMessage('msg.commentSubmit');
-      setTimeout(() => {
-        setDisplayMessageElement(false);
-      }, 3000);
+    if (commentValue !== '') {
+      const addCommentRequestBody = {
+        log_comment: `${commentValue}`,
+        operator_name: shiftData.shift_operator,
+        shift_id: shiftData.shift_id,
+        eb_id: data.info.eb_id
+      };
+      const path = createShiftLogCommentPath(shiftLogCommentID, 'basePath');
+      setLogCommentsIndex(logIndex);
+      const response = await apiService.postShiftData(path, addCommentRequestBody);
+      if (response.status === 200) {
+        updateCommentsEvent();
+        setShiftNewLogCommentID(
+          response.data && response.data.length > 0 ? response.data[0].id : ''
+        );
+        setDisplayMessageElement(true);
+        setMessageType('addLogComments');
+        setMessage('msg.commentSubmit');
+        setTimeout(() => {
+          setDisplayMessageElement(false);
+        }, 3000);
+      }
     }
   };
 
   const updateLogComments = async (logIndex, commentItem) => {
-    if (updateCommentValue === '') return;
-    const updateCommentPayload = {
-      log_comment: `${updateCommentValue}`,
-      operator_name: shiftData.shift_operator
-    };
-    const path = createShiftLogCommentPath(commentItem.id, 'id');
-    setLogCommentsIndex(logIndex);
-    const response = await apiService.updateLogComments(path, updateCommentPayload);
-    if (response.status === 200) {
-      updateCommentsEvent();
-      setShiftNewLogCommentID('');
-      setShiftLogCommentID(response.data && response.data.length > 0 ? response.data[0].id : '');
-      setDisplayMessageElement(true);
-      setMessageType('updateLogComments');
-      setMessage('msg.commentSubmit');
-      setTimeout(() => {
-        setDisplayMessageElement(false);
-        setIsUpdateEnable(false);
-      }, 3000);
+    if (updateCommentValue !== '') {
+      const updateCommentPayload = {
+        log_comment: `${updateCommentValue}`,
+        operator_name: shiftData.shift_operator
+      };
+      const path = createShiftLogCommentPath(commentItem.id, 'id');
+      setLogCommentsIndex(logIndex);
+      const response = await apiService.updateLogComments(path, updateCommentPayload);
+      if (response.status === 200) {
+        updateCommentsEvent();
+        setShiftNewLogCommentID('');
+        setShiftLogCommentID(response.data && response.data.length > 0 ? response.data[0].id : '');
+        setDisplayMessageElement(true);
+        setMessageType('updateLogComments');
+        setMessage('msg.commentSubmit');
+        setTimeout(() => {
+          setDisplayMessageElement(false);
+          setIsUpdateEnable(false);
+        }, 3000);
+      }
     }
   };
 
@@ -342,6 +346,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
               buttonSize={ButtonSizeTypes.Small}
               testId="logCommentImage"
               uploadFunction={postLogImage}
+              dropzonePreview={false}
             />
           </div>
         </Grid>
@@ -416,7 +421,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
                     <Grid item xs={12} sm={12} md={2}>
                       <Chip
                         size="small"
-                        label={`${data.info && data.info.sbi_status ? data.info.sbi_status.toUpperCase() : 'NA'}`}
+                        label={`${data.info.sbi_status.toUpperCase()}`}
                         color={`${data.info && data.info.sbi_status && data.info.sbi_status === 'Failed' ? 'error' : 'success'}`}
                       />
                     </Grid>
@@ -441,13 +446,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
                       {t('label.ebObservations')}
                     </span>
                     <Grid item xs={12} sm={12} md={12}>
-                      <RequestResponseDisplay
-                        responseArray={
-                          data.info && data.info.request_responses
-                            ? data.info.request_responses
-                            : []
-                        }
-                      />
+                      <RequestResponseDisplay responseArray={data.info?.request_responses} />
                     </Grid>
                   </Grid>
                 </Grid>
@@ -541,6 +540,7 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
                               buttonSize={ButtonSizeTypes.Small}
                               testId={`logImage${logIndex}`}
                               uploadFunction={postLogImage}
+                              dropzonePreview={false}
                             />
                           </div>
                         </Grid>

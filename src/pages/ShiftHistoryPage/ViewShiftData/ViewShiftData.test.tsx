@@ -16,7 +16,7 @@ function mounting(theTheme) {
     <StoreProvider>
       <ThemeProvider theme={theme(theTheme)}>
         <CssBaseline />
-        <ViewShiftData data={SHIFT_DATA_LIST[0]} />
+        <ViewShiftData data={SHIFT_DATA_LIST[0]} isLocalData={false} />
       </ThemeProvider>
     </StoreProvider>
   );
@@ -28,7 +28,19 @@ function mountingWithNoAnnotation(theTheme) {
     <StoreProvider>
       <ThemeProvider theme={theme(theTheme)}>
         <CssBaseline />
-        <ViewShiftData data={SHIFT_DATA_LIST[1]} />
+        <ViewShiftData data={SHIFT_DATA_LIST[1]} isLocalData={false} />
+      </ThemeProvider>
+    </StoreProvider>
+  );
+}
+function mountingWithMock(theTheme) {
+  viewPort();
+
+  cy.mount(
+    <StoreProvider>
+      <ThemeProvider theme={theme(theTheme)}>
+        <CssBaseline />
+        <ViewShiftData data={SHIFT_DATA_LIST[1]} isLocalData={true} />
       </ThemeProvider>
     </StoreProvider>
   );
@@ -40,7 +52,7 @@ function mountingWithActiveShift(theTheme) {
     <StoreProvider>
       <ThemeProvider theme={theme(theTheme)}>
         <CssBaseline />
-        <ViewShiftData data={SHIFT_DATA_LIST[2]} />
+        <ViewShiftData data={SHIFT_DATA_LIST[2]} isLocalData={false} />
       </ThemeProvider>
     </StoreProvider>
   );
@@ -91,6 +103,13 @@ describe('<DisplayShiftComponent />', () => {
       body: { ...data }
     }).as('putComment');
   });
+  beforeEach(() => {
+    const data = [...SHIFT_DATA_LIST[0].annotation];
+    cy.intercept('PUT', '/__cypress/iframes/undefined/shift_annotation/1', {
+      statusCode: 200,
+      body: { ...data }
+    }).as('putAnnotation');
+  });
   it('View Shift Data Functionality', () => {
     cy.get('body').then(() => {
       cy.get('#operatorName').should('contain', 'label.operatorName');
@@ -106,6 +125,7 @@ describe('<DisplayShiftComponent />', () => {
       cy.get('[data-testid="editShiftAnnotation0"]').click({ force: true });
       cy.get('[data-testid="operatorShiftAnnotation"]').type('This is dummy Annotations');
       cy.get('[data-testid="shiftAnnotationButton"]').click({ force: true });
+      cy.wait('@putAnnotation');
       cy.get('[data-testid="shiftAnnotationModalClose"]').click({ force: true });
       cy.get('[data-testid="viewShiftHistoryImagesHistory0"]').click({ force: true });
       cy.get('[data-testid="noImageMsg"]').contains('label.noImageFound');
@@ -125,6 +145,29 @@ describe('<DisplayShiftComponent />', () => {
 });
 
 describe('<DisplayShiftComponent />', () => {
+  for (const theTheme of THEME) {
+    it('View Shift Data Functionality with mock data', () => {
+      mountingWithMock(theTheme);
+      cy.get('body').then(() => {
+        cy.get('#operatorName').should('contain', 'label.operatorName');
+        cy.get('#shiftStart').should('contain', 'label.shiftStartedAt');
+        cy.get('#shiftEnd').should('contain', 'label.shiftEndsAt');
+        cy.get('[data-testid="addShiftAnnotations"]').should(
+          'contain',
+          'label.addShiftAnnotations'
+        );
+        cy.get('[data-testid="addShiftAnnotations"]').click({ force: true });
+        cy.get('[data-testid="operatorShiftAnnotation"]').type('This is dummy Annotations');
+        cy.get('[data-testid="shiftAnnotationButton"]').click({ force: true });
+        cy.get('[data-testid="shiftAnnotationModalClose"]').click({ force: true });
+        cy.get('[data-testid="viewShiftCommentsHistory"]').contains('label.viewShiftComments');
+        cy.get('[data-testid="viewLogDataIDLabel"]').contains('label.logSummary');
+      });
+    });
+  }
+});
+
+describe('<DisplayShiftComponent />', () => {
   beforeEach(() => {
     const data = [...SHIFT_DATA_LIST[0].annotation];
     cy.intercept('POST', '/__cypress/iframes/undefined/shift_annotation', {
@@ -132,6 +175,7 @@ describe('<DisplayShiftComponent />', () => {
       body: { ...data }
     }).as('postAnnotation');
   });
+
   for (const theTheme of THEME) {
     it('View Shift Data Functionality with active', () => {
       mountingWithActiveShift(theTheme);

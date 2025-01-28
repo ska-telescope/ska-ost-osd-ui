@@ -6,7 +6,7 @@ const SHIFT_DATA_LIST = [
     shift_end: '2024-10-22T11:24:04.389077Z',
     annotation: [
       {
-        id: 2,
+        id: 1,
         annotation: 'This is dummy annotation one',
         user_name: 'Ross',
         shift_id: 'txn-local-20250106-787905165',
@@ -18,7 +18,7 @@ const SHIFT_DATA_LIST = [
         }
       },
       {
-        id: 1,
+        id: 2,
         annotation: 'This is dummy annotation two',
         user_name: 'DefaultUser',
         shift_id: 'txn-local-20250106-787905165',
@@ -36,6 +36,7 @@ const SHIFT_DATA_LIST = [
         id: 1,
         comment: 'This is shift comment one',
         shift_id: 'sl-m0001-20250106-11785506',
+        image: [],
         metadata: {
           created_by: 'DefaultUser',
           created_on: '2024-10-22T11:24:04.388998Z',
@@ -47,6 +48,7 @@ const SHIFT_DATA_LIST = [
         id: 2,
         comment: 'This is shift comment two',
         shift_id: 'sl-m0001-20250106-11785506',
+        image: [],
         metadata: {
           created_by: 'DefaultUser',
           created_on: '2024-10-22T11:24:04.388998Z',
@@ -297,45 +299,7 @@ const SHIFT_DATA_LIST = [
           telescope: 'ska_mid',
           sbi_status: 'failed',
           eb_status: 'Created',
-          sbd_version: 1,
-          request_responses: [
-            {
-              status: 'OK',
-              request: 'ska_oso_scripting.functions.devicecontrol.assign_resource',
-              response: {
-                result: 'this is a result'
-              },
-              request_args: {
-                kwargs: {
-                  subarray_id: '1'
-                }
-              },
-              request_sent_at: '2022-09-23T15:43:53.971548Z',
-              response_received_at: '2022-09-23T15:43:53.971548Z'
-            },
-            {
-              status: 'OK',
-              request: 'ska_oso_scripting.functions.devicecontrol.configure_resource',
-              response: {
-                result: 'this is a result'
-              },
-              request_args: {
-                kwargs: {
-                  subarray_id: '1'
-                }
-              },
-              request_sent_at: '2022-09-23T15:43:53.971548Z',
-              response_received_at: '2022-09-23T15:43:53.971548Z'
-            },
-            {
-              request: 'ska_oso_scripting.functions.devicecontrol.scan',
-              error: {
-                detail: 'this is an error'
-              },
-              request_sent_at: '2022-09-23T15:43:53.971548Z',
-              status: 'ERROR'
-            }
-          ]
+          sbd_version: 1
         },
         source: 'ODA',
         log_time: '2024-10-22T11:24:14.406107Z'

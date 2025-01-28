@@ -2,7 +2,7 @@ import { Box } from '@mui/material';
 import { DataGrid } from '@ska-telescope/ska-gui-components';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { toUTCDateTimeFormat } from '../../../../utils/constants';
+import { toUTCDateTimeFormat, USE_LOCAL_DATA } from '../../../../utils/constants';
 import ViewSLTHistoryByID from '../ViewSLTHistoryByID/ViewSLTHistoryByID';
 import ViewSLTHistoryPreview from '../ViewSLTHistoryPreview/ViewSLTHistoryPreview';
 
@@ -34,7 +34,11 @@ const ShiftHistoryListComponent = ({ data, updateList }: EntryFieldProps) => {
       headerName: t('label.shiftId'),
       width: 350,
       renderCell: (params) => (
-        <ViewSLTHistoryByID updatedList={onTriggerFunction} shiftData={params.row} />
+        <ViewSLTHistoryByID
+          updatedList={onTriggerFunction}
+          shiftData={params.row}
+          isLocalData={USE_LOCAL_DATA}
+        />
       )
     },
     {

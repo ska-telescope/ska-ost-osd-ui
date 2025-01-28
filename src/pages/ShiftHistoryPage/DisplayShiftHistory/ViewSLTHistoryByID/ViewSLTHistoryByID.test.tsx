@@ -15,7 +15,26 @@ function mounting(theTheme) {
     <StoreProvider>
       <ThemeProvider theme={theme(theTheme)}>
         <CssBaseline />
-        <ViewSLTHistoryByID shiftData={SHIFT_DATA_LIST[0]} updatedList={SHIFT_DATA_LIST[0]} />
+        <ViewSLTHistoryByID
+          shiftData={SHIFT_DATA_LIST[0]}
+          updatedList={SHIFT_DATA_LIST[0]}
+          isLocalData={false}
+        />
+      </ThemeProvider>
+    </StoreProvider>
+  );
+}
+function mountingWithMock(theTheme) {
+  viewPort();
+  cy.mount(
+    <StoreProvider>
+      <ThemeProvider theme={theme(theTheme)}>
+        <CssBaseline />
+        <ViewSLTHistoryByID
+          shiftData={SHIFT_DATA_LIST[0]}
+          updatedList={SHIFT_DATA_LIST[0]}
+          isLocalData={true}
+        />
       </ThemeProvider>
     </StoreProvider>
   );
@@ -25,6 +44,18 @@ describe('<ViewSLTHistoryByID />', () => {
   for (const theTheme of THEME) {
     it(`Theme ${theTheme}: Renders`, () => {
       mounting(theTheme);
+      cy.get('body').then(() => {
+        cy.get('[data-testid="shiftId"]').should('be.visible');
+        cy.get('[data-testid="shiftId"]').click({ force: true });
+      });
+    });
+  }
+});
+
+describe('<ViewSLTHistoryByID />', () => {
+  for (const theTheme of THEME) {
+    it(`Theme ${theTheme}: Renders`, () => {
+      mountingWithMock(theTheme);
       cy.get('body').then(() => {
         cy.get('[data-testid="shiftId"]').should('be.visible');
         cy.get('[data-testid="shiftId"]').click({ force: true });

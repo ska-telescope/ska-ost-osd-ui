@@ -28,10 +28,10 @@ import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutli
 import apiService from '../../../services/apis';
 import { createShiftAnnotationPath } from '../../../utils/api_constants';
 import DisplayShiftLogsComponent from '../../CurrentShiftPage/DisplayShiftLogsComponent/DisplayShiftLogsComponent';
-import { toUTCDateTimeFormat, USE_LOCAL_DATA } from '../../../utils/constants';
+import { toUTCDateTimeFormat } from '../../../utils/constants';
 import SHIFT_DATA_LIST from '../../../DataModels/DataFiles/ShiftDataList';
 
-const ViewShiftData = ({ data }) => {
+const ViewShiftData = ({ data, isLocalData }) => {
   const { t } = useTranslation('translations');
   const [images, setImages] = useState([]);
   const [openViewImageModal, setOpenViewImageModal] = useState(false);
@@ -74,7 +74,7 @@ const ViewShiftData = ({ data }) => {
   };
 
   const fetchSltHistoryByID = async () => {
-    if (USE_LOCAL_DATA) {
+    if (isLocalData) {
       useLocalData();
       return true;
     }
@@ -106,7 +106,7 @@ const ViewShiftData = ({ data }) => {
     const path = `shift_comment/download_images/${shiftCommentId}`;
     const result = await apiService.getImage(path);
     if (result.status === 200) {
-      setImages(result && result.data && result.data[0] ? result.data[0] : []);
+      setImages(result.data[0] ? result.data[0] : []);
     } else {
       setImages([{ isEmpty: true }]);
     }
@@ -148,35 +148,36 @@ const ViewShiftData = ({ data }) => {
   );
 
   const addShiftAnnotations = async () => {
-    if (shiftAnnotationValue === '') return;
-    const shiftData = {
-      user_name: data.shift_operator,
-      annotation: `${shiftAnnotationValue}`,
-      shift_id: data.shift_id
-    };
-    if (isShiftAnnotationUpdate) {
-      const updatePath = createShiftAnnotationPath(shiftAnnotationID, 'id');
-      const response = await apiService.putShiftData(updatePath, shiftData);
-      if (response.status === 200) {
-        setMessage('msg.annotationSubmit');
-        setDisplayModalMessageElement(true);
-        setShiftAnnotationID(response.data[0].id);
-        fetchSltHistoryByID();
-        setTimeout(() => {
-          setDisplayModalMessageElement(false);
-        }, 3000);
-      }
-    } else {
-      const addPath = createShiftAnnotationPath(shiftAnnotationID, 'basePath');
-      const response = await apiService.postShiftData(addPath, shiftData);
-      if (response.status === 200) {
-        setMessage('msg.annotationSubmit');
-        setDisplayModalMessageElement(true);
-        setShiftAnnotationID(response.data[0].id);
-        fetchSltHistoryByID();
-        setTimeout(() => {
-          setDisplayModalMessageElement(false);
-        }, 3000);
+    if (shiftAnnotationValue !== '') {
+      const shiftData = {
+        user_name: data.shift_operator,
+        annotation: `${shiftAnnotationValue}`,
+        shift_id: data.shift_id
+      };
+      if (isShiftAnnotationUpdate) {
+        const updatePath = createShiftAnnotationPath(shiftAnnotationID, 'id');
+        const response = await apiService.putShiftData(updatePath, shiftData);
+        if (response.status === 200) {
+          setMessage('msg.annotationSubmit');
+          setDisplayModalMessageElement(true);
+          setShiftAnnotationID(response.data[0].id);
+          fetchSltHistoryByID();
+          setTimeout(() => {
+            setDisplayModalMessageElement(false);
+          }, 3000);
+        }
+      } else {
+        const addPath = createShiftAnnotationPath(shiftAnnotationID, 'basePath');
+        const response = await apiService.postShiftData(addPath, shiftData);
+        if (response.status === 200) {
+          setMessage('msg.annotationSubmit');
+          setDisplayModalMessageElement(true);
+          setShiftAnnotationID(response.data[0].id);
+          fetchSltHistoryByID();
+          setTimeout(() => {
+            setDisplayModalMessageElement(false);
+          }, 3000);
+        }
       }
     }
   };

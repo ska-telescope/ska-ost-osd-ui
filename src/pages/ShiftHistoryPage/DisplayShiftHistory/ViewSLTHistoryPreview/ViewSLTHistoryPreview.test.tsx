@@ -15,7 +15,27 @@ function mounting(theTheme) {
     <StoreProvider>
       <ThemeProvider theme={theme(theTheme)}>
         <CssBaseline />
-        <ViewSLTHistoryPreview shiftData={SHIFT_DATA_LIST[0]} updatedList={SHIFT_DATA_LIST[0]} />
+        <ViewSLTHistoryPreview
+          shiftData={SHIFT_DATA_LIST[0]}
+          updatedList={SHIFT_DATA_LIST[0]}
+          isLocalData={false}
+        />
+      </ThemeProvider>
+    </StoreProvider>
+  );
+}
+
+function mountingWithMock(theTheme) {
+  viewPort();
+  cy.mount(
+    <StoreProvider>
+      <ThemeProvider theme={theme(theTheme)}>
+        <CssBaseline />
+        <ViewSLTHistoryPreview
+          shiftData={SHIFT_DATA_LIST[0]}
+          updatedList={SHIFT_DATA_LIST[0]}
+          isLocalData={true}
+        />
       </ThemeProvider>
     </StoreProvider>
   );
@@ -25,6 +45,18 @@ describe('<ViewSLTHistoryPreview />', () => {
   for (const theTheme of THEME) {
     it(`Theme ${theTheme}: Renders`, () => {
       mounting(theTheme);
+      cy.get('body').then(() => {
+        cy.get('[data-testid="iconViewShift"]').should('be.visible');
+        cy.get('[data-testid="iconViewShift"]').click({ force: true });
+      });
+    });
+  }
+});
+
+describe('<ViewSLTHistoryPreview />', () => {
+  for (const theTheme of THEME) {
+    it(`Theme ${theTheme}: Renders`, () => {
+      mountingWithMock(theTheme);
       cy.get('body').then(() => {
         cy.get('[data-testid="iconViewShift"]').should('be.visible');
         cy.get('[data-testid="iconViewShift"]').click({ force: true });
