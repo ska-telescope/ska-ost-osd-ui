@@ -130,6 +130,7 @@ function DisplayShiftComponent(isLocalData?) {
       setShiftData(
         result && result.data && result.data.length > 0 && result.data[0] ? result.data[0] : []
       );
+      setShiftComments(result.data[0].comments ? result.data[0].comments : []);
     }
   };
 
