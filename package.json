@@ -36,6 +36,16 @@
     "not ie <= 11",
     "not op_mini all"
   ],
+  "resolutions": {
+    "@cypress/request": "3.x.x",
+    "debug": "^4.3.1",
+    "glob-parent": "^5.1.2",
+    "json5": "^1.0.2",
+    "minimatch": "^3.0.5",
+    "nth-check": "^2.0.1",
+    "postcss": "^8.4.31"
+    },
+
   "dependencies": {
     "@babel/preset-env": "^7.21.4",
     "@babel/preset-react": "^7.18.6",
