@@ -27,6 +27,12 @@ JS_TEST_COMMAND ?= cypress
 -include .make/k8s.mk
 -include .make/js.mk
 
+# include xray support
+-include .make/xray.mk
+
+XRAY_TEST_RESULT_FILE ?= ctrf/ctrf-report.json
+XRAY_EXECUTION_CONFIG_FILE ?= tests/xray-config.json
+
 
 # For the test, dev and integration environment, use the freshly built image in the GitLab registry
 ENV_CHECK := $(shell echo $(CI_ENVIRONMENT_SLUG) | egrep 'test|dev|integration')
