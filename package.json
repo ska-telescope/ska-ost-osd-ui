@@ -16,6 +16,7 @@
     "instrument": "webpack serve --mode development @cypress/instrument-cra",
     "lint": "eslint src/**/*.{js,jsx,ts,tsx}",
     "lint:fix": "eslint src/**/*.{js,jsx,ts,tsx} --fix",
+    "merge-component-reports": "jrm build/tests/component-tests.xml \"build/tests/*.xml\"",
     "merge-reports": "jrm build/reports/unit-tests.xml \"build/tests/*.xml\"",
     "prettier": "prettier --check \"**/*\"",
     "prettier:fix": "prettier --write \"**/*\"",
