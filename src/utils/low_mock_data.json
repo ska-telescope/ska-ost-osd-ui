@@ -1,9 +1,9 @@
 {
     "capabilities": {
-      "mid": {
+      "low": {
         "AA1": {
           "allowed_channel_count_range_max": 214748647,
-          "allowed_channel_count_range_min": {"test":"test"},
+          "allowed_channel_count_range_min": 1,
           "allowed_channel_width_values": [
             210,
             420,
@@ -96,9 +96,42 @@
           "ps_beam_bandwidth_hz": 800000000
         },
         "basic_capabilities": {
-          "dish_elevation_limit_deg": 15,
-          "test":{"test1":"test1"},
+          "dish_elevation_limit_deg": 19999999999,
+          "max_baseline_km": {"aaaaaaaaaa":{"bbbbbbbbb":"bbbbbbbbb"}},
+          "max_baseline_km2": {"aaaaaaaaaa":{"bbbbbbbbb":"bbbbbbbbb"}},
           "receiver_information": [
+            {
+              "max_frequency_hz": 1050000000,
+              "min_frequency_hz": 350000000,
+              "rx_id": {"ban1":"ba2"}
+            },
+            {
+              "max_frequency_hz": 1760000000,
+              "min_frequency_hz": 950000000,
+              "rx_id": "Band_2"
+            },
+            {
+              "max_frequency_hz": 3050000000,
+              "min_frequency_hz": 1650000000,
+              "rx_id": "Band_3"
+            },
+            {
+              "max_frequency_hz": 5180000000,
+              "min_frequency_hz": 2800000000,
+              "rx_id": "Band_4"
+            },
+            {
+              "max_frequency_hz": 8500000000,
+              "min_frequency_hz": 4600000000,
+              "rx_id": "Band_5a"
+            },
+            {
+              "max_frequency_hz": 15400000000,
+              "min_frequency_hz": 8300000000,
+              "rx_id": "Band_5b"
+            }
+          ],
+          "receiver_information2": [
             {
               "max_frequency_hz": 1050000000,
               "min_frequency_hz": 350000000,

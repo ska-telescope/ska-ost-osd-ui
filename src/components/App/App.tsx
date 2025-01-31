@@ -54,7 +54,7 @@ function App() {
         <Header
           docs={docs}
           testId="headerId"
-          title="Shift Log Tool"
+          title="Observatory Static Data"
           toolTip={toolTip}
           storage={theStorage}
         />
