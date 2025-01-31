@@ -21,6 +21,7 @@ export default defineConfig({
       on('file:preprocessor', require('@cypress/code-coverage/use-babelrc'));
       return config;
     },
+    excludeSpecPattern: 'cypress/integration/**'
   },
 
   e2e: {
