@@ -98,6 +98,11 @@ module.exports = () => {
             singleton: true,
             requiredVersion: deps['i18next-browser-languagedetector'],
           },
+          axios: {
+            eager: true,
+            singleton: true,
+            requiredVersion: deps.axios,
+          },
           'i18next-http-backend': {
             eager: true,
             // singleton: true,

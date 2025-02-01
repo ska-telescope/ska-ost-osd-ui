@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Typography,
@@ -17,11 +17,12 @@ import { isValidJson, formatJson } from './utils';
 import DynamicForm from './DynamicForm';
 
 interface JsonEditorProps {
-  initialData: any;
+  cycleId?: string;
+  initialData?: any;
   onSave: (data: any) => void;
 }
 
-const JsonEditor: React.FC<JsonEditorProps> = ({ initialData, onSave }) => {
+const JsonEditor: React.FC<JsonEditorProps> = ({initialData, onSave }) => {
   const [data, setData] = useState(initialData || {});
   const [jsonEditMode, setJsonEditMode] = useState(false);
   const [jsonEditContent, setJsonEditContent] = useState('');
@@ -101,16 +102,29 @@ const JsonEditor: React.FC<JsonEditorProps> = ({ initialData, onSave }) => {
       console.error('Failed to parse JSON:', e);
     }
   };
-
+  
   return (
     <Box sx={{ p: 2 }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-start', gap: 2, mb: 2 }}>
         <Button
           variant="contained"
           onClick={() => handleJsonEditOpen([])}
           startIcon={<EditIcon />}
         >
           Edit Full JSON
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => {
+            const formattedData = JSON.parse(JSON.stringify(data));
+            setJsonEditContent(formatJson(formattedData));
+            setEditPath([]);
+            setJsonEditMode(true);
+            onSave(formattedData);
+          }}
+        >
+          View All Changes
         </Button>
       </Box>
 
@@ -135,22 +149,7 @@ const JsonEditor: React.FC<JsonEditorProps> = ({ initialData, onSave }) => {
         }}
       />
 
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={() => {
-          // Format the data before saving to ensure it's properly structured
-          const formattedData = JSON.parse(JSON.stringify(data));
-          // Show dialog with formatted JSON
-          setJsonEditContent(formatJson(formattedData));
-          setEditPath([]);
-          setJsonEditMode(true);
-          onSave(formattedData);
-        }}
-        sx={{ mt: 2 }}
-      >
-        View All Changes
-      </Button>
+      
 
       <Dialog
         open={jsonEditMode}
@@ -187,11 +186,11 @@ const JsonEditor: React.FC<JsonEditorProps> = ({ initialData, onSave }) => {
           <Button 
             onClick={handleJsonEditSave}
             disabled={!isValidJson(jsonEditContent)}
-            color="primary"
+            color="secondary"
           >
             Save Changes
           </Button>
-        </DialogActions>
+          </DialogActions>
       </Dialog>
     </Box>
   );

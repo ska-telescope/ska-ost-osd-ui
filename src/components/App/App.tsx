@@ -12,7 +12,7 @@ import { storageObject } from '@ska-telescope/ska-gui-local-storage';
 import theme from '../../services/theme/theme';
 import Loader from '../Loader/Loader';
 import JsonEditor from '../JsonEditor/JsonEditor';
-import mockData from '../../utils/mock_data';
+import { fetchOsdData } from '../../services/api/osdApi';
 
 const HEADER_HEIGHT = 70;
 const FOOTER_HEIGHT = 20;
@@ -20,6 +20,23 @@ const FOOTER_HEIGHT = 20;
 function App() {
   const { t } = useTranslation('translations');
   const [showCopyright, setShowCopyright] = React.useState(false);
+  const [jsonData, setJsonData] = React.useState({});
+  const [isLoading, setIsLoading] = React.useState(true);
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const data = await fetchOsdData(1);
+        setJsonData(data);
+      } catch (error) {
+        console.error('Failed to fetch data:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadData();
+  }, []);
   const { help, helpToggle, telescope, themeMode, toggleTheme, updateTelescope } =
     storageObject.useStore();
 
@@ -43,14 +60,11 @@ function App() {
     <ThemeProvider theme={theme(themeMode.mode)}>
       <CssBaseline enableColorScheme />
       <React.Suspense fallback={<Loader />}>
-        {
-          // Header container :
-          // Even distribution of the children is built in
-          // Logo with URL link included
-          // Button for light/dark mode included, and sample implementation provided.
-          // TelescopeSelector build in, displayed as determined by selectTelescope property
-        }
-        <CopyrightModal copyrightFunc={setShowCopyright} show={showCopyright} />
+        {isLoading ? (
+          <Loader />
+        ) : (
+          <>
+            <CopyrightModal copyrightFunc={setShowCopyright} show={showCopyright} />
         <Header
           docs={docs}
           testId="headerId"
@@ -65,7 +79,10 @@ function App() {
         {
           // This is where we render the JSON Editor
         }
-        <JsonEditor initialData={mockData} onSave={(data) => console.log('Saved data:', data)} />
+        <JsonEditor 
+          initialData={jsonData} 
+          onSave={(data) => console.log('Saved data:', data)}
+        />
         {
           // Example of the spacer being used to stop content from being hidden behind the Footer component
         }
@@ -75,6 +92,9 @@ function App() {
           // Even distribution of the children is built in
         }
         <Footer copyrightFunc={setShowCopyright} testId="footerId" version={version} />
+          </>
+        )
+      }
       </React.Suspense>
     </ThemeProvider>
   );
