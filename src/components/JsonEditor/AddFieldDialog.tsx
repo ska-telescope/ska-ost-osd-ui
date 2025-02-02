@@ -11,20 +11,20 @@ import {
   MenuItem,
   FormControl,
   InputLabel,
-  Box,
+  Box
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
 interface AddFieldDialogProps {
   open: boolean;
   onClose: () => void;
-  onAdd: (key: string, value: any) => void;
+  onAdd: (key: string, value: string | string[] | Record<string, unknown>) => void;
 }
 
 const AddFieldDialog: React.FC<AddFieldDialogProps> = ({
   open,
   onClose,
-  onAdd,
+  onAdd
 }) => {
   const [fieldType, setFieldType] = useState('single');
   const [fieldName, setFieldName] = useState('');
@@ -33,7 +33,7 @@ const AddFieldDialog: React.FC<AddFieldDialogProps> = ({
   const handleAdd = () => {
     if (!fieldName) return;
 
-    let value: any = fieldValue;
+    let value: string | string[] | Record<string, unknown> = fieldValue;
     
     if (fieldType === 'array') {
       try {

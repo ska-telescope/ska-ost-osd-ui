@@ -7,6 +7,6 @@ export const isValidJson = (str: string): boolean => {
   }
 };
 
-export const formatJson = (obj: any): string => {
+export const formatJson = (obj: Record<string, unknown>): string => {
   return JSON.stringify(obj, null, 2);
 };

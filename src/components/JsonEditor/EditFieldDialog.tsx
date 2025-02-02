@@ -6,16 +6,16 @@ import {
   DialogActions,
   TextField,
   Button,
-  IconButton,
+  IconButton
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
 interface EditFieldDialogProps {
   open: boolean;
   onClose: () => void;
-  onSave: (value: any) => void;
+  onSave: (value: string | number | boolean | string[] | Record<string, unknown>) => void;
   fieldKey: string;
-  initialValue: any;
+  initialValue: string | number | boolean | string[] | Record<string, unknown>;
 }
 
 const EditFieldDialog: React.FC<EditFieldDialogProps> = ({
@@ -23,7 +23,7 @@ const EditFieldDialog: React.FC<EditFieldDialogProps> = ({
   onClose,
   onSave,
   fieldKey,
-  initialValue,
+  initialValue
 }) => {
   const [value, setValue] = useState('');
 

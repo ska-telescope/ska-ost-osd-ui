@@ -7,7 +7,7 @@ import {
   Button,
   Accordion,
   AccordionSummary,
-  AccordionDetails,
+  AccordionDetails
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -15,12 +15,12 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import EditIcon from '@mui/icons-material/Edit';
 
 interface DynamicFormProps {
-  data: any;
+  data: Record<string, unknown>;
   path: string[];
-  onUpdate: (path: string[], value: any) => void;
+  onUpdate: (path: string[], value: string | number | boolean | string[] | Record<string, unknown>) => void;
   onDelete: (path: string[]) => void;
-  onAdd: (path: string[], key: string, value: any) => void;
-  onEdit: (path: string[], value: any) => void;
+  onAdd: (path: string[], key: string, value: string | number | boolean | string[] | Record<string, unknown>) => void;
+  onEdit: (path: string[], value: string | number | boolean | string[] | Record<string, unknown>) => void;
 }
 
 const DynamicForm: React.FC<DynamicFormProps> = ({
@@ -29,12 +29,11 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
   onUpdate,
   onDelete,
   onAdd,
-  onEdit,
+  onEdit
 }) => {
-  const [newKey, setNewKey] = React.useState('');
-  const [newValue, setNewValue] = React.useState('');
+  
 
-  const renderField = (key: string, value: any, currentPath: string[]) => {
+  const renderField = (key: string, value: string | number | boolean | string[] | Record<string, unknown>, currentPath: string[]) => {
     if (Array.isArray(value)) {
       return (
         <Box key={key} sx={{ mb: 2 }}>

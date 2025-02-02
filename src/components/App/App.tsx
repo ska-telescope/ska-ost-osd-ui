@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import {
@@ -12,7 +12,7 @@ import { storageObject } from '@ska-telescope/ska-gui-local-storage';
 import theme from '../../services/theme/theme';
 import Loader from '../Loader/Loader';
 import JsonEditor from '../JsonEditor/JsonEditor';
-import { fetchOsdData } from '../../services/api/osdApi';
+import { fetchOsdData, saveOsdData } from '../../services/api/osdApi';
 
 const HEADER_HEIGHT = 70;
 const FOOTER_HEIGHT = 20;
@@ -29,7 +29,7 @@ function App() {
         const data = await fetchOsdData(1);
         setJsonData(data);
       } catch (error) {
-        console.error('Failed to fetch data:', error);
+        // Error handling will be managed by the error boundary
       } finally {
         setIsLoading(false);
       }
@@ -81,7 +81,15 @@ function App() {
         }
         <JsonEditor 
           initialData={jsonData} 
-          onSave={(data) => console.log('Saved data:', data)}
+          cycleId={1}
+          onSave={async (data) => {
+            try {
+              await saveOsdData(data);
+            } catch (error) {
+              // Error will be propagated to the error boundary
+              throw error;
+            }
+          }}
         />
         {
           // Example of the spacer being used to stop content from being hidden behind the Footer component

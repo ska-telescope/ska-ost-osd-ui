@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Typography,
@@ -8,29 +8,32 @@ import {
   DialogContent,
   DialogActions,
   TextField,
-  IconButton,
+  IconButton
 } from '@mui/material';
 import AddFieldDialog from './AddFieldDialog';
 import EditIcon from '@mui/icons-material/Edit';
 import CloseIcon from '@mui/icons-material/Close';
 import { isValidJson, formatJson } from './utils';
 import DynamicForm from './DynamicForm';
+import ApiErrorDialog from './ApiErrorDialog';
 
 interface JsonEditorProps {
-  cycleId?: string;
-  initialData?: any;
-  onSave: (data: any) => void;
+  cycleId?: number;
+  initialData?: Record<string, unknown>;
+  onSave: (data: Record<string, unknown>) => void;
 }
 
-const JsonEditor: React.FC<JsonEditorProps> = ({initialData, onSave }) => {
-  const [data, setData] = useState(initialData || {});
+const JsonEditor: React.FC<JsonEditorProps> = ({ cycleId, initialData, onSave }) => {
+  const [data, setData] = useState<Record<string, unknown>>(initialData || {});
   const [jsonEditMode, setJsonEditMode] = useState(false);
   const [jsonEditContent, setJsonEditContent] = useState('');
-  const [editPath, setEditPath] = useState<string[]>([]);
   const [addFieldDialogOpen, setAddFieldDialogOpen] = useState(false);
   const [currentPath, setCurrentPath] = useState<string[]>([]);
+  const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
+  const [pendingChanges, setPendingChanges] = useState<Record<string, unknown> | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
-  const updateValue = (path: string[], value: any) => {
+  const updateValue = (path: string[], value: string | number | boolean | string[] | Record<string, unknown>) => {
     const newData = { ...data };
     let current = newData;
     
@@ -62,7 +65,7 @@ const JsonEditor: React.FC<JsonEditorProps> = ({initialData, onSave }) => {
     }
   };
 
-  const addValue = (path: string[], key: string, value: any) => {
+  const addValue = (path: string[], key: string, value: string | number | boolean | string[] | Record<string, unknown>) => {
     const newData = { ...data };
     let current = newData;
     
@@ -83,23 +86,16 @@ const JsonEditor: React.FC<JsonEditorProps> = ({initialData, onSave }) => {
       editData = editData[segment];
     }
     setJsonEditContent(formatJson(editData));
-    setEditPath(path);
     setJsonEditMode(true);
   };
 
   const handleJsonEditSave = () => {
     try {
       const parsedContent = JSON.parse(jsonEditContent);
-      if (editPath.length === 0) {
-        setData(parsedContent);
-      } else {
-        updateValue(editPath, parsedContent);
-      }
-      setJsonEditMode(false);
-      setJsonEditContent('');
-      setEditPath([]);
+      setPendingChanges(parsedContent);
+      setConfirmDialogOpen(true);
     } catch (e) {
-      console.error('Failed to parse JSON:', e);
+      // Error will be handled by the surrounding error boundary
     }
   };
   
@@ -119,9 +115,7 @@ const JsonEditor: React.FC<JsonEditorProps> = ({initialData, onSave }) => {
           onClick={() => {
             const formattedData = JSON.parse(JSON.stringify(data));
             setJsonEditContent(formatJson(formattedData));
-            setEditPath([]);
             setJsonEditMode(true);
-            onSave(formattedData);
           }}
         >
           View All Changes
@@ -192,6 +186,47 @@ const JsonEditor: React.FC<JsonEditorProps> = ({initialData, onSave }) => {
           </Button>
           </DialogActions>
       </Dialog>
+
+      <Dialog
+        open={confirmDialogOpen}
+        onClose={() => setConfirmDialogOpen(false)}
+      >
+        <DialogTitle>Confirm Save Changes</DialogTitle>
+        <DialogContent>
+          <Typography>Are you sure you want to save changes?</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setConfirmDialogOpen(false)} color="secondary">
+            Cancel
+          </Button>
+          <Button
+            onClick={async () => {
+              if (pendingChanges && cycleId) {
+                try {
+                  await onSave(pendingChanges);
+                  setData(pendingChanges);
+                  setJsonEditMode(false);
+                  setConfirmDialogOpen(false);
+                } catch (err) {
+                  setError(err instanceof Error ? err.message : 'Failed to save changes');
+                }
+              } else {
+                setConfirmDialogOpen(false);
+              }
+            }}
+            color="primary"
+            variant="contained"
+          >
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <ApiErrorDialog
+        open={!!error}
+        onClose={() => setError(null)}
+        error={error || ''}
+      />
     </Box>
   );
 };
