@@ -100,19 +100,28 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
         <Box key={key} sx={{ mb: 2 }}>
           <Accordion>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', justifyContent: 'space-between' }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', justifyContent: 'space-between' }} data-testid="field-container">
                 <Typography>{key}</Typography>
                 <Box>
-                  <IconButton size="small" onClick={(e) => {
-                    e.stopPropagation();
-                    onEdit([...currentPath, key], value);
-                  }}>
+                  <IconButton 
+                    size="small" 
+                    aria-label="edit"
+                    data-testid="edit-button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onEdit([...currentPath, key], value);
+                    }}>
                     <EditIcon />
                   </IconButton>
-                  <IconButton size="small" color="error" onClick={(e) => {
-                    e.stopPropagation();
-                    onDelete([...currentPath, key]);
-                  }}>
+                  <IconButton 
+                    size="small" 
+                    color="error" 
+                    aria-label="delete"
+                    data-testid="delete-button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onDelete([...currentPath, key]);
+                    }}>
                     <DeleteIcon />
                   </IconButton>
                 </Box>
