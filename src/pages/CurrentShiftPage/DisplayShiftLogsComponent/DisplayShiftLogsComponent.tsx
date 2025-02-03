@@ -152,12 +152,6 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
         setTimeout(() => {
           setDisplayMessageElement(false);
         }, 3000);
-      } else {
-        setMessage('msg.imageNotUpload');
-        setDisplayMessageElement(true);
-        setTimeout(() => {
-          setDisplayMessageElement(false);
-        }, 3000);
       }
     } else if (shiftLogCommentID) {
       const path = createShiftLogCommentPath(shiftLogCommentID, 'image');
@@ -172,14 +166,6 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
         setTimeout(() => {
           setDisplayMessageElement(false);
         }, 3000);
-      } else {
-        setMessageType('addLogImage');
-        setMessage('msg.imageNotUpload');
-        setDisplayMessageElement(true);
-        updateCommentsEvent();
-        setTimeout(() => {
-          setDisplayMessageElement(false);
-        }, 3000);
       }
     } else {
       const path = `shift_log_comment/upload_image?shift_id=${shiftData.shift_id}&shift_operator=${shiftData.shift_operator}&eb_id=${selectedLogDetails && selectedLogDetails.info && selectedLogDetails.info.eb_id ? selectedLogDetails.info.eb_id : ''}`;
@@ -189,15 +175,6 @@ const DisplayShiftLogsComponent = ({ shiftData, updateCommentsEvent, isCurrentSh
       if (response.status === 200) {
         setMessageType('addLogImage');
         setMessage('msg.imageUpload');
-        setDisplayMessageElement(true);
-        updateCommentsEvent();
-        setTimeout(() => {
-          setDisplayMessageElement(false);
-          setIsUpdateEnable(false);
-        }, 3000);
-      } else {
-        setMessageType('addLogImage');
-        setMessage('msg.imageNotUpload');
         setDisplayMessageElement(true);
         updateCommentsEvent();
         setTimeout(() => {

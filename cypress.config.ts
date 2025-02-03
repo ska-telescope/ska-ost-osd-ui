@@ -41,6 +41,6 @@ export default defineConfig({
       require('cypress-xray-junit-reporter/plugin')(on, config, {}); // also needed
       return config;
     },
-    specPattern: 'tests/cypress/integration/**/*.test.ts',
+    specPattern: 'tests/cypress/integration/**/*.test.tsx',
   },
 });
