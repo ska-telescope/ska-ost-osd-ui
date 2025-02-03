@@ -21,7 +21,7 @@ export default defineConfig({
       on('file:preprocessor', require('@cypress/code-coverage/use-babelrc'));
       return config;
     },
-    excludeSpecPattern: 'cypress/integration/**'
+    excludeSpecPattern: 'cypress/integration/**',
   },
 
   e2e: {
@@ -35,13 +35,12 @@ export default defineConfig({
       useFullSuiteTitle: false,
       jenkinsMode: true,
       xrayMode: true, // if JiraKey are set correctly inside the test the XML report will contain the JiraKey value
-      attachScreenshot: true // if a test fails, the screenshot will be attached to the XML report and imported into xray
+      attachScreenshot: true, // if a test fails, the screenshot will be attached to the XML report and imported into xray
     },
     setupNodeEvents(on, config) {
       require('cypress-xray-junit-reporter/plugin')(on, config, {}); // also needed
       return config;
     },
-    specPattern: 'cypress/integration/**/*.test.js'
-  }
-
+    specPattern: 'cypress/integration/**/*.test.tsx',
+  },
 });
