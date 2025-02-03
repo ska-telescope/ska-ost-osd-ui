@@ -64,34 +64,6 @@ code_analysis:
     paths:
       - build/
 
-# run the cypress test coverage reports
-test_and_coverage:
-  image: cypress/browsers:node-20.9.0-chrome-118.0.5993.88-1-ff-118.0.2-edge-118.0.2088.46-1
-  stage: test
-  tags:
-    - k8srunner
-  before_script:
-    - rm -rf node_modules
-    - mkdir -p build/reports
-    - mkdir -p build/.nyc_output
-    - apt update && apt -y install make
-    - yarn install --immutable
-  script:
-    - yarn start &
-    - yarn test:e2e:headless
-    - yarn test:coverage:report:ci
-    - mv build/reports/cobertura-coverage.xml build/reports/code-coverage.xml
-
-  coverage: /All\sfiles.*?\s+(\d+.\d+)/
-  cache:
-    paths:
-      - node_modules/
-      - .cache/Cypress
-    policy: pull
-  artifacts:
-    paths:
-      - build/
-
 # list the current top level dependencies for the project
 list_dependencies:
   stage: test
@@ -113,26 +85,6 @@ list_dependencies:
   artifacts:
     paths:
       - .public
-
-test-counts:
-  image: cypress/browsers:node-20.9.0-chrome-118.0.5993.88-1-ff-118.0.2-edge-118.0.2088.46-1
-  stage: test
-  tags:
-    - k8srunner
-  cache:
-    paths:
-      - node_modules/
-    policy: pull
-  before_script:
-    - rm -rf node_modules
-    - mkdir -p build/tests
-    - yarn install --immutable
-  script:
-    - yarn test:cypress:component:ci
-    - yarn merge-reports
-  artifacts:
-    paths:
-      - build/
 
 # Build the application
 build:
