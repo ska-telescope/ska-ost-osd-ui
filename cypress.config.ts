@@ -7,7 +7,6 @@ export default defineConfig({
   screenshotsFolder: 'tests/cypress/screenshots',
   videosFolder: 'tests/cypress/videos',
   downloadsFolder: 'tests/cypress/downloads',
-
   component: {
     supportFile: 'tests/cypress/support/component.js',
     specPattern: '**/*.test.{js,jsx,ts,tsx}',
@@ -21,7 +20,7 @@ export default defineConfig({
       on('file:preprocessor', require('@cypress/code-coverage/use-babelrc'));
       return config;
     },
-    excludeSpecPattern: 'cypress/integration/**',
+    excludeSpecPattern: 'tests/cypress/integration/**',
   },
 
   e2e: {
@@ -41,6 +40,6 @@ export default defineConfig({
       require('cypress-xray-junit-reporter/plugin')(on, config, {}); // also needed
       return config;
     },
-    specPattern: 'cypress/integration/**/*.test.tsx',
+    specPattern: 'tests/cypress/integration/**/*.test.tsx',
   },
 });
