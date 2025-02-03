@@ -1,3 +1,10 @@
+import enTranslations from '../../../../public/locales/en/translations.json';
+const language = 'English';
+let translation;
+if (language === 'English') {
+  translation = enTranslations;
+}
+
 describe('Creating Shift', () => {
   it('should create a new shift', { jiraKey: 'XTP-75132' }, () => {
     cy.get('[data-testid="manageShift"]').contains(translation.label.manageShift);
