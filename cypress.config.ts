@@ -24,7 +24,8 @@ export default defineConfig({
   },
 
   e2e: {
-    baseUrl: 'http://localhost:6101',
+    baseUrl: 'http://localhost:8090',
+    supportFile: 'tests/cypress/support/e2e.js',
     defaultCommandTimeout: 10000,
     deleteVideoOnPassed: true,
     betterRetries: true,
@@ -40,6 +41,6 @@ export default defineConfig({
       require('cypress-xray-junit-reporter/plugin')(on, config, {}); // also needed
       return config;
     },
-    specPattern: 'tests/cypress/e2e/**/*.test.ts',
+    specPattern: 'tests/cypress/integration/**/*.test.ts',
   },
 });
