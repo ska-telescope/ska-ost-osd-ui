@@ -5077,6 +5077,11 @@ cypress-ctrf-json-reporter@^0.0.10:
   resolved "https://registry.yarnpkg.com/cypress-ctrf-json-reporter/-/cypress-ctrf-json-reporter-0.0.10.tgz#d7ca6b8fd63dbfd8092d2a712244c9ca99bb067d"
   integrity sha512-S9kIyn83TSbOsZcWVNsrE+SwN06oD50sSA/0SbAPPnk1BP5p203K496UgzlFifOYc1GA6o4FllaxcaEOJp0t9Q==
 
+cypress-file-upload@^5.0.8:
+  version "5.0.8"
+  resolved "https://registry.yarnpkg.com/cypress-file-upload/-/cypress-file-upload-5.0.8.tgz#d8824cbeaab798e44be8009769f9a6c9daa1b4a1"
+  integrity sha512-+8VzNabRk3zG6x8f8BWArF/xA/W0VK4IZNx3MV0jFWrJS/qKn8eHfa5nU73P9fOQAgwHFJx7zjg4lwOnljMO8g==
+
 cypress-xray-junit-reporter@^1.1.8:
   version "1.1.12"
   resolved "https://registry.yarnpkg.com/cypress-xray-junit-reporter/-/cypress-xray-junit-reporter-1.1.12.tgz#79ea59df6656bdb69e0d2ad90b7c85cf562bad08"
