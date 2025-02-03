@@ -20,11 +20,6 @@ JS_ESLINT_CONFIG ?= .eslintrc.js
 JS_COMMAND_RUNNER ?= yarn
 JS_TEST_COMMAND ?= cypress
 
-# Post hook for coverage reports
-js-post-e2e-test:
-	yarn test:coverage:report:ci
-	cp build/reports/cobertura-coverage.xml build/reports/code-coverage.xml
-
 js-pre-e2e-test:
 	mkdir -p build/reports
 	mkdir -p build/.nyc_output
