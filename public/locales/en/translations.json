@@ -103,7 +103,6 @@
     "shiftStarted": "Shift started successfully",
     "shiftEnd": "Shift ended successfully",
     "imageUpload": "Image uploaded successfully",
-    "imageNotUpload": "Duplicate image cannot be uploaded",
     "commentSubmit": "Comment submitted successfully",
     "annotationSubmit": "Annotation submitted successfully",
     "selectedDates": "Showing records for selected dates",
