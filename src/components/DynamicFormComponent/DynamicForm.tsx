@@ -45,9 +45,17 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
               <TextField
                 fullWidth
                 label="Array Items (comma-separated)"
-                value={value.filter(item => typeof item !== 'object' || item === null).join(', ')}
+                value={value.map(item => typeof item === 'object' && item !== null ? JSON.stringify(item) : item).join(', ')}
                 onChange={(e) => {
-                  const newArray = e.target.value.split(',').map(item => item.trim()).filter(item => item !== '');
+                  const newArray = e.target.value.split(',').map(item => {
+                    const trimmed = item.trim();
+                    try {
+                      // Attempt to parse as JSON if it looks like an object
+                      return trimmed.startsWith('{') ? JSON.parse(trimmed) : trimmed;
+                    } catch {
+                      return trimmed;
+                    }
+                  }).filter(item => item !== '');
                   onUpdate([...currentPath, key], newArray);
                 }}
                 multiline
@@ -86,6 +94,7 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
                 }}
                 variant="outlined"
                 size="small"
+                data-testid="add-array-item-button"
               >
                 Add Item
               </Button>
@@ -170,6 +179,7 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
           onClick={() => onAdd(path, '', '')}
           variant="contained"
           size="small"
+          data-testid="add-new-field-button"
         >
           ADD NEW FIELD
         </Button>

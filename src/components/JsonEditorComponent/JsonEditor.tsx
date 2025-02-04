@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import {
   Box,
   Typography,
@@ -10,31 +12,42 @@ import {
   TextField,
   IconButton
 } from '@mui/material';
-import AddFieldDialog from './AddFieldDialog';
-import EditIcon from '@mui/icons-material/Edit';
+import AddFieldDialog from '../AddFieldDialogComponent/AddFieldDialog';
 import CloseIcon from '@mui/icons-material/Close';
-import { isValidJson, formatJson } from './utils';
-import DynamicForm from './DynamicForm';
-import ApiErrorDialog from './ApiErrorDialog';
+import { isValidJson } from '../utils';
+import { JsonObject } from './types';
+import DynamicForm from '../DynamicFormComponent/DynamicForm';
+import ApiErrorDialog from '../ApiErrorDialogComponent/ApiErrorDialog';
 
 interface JsonEditorProps {
-  cycleId?: number;
-  initialData?: Record<string, unknown>;
-  onSave: (data: Record<string, unknown>) => void;
+  initialData?: JsonObject;
+  onSave: (data: JsonObject) => void;
 }
 
-const JsonEditor: React.FC<JsonEditorProps> = ({ cycleId, initialData, onSave }) => {
-  const [data, setData] = useState<Record<string, unknown>>(initialData || {});
+const JsonEditor: React.FC<JsonEditorProps> = ({ initialData, onSave }) => {
+  const { t } = useTranslation('translations');
+  
+  const [data, setData] = useState<JsonObject>(() => {
+    return initialData ? structuredClone(initialData) : {};
+  });
   const [jsonEditMode, setJsonEditMode] = useState(false);
   const [jsonEditContent, setJsonEditContent] = useState('');
   const [addFieldDialogOpen, setAddFieldDialogOpen] = useState(false);
   const [currentPath, setCurrentPath] = useState<string[]>([]);
+  const [currentEditPath, setCurrentEditPath] = useState<string[]>([]);
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
   const [pendingChanges, setPendingChanges] = useState<Record<string, unknown> | null>(null);
   const [error, setError] = useState<string | null>(null);
 
+  const resetEditState = () => {
+    setJsonEditMode(false);
+    setCurrentEditPath([]);
+    setJsonEditContent('');
+  };
+
   const updateValue = (path: string[], value: string | number | boolean | string[] | Record<string, unknown>) => {
-    const newData = { ...data };
+    // Use deep copy to properly handle nested structures
+    const newData = structuredClone(data);
     let current = newData;
     
     for (let i = 0; i < path.length - 1; i++) {
@@ -51,7 +64,8 @@ const JsonEditor: React.FC<JsonEditorProps> = ({ cycleId, initialData, onSave })
   };
 
   const deleteValue = (path: string[]) => {
-    const newData = { ...data };
+    // Deep clone to properly handle nested structures
+    const newData = structuredClone(data);
     let current = newData;
     
     for (let i = 0; i < path.length - 1; i++) {
@@ -66,7 +80,8 @@ const JsonEditor: React.FC<JsonEditorProps> = ({ cycleId, initialData, onSave })
   };
 
   const addValue = (path: string[], key: string, value: string | number | boolean | string[] | Record<string, unknown>) => {
-    const newData = { ...data };
+    // Deep clone to properly handle nested structures
+    const newData = structuredClone(data);
     let current = newData;
     
     for (const segment of path) {
@@ -81,19 +96,54 @@ const JsonEditor: React.FC<JsonEditorProps> = ({ cycleId, initialData, onSave })
   };
 
   const handleJsonEditOpen = (path: string[]) => {
-    let editData = data;
-    for (const segment of path) {
-      editData = editData[segment];
+    try {
+      // Get value at path and deep clone it
+      let targetValue = data;
+      if (path.length > 0) {
+        for (const segment of path) {
+          if (!(segment in targetValue)) {
+            throw new Error(`Invalid path: ${path.join('.')}`);
+          }
+          targetValue = targetValue[segment];
+        }
+      }
+      
+      // Deep clone to preserve structure
+      const valueToEdit = structuredClone(targetValue);
+      setJsonEditContent(JSON.stringify(valueToEdit, null, 2));
+      setJsonEditMode(true);
+    } catch (e) {
+      setError('Failed to open editor for this field');
     }
-    setJsonEditContent(formatJson(editData));
-    setJsonEditMode(true);
   };
 
   const handleJsonEditSave = () => {
+    if (!isValidJson(jsonEditContent)) {
+      return;
+    }
+
     try {
-      const parsedContent = JSON.parse(jsonEditContent);
-      setPendingChanges(parsedContent);
-      setConfirmDialogOpen(true);
+      // Parse JSON directly without any special reconstruction
+      const parsedContent = JSON.parse(jsonEditContent) as JsonObject;
+
+      const newData = structuredClone(data);
+
+      // Set the new value while preserving array structures
+      if (currentEditPath.length > 0) {
+        let current = newData;
+        for (let i = 0; i < currentEditPath.length - 1; i++) {
+          current = current[currentEditPath[i]] as JsonObject;
+        }
+        
+        // Set the value directly without any special handling
+        const lastKey = currentEditPath[currentEditPath.length - 1];
+        current[lastKey] = parsedContent;
+      } else {
+        Object.assign(newData, parsedContent);
+      }
+
+      setData(newData);
+      resetEditState();
     } catch (e) {
       // Error will be handled by the surrounding error boundary
     }
@@ -104,21 +154,27 @@ const JsonEditor: React.FC<JsonEditorProps> = ({ cycleId, initialData, onSave })
       <Box sx={{ display: 'flex', justifyContent: 'flex-start', gap: 2, mb: 2 }}>
         <Button
           variant="contained"
-          onClick={() => handleJsonEditOpen([])}
-          startIcon={<EditIcon />}
+          color="secondary"
+          onClick={() => {
+            setCurrentEditPath([]);
+            // Direct stringify to maintain array structure
+            setJsonEditContent(JSON.stringify(data, null, 2));
+            setJsonEditMode(true);
+          }}
+          data-testid="edit-json-button"
         >
-          Edit Full JSON
+          {t('label.button.editChanges')}
         </Button>
         <Button
           variant="contained"
           color="primary"
           onClick={() => {
-            const formattedData = JSON.parse(JSON.stringify(data));
-            setJsonEditContent(formatJson(formattedData));
-            setJsonEditMode(true);
+            const formattedData = structuredClone(data);
+            setPendingChanges(formattedData);
+            setConfirmDialogOpen(true);
           }}
         >
-          View All Changes
+          {t('label.button.saveAllChanges')}
         </Button>
       </Box>
 
@@ -131,7 +187,10 @@ const JsonEditor: React.FC<JsonEditorProps> = ({ cycleId, initialData, onSave })
           setCurrentPath(path);
           setAddFieldDialogOpen(true);
         }}
-        onEdit={(path) => handleJsonEditOpen(path)}
+        onEdit={(path) => {
+          setCurrentEditPath(path);
+          handleJsonEditOpen(path);
+        }}
       />
       
       <AddFieldDialog
@@ -143,8 +202,6 @@ const JsonEditor: React.FC<JsonEditorProps> = ({ cycleId, initialData, onSave })
         }}
       />
 
-      
-
       <Dialog
         open={jsonEditMode}
         onClose={() => setJsonEditMode(false)}
@@ -152,10 +209,10 @@ const JsonEditor: React.FC<JsonEditorProps> = ({ cycleId, initialData, onSave })
         fullWidth
       >
         <DialogTitle>
-          Edit JSON
+          {t('dialog.titles.editJson')}
           <IconButton
             aria-label="close"
-            onClick={() => setJsonEditMode(false)}
+            onClick={resetEditState}
             sx={{ position: 'absolute', right: 8, top: 8 }}
           >
             <CloseIcon />
@@ -169,20 +226,27 @@ const JsonEditor: React.FC<JsonEditorProps> = ({ cycleId, initialData, onSave })
             value={jsonEditContent}
             onChange={(e) => setJsonEditContent(e.target.value)}
             error={!isValidJson(jsonEditContent)}
-            helperText={!isValidJson(jsonEditContent) ? 'Invalid JSON format' : ''}
+            helperText={!isValidJson(jsonEditContent) ? t('dialog.messages.invalidJson') : ''}
+            data-testid="json-edit-textarea"
             sx={{ mt: 2 }}
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setJsonEditMode(false)} color="secondary">
-            Cancel
+          <Button 
+            onClick={resetEditState} 
+            color="secondary"
+            data-testid="cancel-edit-button"
+          >
+            {t('label.button.cancel')}
           </Button>
           <Button 
             onClick={handleJsonEditSave}
             disabled={!isValidJson(jsonEditContent)}
-            color="secondary"
+            color="primary"
+            variant="contained"
+            data-testid="save-json-edit-button"
           >
-            Save Changes
+            {t('label.button.save')}
           </Button>
           </DialogActions>
       </Dialog>
@@ -191,17 +255,21 @@ const JsonEditor: React.FC<JsonEditorProps> = ({ cycleId, initialData, onSave })
         open={confirmDialogOpen}
         onClose={() => setConfirmDialogOpen(false)}
       >
-        <DialogTitle>Confirm Save Changes</DialogTitle>
+        <DialogTitle>{t('dialog.titles.confirmSave')}</DialogTitle>
         <DialogContent>
-          <Typography>Are you sure you want to save changes?</Typography>
+          <Typography>{t('dialog.messages.confirmSave')}</Typography>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setConfirmDialogOpen(false)} color="secondary">
-            Cancel
+          <Button 
+            onClick={() => setConfirmDialogOpen(false)} 
+            color="secondary"
+            data-testid="cancel-save-button"
+          >
+            {t('label.button.cancel')}
           </Button>
           <Button
             onClick={async () => {
-              if (pendingChanges && cycleId) {
+              if (pendingChanges) {
                 try {
                   await onSave(pendingChanges);
                   setData(pendingChanges);
@@ -216,8 +284,9 @@ const JsonEditor: React.FC<JsonEditorProps> = ({ cycleId, initialData, onSave })
             }}
             color="primary"
             variant="contained"
+            data-testid="confirm-save-button"
           >
-            OK
+            {t('label.button.ok')}
           </Button>
         </DialogActions>
       </Dialog>

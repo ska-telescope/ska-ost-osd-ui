@@ -48,8 +48,20 @@ describe('<DynamicForm />', () => {
     describe(`Theme ${theTheme}`, () => {
       it('triggers onEdit for nested object editing', () => {
         mount(theTheme);
-        cy.contains('nestedField').parent().find('button[aria-label="edit"]').click();
+        cy.get('[data-testid="edit-button"]').first().click();
         cy.get('@onEditStub').should('have.been.calledWith', ['nestedField']);
+      });
+
+      it('triggers onDelete for field deletion', () => {
+        mount(theTheme);
+        cy.get('[data-testid="delete-button"]').first().click();
+        cy.get('@onDeleteStub').should('have.been.calledWith', ['nestedField']);
+      });
+
+      it('displays field container with correct label', () => {
+        mount(theTheme);
+        cy.get('[data-testid="field-container"]').should('be.visible');
+        cy.contains('stringField').should('be.visible');
       });
     });
   }

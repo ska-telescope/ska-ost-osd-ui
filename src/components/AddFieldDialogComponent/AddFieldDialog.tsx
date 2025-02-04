@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import {
   Dialog,
   DialogTitle,
@@ -29,9 +31,10 @@ const AddFieldDialog: React.FC<AddFieldDialogProps> = ({
   const [fieldType, setFieldType] = useState('single');
   const [fieldName, setFieldName] = useState('');
   const [fieldValue, setFieldValue] = useState('');
+  const { t } = useTranslation();
 
   const handleAdd = () => {
-    if (!fieldName) return;
+    if (!fieldName.trim()) return;
 
     let value: string | string[] | Record<string, unknown> = fieldValue;
     
@@ -63,11 +66,12 @@ const AddFieldDialog: React.FC<AddFieldDialogProps> = ({
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
       <DialogTitle>
-        Add New Field
+        {t('dialog.titles.addNewField')}
         <IconButton
-          aria-label="close"
+          aria-label={t('label.button.close')}
           onClick={handleClose}
           sx={{ position: 'absolute', right: 8, top: 8 }}
+          data-testid="close-icon-button"
         >
           <CloseIcon />
         </IconButton>
@@ -76,20 +80,22 @@ const AddFieldDialog: React.FC<AddFieldDialogProps> = ({
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 2 }}>
           <TextField
             fullWidth
-            label="Field Name"
+            label={t('dialog.fields.fieldName')}
             value={fieldName}
             onChange={(e) => setFieldName(e.target.value)}
+            data-testid="field-name-input"
           />
           <FormControl fullWidth>
-            <InputLabel>Field Type</InputLabel>
+            <InputLabel>{t('dialog.fields.fieldType')}</InputLabel>
             <Select
               value={fieldType}
-              label="Field Type"
+              label={t('dialog.fields.fieldType')}
               onChange={(e) => setFieldType(e.target.value)}
+              data-testid="field-type-select"
             >
-              <MenuItem value="single">Single Value</MenuItem>
-              <MenuItem value="array">Array</MenuItem>
-              <MenuItem value="object">Object</MenuItem>
+              <MenuItem value="single">{t('dialog.types.singleValue')}</MenuItem>
+              <MenuItem value="array">{t('dialog.types.array')}</MenuItem>
+              <MenuItem value="object">{t('dialog.types.object')}</MenuItem>
             </Select>
           </FormControl>
           <TextField
@@ -98,29 +104,30 @@ const AddFieldDialog: React.FC<AddFieldDialogProps> = ({
             rows={fieldType !== 'single' ? 4 : 1}
             label={
               fieldType === 'array'
-                ? 'Values (comma-separated)'
+                ? t('dialog.fields.values')
                 : fieldType === 'object'
-                ? 'JSON Object'
-                : 'Value'
+                ? t('dialog.fields.jsonObject')
+                : t('dialog.fields.value')
             }
             value={fieldValue}
             onChange={(e) => setFieldValue(e.target.value)}
+            data-testid="field-value-input"
             helperText={
               fieldType === 'array'
-                ? 'Enter comma-separated values'
+                ? t('dialog.help.array')
                 : fieldType === 'object'
-                ? 'Enter valid JSON object'
+                ? t('dialog.help.object')
                 : ''
             }
           />
         </Box>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose} color="secondary">
-          Cancel
+        <Button onClick={handleClose} color="secondary" data-testid="cancel-button">
+          {t('label.button.cancel')}
         </Button>
-        <Button onClick={handleAdd} color="primary" disabled={!fieldName}>
-          Add Field
+        <Button onClick={handleAdd} color="primary" disabled={!fieldName.trim()} data-testid="add-field-button">
+          {t('label.button.addField')}
         </Button>
       </DialogActions>
     </Dialog>

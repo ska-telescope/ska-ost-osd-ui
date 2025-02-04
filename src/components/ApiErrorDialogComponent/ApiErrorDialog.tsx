@@ -22,7 +22,7 @@ const ApiErrorDialog: React.FC<ApiErrorDialogProps> = ({ open, onClose, error })
         <Typography color="error">{error}</Typography>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose} color="primary">
+        <Button onClick={onClose} color="primary" data-testid="error-dialog-close-button">
           Close
         </Button>
       </DialogActions>

@@ -5,8 +5,8 @@ import { BackDrop, Progress } from '@ska-telescope/ska-gui-components';
 export default function Loader() {
   return (
     <Box>
-      <BackDrop open>
-        <Progress size={100} testId="progressTestId" />
+      <BackDrop open data-testid="loader-backdrop">
+        <Progress size={100} testId="loader-progress" />
       </BackDrop>
     </Box>
   );

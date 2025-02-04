@@ -38,7 +38,32 @@ describe('<AddFieldDialog />', () => {
 
       it('calls onClose when cancel is clicked', () => {
         mount(theTheme);
-        cy.get('button').contains('Cancel').click();
+        cy.get('[data-testid="cancel-button"]').click();
+        cy.get('@onCloseStub').should('have.been.called');
+      });
+
+      it('handles invalid JSON object input', () => {
+        mount(theTheme);
+        cy.get('[data-testid="field-name-input"]').type('invalidObject');
+        cy.get('[data-testid="field-type-select"]').click();
+        cy.get('[data-value="object"]').click();
+        cy.get('[data-testid="field-value-input"]').type('invalid json');
+        cy.get('[data-testid="add-field-button"]').click();
+        cy.get('@onAddStub').should('have.been.calledWith', 'invalidObject', {});
+      });
+
+      it('handles empty array input', () => {
+        mount(theTheme);
+        cy.get('[data-testid="field-name-input"]').type('emptyArray');
+        cy.get('[data-testid="field-type-select"]').click();
+        cy.get('[data-value="array"]').click();
+        cy.get('[data-testid="add-field-button"]').click();
+        cy.get('@onAddStub').should('have.been.calledWith', 'emptyArray', []);
+      });
+
+      it('closes dialog with close icon button', () => {
+        mount(theTheme);
+        cy.get('[data-testid="close-icon-button"]').click();
         cy.get('@onCloseStub').should('have.been.called');
       });
     });

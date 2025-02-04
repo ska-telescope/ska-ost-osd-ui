@@ -11,8 +11,8 @@ import {
 import { storageObject } from '@ska-telescope/ska-gui-local-storage';
 import theme from '../../services/theme/theme';
 import Loader from '../Loader/Loader';
-import JsonEditor from '../JsonEditor/JsonEditor';
-import { fetchOsdData, saveOsdData } from '../../services/api/osdApi';
+import JsonEditor from '../JsonEditorComponent/JsonEditor';
+import apiService from '../../services/api/api';
 
 const HEADER_HEIGHT = 70;
 const FOOTER_HEIGHT = 20;
@@ -26,10 +26,10 @@ function App() {
   useEffect(() => {
     const loadData = async () => {
       try {
-        const data = await fetchOsdData(1);
-        setJsonData(data);
+        const data = await apiService.fetchOsdData();
+        setJsonData(data.data);
       } catch (error) {
-        // Error handling will be managed by the error boundary
+        throw error
       } finally {
         setIsLoading(false);
       }
@@ -37,7 +37,7 @@ function App() {
 
     loadData();
   }, []);
-  const { help, helpToggle, telescope, themeMode, toggleTheme, updateTelescope } =
+  const { help, helpToggle, themeMode, toggleTheme } =
     storageObject.useStore();
 
   const skao = t('toolTip.button.skao');
@@ -47,13 +47,12 @@ function App() {
   const docs = { tooltip: headerTip, url: headerURL };
   const toolTip = { skao, mode };
   const version = process.env.VERSION;
+  const osd_title = t('text.observatory_static_data');
   const theStorage = {
     help,
     helpToggle,
-    telescope,
     themeMode: themeMode.mode,
-    toggleTheme,
-    updateTelescope
+    toggleTheme
   };
 
   return (
@@ -68,37 +67,28 @@ function App() {
         <Header
           docs={docs}
           testId="headerId"
-          title="Observatory Static Data"
+          title={osd_title}
           toolTip={toolTip}
           storage={theStorage}
         />
-        {
-          // Example of the spacer being used to shift content from behind the Header component
-        }
+        {/* Example of the spacer being used to shift content from behind the Header component */}
         <Spacer size={HEADER_HEIGHT} axis={SPACER_VERTICAL} />
-        {
-          // This is where we render the JSON Editor
-        }
+        {/* This is where we render the JSON Editor */}
         <JsonEditor 
+          data-testid="json-editor"
           initialData={jsonData} 
-          cycleId={1}
           onSave={async (data) => {
             try {
-              await saveOsdData(data);
+              await apiService.saveOsdData(data);
             } catch (error) {
               // Error will be propagated to the error boundary
               throw error;
             }
           }}
         />
-        {
-          // Example of the spacer being used to stop content from being hidden behind the Footer component
-        }
+        {/* Example of the spacer being used to stop content from being hidden behind the Footer component */}
         <Spacer size={FOOTER_HEIGHT} axis={SPACER_VERTICAL} />
-        {
-          // Footer container :
-          // Even distribution of the children is built in
-        }
+        {/* Footer container: Even distribution of the children is built in */}
         <Footer copyrightFunc={setShowCopyright} testId="footerId" version={version} />
           </>
         )

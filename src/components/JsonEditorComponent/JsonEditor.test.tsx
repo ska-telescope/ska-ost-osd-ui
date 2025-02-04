@@ -24,7 +24,6 @@ describe('<JsonEditor />', () => {
         <CssBaseline />
         <JsonEditor
           initialData={mockInitialData}
-          cycleId={1}
           onSave={mockOnSave}
         />
       </ThemeProvider>
@@ -33,16 +32,10 @@ describe('<JsonEditor />', () => {
 
   for (const theTheme of THEME) {
     describe(`Theme ${theTheme}`, () => {
-      it('renders with initial data', () => {
+      it('opens edit dialog when Edit Changes is clicked', () => {
         mount(theTheme);
-        cy.contains('Edit Full JSON').should('exist');
-        cy.contains('View All Changes').should('exist');
-      });
-
-      it('opens edit dialog when Edit Full JSON is clicked', () => {
-        mount(theTheme);
-        cy.contains('Edit Full JSON').click();
-        cy.contains('Edit JSON').should('be.visible');
+        cy.get('[data-testid="edit-json-button"]').click();
+        cy.get('[data-testid="json-edit-textarea"]').should('be.visible');
       });
     });
   }

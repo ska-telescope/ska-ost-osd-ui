@@ -41,8 +41,25 @@ describe('<ApiErrorDialog />', () => {
 
       it('calls onClose when close button is clicked', () => {
         mount(theTheme);
-        cy.get('button').contains('Close').click();
+        cy.get('[data-testid="error-dialog-close-button"]').click();
         cy.get('@onCloseStub').should('have.been.called');
+      });
+
+      it('displays the provided error message', () => {
+        const errorMessage = 'Custom error message';
+        mount(theTheme, true, errorMessage);
+        cy.contains(errorMessage).should('be.visible');
+      });
+
+      it('closes dialog when clicking outside', () => {
+        mount(theTheme);
+        cy.get('.MuiDialog-root').click('topLeft');
+        cy.get('@onCloseStub').should('have.been.called');
+      });
+
+      it('has correct dialog title', () => {
+        mount(theTheme);
+        cy.contains('Error Saving Changes').should('be.visible');
       });
     });
   }
