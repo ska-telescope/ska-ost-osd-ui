@@ -20,12 +20,22 @@ JS_ESLINT_CONFIG ?= .eslintrc.js
 JS_COMMAND_RUNNER ?= yarn
 JS_TEST_COMMAND ?= cypress
 
+js-pre-e2e-test:
+	mkdir -p build/reports
+	mkdir -p build/.nyc_output
+
 # include core makefile targets for release management
 -include .make/base.mk
 -include .make/oci.mk
 -include .make/helm.mk
 -include .make/k8s.mk
 -include .make/js.mk
+
+# include xray support
+-include .make/xray.mk
+
+XRAY_TEST_RESULT_FILE ?= ctrf/ctrf-report.json
+XRAY_EXECUTION_CONFIG_FILE ?= tests/xray-config.json
 
 
 # For the test, dev and integration environment, use the freshly built image in the GitLab registry

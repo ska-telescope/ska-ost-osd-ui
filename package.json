@@ -23,7 +23,7 @@
     "start": "npx react-inject-env set -d public/ && NODE_ENV=test webpack serve --mode development --open",
     "test:component:headless": "cypress run --component --headless --browser chrome --config video=false",
     "test:coverage:report": "npx nyc report --report-dir=build/reports --reporter=html",
-    "test:coverage:report:ci": "npx nyc report --report-dir=build/reports",
+    "test:coverage:report:ci": "npx nyc report --report-dir=build/reports --reporter=cobertura",
     "test:coverage:summary": "npx nyc report --reporter=text-summary",
     "test:cypress:component:ci": "cypress run --component --headless --browser chrome --reporter junit --reporter-options mochaFile=build/tests/unit-tests[hash].xml --config video=true",
     "test:cypress:e2e:ci": "cypress run --e2e --headless --browser chrome --reporter junit --config video=false --reporter-options mochaFile=build/tests/unit-tests[hash].xml",
@@ -36,6 +36,15 @@
     "not ie <= 11",
     "not op_mini all"
   ],
+  "resolutions": {
+    "@cypress/request": "3.x.x",
+    "debug": "^4.3.1",
+    "glob-parent": "^5.1.2",
+    "json5": "^1.0.2",
+    "minimatch": "^3.0.5",
+    "nth-check": "^2.0.1",
+    "postcss": "^8.4.31"
+  },
   "dependencies": {
     "@babel/preset-env": "^7.21.4",
     "@babel/preset-react": "^7.18.6",
@@ -45,6 +54,9 @@
     "@mui/material": "^5.12.1",
     "@ska-telescope/ska-gui-components": "^2.0.20",
     "@ska-telescope/ska-gui-local-storage": "^2.0.0",
+    "cypress-xray-junit-reporter": "^1.1.8",
+    "cypress-xray-plugin": "^7.3.0",
+    "cypress-ctrf-json-reporter": "^0.0.10",
     "@types/jest": "^29.5.12",
     "axios": "^1.6.2",
     "babel-core": "6",
@@ -81,6 +93,7 @@
     "babel-plugin-istanbul": "^6.1.1",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "copy-webpack-plugin": "^12.0.2",
+    "cypress-file-upload": "^5.0.8",
     "css-loader": "^6.7.1",
     "cypress": "^13.6.6",
     "eslint": "^8.46.0",

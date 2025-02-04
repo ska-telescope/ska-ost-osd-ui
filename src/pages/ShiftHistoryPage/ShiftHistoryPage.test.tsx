@@ -53,7 +53,7 @@ describe('<ShiftHistoryPage />', () => {
         // eslint-disable-next-line cypress/no-unnecessary-waiting
         cy.get('[data-testid="logSearchBy"]').click();
         cy.contains('Search by operator').click({ force: true });
-        cy.get('[data-testid="operatorName"]').type('DefaultUser');
+        cy.get('[data-testid="logHistorySearchByOperatorName"]').type('DefaultUser');
         cy.get('[data-testid="logHistorySearchByOperator"]').click({ force: true });
         cy.get('[data-testid="logSearchBy"]').click();
         cy.contains('Search by status').click({ force: true });
@@ -82,7 +82,7 @@ describe('<ShiftHistoryPage />', () => {
         // eslint-disable-next-line cypress/no-unnecessary-waiting
         cy.get('[data-testid="logSearchBy"]').click();
         cy.contains('Search by operator').click({ force: true });
-        cy.get('[data-testid="operatorName"]').type('DefaultUser');
+        cy.get('[data-testid="logHistorySearchByOperatorName"]').type('DefaultUser');
         cy.get('[data-testid="logHistorySearchByOperator"]').click({ force: true });
         cy.get('[data-testid="logSearchBy"]').click();
         cy.contains('Search by status').click({ force: true });

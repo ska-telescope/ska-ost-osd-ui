@@ -49,7 +49,7 @@ const SearchByOperator = ({ setFilterCriteria, searchFilter }: EntryFieldProps) 
           onInputChange={(event, newInputValue) => {
             setInputValue(newInputValue);
           }}
-          data-testid="operatorName"
+          data-testid="logHistorySearchByOperatorName"
           options={operatorName}
           renderInput={(params) => (
             <TextField {...params} label={t('label.operatorName')} variant="standard" />

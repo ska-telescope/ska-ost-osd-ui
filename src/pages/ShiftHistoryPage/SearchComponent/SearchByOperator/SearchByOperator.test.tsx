@@ -30,10 +30,10 @@ describe('SearchByOperator Theme Rendering', () => {
     it(`Theme ${theTheme}: Renders`, () => {
       mounting(theTheme);
       cy.get('body').then(() => {
-        cy.get('[data-testid="operatorName"]').should('be.visible');
-        cy.get('[data-testid="operatorName"]').type('DefaultUser');
-        cy.get('[data-testid="operatorName"]').type('{downarrow}');
-        cy.get('[data-testid="operatorName"]').type('{enter}');
+        cy.get('[data-testid="logHistorySearchByOperatorName"]').should('be.visible');
+        cy.get('[data-testid="logHistorySearchByOperatorName"]').type('DefaultUser');
+        cy.get('[data-testid="logHistorySearchByOperatorName"]').type('{downarrow}');
+        cy.get('[data-testid="logHistorySearchByOperatorName"]').type('{enter}');
         cy.get('[data-testid="logHistorySearchByOperator"]').click({ force: true });
       });
     });
