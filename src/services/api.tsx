@@ -1,7 +1,5 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:5000/ska-ost-osd';
-
 function handleAxiosError(error: object) {
   let status = 200;
   let errorMessage = null;
@@ -21,14 +19,14 @@ function handleAxiosError(error: object) {
 }
 
 const apiService = {
-  baseURL: () => BASE_URL,
+  baseURL: () => window.env.BACKEND_URL,
 
-  fetchOsdData: async () => {
+  fetchOsdData: async (path) => {
     const baseUrl = apiService.baseURL();
-    const url = `${baseUrl}`;
+    const url = `${baseUrl}/${path}`;
     try {
       // Fetching OSD data
-      const response = await axios.get(`${url}/osd/api/v2/osd`, {
+      const response = await axios.get(`${url}`, {
         params: {
           cycle_id: 1,
           source: 'file',
@@ -45,11 +43,11 @@ const apiService = {
     }
 },
 
- saveOsdData: async (data: Record<string, unknown>) => {
+ saveOsdData: async (path, data: Record<string, unknown>) => {
   const baseUrl = apiService.baseURL();
-  const url = `${baseUrl}`;
+  const url = `${baseUrl}/${path}`;
   try {
-    const response = await axios.post(`${url}/osd/api/v2/osd`, data, {
+    const response = await axios.post(`${url}`, data, {
       headers: {
         'Content-Type': 'application/json',
         'accept': 'application/json'

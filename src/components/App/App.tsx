@@ -12,7 +12,7 @@ import { storageObject } from '@ska-telescope/ska-gui-local-storage';
 import theme from '../../services/theme/theme';
 import Loader from '../Loader/Loader';
 import JsonEditor from '../JsonEditorComponent/JsonEditor';
-import apiService from '../../services/api/api';
+import apiService from '../../services/api';
 
 const HEADER_HEIGHT = 70;
 const FOOTER_HEIGHT = 20;
@@ -26,7 +26,7 @@ function App() {
   useEffect(() => {
     const loadData = async () => {
       try {
-        const data = await apiService.fetchOsdData();
+        const data = await apiService.fetchOsdData('osd');
         setJsonData(data.data);
       } catch (error) {
         throw error
@@ -47,7 +47,7 @@ function App() {
   const docs = { tooltip: headerTip, url: headerURL };
   const toolTip = { skao, mode };
   const version = process.env.VERSION;
-  const osd_title = t('text.observatory_static_data');
+  const osd_title = t('text.observatoryStaticData');
   const theStorage = {
     help,
     helpToggle,
@@ -79,7 +79,7 @@ function App() {
           initialData={jsonData} 
           onSave={async (data) => {
             try {
-              await apiService.saveOsdData(data);
+              await apiService.saveOsdData('osd',data);
             } catch (error) {
               // Error will be propagated to the error boundary
               throw error;
