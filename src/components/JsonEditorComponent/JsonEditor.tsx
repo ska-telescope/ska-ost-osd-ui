@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-
+import { Button, ButtonVariantTypes, ButtonColorTypes } from '@ska-telescope/ska-gui-components';
 import {
   Box,
   Typography,
-  Button,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
   TextField,
-  IconButton
+  IconButton,
 } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
 import AddFieldDialog from '../AddFieldDialogComponent/AddFieldDialog';
 import CloseIcon from '@mui/icons-material/Close';
 import { isValidJson } from '../utils';
@@ -26,7 +26,7 @@ interface JsonEditorProps {
 
 const JsonEditor: React.FC<JsonEditorProps> = ({ initialData, onSave }) => {
   const { t } = useTranslation('translations');
-  
+
   const [data, setData] = useState<JsonObject>(() => {
     return initialData ? structuredClone(initialData) : {};
   });
@@ -45,18 +45,21 @@ const JsonEditor: React.FC<JsonEditorProps> = ({ initialData, onSave }) => {
     setJsonEditContent('');
   };
 
-  const updateValue = (path: string[], value: string | number | boolean | string[] | Record<string, unknown>) => {
+  const updateValue = (
+    path: string[],
+    value: string | number | boolean | string[] | Record<string, unknown>,
+  ) => {
     // Use deep copy to properly handle nested structures
     const newData = structuredClone(data);
     let current = newData;
-    
+
     for (let i = 0; i < path.length - 1; i++) {
       if (!(path[i] in current)) {
         current[path[i]] = {};
       }
       current = current[path[i]];
     }
-    
+
     if (path.length > 0) {
       current[path[path.length - 1]] = value;
       setData(newData);
@@ -67,30 +70,34 @@ const JsonEditor: React.FC<JsonEditorProps> = ({ initialData, onSave }) => {
     // Deep clone to properly handle nested structures
     const newData = structuredClone(data);
     let current = newData;
-    
+
     for (let i = 0; i < path.length - 1; i++) {
       if (!(path[i] in current)) return;
       current = current[path[i]];
     }
-    
+
     if (path.length > 0) {
       delete current[path[path.length - 1]];
       setData(newData);
     }
   };
 
-  const addValue = (path: string[], key: string, value: string | number | boolean | string[] | Record<string, unknown>) => {
+  const addValue = (
+    path: string[],
+    key: string,
+    value: string | number | boolean | string[] | Record<string, unknown>,
+  ) => {
     // Deep clone to properly handle nested structures
     const newData = structuredClone(data);
     let current = newData;
-    
+
     for (const segment of path) {
       if (!(segment in current)) {
         current[segment] = {};
       }
       current = current[segment];
     }
-    
+
     current[key] = value;
     setData(newData);
   };
@@ -107,7 +114,7 @@ const JsonEditor: React.FC<JsonEditorProps> = ({ initialData, onSave }) => {
           targetValue = targetValue[segment];
         }
       }
-      
+
       // Deep clone to preserve structure
       const valueToEdit = structuredClone(targetValue);
       setJsonEditContent(JSON.stringify(valueToEdit, null, 2));
@@ -134,7 +141,7 @@ const JsonEditor: React.FC<JsonEditorProps> = ({ initialData, onSave }) => {
         for (let i = 0; i < currentEditPath.length - 1; i++) {
           current = current[currentEditPath[i]] as JsonObject;
         }
-        
+
         // Set the value directly without any special handling
         const lastKey = currentEditPath[currentEditPath.length - 1];
         current[lastKey] = parsedContent;
@@ -148,34 +155,36 @@ const JsonEditor: React.FC<JsonEditorProps> = ({ initialData, onSave }) => {
       // Error will be handled by the surrounding error boundary
     }
   };
-  
+
   return (
     <Box sx={{ p: 2 }}>
       <Box sx={{ display: 'flex', justifyContent: 'flex-start', gap: 2, mb: 2 }}>
         <Button
-          variant="contained"
-          color="secondary"
+          icon={<EditIcon />}
+          ariaDescription="Button for edit"
+          label={t('label.button.editChanges')}
+          testId="edit-json-button"
+          color={ButtonColorTypes.Secondary}
+          variant={ButtonVariantTypes.Contained}
           onClick={() => {
             setCurrentEditPath([]);
             // Direct stringify to maintain array structure
             setJsonEditContent(JSON.stringify(data, null, 2));
             setJsonEditMode(true);
           }}
-          data-testid="edit-json-button"
-        >
-          {t('label.button.editChanges')}
-        </Button>
+        />
         <Button
-          variant="contained"
-          color="primary"
+          ariaDescription="Button to save all changes"
+          label={t('label.button.saveAllChanges')}
+          variant={ButtonVariantTypes.Contained}
+          color={ButtonColorTypes.Inherit}
+          testId="save-json-button"
           onClick={() => {
             const formattedData = structuredClone(data);
             setPendingChanges(formattedData);
             setConfirmDialogOpen(true);
           }}
-        >
-          {t('label.button.saveAllChanges')}
-        </Button>
+        />
       </Box>
 
       <DynamicForm
@@ -192,7 +201,7 @@ const JsonEditor: React.FC<JsonEditorProps> = ({ initialData, onSave }) => {
           handleJsonEditOpen(path);
         }}
       />
-      
+
       <AddFieldDialog
         open={addFieldDialogOpen}
         onClose={() => setAddFieldDialogOpen(false)}
@@ -203,13 +212,22 @@ const JsonEditor: React.FC<JsonEditorProps> = ({ initialData, onSave }) => {
       />
 
       <Dialog
+        aria-label={t('ariaLabel.dialog')}
         open={jsonEditMode}
         onClose={() => setJsonEditMode(false)}
-        maxWidth="md"
+        sx={{
+          '& .MuiDialog-container': {
+            '& .MuiPaper-root': {
+              width: '100%',
+              maxWidth: '1000px',
+            },
+          },
+        }}
         fullWidth
+        aria-labelledby="responsive-dialog-title"
       >
         <DialogTitle>
-          {t('dialog.titles.editJson')}
+          {t('dialog.editJson')}
           <IconButton
             aria-label="close"
             onClick={resetEditState}
@@ -232,46 +250,40 @@ const JsonEditor: React.FC<JsonEditorProps> = ({ initialData, onSave }) => {
           />
         </DialogContent>
         <DialogActions>
-          <Button 
-            onClick={resetEditState} 
-            color="secondary"
-            data-testid="cancel-edit-button"
-          >
-            {t('label.button.cancel')}
-          </Button>
-          <Button 
+          <Button
+            onClick={resetEditState}
+            label={t('label.button.cancel')}
+            testId="cancel-edit-button"
+            color={ButtonColorTypes.Secondary}
+          />
+          <Button
             onClick={handleJsonEditSave}
+            label={t('label.button.save')}
             disabled={!isValidJson(jsonEditContent)}
-            color="primary"
-            variant="contained"
-            data-testid="save-json-edit-button"
-          >
-            {t('label.button.save')}
-          </Button>
-          </DialogActions>
+            variant={ButtonVariantTypes.Contained}
+            color={ButtonColorTypes.Inherit}
+            testId="save-json-edit-button"
+          />
+        </DialogActions>
       </Dialog>
 
-      <Dialog
-        open={confirmDialogOpen}
-        onClose={() => setConfirmDialogOpen(false)}
-      >
-        <DialogTitle>{t('dialog.titles.confirmSave')}</DialogTitle>
+      <Dialog open={confirmDialogOpen} onClose={() => setConfirmDialogOpen(false)}>
+        <DialogTitle>{t('dialog.confirmSave')}</DialogTitle>
         <DialogContent>
           <Typography>{t('dialog.messages.confirmSave')}</Typography>
         </DialogContent>
         <DialogActions>
-          <Button 
-            onClick={() => setConfirmDialogOpen(false)} 
-            color="secondary"
-            data-testid="cancel-save-button"
-          >
-            {t('label.button.cancel')}
-          </Button>
+          <Button
+            onClick={() => setConfirmDialogOpen(false)}
+            label={t('label.button.cancel')}
+            testId="cancel-save-button"
+            color={ButtonColorTypes.Secondary}
+          />
           <Button
             onClick={async () => {
               if (pendingChanges) {
                 try {
-                  await onSave(pendingChanges);
+                  onSave(pendingChanges);
                   setData(pendingChanges);
                   setJsonEditMode(false);
                   setConfirmDialogOpen(false);
@@ -282,20 +294,16 @@ const JsonEditor: React.FC<JsonEditorProps> = ({ initialData, onSave }) => {
                 setConfirmDialogOpen(false);
               }
             }}
-            color="primary"
-            variant="contained"
-            data-testid="confirm-save-button"
-          >
-            {t('label.button.ok')}
-          </Button>
+            label={t('label.button.ok')}
+            disabled={!isValidJson(jsonEditContent)}
+            variant={ButtonVariantTypes.Contained}
+            color={ButtonColorTypes.Inherit}
+            testId="confirm-save-button"
+          />
         </DialogActions>
       </Dialog>
 
-      <ApiErrorDialog
-        open={!!error}
-        onClose={() => setError(null)}
-        error={error || ''}
-      />
+      <ApiErrorDialog open={!!error} onClose={() => setError(null)} error={error || ''} />
     </Box>
   );
 };

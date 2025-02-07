@@ -1,26 +1,37 @@
 import React from 'react';
+import { Button, ButtonVariantTypes, ButtonSizeTypes } from '@ska-telescope/ska-gui-components';
 import {
   Box,
   Typography,
   TextField,
   IconButton,
-  Button,
   Accordion,
   AccordionSummary,
-  AccordionDetails
+  AccordionDetails,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import EditIcon from '@mui/icons-material/Edit';
+import AddIcon from '@mui/icons-material/Add';
 
 interface DynamicFormProps {
   data: Record<string, unknown>;
   path: string[];
-  onUpdate: (path: string[], value: string | number | boolean | string[] | Record<string, unknown>) => void;
+  onUpdate: (
+    path: string[],
+    value: string | number | boolean | string[] | Record<string, unknown>,
+  ) => void;
   onDelete: (path: string[]) => void;
-  onAdd: (path: string[], key: string, value: string | number | boolean | string[] | Record<string, unknown>) => void;
-  onEdit: (path: string[], value: string | number | boolean | string[] | Record<string, unknown>) => void;
+  onAdd: (
+    path: string[],
+    key: string,
+    value: string | number | boolean | string[] | Record<string, unknown>,
+  ) => void;
+  onEdit: (
+    path: string[],
+    value: string | number | boolean | string[] | Record<string, unknown>,
+  ) => void;
 }
 
 const DynamicForm: React.FC<DynamicFormProps> = ({
@@ -29,12 +40,16 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
   onUpdate,
   onDelete,
   onAdd,
-  onEdit
+  onEdit,
 }) => {
-  
-
-  const renderField = (key: string, value: string | number | boolean | string[] | Record<string, unknown>, currentPath: string[]) => {
+  const renderField = (
+    key: string,
+    value: string | number | boolean | string[] | Record<string, unknown>,
+    currentPath: string[],
+  ) => {
     if (Array.isArray(value)) {
+      const isArrayOfObjects = value.every((item) => typeof item === 'object' && item !== null);
+
       return (
         <Box key={key} sx={{ mb: 2 }}>
           <Accordion>
@@ -42,28 +57,37 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
               <Typography>{key}</Typography>
             </AccordionSummary>
             <AccordionDetails>
-              <TextField
-                fullWidth
-                label="Array Items (comma-separated)"
-                value={value.map(item => typeof item === 'object' && item !== null ? JSON.stringify(item) : item).join(', ')}
-                onChange={(e) => {
-                  const newArray = e.target.value.split(',').map(item => {
-                    const trimmed = item.trim();
-                    try {
-                      // Attempt to parse as JSON if it looks like an object
-                      return trimmed.startsWith('{') ? JSON.parse(trimmed) : trimmed;
-                    } catch {
-                      return trimmed;
-                    }
-                  }).filter(item => item !== '');
-                  onUpdate([...currentPath, key], newArray);
-                }}
-                multiline
-                rows={2}
-                margin="dense"
-                helperText="Enter comma-separated values"
-              />
-              {value.map((item, index) => (
+              {!isArrayOfObjects ? (
+                <TextField
+                  fullWidth
+                  label="Array Items (comma-separated)"
+                  value={value
+                    .map((item) =>
+                      typeof item === 'object' && item !== null ? JSON.stringify(item) : item,
+                    )
+                    .join(', ')}
+                  onChange={(e) => {
+                    const newArray = e.target.value
+                      .split(',')
+                      .map((item) => {
+                        const trimmed = item.trim();
+                        try {
+                          // Attempt to parse as JSON if it looks like an object
+                          return trimmed.startsWith('{') ? JSON.parse(trimmed) : trimmed;
+                        } catch {
+                          return trimmed;
+                        }
+                      })
+                      .filter((item) => item !== '');
+                    onUpdate([...currentPath, key], newArray);
+                  }}
+                  multiline
+                  rows={2}
+                  margin="dense"
+                  helperText="Enter comma-separated values"
+                />
+              ) : null}
+              {value.map((item, index) =>
                 typeof item === 'object' && item !== null ? (
                   <Box key={index} sx={{ mb: 1, pl: 2, borderLeft: '2px solid #eee' }}>
                     <DynamicForm
@@ -84,20 +108,19 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
                       <DeleteIcon />
                     </IconButton>
                   </Box>
-                ) : null
-              ))}
+                ) : null,
+              )}
               <Button
-                startIcon={<AddCircleOutlineIcon />}
+                icon={<AddCircleOutlineIcon />}
                 onClick={() => {
                   const newArray = [...value, ''];
                   onUpdate([...currentPath, key], newArray);
                 }}
-                variant="outlined"
-                size="small"
-                data-testid="add-array-item-button"
-              >
-                Add Item
-              </Button>
+                variant={ButtonVariantTypes.Outlined}
+                size={ButtonSizeTypes.Small}
+                testId="add-array-item-button"
+                label="Add Item"
+              />
             </AccordionDetails>
           </Accordion>
         </Box>
@@ -109,28 +132,49 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
         <Box key={key} sx={{ mb: 2 }}>
           <Accordion>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', justifyContent: 'space-between' }} data-testid="field-container">
-                <Typography>{key}</Typography>
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  width: '100%',
+                  justifyContent: 'space-between',
+                }}
+                data-testid="field-container"
+              >
+                <Typography variant="h5">{key}</Typography>
                 <Box>
-                  <IconButton 
-                    size="small" 
+                  <IconButton
+                    size="small"
+                    aria-label="add"
+                    data-testid="add-button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onAdd(path, '', '');
+                    }}
+                  >
+                    <AddIcon />
+                  </IconButton>
+                  <IconButton
+                    size="small"
                     aria-label="edit"
                     data-testid="edit-button"
                     onClick={(e) => {
                       e.stopPropagation();
                       onEdit([...currentPath, key], value);
-                    }}>
+                    }}
+                  >
                     <EditIcon />
                   </IconButton>
-                  <IconButton 
-                    size="small" 
-                    color="error" 
+                  <IconButton
+                    size="small"
+                    color="error"
                     aria-label="delete"
                     data-testid="delete-button"
                     onClick={(e) => {
                       e.stopPropagation();
                       onDelete([...currentPath, key]);
-                    }}>
+                    }}
+                  >
                     <DeleteIcon />
                   </IconButton>
                 </Box>
@@ -161,10 +205,7 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
           type={typeof value === 'number' ? 'number' : 'text'}
           margin="dense"
         />
-        <IconButton
-          onClick={() => onDelete([...currentPath, key])}
-          color="error"
-        >
+        <IconButton onClick={() => onDelete([...currentPath, key])} color="error">
           <DeleteIcon />
         </IconButton>
       </Box>
@@ -174,16 +215,7 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
   return (
     <Box>
       {Object.entries(data).map(([key, value]) => renderField(key, value, path))}
-      <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
-        <Button
-          onClick={() => onAdd(path, '', '')}
-          variant="contained"
-          size="small"
-          data-testid="add-new-field-button"
-        >
-          ADD NEW FIELD
-        </Button>
-      </Box>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}></Box>
     </Box>
   );
 };

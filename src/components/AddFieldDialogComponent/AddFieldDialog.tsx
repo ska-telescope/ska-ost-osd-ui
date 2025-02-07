@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-
 import {
   Dialog,
   DialogTitle,
@@ -13,7 +12,7 @@ import {
   MenuItem,
   FormControl,
   InputLabel,
-  Box
+  Box,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
@@ -23,24 +22,20 @@ interface AddFieldDialogProps {
   onAdd: (key: string, value: string | string[] | Record<string, unknown>) => void;
 }
 
-const AddFieldDialog: React.FC<AddFieldDialogProps> = ({
-  open,
-  onClose,
-  onAdd
-}) => {
+const AddFieldDialog: React.FC<AddFieldDialogProps> = ({ open, onClose, onAdd }) => {
   const [fieldType, setFieldType] = useState('single');
   const [fieldName, setFieldName] = useState('');
   const [fieldValue, setFieldValue] = useState('');
-  const { t } = useTranslation();
+  const { t } = useTranslation('translations');
 
   const handleAdd = () => {
     if (!fieldName.trim()) return;
 
     let value: string | string[] | Record<string, unknown> = fieldValue;
-    
+
     if (fieldType === 'array') {
       try {
-        value = fieldValue ? fieldValue.split(',').map(item => item.trim()) : [];
+        value = fieldValue ? fieldValue.split(',').map((item) => item.trim()) : [];
       } catch (e) {
         value = [];
       }
@@ -66,7 +61,7 @@ const AddFieldDialog: React.FC<AddFieldDialogProps> = ({
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
       <DialogTitle>
-        {t('dialog.titles.addNewField')}
+        {t('dialog.addNewField')}
         <IconButton
           aria-label={t('label.button.close')}
           onClick={handleClose}
@@ -79,11 +74,11 @@ const AddFieldDialog: React.FC<AddFieldDialogProps> = ({
       <DialogContent>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 2 }}>
           <TextField
-            fullWidth
             label={t('dialog.fields.fieldName')}
             value={fieldName}
             onChange={(e) => setFieldName(e.target.value)}
             data-testid="field-name-input"
+            variant="standard"
           />
           <FormControl fullWidth>
             <InputLabel>{t('dialog.fields.fieldType')}</InputLabel>
@@ -92,6 +87,7 @@ const AddFieldDialog: React.FC<AddFieldDialogProps> = ({
               label={t('dialog.fields.fieldType')}
               onChange={(e) => setFieldType(e.target.value)}
               data-testid="field-type-select"
+              variant="standard"
             >
               <MenuItem value="single">{t('dialog.types.singleValue')}</MenuItem>
               <MenuItem value="array">{t('dialog.types.array')}</MenuItem>
@@ -106,8 +102,8 @@ const AddFieldDialog: React.FC<AddFieldDialogProps> = ({
               fieldType === 'array'
                 ? t('dialog.fields.values')
                 : fieldType === 'object'
-                ? t('dialog.fields.jsonObject')
-                : t('dialog.fields.value')
+                  ? t('dialog.fields.jsonObject')
+                  : t('dialog.fields.value')
             }
             value={fieldValue}
             onChange={(e) => setFieldValue(e.target.value)}
@@ -116,9 +112,10 @@ const AddFieldDialog: React.FC<AddFieldDialogProps> = ({
               fieldType === 'array'
                 ? t('dialog.help.array')
                 : fieldType === 'object'
-                ? t('dialog.help.object')
-                : ''
+                  ? t('dialog.help.object')
+                  : ''
             }
+            variant="standard"
           />
         </Box>
       </DialogContent>
@@ -126,7 +123,12 @@ const AddFieldDialog: React.FC<AddFieldDialogProps> = ({
         <Button onClick={handleClose} color="secondary" data-testid="cancel-button">
           {t('label.button.cancel')}
         </Button>
-        <Button onClick={handleAdd} color="primary" disabled={!fieldName.trim()} data-testid="add-field-button">
+        <Button
+          onClick={handleAdd}
+          color="primary"
+          disabled={!fieldName.trim()}
+          data-testid="add-field-button"
+        >
           {t('label.button.addField')}
         </Button>
       </DialogActions>
