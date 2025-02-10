@@ -19,7 +19,7 @@ function handleAxiosError(error: object) {
 }
 
 const apiService = {
-  baseURL: () => window.env.BACKEND_URL,
+  baseURL: () => window.env?.BACKEND_URL,
 
   fetchOsdData: async (path) => {
     const baseUrl = apiService.baseURL();
