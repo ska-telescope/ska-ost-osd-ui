@@ -19,7 +19,7 @@ function handleAxiosError(error: object) {
 }
 
 const apiService = {
-  baseURL: () => window.env.BACKEND_URL,
+  baseURL: () => window.env?.BACKEND_URL,
 
   fetchOsdData: async (path) => {
     const baseUrl = apiService.baseURL();
@@ -30,35 +30,35 @@ const apiService = {
         params: {
           cycle_id: 1,
           source: 'file',
-          capabilities:'mid'
+          capabilities: 'mid',
         },
         headers: {
-          'accept': 'application/json'
-        }
+          accept: 'application/json',
+        },
       });
       return { data: response.data, status: 200, error: null };
     } catch (error) {
       const errorResponse = handleAxiosError(error);
       return { data: null, status: errorResponse.status, error: errorResponse.error };
     }
-},
+  },
 
- saveOsdData: async (path, data: Record<string, unknown>) => {
-  const baseUrl = apiService.baseURL();
-  const url = `${baseUrl}/${path}`;
-  try {
-    const response = await axios.post(`${url}`, data, {
-      headers: {
-        'Content-Type': 'application/json',
-        'accept': 'application/json'
-      }
-    });
-    return { data: response.data, status: 200, error: null };
-  } catch (error) {
-    // Let the error propagate to be handled by the caller
-    throw error;
-  }
-}
+  saveOsdData: async (path, data: Record<string, unknown>) => {
+    const baseUrl = apiService.baseURL();
+    const url = `${baseUrl}/${path}`;
+    try {
+      const response = await axios.post(`${url}`, data, {
+        headers: {
+          'Content-Type': 'application/json',
+          accept: 'application/json',
+        },
+      });
+      return { data: response.data, status: 200, error: null };
+    } catch (error) {
+      // Let the error propagate to be handled by the caller
+      throw error;
+    }
+  },
 };
 
 export default apiService;

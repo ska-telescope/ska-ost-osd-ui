@@ -1,21 +1,16 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  TextField,
-  Button,
-  IconButton,
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel,
-  Box
-} from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, DialogActions, IconButton, Box } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import {
+  TextEntry,
+  LABEL_POSITION,
+  DropDown,
+  Button,
+  ButtonColorTypes,
+  ButtonVariantTypes,
+  ButtonSizeTypes,
+} from '@ska-telescope/ska-gui-components';
 
 interface AddFieldDialogProps {
   open: boolean;
@@ -23,24 +18,31 @@ interface AddFieldDialogProps {
   onAdd: (key: string, value: string | string[] | Record<string, unknown>) => void;
 }
 
-const AddFieldDialog: React.FC<AddFieldDialogProps> = ({
-  open,
-  onClose,
-  onAdd
-}) => {
+interface fieldTypeOptionsType {
+  label: string;
+  value: string;
+}
+
+export const fieldTypeOptions: fieldTypeOptionsType[] = [
+  { label: 'Single Value', value: 'single' },
+  { label: 'Array', value: 'array' },
+  { label: 'Object', value: 'object' },
+];
+
+const AddFieldDialog: React.FC<AddFieldDialogProps> = ({ open, onClose, onAdd }) => {
   const [fieldType, setFieldType] = useState('single');
   const [fieldName, setFieldName] = useState('');
   const [fieldValue, setFieldValue] = useState('');
-  const { t } = useTranslation();
+  const { t } = useTranslation('translations');
 
   const handleAdd = () => {
     if (!fieldName.trim()) return;
 
     let value: string | string[] | Record<string, unknown> = fieldValue;
-    
+
     if (fieldType === 'array') {
       try {
-        value = fieldValue ? fieldValue.split(',').map(item => item.trim()) : [];
+        value = fieldValue ? fieldValue.split(',').map((item) => item.trim()) : [];
       } catch (e) {
         value = [];
       }
@@ -66,7 +68,7 @@ const AddFieldDialog: React.FC<AddFieldDialogProps> = ({
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
       <DialogTitle>
-        {t('dialog.titles.addNewField')}
+        {t('dialog.addNewField')}
         <IconButton
           aria-label={t('label.button.close')}
           onClick={handleClose}
@@ -78,57 +80,63 @@ const AddFieldDialog: React.FC<AddFieldDialogProps> = ({
       </DialogTitle>
       <DialogContent>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 2 }}>
-          <TextField
-            fullWidth
+          <TextEntry
             label={t('dialog.fields.fieldName')}
+            labelPosition={LABEL_POSITION.CONTAINED}
+            testId="field-name-input"
             value={fieldName}
-            onChange={(e) => setFieldName(e.target.value)}
-            data-testid="field-name-input"
+            setValue={(e) => setFieldName(e)}
           />
-          <FormControl fullWidth>
-            <InputLabel>{t('dialog.fields.fieldType')}</InputLabel>
-            <Select
-              value={fieldType}
-              label={t('dialog.fields.fieldType')}
-              onChange={(e) => setFieldType(e.target.value)}
-              data-testid="field-type-select"
-            >
-              <MenuItem value="single">{t('dialog.types.singleValue')}</MenuItem>
-              <MenuItem value="array">{t('dialog.types.array')}</MenuItem>
-              <MenuItem value="object">{t('dialog.types.object')}</MenuItem>
-            </Select>
-          </FormControl>
-          <TextField
-            fullWidth
-            multiline={fieldType !== 'single'}
-            rows={fieldType !== 'single' ? 4 : 1}
+          <DropDown
+            options={fieldTypeOptions}
+            testId="field-type-select"
+            value={fieldType}
+            setValue={(e) => setFieldType(e)}
+            label={t('dialog.fields.fieldType')}
+            labelBold
+          />
+          <TextEntry
             label={
               fieldType === 'array'
                 ? t('dialog.fields.values')
                 : fieldType === 'object'
-                ? t('dialog.fields.jsonObject')
-                : t('dialog.fields.value')
+                  ? t('dialog.fields.jsonObject')
+                  : t('dialog.fields.value')
             }
+            labelPosition={LABEL_POSITION.CONTAINED}
+            testId="field-value-input"
             value={fieldValue}
-            onChange={(e) => setFieldValue(e.target.value)}
-            data-testid="field-value-input"
+            setValue={(e) => setFieldValue(e)}
             helperText={
               fieldType === 'array'
                 ? t('dialog.help.array')
                 : fieldType === 'object'
-                ? t('dialog.help.object')
-                : ''
+                  ? t('dialog.help.object')
+                  : ''
             }
           />
         </Box>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose} color="secondary" data-testid="cancel-button">
-          {t('label.button.cancel')}
-        </Button>
-        <Button onClick={handleAdd} color="primary" disabled={!fieldName.trim()} data-testid="add-field-button">
-          {t('label.button.addField')}
-        </Button>
+        <Button
+          ariaDescription="Button to cancel"
+          label={t('label.button.cancel')}
+          onClick={handleClose}
+          testId="cancel-button"
+          size={ButtonSizeTypes.Small}
+          color={ButtonColorTypes.Inherit}
+          variant={ButtonVariantTypes.Contained}
+        />
+        <Button
+          ariaDescription="Button to add"
+          label={t('label.button.addField')}
+          onClick={handleAdd}
+          disabled={!fieldName.trim()}
+          testId="add-field-button"
+          size={ButtonSizeTypes.Small}
+          color={ButtonColorTypes.Secondary}
+          variant={ButtonVariantTypes.Contained}
+        />
       </DialogActions>
     </Dialog>
   );

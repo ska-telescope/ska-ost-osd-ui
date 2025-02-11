@@ -20,11 +20,9 @@
     "text": "Text Label"
   },
   "dialog": {
-    "titles": {
-      "editJson": "Edit JSON",
-      "confirmSave": "Confirm Save Changes",
-      "addNewField": "Add New Field"
-    },
+    "editJson": "Edit JSON",
+    "confirmSave": "Confirm Save Changes",
+    "addNewField": "Add New Field",
     "messages": {
       "confirmSave": "Are you sure you want to save changes?",
       "invalidJson": "Invalid JSON format"
@@ -51,7 +49,7 @@
     "row2": "A few basic components have been added as examples, as well as the MUI grid which can be used for component layout",
     "row3": "For information on the available gui-components, click on the documentation link in the header",
     "title": "WELCOME",
-    "observatoryStaticData":"Observatory Static Data"
+    "observatoryStaticData": "Observatory Static Data"
   },
   "toolTip": {
     "button": {
