@@ -1,20 +1,24 @@
 import React from 'react';
-import { Button, ButtonVariantTypes, ButtonSizeTypes } from '@ska-telescope/ska-gui-components';
-import { Box, Typography, TextField, IconButton } from '@mui/material';
+import {
+  Button,
+  ButtonVariantTypes,
+  ButtonSizeTypes,
+  TextEntry,
+  LABEL_POSITION,
+} from '@ska-telescope/ska-gui-components';
+import {
+  Box,
+  Typography,
+  IconButton,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+} from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
-
-import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
-import { styled } from '@mui/material/styles';
-import MuiAccordion, { AccordionProps } from '@mui/material/Accordion';
-import MuiAccordionSummary, {
-  AccordionSummaryProps,
-  accordionSummaryClasses,
-} from '@mui/material/AccordionSummary';
-import MuiAccordionDetails from '@mui/material/AccordionDetails';
 interface DynamicFormProps {
   data: Record<string, unknown>;
   path: string[];
@@ -42,42 +46,6 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
   onAdd,
   onEdit,
 }) => {
-  const Accordion = styled((props: AccordionProps) => (
-    <MuiAccordion disableGutters elevation={0} square {...props} />
-  ))(({ theme }) => ({
-    border: `1px solid ${theme.palette.divider}`,
-    '&:not(:last-child)': {
-      borderBottom: 0,
-    },
-    '&::before': {
-      display: 'none',
-    },
-  }));
-
-  const AccordionSummary = styled((props: AccordionSummaryProps) => (
-    <MuiAccordionSummary
-      expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: '0.9rem' }} />}
-      {...props}
-    />
-  ))(({ theme }) => ({
-    backgroundColor: 'rgba(0, 0, 0, .03)',
-    flexDirection: 'row-reverse',
-    [`& .${accordionSummaryClasses.expandIconWrapper}.${accordionSummaryClasses.expanded}`]: {
-      transform: 'rotate(90deg)',
-    },
-    [`& .${accordionSummaryClasses.content}`]: {
-      marginLeft: theme.spacing(1),
-    },
-    ...theme.applyStyles('dark', {
-      backgroundColor: 'rgba(255, 255, 255, .05)',
-    }),
-  }));
-
-  const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
-    padding: theme.spacing(2),
-    borderTop: '1px solid rgba(0, 0, 0, .125)',
-  }));
-
   const renderField = (
     key: string,
     value: string | number | boolean | string[] | Record<string, unknown>,
@@ -85,7 +53,21 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
   ) => {
     if (Array.isArray(value)) {
       const isArrayOfObjects = value.every((item) => typeof item === 'object' && item !== null);
-
+      const handleInput = (e) => {
+        const newArray = e
+          .split(',')
+          .map((item) => {
+            const trimmed = item.trim();
+            try {
+              // Attempt to parse as JSON if it looks like an object
+              return trimmed.startsWith('{') ? JSON.parse(trimmed) : trimmed;
+            } catch {
+              return trimmed;
+            }
+          })
+          .filter((item) => item !== '');
+        onUpdate([...currentPath, key], newArray);
+      };
       return (
         <Box key={key} sx={{ mb: 2 }}>
           <Accordion>
@@ -94,33 +76,18 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
             </AccordionSummary>
             <AccordionDetails>
               {!isArrayOfObjects ? (
-                <TextField
-                  fullWidth
+                <TextEntry
                   label="Array Items (comma-separated)"
+                  labelPosition={LABEL_POSITION.CONTAINED}
+                  testId="field-name-input"
                   value={value
                     .map((item) =>
                       typeof item === 'object' && item !== null ? JSON.stringify(item) : item,
                     )
                     .join(', ')}
-                  onChange={(e) => {
-                    const newArray = e.target.value
-                      .split(',')
-                      .map((item) => {
-                        const trimmed = item.trim();
-                        try {
-                          // Attempt to parse as JSON if it looks like an object
-                          return trimmed.startsWith('{') ? JSON.parse(trimmed) : trimmed;
-                        } catch {
-                          return trimmed;
-                        }
-                      })
-                      .filter((item) => item !== '');
-                    onUpdate([...currentPath, key], newArray);
+                  setValue={(e) => {
+                    handleInput(e);
                   }}
-                  multiline
-                  rows={2}
-                  margin="dense"
-                  helperText="Enter comma-separated values"
                 />
               ) : null}
               {value.map((item, index) =>
@@ -233,13 +200,13 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
 
     return (
       <Box key={key} sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
-        <TextField
-          fullWidth
+        <TextEntry
           label={key}
+          labelPosition={LABEL_POSITION.CONTAINED}
+          testId="field-name-input"
           value={value}
-          onChange={(e) => onUpdate([...currentPath, key], e.target.value)}
           type={typeof value === 'number' ? 'number' : 'text'}
-          margin="dense"
+          setValue={(e) => onUpdate([...currentPath, key], e)}
         />
         <IconButton onClick={() => onDelete([...currentPath, key])} color="error">
           <DeleteIcon />
