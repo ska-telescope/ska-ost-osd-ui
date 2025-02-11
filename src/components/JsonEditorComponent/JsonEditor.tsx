@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, ButtonVariantTypes, ButtonColorTypes } from '@ska-telescope/ska-gui-components';
+import {
+  Button,
+  ButtonVariantTypes,
+  ButtonColorTypes,
+  DropDown,
+} from '@ska-telescope/ska-gui-components';
 import {
   Box,
   Typography,
@@ -22,9 +27,21 @@ import ApiErrorDialog from '../ApiErrorDialogComponent/ApiErrorDialog';
 interface JsonEditorProps {
   initialData?: JsonObject;
   onSave: (data: JsonObject) => void;
+  onRelease: (data: string) => void;
 }
 
-const JsonEditor: React.FC<JsonEditorProps> = ({ initialData, onSave }) => {
+interface releaseOptionsType {
+  label: string;
+  value: string;
+}
+
+export const releaseTypeOptions: releaseOptionsType[] = [
+  { label: 'Default', value: 'default' },
+  { label: 'Major', value: 'major' },
+  { label: 'Minor', value: 'minor' },
+];
+
+const JsonEditor: React.FC<JsonEditorProps> = ({ initialData, onSave, onRelease }) => {
   const { t } = useTranslation('translations');
 
   const [data, setData] = useState<JsonObject>(() => {
@@ -38,6 +55,8 @@ const JsonEditor: React.FC<JsonEditorProps> = ({ initialData, onSave }) => {
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
   const [pendingChanges, setPendingChanges] = useState<Record<string, unknown> | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [isRelease, setIsRelease] = useState(false);
+  const [releaseVersion, setReleaseVersion] = useState('default');
 
   const resetEditState = () => {
     setJsonEditMode(false);
@@ -156,6 +175,26 @@ const JsonEditor: React.FC<JsonEditorProps> = ({ initialData, onSave }) => {
     }
   };
 
+  const handleSave = () => {
+    try {
+      if (isRelease) {
+        onRelease(releaseVersion);
+        setConfirmDialogOpen(false);
+      } else {
+        if (pendingChanges) {
+          onSave(pendingChanges);
+          setData(pendingChanges);
+          setJsonEditMode(false);
+          setConfirmDialogOpen(false);
+        } else {
+          setConfirmDialogOpen(false);
+        }
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to save changes');
+    }
+  };
+
   return (
     <Box sx={{ p: 2 }}>
       <Box sx={{ display: 'flex', justifyContent: 'flex-start', gap: 2, mb: 2 }}>
@@ -182,6 +221,18 @@ const JsonEditor: React.FC<JsonEditorProps> = ({ initialData, onSave }) => {
           onClick={() => {
             const formattedData = structuredClone(data);
             setPendingChanges(formattedData);
+            setIsRelease(false);
+            setConfirmDialogOpen(true);
+          }}
+        />
+        <Button
+          ariaDescription="Button to select release version"
+          label={t('label.button.release')}
+          variant={ButtonVariantTypes.Contained}
+          color={ButtonColorTypes.Inherit}
+          testId="release-json-button"
+          onClick={() => {
+            setIsRelease(true);
             setConfirmDialogOpen(true);
           }}
         />
@@ -268,9 +319,25 @@ const JsonEditor: React.FC<JsonEditorProps> = ({ initialData, onSave }) => {
       </Dialog>
 
       <Dialog open={confirmDialogOpen} onClose={() => setConfirmDialogOpen(false)}>
-        <DialogTitle>{t('dialog.confirmSave')}</DialogTitle>
+        <DialogTitle>
+          {isRelease ? t('dialog.confirmRelease') : t('dialog.confirmSave')}
+        </DialogTitle>
         <DialogContent>
-          <Typography>{t('dialog.messages.confirmSave')}</Typography>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 2 }}>
+            <Typography>
+              {isRelease ? t('dialog.messages.confirmRelease') : t('dialog.messages.confirmSave')}
+            </Typography>
+            {isRelease ? (
+              <DropDown
+                options={releaseTypeOptions}
+                testId="release-version-select"
+                value={releaseVersion}
+                setValue={(e) => setReleaseVersion(e)}
+                label={t('dialog.fields.releaseVersion')}
+                labelBold
+              />
+            ) : null}
+          </Box>
         </DialogContent>
         <DialogActions>
           <Button
@@ -280,22 +347,8 @@ const JsonEditor: React.FC<JsonEditorProps> = ({ initialData, onSave }) => {
             color={ButtonColorTypes.Secondary}
           />
           <Button
-            onClick={async () => {
-              if (pendingChanges) {
-                try {
-                  onSave(pendingChanges);
-                  setData(pendingChanges);
-                  setJsonEditMode(false);
-                  setConfirmDialogOpen(false);
-                } catch (err) {
-                  setError(err instanceof Error ? err.message : 'Failed to save changes');
-                }
-              } else {
-                setConfirmDialogOpen(false);
-              }
-            }}
+            onClick={handleSave}
             label={t('label.button.ok')}
-            disabled={!isValidJson(jsonEditContent)}
             variant={ButtonVariantTypes.Contained}
             color={ButtonColorTypes.Inherit}
             testId="confirm-save-button"
