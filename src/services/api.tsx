@@ -59,6 +59,25 @@ const apiService = {
       throw error;
     }
   },
+
+  releaseOsdData: async (path, data) => {
+    const baseUrl = apiService.baseURL();
+    const newParam = data !== 'default' ? `&release_type=${data}` : '';
+    const url = `${baseUrl}/${path}${newParam}`;
+
+    try {
+      const response = await axios.post(`${url}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          accept: 'application/json',
+        },
+      });
+      return { data: response.data, status: 200, error: null };
+    } catch (error) {
+      // Let the error propagate to be handled by the caller
+      throw error;
+    }
+  },
 };
 
 export default apiService;

@@ -64,35 +64,42 @@ function App() {
         ) : (
           <>
             <CopyrightModal copyrightFunc={setShowCopyright} show={showCopyright} />
-        <Header
-          docs={docs}
-          testId="headerId"
-          title={osd_title}
-          toolTip={toolTip}
-          storage={theStorage}
-        />
-        {/* Example of the spacer being used to shift content from behind the Header component */}
-        <Spacer size={HEADER_HEIGHT} axis={SPACER_VERTICAL} />
-        {/* This is where we render the JSON Editor */}
-        <JsonEditor 
-          data-testid="json-editor"
-          initialData={jsonData} 
-          onSave={async (data) => {
-            try {
-              await apiService.saveOsdData('osd',data);
-            } catch (error) {
-              // Error will be propagated to the error boundary
-              throw error;
-            }
-          }}
-        />
-        {/* Example of the spacer being used to stop content from being hidden behind the Footer component */}
-        <Spacer size={FOOTER_HEIGHT} axis={SPACER_VERTICAL} />
-        {/* Footer container: Even distribution of the children is built in */}
-        <Footer copyrightFunc={setShowCopyright} testId="footerId" version={version} />
+            <Header
+              docs={docs}
+              testId="headerId"
+              title={osd_title}
+              toolTip={toolTip}
+              storage={theStorage}
+            />
+            {/* Example of the spacer being used to shift content from behind the Header component */}
+            <Spacer size={HEADER_HEIGHT} axis={SPACER_VERTICAL} />
+            {/* This is where we render the JSON Editor */}
+            <JsonEditor
+              data-testid="json-editor"
+              initialData={jsonData}
+              onSave={async (data) => {
+                try {
+                  await apiService.saveOsdData('osd', data);
+                } catch (error) {
+                  // Error will be propagated to the error boundary
+                  throw error;
+                }
+              }}
+              onRelease={async (data) => {
+                try {
+                  await apiService.releaseOsdData('release?cycle_id=1', data);
+                } catch (error) {
+                  // Error will be propagated to the error boundary
+                  throw error;
+                }
+              }}
+            />
+            {/* Example of the spacer being used to stop content from being hidden behind the Footer component */}
+            <Spacer size={FOOTER_HEIGHT} axis={SPACER_VERTICAL} />
+            {/* Footer container: Even distribution of the children is built in */}
+            <Footer copyrightFunc={setShowCopyright} testId="footerId" version={version} />
           </>
-        )
-      }
+        )}
       </React.Suspense>
     </ThemeProvider>
   );
