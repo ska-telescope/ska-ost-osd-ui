@@ -148,17 +148,6 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
                 <Box>
                   <IconButton
                     size="small"
-                    aria-label="add"
-                    data-testid="add-button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onAdd(path, '', '');
-                    }}
-                  >
-                    <AddIcon />
-                  </IconButton>
-                  <IconButton
-                    size="small"
                     aria-label="edit"
                     data-testid="edit-button"
                     onClick={(e) => {
@@ -217,8 +206,21 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
 
   return (
     <Box>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
+        <IconButton
+          size="small"
+          aria-label="add"
+          data-testid="add-button"
+          onClick={(e) => {
+            e.stopPropagation();
+            onAdd(path, '', '');
+          }}
+          color="success"
+        >
+          <AddIcon />
+        </IconButton>
+      </Box>
       {Object.entries(data).map(([key, value]) => renderField(key, value, path))}
-      <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}></Box>
     </Box>
   );
 };
