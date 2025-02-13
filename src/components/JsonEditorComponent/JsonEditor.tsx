@@ -1,11 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  Button,
-  ButtonVariantTypes,
-  ButtonColorTypes,
-  DropDown,
-} from '@ska-telescope/ska-gui-components';
+import { Button, ButtonVariantTypes, ButtonColorTypes } from '@ska-telescope/ska-gui-components';
 import {
   Box,
   Typography,
@@ -27,9 +22,10 @@ import ApiErrorDialog from '../ApiErrorDialogComponent/ApiErrorDialog';
 interface JsonEditorProps {
   initialData?: JsonObject;
   onSave: (data: JsonObject) => void;
-  onRelease: (data: string) => void;
+  onRelease: () => void;
 }
 
+//  TODO post discussion
 interface releaseOptionsType {
   label: string;
   value: string;
@@ -56,7 +52,6 @@ const JsonEditor: React.FC<JsonEditorProps> = ({ initialData, onSave, onRelease 
   const [pendingChanges, setPendingChanges] = useState<Record<string, unknown> | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isRelease, setIsRelease] = useState(false);
-  const [releaseVersion, setReleaseVersion] = useState('default');
 
   const resetEditState = () => {
     setJsonEditMode(false);
@@ -178,7 +173,7 @@ const JsonEditor: React.FC<JsonEditorProps> = ({ initialData, onSave, onRelease 
   const handleSave = () => {
     try {
       if (isRelease) {
-        onRelease(releaseVersion);
+        onRelease();
         setConfirmDialogOpen(false);
       } else {
         if (pendingChanges) {
@@ -327,16 +322,6 @@ const JsonEditor: React.FC<JsonEditorProps> = ({ initialData, onSave, onRelease 
             <Typography>
               {isRelease ? t('dialog.messages.confirmRelease') : t('dialog.messages.confirmSave')}
             </Typography>
-            {isRelease ? (
-              <DropDown
-                options={releaseTypeOptions}
-                testId="release-version-select"
-                value={releaseVersion}
-                setValue={(e) => setReleaseVersion(e)}
-                label={t('dialog.fields.releaseVersion')}
-                labelBold
-              />
-            ) : null}
           </Box>
         </DialogContent>
         <DialogActions>
