@@ -1,12 +1,13 @@
-import React, { useEffect } from 'react';
-import { CssBaseline, ThemeProvider } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { CssBaseline, ThemeProvider, Box } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import {
   CopyrightModal,
   Footer,
   Header,
   Spacer,
-  SPACER_VERTICAL
+  SPACER_VERTICAL,
+  DropDown,
 } from '@ska-telescope/ska-gui-components';
 import { storageObject } from '@ska-telescope/ska-gui-local-storage';
 import theme from '../../services/theme/theme';
@@ -19,17 +20,23 @@ const FOOTER_HEIGHT = 20;
 
 function App() {
   const { t } = useTranslation('translations');
-  const [showCopyright, setShowCopyright] = React.useState(false);
-  const [jsonData, setJsonData] = React.useState({});
-  const [isLoading, setIsLoading] = React.useState(true);
+  const [showCopyright, setShowCopyright] = useState(false);
+  const [jsonData, setJsonData] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
+  const [show, setShow] = useState(true);
+  const [cycleDataOptions, setCycleDataOptions] = useState([{ label: '', value: '' }]);
+  const [cycleData, setCycleData] = useState();
 
   useEffect(() => {
     const loadData = async () => {
       try {
-        const data = await apiService.fetchOsdData('osd');
-        setJsonData(data.data);
+        const cycleAPIData = await apiService.fetchOsdCycleData('cycle');
+        const optionValues = cycleAPIData.data.cycles.map((cycle) => {
+          return { label: `Cycle_${cycle}`, value: cycle };
+        });
+        setCycleDataOptions(optionValues);
       } catch (error) {
-        throw error
+        throw error;
       } finally {
         setIsLoading(false);
       }
@@ -37,8 +44,7 @@ function App() {
 
     loadData();
   }, []);
-  const { help, helpToggle, themeMode, toggleTheme } =
-    storageObject.useStore();
+  const { help, helpToggle, themeMode, toggleTheme } = storageObject.useStore();
 
   const skao = t('toolTip.button.skao');
   const mode = t('toolTip.button.mode');
@@ -52,7 +58,16 @@ function App() {
     help,
     helpToggle,
     themeMode: themeMode.mode,
-    toggleTheme
+    toggleTheme,
+  };
+
+  const handleCycle = async (e) => {
+    setIsLoading(true);
+    const data = await apiService.fetchOsdData('osd', e);
+    setJsonData(data.data);
+    setCycleData(e);
+    setShow(false);
+    setIsLoading(false);
   };
 
   return (
@@ -73,27 +88,38 @@ function App() {
             />
             {/* Example of the spacer being used to shift content from behind the Header component */}
             <Spacer size={HEADER_HEIGHT} axis={SPACER_VERTICAL} />
-            {/* This is where we render the JSON Editor */}
-            <JsonEditor
-              data-testid="json-editor"
-              initialData={jsonData}
-              onSave={async (data) => {
-                try {
-                  await apiService.saveOsdData('osd', data);
-                } catch (error) {
-                  // Error will be propagated to the error boundary
-                  throw error;
-                }
-              }}
-              onRelease={async () => {
-                try {
-                  await apiService.releaseOsdData('release?cycle_id=1');
-                } catch (error) {
-                  // Error will be propagated to the error boundary
-                  throw error;
-                }
-              }}
-            />
+            {/* <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 2 }}> */}
+            {show ? (
+              <DropDown
+                options={cycleDataOptions}
+                testId="field-type-select"
+                value={cycleData}
+                setValue={(e) => handleCycle(e)}
+                label={t('dialog.fields.fieldType')}
+                labelBold
+              />
+            ) : (
+              <JsonEditor
+                data-testid="json-editor"
+                initialData={jsonData}
+                onSave={async (data) => {
+                  try {
+                    await apiService.saveOsdData('osd', cycleData, data);
+                  } catch (error) {
+                    // Error will be propagated to the error boundary
+                    throw error;
+                  }
+                }}
+                onRelease={async () => {
+                  try {
+                    await apiService.releaseOsdData('release?cycle_id=1');
+                  } catch (error) {
+                    // Error will be propagated to the error boundary
+                    throw error;
+                  }
+                }}
+              />
+            )}
             {/* Example of the spacer being used to stop content from being hidden behind the Footer component */}
             <Spacer size={FOOTER_HEIGHT} axis={SPACER_VERTICAL} />
             {/* Footer container: Even distribution of the children is built in */}
