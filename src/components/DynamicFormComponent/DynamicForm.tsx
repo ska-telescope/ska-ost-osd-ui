@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Button,
   ButtonVariantTypes,
   ButtonSizeTypes,
   TextEntry,
   LABEL_POSITION,
+  TYPE,
 } from '@ska-telescope/ska-gui-components';
 import {
   Box,
@@ -19,6 +20,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
+
 interface DynamicFormProps {
   data: Record<string, unknown>;
   path: string[];
@@ -36,6 +38,8 @@ interface DynamicFormProps {
     path: string[],
     value: string | number | boolean | string[] | Record<string, unknown>,
   ) => void;
+  required?: boolean | string;
+  errorText?: string;
 }
 
 const DynamicForm: React.FC<DynamicFormProps> = ({
@@ -45,12 +49,48 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
   onDelete,
   onAdd,
   onEdit,
+  required = false,
+  errorText = '',
 }) => {
+  const [valid, setValid] = useState(false);
   const renderField = (
     key: string,
     value: string | number | boolean | string[] | Record<string, unknown>,
     currentPath: string[],
   ) => {
+    const isRequired = () => {
+      if (!required) {
+        return false;
+      }
+      if (typeof required === 'boolean') {
+        return required;
+      }
+      if (typeof required === 'string') {
+        return required.length > 0;
+      }
+      return false;
+    };
+
+    function isNumber(value?: string | number): boolean {
+      return value != null && value !== '' && !isNaN(Number(value.toString()));
+    }
+    const errText = () => {
+      if (Number.isNaN(value)) {
+        return 'A numeric value is required';
+      }
+      if (isRequired() && !isNumber(value)) {
+        return typeof required === 'string' && required.length > 0
+          ? required
+          : 'A numeric value is required';
+      }
+
+      return errorText;
+    };
+
+    const handleBlur = () => {
+      setValid(true);
+    };
+
     if (Array.isArray(value)) {
       const isArrayOfObjects = value.every((item) => typeof item === 'object' && item !== null);
       const handleInput = (e) => {
@@ -194,8 +234,14 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
           labelPosition={LABEL_POSITION.CONTAINED}
           testId="field-name-input"
           value={value}
-          type={typeof value === 'number' ? 'number' : 'text'}
-          setValue={(e) => onUpdate([...currentPath, key], e)}
+          setValue={(e) => {
+            typeof value === 'number'
+              ? onUpdate([...currentPath, key], +e)
+              : onUpdate([...currentPath, key], e);
+          }}
+          errorText={valid && errText()}
+          onBlur={handleBlur}
+          type={typeof value === 'number' ? TYPE.NUMBER : TYPE.TEXT}
         />
         <IconButton onClick={() => onDelete([...currentPath, key])} color="error">
           <DeleteIcon />

@@ -24,16 +24,25 @@ interface fieldTypeOptionsType {
 }
 
 export const fieldTypeOptions: fieldTypeOptionsType[] = [
-  { label: 'Single Value', value: 'single' },
+  { label: 'Number', value: 'number' },
+  { label: 'String', value: 'string' },
+  { label: 'Boolean', value: 'boolean' },
   { label: 'Array', value: 'array' },
   { label: 'Object', value: 'object' },
 ];
 
 const AddFieldDialog: React.FC<AddFieldDialogProps> = ({ open, onClose, onAdd }) => {
-  const [fieldType, setFieldType] = useState('single');
+  const [fieldType, setFieldType] = useState('number');
   const [fieldName, setFieldName] = useState('');
   const [fieldValue, setFieldValue] = useState('');
   const { t } = useTranslation('translations');
+  const [isDisabled, setIsDisabled] = useState(true);
+
+  const handleValue = (e) => {
+    typeof e === 'number' ? setFieldValue(+e) : setFieldValue(e);
+
+    setIsDisabled(false);
+  };
 
   const handleAdd = () => {
     if (!fieldName.trim()) return;
@@ -61,7 +70,7 @@ const AddFieldDialog: React.FC<AddFieldDialogProps> = ({ open, onClose, onAdd })
   const handleClose = () => {
     setFieldName('');
     setFieldValue('');
-    setFieldType('single');
+    setFieldType('number');
     onClose();
   };
 
@@ -106,7 +115,7 @@ const AddFieldDialog: React.FC<AddFieldDialogProps> = ({ open, onClose, onAdd })
             labelPosition={LABEL_POSITION.CONTAINED}
             testId="field-value-input"
             value={fieldValue}
-            setValue={(e) => setFieldValue(e)}
+            setValue={(e) => handleValue(e)}
             helperText={
               fieldType === 'array'
                 ? t('dialog.help.array')
@@ -131,7 +140,7 @@ const AddFieldDialog: React.FC<AddFieldDialogProps> = ({ open, onClose, onAdd })
           ariaDescription="Button to add"
           label={t('label.button.addField')}
           onClick={handleAdd}
-          disabled={!fieldName.trim()}
+          disabled={isDisabled}
           testId="add-field-button"
           size={ButtonSizeTypes.Small}
           color={ButtonColorTypes.Secondary}
