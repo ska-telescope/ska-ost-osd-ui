@@ -18,7 +18,8 @@
       "release": "Release All Changes"
     },
     "number": "Number Label",
-    "text": "Text Label"
+    "text": "Text Label",
+    "cycleField": "Please select cycle id"
   },
   "dialog": {
     "editJson": "Edit JSON",

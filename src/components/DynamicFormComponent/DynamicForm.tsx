@@ -71,14 +71,14 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
       return false;
     };
 
-    function isNumber(value?: string | number): boolean {
+    function isNumber() {
       return value != null && value !== '' && !isNaN(Number(value.toString()));
     }
     const errText = () => {
       if (Number.isNaN(value)) {
         return 'A numeric value is required';
       }
-      if (isRequired() && !isNumber(value)) {
+      if (isRequired() && !isNumber()) {
         return typeof required === 'string' && required.length > 0
           ? required
           : 'A numeric value is required';

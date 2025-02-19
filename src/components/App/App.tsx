@@ -88,16 +88,18 @@ function App() {
             />
             {/* Example of the spacer being used to shift content from behind the Header component */}
             <Spacer size={HEADER_HEIGHT} axis={SPACER_VERTICAL} />
-            {/* <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 2 }}> */}
+
             {show ? (
-              <DropDown
-                options={cycleDataOptions}
-                testId="field-type-select"
-                value={cycleData}
-                setValue={(e) => handleCycle(e)}
-                label={t('dialog.fields.fieldType')}
-                labelBold
-              />
+              <Box sx={{ p: 2, width: 250 }}>
+                <DropDown
+                  options={cycleDataOptions}
+                  testId="field-type-select"
+                  value={cycleData}
+                  setValue={(e) => handleCycle(e)}
+                  label={t('label.cycleField')}
+                  labelBold
+                />
+              </Box>
             ) : (
               <JsonEditor
                 data-testid="json-editor"
