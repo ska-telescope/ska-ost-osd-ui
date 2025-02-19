@@ -82,9 +82,8 @@ const apiService = {
     }
   },
 
-  releaseOsdData: async (path, data) => {
+  releaseOsdData: async (path) => {
     const baseUrl = apiService.baseURL();
-    const newParam = data !== 'default' ? `&release_type=${data}` : '';
     const url = `${baseUrl}/${path}`;
 
     try {
