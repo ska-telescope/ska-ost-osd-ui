@@ -57,8 +57,8 @@ describe('<AddFieldDialog />', () => {
         cy.get('[data-testid="field-name-input"]').type('emptyArray');
         cy.get('[data-testid="field-type-select"]').click();
         cy.get('[data-value="array"]').click();
-        cy.get('[data-testid="add-field-button"]').click();
-        cy.get('@onAddStub').should('have.been.calledWith', 'emptyArray', []);
+        cy.get('[data-testid="add-field-button"]').should('not.be.enabled');
+        cy.get('@onAddStub').should('have.not.been.calledWith', 'emptyArray', []);
       });
 
       it('closes dialog with close icon button', () => {

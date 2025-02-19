@@ -116,7 +116,7 @@ function App() {
                 }}
                 onRelease={async () => {
                   try {
-                    await apiService.releaseOsdData('release?cycle_id=1');
+                    await apiService.releaseOsdData('release?', cycleData);
                   } catch (error) {
                     // Error will be propagated to the error boundary
                     throw error;

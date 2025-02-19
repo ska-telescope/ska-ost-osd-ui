@@ -82,9 +82,9 @@ const apiService = {
     }
   },
 
-  releaseOsdData: async (path) => {
+  releaseOsdData: async (path, cycleData) => {
     const baseUrl = apiService.baseURL();
-    const url = `${baseUrl}/${path}`;
+    const url = `${baseUrl}/${path}cycle_id=${cycleData}`;
 
     try {
       const response = await axios.post(`${url}`, {
