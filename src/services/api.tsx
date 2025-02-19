@@ -34,8 +34,8 @@ const apiService = {
     try {
       const response = await axios.get(`${url}`, {
         headers: {
-          accept: 'application/json'
-        }
+          accept: 'application/json',
+        },
       });
       return { data: response.data, status: 200, error: null };
     } catch (error) {
@@ -44,19 +44,23 @@ const apiService = {
     }
   },
 
-  fetchOsdData: async (path, cycle_id): Promise<any> => {
+  fetchOsdData: async (path, cycle_id?, osd_version?) => {
     const baseUrl = apiService.baseURL();
     const url = `${baseUrl}/${path}`;
+
+    const source = osd_version === '' ? 'file' : 'car';
+
     try {
       const response = await axios.get(`${url}`, {
         params: {
           cycle_id: cycle_id,
-          source: 'file',
-          capabilities: 'mid'
+          source: source,
+          capabilities: 'mid',
+          osd_version: osd_version,
         },
         headers: {
-          accept: 'application/json'
-        }
+          accept: 'application/json',
+        },
       });
       return { data: response.data, status: 200, error: null };
     } catch (error) {
@@ -73,12 +77,12 @@ const apiService = {
         params: {
           cycle_id: cycle_id,
           capabilities: 'mid',
-          array_assembly: array_assembly
+          array_assembly: array_assembly,
         },
         headers: {
           'Content-Type': 'application/json',
-          accept: 'application/json'
-        }
+          accept: 'application/json',
+        },
       });
       return { data: response.data, status: 200, error: null };
     } catch (error) {
@@ -95,15 +99,15 @@ const apiService = {
       const response = await axios.post(`${url}`, {
         headers: {
           'Content-Type': 'application/json',
-          accept: 'application/json'
-        }
+          accept: 'application/json',
+        },
       });
       return { data: response.data, status: 200, error: null };
     } catch (error) {
       const errorResponse = handleAxiosError(error);
       return { data: null, status: errorResponse.status, error: errorResponse.error };
     }
-  }
+  },
 };
 
 export default apiService;

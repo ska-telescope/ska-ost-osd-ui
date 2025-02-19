@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, ButtonVariantTypes, ButtonColorTypes } from '@ska-telescope/ska-gui-components';
+import {
+  Button,
+  ButtonVariantTypes,
+  ButtonColorTypes,
+  InfoCard,
+  InfoCardColorTypes,
+} from '@ska-telescope/ska-gui-components';
 import {
   Box,
   Typography,
@@ -9,7 +15,8 @@ import {
   DialogContent,
   DialogActions,
   TextField,
-  IconButton
+  IconButton,
+  Grid,
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import AddFieldDialog from '../AddFieldDialogComponent/AddFieldDialog';
@@ -52,6 +59,8 @@ const JsonEditor: React.FC<JsonEditorProps> = ({ initialData, onSave, onRelease 
   const [pendingChanges, setPendingChanges] = useState<Record<string, unknown> | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isRelease, setIsRelease] = useState(false);
+  const [successMessage, setMessage] = useState('');
+  const [displayMessageElement, setDisplayMessageElement] = useState(false);
 
   const resetEditState = () => {
     setJsonEditMode(false);
@@ -174,7 +183,12 @@ const JsonEditor: React.FC<JsonEditorProps> = ({ initialData, onSave, onRelease 
     try {
       if (isRelease) {
         onRelease();
+        setMessage('msg.preRelease');
         setConfirmDialogOpen(false);
+        setDisplayMessageElement(true);
+        setTimeout(() => {
+          setDisplayMessageElement(false);
+        }, 5000);
       } else {
         if (pendingChanges) {
           onSave(pendingChanges);
@@ -189,6 +203,16 @@ const JsonEditor: React.FC<JsonEditorProps> = ({ initialData, onSave, onRelease 
       setError(err instanceof Error ? err.message : 'Failed to save changes');
     }
   };
+
+  const renderMessageResponse = () => (
+    <InfoCard
+      minHeight="15px"
+      fontSize={16}
+      color={InfoCardColorTypes.Success}
+      message={t(successMessage)}
+      testId="successStatusMsg"
+    />
+  );
 
   return (
     <Box sx={{ p: 2 }}>
@@ -231,6 +255,13 @@ const JsonEditor: React.FC<JsonEditorProps> = ({ initialData, onSave, onRelease 
             setConfirmDialogOpen(true);
           }}
         />
+        <Grid item xs={12} sm={12} md={2} />
+        <Grid item xs={12} sm={12} md={4}>
+          <div style={{ position: 'absolute', zIndex: 2 }}>
+            {displayMessageElement ? renderMessageResponse() : ''}
+          </div>
+        </Grid>
+        <Grid item xs={12} sm={12} md={1} />
       </Box>
 
       <DynamicForm

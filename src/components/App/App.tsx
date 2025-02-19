@@ -7,7 +7,9 @@ import {
   Header,
   Spacer,
   SPACER_VERTICAL,
-  DropDown
+  DropDown,
+  InfoCard,
+  InfoCardColorTypes,
 } from '@ska-telescope/ska-gui-components';
 import { storageObject } from '@ska-telescope/ska-gui-local-storage';
 import theme from '../../services/theme/theme';
@@ -27,6 +29,9 @@ function App() {
   const [show, setShow] = useState(true);
   const [cycleDataOptions, setCycleDataOptions] = useState([{ label: '', value: '' }]);
   const [cycleData, setCycleData] = useState();
+  const [versionData, setVersionData] = useState('');
+  const [successMessage, setMessage] = useState('');
+  const [displayMessageElement, setDisplayMessageElement] = useState(false);
 
   useEffect(() => {
     const loadData = async () => {
@@ -37,26 +42,38 @@ function App() {
           return { label: `Cycle_${cycle}`, value: cycle };
         });
         setCycleDataOptions(optionValues);
+        setIsLoading(false);
       } else {
         setCycleDataOptions([{ label: '', value: '' }]);
-        setIsLoading(false);
+        setIsLoading(true);
       }
-      // try {
-      //   const cycleAPIData = await apiService.fetchOsdCycleData('cycle');
-      //   console.log(cycleAPIData);
-      //   const optionValues = cycleAPIData.data.cycles.map((cycle) => {
-      //     return { label: `Cycle_${cycle}`, value: cycle };
-      //   });
-      //   setCycleDataOptions(optionValues);
-      // } catch (error) {
-      //   throw error;
-      // } finally {
-      //   setIsLoading(false);
-      // }
     };
 
     loadData();
   }, []);
+
+  useEffect(() => {
+    if (versionData !== '') {
+      const interval = setInterval(async () => {
+        try {
+          const response = await apiService.fetchOsdData('osd', null, versionData);
+          if (response.status === 200) {
+            setMessage('msg.releaseVersion');
+            setDisplayMessageElement(true);
+            setTimeout(() => {
+              setDisplayMessageElement(false);
+            }, 5000);
+            clearInterval(interval);
+          }
+        } catch (error) {
+          throw error;
+        } finally {
+          setIsLoading(false);
+        }
+      }, 3000);
+    }
+  }, [versionData]);
+
   const { help, helpToggle, themeMode, toggleTheme } = storageObject.useStore();
 
   const skao = t('toolTip.button.skao');
@@ -83,6 +100,16 @@ function App() {
     setIsLoading(false);
   };
 
+  const renderMessageResponse = () => (
+    <InfoCard
+      minHeight="15px"
+      fontSize={16}
+      color={InfoCardColorTypes.Success}
+      message={t(successMessage)}
+      testId="successStatusMsg"
+    />
+  );
+
   return (
     <ThemeProvider theme={theme(themeMode.mode)}>
       <CssBaseline enableColorScheme />
@@ -101,7 +128,9 @@ function App() {
             />
             {/* Example of the spacer being used to shift content from behind the Header component */}
             <Spacer size={HEADER_HEIGHT} axis={SPACER_VERTICAL} />
-
+            <div style={{ position: 'absolute', zIndex: 2 }}>
+              {displayMessageElement ? renderMessageResponse() : ''}
+            </div>
             {show ? (
               <Box sx={{ p: 2, width: 250 }}>
                 <DropDown
@@ -128,7 +157,10 @@ function App() {
                 }}
                 onRelease={async () => {
                   try {
-                    await apiService.releaseOsdData('release?', cycleData);
+                    const response = await apiService.releaseOsdData('osd_release?', cycleData);
+                    if (response?.status === 200) {
+                      setVersionData(response?.data?.version);
+                    }
                   } catch (error) {
                     // Error will be propagated to the error boundary
                     throw error;
