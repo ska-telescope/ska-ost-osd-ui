@@ -60,7 +60,7 @@ const apiService = {
     }
   },
 
-  saveOsdData: async (path, cycle_id, data: Record<string, unknown>) => {
+  saveOsdData: async (path, cycle_id, data: Record<string, unknown>, array_assembly) => {
     const baseUrl = apiService.baseURL();
     const url = `${baseUrl}/${path}`;
     try {
@@ -68,7 +68,7 @@ const apiService = {
         params: {
           cycle_id: cycle_id,
           capabilities: 'mid',
-          array_assembly: 'AA2',
+          array_assembly: array_assembly,
         },
         headers: {
           'Content-Type': 'application/json',

@@ -14,6 +14,7 @@ import theme from '../../services/theme/theme';
 import Loader from '../Loader/Loader';
 import JsonEditor from '../JsonEditorComponent/JsonEditor';
 import apiService from '../../services/api';
+import { findThirdKey } from '../utils';
 
 const HEADER_HEIGHT = 70;
 const FOOTER_HEIGHT = 20;
@@ -105,8 +106,9 @@ function App() {
                 data-testid="json-editor"
                 initialData={jsonData}
                 onSave={async (data) => {
+                  const array_assembly = findThirdKey(data);
                   try {
-                    await apiService.saveOsdData('osd', cycleData, data);
+                    await apiService.saveOsdData('osd', cycleData, data, array_assembly);
                   } catch (error) {
                     // Error will be propagated to the error boundary
                     throw error;
