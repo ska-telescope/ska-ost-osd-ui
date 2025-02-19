@@ -1,4 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from 'axios';
+
+export interface customAxiosResponse {
+  data: object;
+  status: number;
+  error: string;
+}
 
 function handleAxiosError(error: object) {
   let status = 200;
@@ -21,15 +28,14 @@ function handleAxiosError(error: object) {
 const apiService = {
   baseURL: () => window.env?.BACKEND_URL,
 
-  fetchOsdCycleData: async (path) => {
+  fetchOsdCycleData: async (path): Promise<any> => {
     const baseUrl = apiService.baseURL();
     const url = `${baseUrl}/${path}`;
     try {
-      // Fetching OSD data
       const response = await axios.get(`${url}`, {
         headers: {
-          accept: 'application/json',
-        },
+          accept: 'application/json'
+        }
       });
       return { data: response.data, status: 200, error: null };
     } catch (error) {
@@ -38,20 +44,19 @@ const apiService = {
     }
   },
 
-  fetchOsdData: async (path, cycle_id) => {
+  fetchOsdData: async (path, cycle_id): Promise<any> => {
     const baseUrl = apiService.baseURL();
     const url = `${baseUrl}/${path}`;
     try {
-      // Fetching OSD data
       const response = await axios.get(`${url}`, {
         params: {
           cycle_id: cycle_id,
           source: 'file',
-          capabilities: 'mid',
+          capabilities: 'mid'
         },
         headers: {
-          accept: 'application/json',
-        },
+          accept: 'application/json'
+        }
       });
       return { data: response.data, status: 200, error: null };
     } catch (error) {
@@ -68,21 +73,21 @@ const apiService = {
         params: {
           cycle_id: cycle_id,
           capabilities: 'mid',
-          array_assembly: array_assembly,
+          array_assembly: array_assembly
         },
         headers: {
           'Content-Type': 'application/json',
-          accept: 'application/json',
-        },
+          accept: 'application/json'
+        }
       });
       return { data: response.data, status: 200, error: null };
     } catch (error) {
-      // Let the error propagate to be handled by the caller
-      throw error;
+      const errorResponse = handleAxiosError(error);
+      return { data: null, status: errorResponse.status, error: errorResponse.error };
     }
   },
 
-  releaseOsdData: async (path, cycleData) => {
+  releaseOsdData: async (path, cycleData): Promise<any> => {
     const baseUrl = apiService.baseURL();
     const url = `${baseUrl}/${path}cycle_id=${cycleData}`;
 
@@ -90,15 +95,15 @@ const apiService = {
       const response = await axios.post(`${url}`, {
         headers: {
           'Content-Type': 'application/json',
-          accept: 'application/json',
-        },
+          accept: 'application/json'
+        }
       });
       return { data: response.data, status: 200, error: null };
     } catch (error) {
-      // Let the error propagate to be handled by the caller
-      throw error;
+      const errorResponse = handleAxiosError(error);
+      return { data: null, status: errorResponse.status, error: errorResponse.error };
     }
-  },
+  }
 };
 
 export default apiService;

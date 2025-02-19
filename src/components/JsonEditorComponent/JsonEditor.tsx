@@ -9,7 +9,7 @@ import {
   DialogContent,
   DialogActions,
   TextField,
-  IconButton,
+  IconButton
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import AddFieldDialog from '../AddFieldDialogComponent/AddFieldDialog';
@@ -34,7 +34,7 @@ interface releaseOptionsType {
 export const releaseTypeOptions: releaseOptionsType[] = [
   { label: 'Default', value: 'default' },
   { label: 'Major', value: 'major' },
-  { label: 'Minor', value: 'minor' },
+  { label: 'Minor', value: 'minor' }
 ];
 
 const JsonEditor: React.FC<JsonEditorProps> = ({ initialData, onSave, onRelease }) => {
@@ -61,7 +61,7 @@ const JsonEditor: React.FC<JsonEditorProps> = ({ initialData, onSave, onRelease 
 
   const updateValue = (
     path: string[],
-    value: string | number | boolean | string[] | Record<string, unknown>,
+    value: string | number | boolean | string[] | Record<string, unknown>
   ) => {
     // Use deep copy to properly handle nested structures
     const newData = structuredClone(data);
@@ -99,7 +99,7 @@ const JsonEditor: React.FC<JsonEditorProps> = ({ initialData, onSave, onRelease 
   const addValue = (
     path: string[],
     key: string,
-    value: string | number | boolean | string[] | Record<string, unknown>,
+    value: string | number | boolean | string[] | Record<string, unknown>
   ) => {
     // Deep clone to properly handle nested structures
     const newData = structuredClone(data);
@@ -265,9 +265,9 @@ const JsonEditor: React.FC<JsonEditorProps> = ({ initialData, onSave, onRelease 
           '& .MuiDialog-container': {
             '& .MuiPaper-root': {
               width: '100%',
-              maxWidth: '1000px',
-            },
-          },
+              maxWidth: '1000px'
+            }
+          }
         }}
         fullWidth
         aria-labelledby="responsive-dialog-title"

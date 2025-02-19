@@ -19,18 +19,13 @@ describe('<AddFieldDialog />', () => {
     cy.mount(
       <ThemeProvider theme={theme(theTheme)}>
         <CssBaseline />
-        <AddFieldDialog
-          open={open}
-          onAdd={mockOnAdd}
-          onClose={mockOnClose}
-        />
+        <AddFieldDialog open={open} onAdd={mockOnAdd} onClose={mockOnClose} />
       </ThemeProvider>
     );
   }
 
   for (const theTheme of THEME) {
     describe(`Theme ${theTheme}`, () => {
-
       it('does not render when closed', () => {
         mount(theTheme, false);
         cy.contains('Add New Field').should('not.exist');

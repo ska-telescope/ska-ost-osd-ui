@@ -7,7 +7,7 @@ import {
   Header,
   Spacer,
   SPACER_VERTICAL,
-  DropDown,
+  DropDown
 } from '@ska-telescope/ska-gui-components';
 import { storageObject } from '@ska-telescope/ska-gui-local-storage';
 import theme from '../../services/theme/theme';
@@ -30,17 +30,29 @@ function App() {
 
   useEffect(() => {
     const loadData = async () => {
-      try {
-        const cycleAPIData = await apiService.fetchOsdCycleData('cycle');
-        const optionValues = cycleAPIData.data.cycles.map((cycle) => {
+      // for now this will work but we have to handle if data is not coming
+      const response = await apiService.fetchOsdCycleData('cycle');
+      if (response.status === 200 && response.data) {
+        const optionValues = response.data.cycles.map((cycle) => {
           return { label: `Cycle_${cycle}`, value: cycle };
         });
         setCycleDataOptions(optionValues);
-      } catch (error) {
-        throw error;
-      } finally {
+      } else {
+        setCycleDataOptions([{ label: '', value: '' }]);
         setIsLoading(false);
       }
+      // try {
+      //   const cycleAPIData = await apiService.fetchOsdCycleData('cycle');
+      //   console.log(cycleAPIData);
+      //   const optionValues = cycleAPIData.data.cycles.map((cycle) => {
+      //     return { label: `Cycle_${cycle}`, value: cycle };
+      //   });
+      //   setCycleDataOptions(optionValues);
+      // } catch (error) {
+      //   throw error;
+      // } finally {
+      //   setIsLoading(false);
+      // }
     };
 
     loadData();
@@ -59,7 +71,7 @@ function App() {
     help,
     helpToggle,
     themeMode: themeMode.mode,
-    toggleTheme,
+    toggleTheme
   };
 
   const handleCycle = async (e) => {

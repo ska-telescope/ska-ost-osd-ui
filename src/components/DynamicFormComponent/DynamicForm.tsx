@@ -5,7 +5,7 @@ import {
   ButtonSizeTypes,
   TextEntry,
   LABEL_POSITION,
-  TYPE,
+  TYPE
 } from '@ska-telescope/ska-gui-components';
 import {
   Box,
@@ -13,7 +13,7 @@ import {
   IconButton,
   Accordion,
   AccordionSummary,
-  AccordionDetails,
+  AccordionDetails
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -50,13 +50,13 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
   onAdd,
   onEdit,
   required = false,
-  errorText = '',
+  errorText = ''
 }) => {
   const [valid, setValid] = useState(false);
   const renderField = (
     key: string,
     value: string | number | boolean | string[] | Record<string, unknown>,
-    currentPath: string[],
+    currentPath: string[]
   ) => {
     const isRequired = () => {
       if (!required) {
@@ -122,7 +122,7 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
                   testId="field-name-input"
                   value={value
                     .map((item) =>
-                      typeof item === 'object' && item !== null ? JSON.stringify(item) : item,
+                      typeof item === 'object' && item !== null ? JSON.stringify(item) : item
                     )
                     .join(', ')}
                   setValue={(e) => {
@@ -151,7 +151,7 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
                       <DeleteIcon />
                     </IconButton>
                   </Box>
-                ) : null,
+                ) : null
               )}
               <Button
                 icon={<AddCircleOutlineIcon />}
@@ -180,7 +180,7 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
                   display: 'flex',
                   alignItems: 'center',
                   width: '100%',
-                  justifyContent: 'space-between',
+                  justifyContent: 'space-between'
                 }}
                 data-testid="field-container"
               >

@@ -68,7 +68,7 @@ module.exports = () => {
         filename: 'remoteEntry.js',
         remotes: {},
         exposes: {
-          './ReactSkeleton': './src/components/ReactSkeleton/ReactSkeleton.tsx',
+          './ReactSkeleton': './src/components/App/App.tsx',
         },
         shared: {
           ...deps,

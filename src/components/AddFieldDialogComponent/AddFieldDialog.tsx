@@ -9,7 +9,7 @@ import {
   Button,
   ButtonColorTypes,
   ButtonVariantTypes,
-  ButtonSizeTypes,
+  ButtonSizeTypes
 } from '@ska-telescope/ska-gui-components';
 
 interface AddFieldDialogProps {
@@ -28,7 +28,7 @@ export const fieldTypeOptions: fieldTypeOptionsType[] = [
   { label: 'String', value: 'string' },
   { label: 'Boolean', value: 'boolean' },
   { label: 'Array', value: 'array' },
-  { label: 'Object', value: 'object' },
+  { label: 'Object', value: 'object' }
 ];
 
 const AddFieldDialog: React.FC<AddFieldDialogProps> = ({ open, onClose, onAdd }) => {
