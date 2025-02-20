@@ -31,6 +31,7 @@ function App() {
   const [cycleData, setCycleData] = useState();
   const [versionData, setVersionData] = useState(null);
   const [successMessage, setMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   const [displayMessageElement, setDisplayMessageElement] = useState(false);
 
   useEffect(() => {
@@ -44,6 +45,7 @@ function App() {
         setCycleDataOptions(optionValues);
         setIsLoading(false);
       } else {
+        setErrorMessage('msg.errorMessage');
         setCycleDataOptions([{ label: '', value: '' }]);
         setIsLoading(false);
       }
@@ -137,6 +139,7 @@ function App() {
                   setValue={(e) => handleCycle(e)}
                   label={t('label.cycleField')}
                   labelBold
+                  errorText={t(errorMessage)}
                 />
               </Box>
             ) : (
