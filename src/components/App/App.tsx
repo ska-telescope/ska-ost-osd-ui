@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import apiService from '../../services/api';
 import {
   CopyrightModal,
   Footer,
@@ -35,6 +36,29 @@ function App() {
     themeMode: themeMode.mode,
     toggleTheme
   };
+
+  const loadData = async () => {
+    // for now this will work but we have to handle if data is not coming
+    const response = await apiService.fetchOsdCycleData('cycle');
+    if (response.status === 200 && response.data) {
+      const optionValues = response.data.cycles.map((cycle) => {
+        return { label: `Cycle_${cycle}`, value: cycle };
+      });
+      console.log('optionValues', optionValues);
+      // setCycleDataOptions(optionValues);
+      // setIsLoading(false);
+    } else {
+      console.log('error', response);
+      // setErrorMessage('msg.errorMessage');
+      // setCycleDataOptions([{ label: '', value: '' }]);
+      // setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    console.log('home page call');
+    loadData();
+  }, []);
 
   return (
     <ThemeProvider theme={theme(themeMode.mode)}>
