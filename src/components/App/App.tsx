@@ -9,7 +9,7 @@ import {
   SPACER_VERTICAL,
   DropDown,
   InfoCard,
-  InfoCardColorTypes,
+  InfoCardColorTypes
 } from '@ska-telescope/ska-gui-components';
 import { storageObject } from '@ska-telescope/ska-gui-local-storage';
 import theme from '../../services/theme/theme';
@@ -55,21 +55,32 @@ function App() {
   useEffect(() => {
     if (versionData !== '') {
       const interval = setInterval(async () => {
-        try {
-          const response = await apiService.fetchOsdData('osd', null, versionData);
-          if (response.status === 200) {
-            setMessage('msg.releaseVersion');
-            setDisplayMessageElement(true);
-            setTimeout(() => {
-              setDisplayMessageElement(false);
-            }, 5000);
-            clearInterval(interval);
-          }
-        } catch (error) {
-          throw error;
-        } finally {
+        const response = await apiService.fetchOsdData('osd', null, versionData);
+        if (response.status === 200) {
+          setMessage('msg.releaseVersion');
+          setDisplayMessageElement(true);
+          setTimeout(() => {
+            setDisplayMessageElement(false);
+          }, 5000);
+          clearInterval(interval);
+        } else {
           setIsLoading(false);
         }
+        // try {
+        //   const response = await apiService.fetchOsdData('osd', null, versionData);
+        //   if (response.status === 200) {
+        //     setMessage('msg.releaseVersion');
+        //     setDisplayMessageElement(true);
+        //     setTimeout(() => {
+        //       setDisplayMessageElement(false);
+        //     }, 5000);
+        //     clearInterval(interval);
+        //   }
+        // } catch (error) {
+        //   throw error;
+        // } finally {
+        //   setIsLoading(false);
+        // }
       }, 3000);
     }
   }, [versionData]);
