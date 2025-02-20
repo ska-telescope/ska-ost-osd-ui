@@ -23,6 +23,7 @@ function HomePage() {
   const [displayMessageElement, setDisplayMessageElement] = useState(false);
 
   useEffect(() => {
+    console.log('home page call');
     const loadData = async () => {
       // for now this will work but we have to handle if data is not coming
       const response = await apiService.fetchOsdCycleData('cycle');
