@@ -9,7 +9,7 @@ import {
   SPACER_VERTICAL,
   DropDown,
   InfoCard,
-  InfoCardColorTypes,
+  InfoCardColorTypes
 } from '@ska-telescope/ska-gui-components';
 import { storageObject } from '@ska-telescope/ska-gui-local-storage';
 import theme from '../../services/theme/theme';
@@ -45,7 +45,7 @@ function App() {
         setIsLoading(false);
       } else {
         setCycleDataOptions([{ label: '', value: '' }]);
-        setIsLoading(true);
+        setIsLoading(false);
       }
     };
 

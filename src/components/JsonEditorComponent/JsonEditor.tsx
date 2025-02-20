@@ -5,7 +5,7 @@ import {
   ButtonVariantTypes,
   ButtonColorTypes,
   InfoCard,
-  InfoCardColorTypes,
+  InfoCardColorTypes
 } from '@ska-telescope/ska-gui-components';
 import {
   Box,
@@ -16,7 +16,7 @@ import {
   DialogActions,
   TextField,
   IconButton,
-  Grid,
+  Grid
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import AddFieldDialog from '../AddFieldDialogComponent/AddFieldDialog';
