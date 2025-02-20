@@ -1,24 +1,30 @@
-#!/bin/bash
-# This script is used to write the env.js file that loads the BACKEND_URL
-# and BASE_URL at runtime for Kubernetes environments. This is done
-# with a script because these environment properties depend on the k8s
-# namespace which is not known at build time and has to be injected to the
-# application at runtime instead.
+#!/bin/env bash
 
-OUTPUT_FILE="${ENVJS_FILE:-/usr/share/nginx/html/env.js}"
-rm -f $OUTPUT_FILE
+if [ ! -f /.env ]; then
+    echo "No Setup Required, mising /.env"
+    exit
+fi
 
-# Add assignment
-ENV_STRING="window.env = {"
-
-for varname in "BACKEND_URL" "BASE_URL" "REACT_APP_USE_LOCAL_DATA" ; do
-  # Read value of current variable if exists as Environment variable
-  value=$(printf '%s\n' "${!varname}")
-  # Exit with error if environment variable not defined
-  [[ -z $value ]] && { echo "Environment variable $varname is not defined" ; exit 1; }
-
-  # Append configuration property to JS file
-  ENV_STRING+="  $varname: \"$value\","
-done
-ENV_STRING+="}"
-echo $ENV_STRING >> $OUTPUT_FILE
+{
+    echo 'window.env = {'
+    count=0
+    while read -r line; do
+        var="$(echo "$line" | cut -d '=' -f1)"
+        default="$(echo "$line" | cut -d '=' -f2)"
+        type="$(echo "$line" | cut -d '=' -f2  | cut -c1)"
+        if [[ "$type" == "'" ]]; then
+            default="$(echo "$default" | cut -d"'" -f 2)"
+        fi
+        val="${!var:-$default}"
+        if [[ count -gt 0 ]]; then
+            echo ','
+        fi
+        if [[ "$type" == "'" ]]; then
+            echo -n "  $var: '$val'"
+        else
+            echo -n "  $var: $val"
+        fi
+        count=$((count+1))
+    done < /.env
+    echo -e "\n}"
+} > /usr/share/nginx/html/env.js
