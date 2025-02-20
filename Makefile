@@ -12,7 +12,7 @@ REACT_APP_USE_LOCAL_DATA = false
 
 
 K8S_CHART_PARAMS += \
-  --set ska-ost-osd-ui.backendURL=$(BACKEND_URL)  \
+  --set ska-ost-osd-ui.backendURL=$(BACKEND_URL)
 
 
 # JS Template Variables
@@ -31,14 +31,13 @@ JS_TEST_DEFAULT_SWITCHES = run --coverage.enabled=true --reporter=junit --report
 -include .make/helm.mk
 -include .make/k8s.mk
 -include .make/js.mk
--include .make/xray.mk
 
 # For the test, dev and integration environment, use the freshly built image in the GitLab registry
 
 ENV_CHECK := $(shell echo $(CI_ENVIRONMENT_SLUG) | egrep 'test|dev|integration')
 ifneq ($(ENV_CHECK),)
 K8S_CHART_PARAMS += --set ska-ost-osd-ui.image.tag=$(VERSION)-dev.c$(CI_COMMIT_SHORT_SHA) \
-	--set ska-ost-osd-ui.image.registry=$(CI_REGISTRY)/ska-telescope/oso/ska-ost-osd-ui
+	--set ska-ost-osd-ui.image.registry=$(CI_REGISTRY)/ska-telescope/ost/ska-ost-osd-ui
 endif
 
 # Set cluster_domain to minikube default (cluster.local) in local development

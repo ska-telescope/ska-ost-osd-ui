@@ -8,7 +8,7 @@ used at any of the three SKA sites. Its intention is to collate and then provide
 To clone this repository, run
 
 ```
-git clone --recurse-submodules git@gitlab.com:ska-telescope/oso/ska-ost-osd-ui.git
+git clone --recurse-submodules git@gitlab.com:ska-telescope/ost/ska-ost-osd-ui.git
 ```
 
 To refresh the GitLab Submodule, execute below commands:
