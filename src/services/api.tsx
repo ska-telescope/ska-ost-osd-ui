@@ -26,11 +26,13 @@ function handleAxiosError(error: object) {
 }
 
 const apiService = {
-  baseURL: () => window.env?.BACKEND_URL,
+  baseURL: () => window.env.BACKEND_URL,
 
   fetchOsdCycleData: async (path): Promise<any> => {
     const baseUrl = apiService.baseURL();
+    console.log('baseURL', baseUrl);
     const url = `${baseUrl}/${path}`;
+    console.log('url', url);
     try {
       const response = await axios.get(`${url}`, {
         headers: {

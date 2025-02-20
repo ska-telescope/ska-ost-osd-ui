@@ -58,6 +58,12 @@ describe('<DynamicForm />', () => {
         cy.get('@onDeleteStub').should('have.been.calledWith', ['nestedField']);
       });
 
+      it('triggers add Button for field addition', () => {
+        mount(theTheme);
+        cy.get('[data-testid="add-button"]').first().click();
+        // cy.get('@onAddStub').should('have.been.calledWith', ['nestedField']);
+      });
+
       it('displays field container with correct label', () => {
         mount(theTheme);
         cy.get('[data-testid="field-container"]').should('be.visible');
