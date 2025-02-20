@@ -7,4 +7,4 @@ metadata:
     {{ include "ska-ost-osd-ui.labels" . | indent 4 }}
 data:
   BACKEND_URL: {{ .Values.backendURL }}
-  BASE_URL: /{{ .Release.Namespace }}/osd
+  BASE_URL: /{{ .Release.Namespace }}/osd/

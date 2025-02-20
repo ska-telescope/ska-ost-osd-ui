@@ -31,7 +31,7 @@ K8S_CHART_PARAMS += --set ska-ost-osd-ui.image.tag=$(VERSION)-dev.c$(CI_COMMIT_S
 endif
 
 set-dev-env-vars:
-	BASE_URL="/" BACKEND_URL=$(BACKEND_URL) ENVJS_FILE=./public/env.js ./nginx_env_config.sh
+	BASE_URL="/" BACKEND_URL=$(BACKEND_URL) ENVJS_FILE=./public/env.js ./scripts/write_env_js.sh
 
 js-do-test:
 	@mkdir -p $(JS_BUILD_REPORTS_DIRECTORY)
