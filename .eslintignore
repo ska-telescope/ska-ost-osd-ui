@@ -9,4 +9,5 @@ dist
 **/*.py
 **/*.svg
 **/*.html
+**/*.md
 jest.config.js

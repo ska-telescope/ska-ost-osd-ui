@@ -1,13 +1,14 @@
-# SKA OST OSD UI
+# SKA OSO SHIFT LOG TOOL UI
 
-This project is the User Interface for the Observatory Static Data (OSD). In its simplest form OSD consists of a set of science domain configuration files that are required by the OSO tools. These configuration files hold slowly changing information that is used to configure the science domain behavior of each tool. E.g. tools such as the PPT and ODT can use the information for constructing GUIs and validating setups, the Planning Tool can use it to inform itself of the capabilities available. The idea of OSD is to provide a single source of truth for these data.
+This project is the User Interface for the SHIFT LOG TOOL. The Shift Log Tool (OET) is envisioned as both an “on-line” tool, used in real-time by the operators at the two telescope sites, and as an “off-line” tool,
+used at any of the three SKA sites. Its intention is to collate and then provide access to a record of the major events occurring during an operator’s shift.
 
 ## Quickstart
 
 To clone this repository, run
 
 ```
-git clone --recurse-submodules git@gitlab.com:ska-telescope/ost/ska-ost-osd-ui.git
+git clone --recurse-submodules git@gitlab.com:ska-telescope/oso/ska-oso-osd-ui.git
 ```
 
 To refresh the GitLab Submodule, execute below commands:
@@ -47,8 +48,8 @@ Run `yarn lint` to lint the code.
 
 ## Deploying to Kubernetes
 
-The full production system will consist of the SLT UI using the SLT Services, which are
-configured to connect to the SLT REST API which connects with a PostgreSQL instance.
+The full production system will consist of the OET UI using the OET Services, which are
+configured to connect to the OET REST API which connects with a PostgreSQL instance.
 To deploy all of these services, run:
 
 ```
@@ -67,14 +68,14 @@ and uninstalled with
 make k8s-uninstall-chart
 ```
 
-Once installed, the UI should then be available externally at http://<MINIKUBE_IP>/<KUBE_NAMESPACE>/osd/
+Once installed, the UI should then be available externally at http://<MINIKUBE_IP>/<KUBE_NAMESPACE>/oet/
 
-If using minikube, run `minikube ip` to find the host IP. `KUBE_NAMESPACE` is set to `ska-ost-osd-ui` by default.  
+If using minikube, run `minikube ip` to find the host IP. `KUBE_NAMESPACE` is set to `ska-oso-osd-ui` by default.  
 The backend component will also be deployed to a separate pod, which the web application will make requests to.
 
 ## Documentation
 
-[![Documentation Status](https://readthedocs.org/projects/ska-telescope-ska-ost-osd-ui/badge/?version=latest)](https://developer.skao.int/projects/ska-ost-osd-ui/en/latest/?badge=latest)
+[![Documentation Status](https://readthedocs.org/projects/ska-telescope-ska-oso-osd-ui/badge/?version=latest)](https://developer.skao.int/projects/ska-oso-osd-ui/en/latest/?badge=latest)
 
 Documentation can be found in the `docs` folder. To build docs, install the
 documentation specific requirements:
