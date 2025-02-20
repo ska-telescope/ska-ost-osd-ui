@@ -7,12 +7,12 @@ variables:
 
 stages:
   - dependencies
-  - lint
   - build
+  - deploy
+  - lint
   - test
   - scan
   - pages
-  - deploy
   - integration
   - staging
   - accessibility
