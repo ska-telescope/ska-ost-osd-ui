@@ -2,8 +2,8 @@
 KUBE_HOST ?= http://`minikube ip`
 # KUBE_NAMESPACE defines the Kubernetes Namespace that will be deployed to
 # using Helm.  If this does not already exist it will be created
-KUBE_NAMESPACE ?= ska-oso-osd-ui
-K8S_CHART ?= ska-oso-osd-ui-umbrella
+KUBE_NAMESPACE ?= ska-ost-osd-ui
+K8S_CHART ?= ska-ost-osd-ui-umbrella
 RELEASE_NAME ?= test
 
 # The default OSD_BACKEND_URL points to the umbrella chart OSD back-end deployment
@@ -12,7 +12,7 @@ REACT_APP_USE_LOCAL_DATA = false
 
 
 K8S_CHART_PARAMS += \
-  --set ska-oso-osd-ui.backendURL=$(BACKEND_URL)  \
+  --set ska-ost-osd-ui.backendURL=$(BACKEND_URL)  \
 
 
 # JS Template Variables
@@ -42,8 +42,8 @@ XRAY_EXECUTION_CONFIG_FILE ?= tests/xray-config.json
 
 ENV_CHECK := $(shell echo $(CI_ENVIRONMENT_SLUG) | egrep 'test|dev|integration')
 ifneq ($(ENV_CHECK),)
-K8S_CHART_PARAMS += --set ska-oso-osd-ui.image.tag=$(VERSION)-dev.c$(CI_COMMIT_SHORT_SHA) \
-	--set ska-oso-osd-ui.image.registry=$(CI_REGISTRY)/ska-telescope/oso/ska-oso-osd-ui
+K8S_CHART_PARAMS += --set ska-ost-osd-ui.image.tag=$(VERSION)-dev.c$(CI_COMMIT_SHORT_SHA) \
+	--set ska-ost-osd-ui.image.registry=$(CI_REGISTRY)/ska-telescope/oso/ska-ost-osd-ui
 endif
 
 # Set cluster_domain to minikube default (cluster.local) in local development

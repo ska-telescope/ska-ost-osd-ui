@@ -50,8 +50,8 @@ PrivateRules.mak
 serve.pid
 
 # compiled Helm charts
-charts/ska-oso-osd-ui-umbrella/charts
-charts/ska-oso-osd-ui-umbrella/Chart.lock
+charts/ska-ost-osd-ui-umbrella/charts
+charts/ska-ost-osd-ui-umbrella/Chart.lock
 
 # env.js file is automatically generated when the application
 # is started, the env.js committed to the repository should be

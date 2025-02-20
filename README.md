@@ -8,7 +8,7 @@ used at any of the three SKA sites. Its intention is to collate and then provide
 To clone this repository, run
 
 ```
-git clone --recurse-submodules git@gitlab.com:ska-telescope/oso/ska-oso-osd-ui.git
+git clone --recurse-submodules git@gitlab.com:ska-telescope/oso/ska-ost-osd-ui.git
 ```
 
 To refresh the GitLab Submodule, execute below commands:
@@ -70,12 +70,12 @@ make k8s-uninstall-chart
 
 Once installed, the UI should then be available externally at http://<MINIKUBE_IP>/<KUBE_NAMESPACE>/osd/
 
-If using minikube, run `minikube ip` to find the host IP. `KUBE_NAMESPACE` is set to `ska-oso-osd-ui` by default.  
+If using minikube, run `minikube ip` to find the host IP. `KUBE_NAMESPACE` is set to `ska-ost-osd-ui` by default.  
 The backend component will also be deployed to a separate pod, which the web application will make requests to.
 
 ## Documentation
 
-[![Documentation Status](https://readthedocs.org/projects/ska-telescope-ska-oso-osd-ui/badge/?version=latest)](https://developer.skao.int/projects/ska-oso-osd-ui/en/latest/?badge=latest)
+[![Documentation Status](https://readthedocs.org/projects/ska-telescope-ska-ost-osd-ui/badge/?version=latest)](https://developer.skao.int/projects/ska-ost-osd-ui/en/latest/?badge=latest)
 
 Documentation can be found in the `docs` folder. To build docs, install the
 documentation specific requirements:
