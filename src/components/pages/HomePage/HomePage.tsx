@@ -12,7 +12,7 @@ import apiService from '../../../services/api';
 import { findThirdKey } from '../../utils';
 
 function HomePage() {
-  console.log('qqqqqqqqqqqq')
+  console.log('qqqqqqqqqqqq');
   console.log('home page call');
   const { t } = useTranslation('translations');
   const [jsonData, setJsonData] = useState({});
