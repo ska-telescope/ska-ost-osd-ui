@@ -3,13 +3,13 @@ import { CssBaseline, ThemeProvider } from '@mui/material';
 import { THEME_DARK, THEME_LIGHT } from '@ska-telescope/ska-gui-components';
 import theme from '../../services/theme/theme';
 import App from './App';
-import { viewPort } from '../../utils/constants';
 import { StoreProvider } from '@ska-telescope/ska-gui-local-storage';
 import { BrowserRouter } from 'react-router-dom';
+import { viewPort } from '../../utils/constants';
 
 const THEME = [THEME_DARK, THEME_LIGHT];
 
-describe('App Component Theme Rendering', () => {
+describe('<Components />', () => {
   function mount(theTheme) {
     viewPort();
     cy.mount(

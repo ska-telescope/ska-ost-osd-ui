@@ -127,7 +127,7 @@
   "toolTip": {
     "button": {
       "docs": "Click here for SLT documentation",
-      "docsURL": "https://developer.skao.int/projects/ska-oso-slt-ui/en/latest/?badge=latest",
+      "docsURL": "https://developer.skao.int/projects/ska-oso-osd-ui/en/latest/?badge=latest",
       "mode": "Colour Mode Toggle",
       "skao": "SKAO WebSite",
       "dateSearch": "Search by dates",

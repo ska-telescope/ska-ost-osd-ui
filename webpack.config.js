@@ -18,17 +18,6 @@ module.exports = () => {
 
     resolve: {
       extensions: ['.tsx', '.ts', '.jsx', '.js', '.json'],
-      fallback: {
-        assert: false,
-        util: false,
-        crypto: false,
-        vm: false,
-        net: false,
-        tls: false,
-        stream: false,
-        zlib: false,
-        buffer: require.resolve('buffer'),
-      },
     },
 
     devServer: {
@@ -71,21 +60,15 @@ module.exports = () => {
     devtool: 'source-map',
 
     plugins: [
-      new webpack.ProvidePlugin({
-        Buffer: ['buffer', 'Buffer'],
-      }),
-      new webpack.ProvidePlugin({
-        process: 'process/browser',
-      }),
       new webpack.DefinePlugin({
         'process.env.VERSION': JSON.stringify(process.env.npm_package_version),
       }),
       new ModuleFederationPlugin({
-        name: 'slt',
+        name: 'osd',
         filename: 'remoteEntry.js',
         remotes: {},
         exposes: {
-          './slt': './src/components/Routing/Routing.tsx',
+          './osd': './src/components/Routing/Routing.tsx',
         },
         shared: {
           ...deps,
@@ -94,28 +77,11 @@ module.exports = () => {
             singleton: true,
             requiredVersion: deps['react'],
           },
-          axios: { singleton: true, requiredVersion: '^1.5.1', eager: true },
           'react-dom': {
             eager: true,
             singleton: true,
             requiredVersion: deps['react-dom'],
           },
-          'react-json-view': {
-            eager: true,
-            singleton: true,
-            requiredVersion: deps['react-json-view'],
-          },
-          'react-router-dom': {
-            eager: true,
-            singleton: true,
-            requiredVersion: deps['react-router-dom'],
-          },
-          kafkajs: {
-            eager: true,
-            singleton: true,
-            requiredVersion: deps['kafkajs'],
-          },
-
           // i18n
           i18next: {
             eager: true,
@@ -132,10 +98,20 @@ module.exports = () => {
             singleton: true,
             requiredVersion: deps['i18next-browser-languagedetector'],
           },
+          axios: {
+            eager: true,
+            singleton: true,
+            requiredVersion: deps.axios,
+          },
           'i18next-http-backend': {
             eager: true,
             // singleton: true,
             requiredVersion: deps['i18next-http-backend'],
+          },
+          'react-router-dom': {
+            eager: true,
+            singleton: true,
+            requiredVersion: deps['react-router-dom'],
           },
           // Material UI
           '@mui/material': { singleton: true, requiredVersion: deps['@mui/material'], eager: true },

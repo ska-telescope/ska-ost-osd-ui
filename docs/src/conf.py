@@ -24,7 +24,7 @@ import sys
 sys.path.append(os.path.abspath('../../'))
 # -- Project information -----------------------------------------------------
 
-project = 'ska-oso-slt-ui'
+project = 'ska-oso-osd-ui'
 copyright = '2024, SKAO'
 author = 'SKAO, (Team NAKSHATRA)'
 
@@ -67,7 +67,7 @@ html_static_path = []
 
 # -- Options for HTMLHelp output ---------------------------------------------
 
-htmlhelp_basename = 'ska-oso-slt-ui'
+htmlhelp_basename = 'ska-oso-osd-ui'
 
 # -- Options for LaTeX output ------------------------------------------------
 
@@ -75,22 +75,22 @@ latex_elements = {
 }
 
 latex_documents = [
-    (master_doc, 'ska-oso-slt-ui.tex', 'ska-oso-slt-ui Documentation',
+    (master_doc, 'ska-oso-osd-ui.tex', 'ska-oso-osd-ui Documentation',
      'SKAO, (Team NAKSHATRA)', 'manual'),
 ]
 
 # -- Options for manual page output ------------------------------------------
 
 man_pages = [
-    (master_doc, 'ska-oso-slt-ui', 'ska-oso-slt-ui Documentation',
+    (master_doc, 'ska-oso-osd-ui', 'ska-oso-osd-ui Documentation',
      [author], 1)
 ]
 
 # -- Options for Texinfo output ----------------------------------------------
 
 texinfo_documents = [
-    (master_doc, 'ska-oso-slt-ui', 'ska-oso-slt-ui Documentation',
-     author, 'ska-oso-slt-ui', 'SKA Portal',
+    (master_doc, 'ska-oso-osd-ui', 'ska-oso-osd-ui Documentation',
+     author, 'ska-oso-osd-ui', 'SKA Portal',
      'Miscellaneous'),
 ]
 
