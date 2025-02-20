@@ -22,10 +22,7 @@ describe('<JsonEditor />', () => {
     cy.mount(
       <ThemeProvider theme={theme(theTheme)}>
         <CssBaseline />
-        <JsonEditor
-          initialData={mockInitialData}
-          onSave={mockOnSave}
-        />
+        <JsonEditor initialData={mockInitialData} onSave={mockOnSave} />
       </ThemeProvider>
     );
   }

@@ -2,13 +2,7 @@ export interface JsonObject {
   [key: string]: JsonValue;
 }
 
-export type JsonValue =
-  | string
-  | number
-  | boolean
-  | null
-  | JsonObject
-  | JsonValue[];
+export type JsonValue = string | number | boolean | null | JsonObject | JsonValue[];
 
 export interface ReceiverInfo {
   max_frequency_hz: number;

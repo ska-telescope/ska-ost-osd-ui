@@ -18,7 +18,8 @@
       "release": "Release All Changes"
     },
     "number": "Number Label",
-    "text": "Text Label"
+    "text": "Text Label",
+    "cycleField": "Please select cycle id"
   },
   "dialog": {
     "editJson": "Edit JSON",
@@ -63,5 +64,9 @@
       "skao": "SKAO WebSite",
       "telescopeToggle": "Switch between available telescopes"
     }
+  },
+  "msg": {
+    "preRelease": "Release has started, please check after few minute for release version",
+    "releaseVersion": "Release version is "
   }
 }

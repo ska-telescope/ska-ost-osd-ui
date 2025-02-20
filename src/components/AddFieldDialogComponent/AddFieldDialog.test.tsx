@@ -19,18 +19,13 @@ describe('<AddFieldDialog />', () => {
     cy.mount(
       <ThemeProvider theme={theme(theTheme)}>
         <CssBaseline />
-        <AddFieldDialog
-          open={open}
-          onAdd={mockOnAdd}
-          onClose={mockOnClose}
-        />
+        <AddFieldDialog open={open} onAdd={mockOnAdd} onClose={mockOnClose} />
       </ThemeProvider>
     );
   }
 
   for (const theTheme of THEME) {
     describe(`Theme ${theTheme}`, () => {
-
       it('does not render when closed', () => {
         mount(theTheme, false);
         cy.contains('Add New Field').should('not.exist');
@@ -57,8 +52,8 @@ describe('<AddFieldDialog />', () => {
         cy.get('[data-testid="field-name-input"]').type('emptyArray');
         cy.get('[data-testid="field-type-select"]').click();
         cy.get('[data-value="array"]').click();
-        cy.get('[data-testid="add-field-button"]').click();
-        cy.get('@onAddStub').should('have.been.calledWith', 'emptyArray', []);
+        cy.get('[data-testid="add-field-button"]').should('not.be.enabled');
+        cy.get('@onAddStub').should('have.not.been.calledWith', 'emptyArray', []);
       });
 
       it('closes dialog with close icon button', () => {

@@ -17,11 +17,7 @@ describe('<ApiErrorDialog />', () => {
     cy.mount(
       <ThemeProvider theme={theme(theTheme)}>
         <CssBaseline />
-        <ApiErrorDialog
-          open={open}
-          error={error}
-          onClose={mockOnClose}
-        />
+        <ApiErrorDialog open={open} error={error} onClose={mockOnClose} />
       </ThemeProvider>
     );
   }
