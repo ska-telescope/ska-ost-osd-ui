@@ -81,11 +81,11 @@ module.exports = () => {
         'process.env.VERSION': JSON.stringify(process.env.npm_package_version),
       }),
       new ModuleFederationPlugin({
-        name: 'oet',
+        name: 'osd',
         filename: 'remoteEntry.js',
         remotes: {},
         exposes: {
-          './oet': './src/components/Routing/Routing.tsx',
+          './osd': './src/components/Routing/Routing.tsx',
         },
         shared: {
           ...deps,

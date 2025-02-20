@@ -1,7 +1,7 @@
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
   KUBE_HOST: 'https://k8s.stfc.skao.int'
-  a11y_urls: $KUBE_HOST/$KUBE_NAMESPACE/oet
+  a11y_urls: $KUBE_HOST/$KUBE_NAMESPACE/osd
   JS_NODE_VERSION: 20
   TEST_IMAGE: cypress/browsers:node-20.12.2-chrome-124.0.6367.60-1-ff-125.0.2-edge-124.0.2478.51-1
 
@@ -134,15 +134,15 @@ xray-publish:
     - if: '$CI_COMMIT_REF_NAME != "main"'
       when: manual
 
-########################## OET SPECIFIC STUFF BELOW HERE #################################
+########################## OSD SPECIFIC STUFF BELOW HERE #################################
 
 .info_script: &info_script
   - |-
     echo "Status of pods in $KUBE_NAMESPACE namespace:"
     kubectl get pods -n $KUBE_NAMESPACE -o jsonpath="{range .items[*]}{'Pod: '}{.metadata.name}:{'\n'}{'\t'}{'Image: '}{.spec.containers[*].image}{'\n'}{'\t'}{'Status: '}{.status.phase}{'\n'}{end}{'\n'}"
-    echo "Addresses to connect to the deployment of the OET: "
+    echo "Addresses to connect to the deployment of the OSD: "
     echo "https://k8s.stfc.skao.int/$KUBE_NAMESPACE/osd/"
-    echo "OET Backend Swagger UI:"
+    echo "OSD Backend Swagger UI:"
     echo "https://k8s.stfc.skao.int/$KUBE_NAMESPACE/osd/api/v3/ui"
 
 .dev_env: &dev_env
@@ -173,7 +173,7 @@ test-dev-environment:
 stop-dev-environment:
   <<: *dev_env
 
-########################## OET SPECIFIC STUFF ABOVE HERE #################################
+########################## OSD SPECIFIC STUFF ABOVE HERE #################################
 
 include:
   - template: Code-Quality.gitlab-ci.yml

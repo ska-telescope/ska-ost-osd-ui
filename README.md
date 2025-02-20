@@ -1,6 +1,6 @@
 # SKA OSO SHIFT LOG TOOL UI
 
-This project is the User Interface for the SHIFT LOG TOOL. The Shift Log Tool (OET) is envisioned as both an “on-line” tool, used in real-time by the operators at the two telescope sites, and as an “off-line” tool,
+This project is the User Interface for the SHIFT LOG TOOL. The Shift Log Tool (OSD) is envisioned as both an “on-line” tool, used in real-time by the operators at the two telescope sites, and as an “off-line” tool,
 used at any of the three SKA sites. Its intention is to collate and then provide access to a record of the major events occurring during an operator’s shift.
 
 ## Quickstart
@@ -48,8 +48,8 @@ Run `yarn lint` to lint the code.
 
 ## Deploying to Kubernetes
 
-The full production system will consist of the OET UI using the OET Services, which are
-configured to connect to the OET REST API which connects with a PostgreSQL instance.
+The full production system will consist of the OSD UI using the OSD Services, which are
+configured to connect to the OSD REST API which connects with a PostgreSQL instance.
 To deploy all of these services, run:
 
 ```
@@ -68,7 +68,7 @@ and uninstalled with
 make k8s-uninstall-chart
 ```
 
-Once installed, the UI should then be available externally at http://<MINIKUBE_IP>/<KUBE_NAMESPACE>/oet/
+Once installed, the UI should then be available externally at http://<MINIKUBE_IP>/<KUBE_NAMESPACE>/osd/
 
 If using minikube, run `minikube ip` to find the host IP. `KUBE_NAMESPACE` is set to `ska-oso-osd-ui` by default.  
 The backend component will also be deployed to a separate pod, which the web application will make requests to.

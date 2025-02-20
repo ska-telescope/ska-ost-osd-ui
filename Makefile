@@ -6,7 +6,7 @@ KUBE_NAMESPACE ?= ska-oso-osd-ui
 K8S_CHART ?= ska-oso-osd-ui-umbrella
 RELEASE_NAME ?= test
 
-# The default OET_BACKEND_URL points to the umbrella chart OET back-end deployment
+# The default OSD_BACKEND_URL points to the umbrella chart OSD back-end deployment
 BACKEND_URL ?= $(KUBE_HOST)/$(KUBE_NAMESPACE)/osd/api/v3
 REACT_APP_USE_LOCAL_DATA = false
 
@@ -16,7 +16,7 @@ K8S_CHART_PARAMS += \
 
 
 # JS Template Variables
-JS_E2E_TEST_BASE_URL ?= $(KUBE_HOST)/$(KUBE_NAMESPACE)/oet/
+JS_E2E_TEST_BASE_URL ?= $(KUBE_HOST)/$(KUBE_NAMESPACE)/osd/
 JS_E2E_COVERAGE_COMMAND_ENABLED = false
 JS_ESLINT_CONFIG ?= .eslintrc.js
 
