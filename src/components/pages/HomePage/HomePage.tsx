@@ -25,18 +25,15 @@ function HomePage() {
   useEffect(() => {
     console.log('home page call');
     const loadData = async () => {
-      // for now this will work but we have to handle if data is not coming
       const response = await apiService.fetchOsdCycleData('cycle');
       if (response.status === 200 && response.data) {
         const optionValues = response.data.cycles.map((cycle) => {
           return { label: `Cycle_${cycle}`, value: cycle };
         });
         setCycleDataOptions(optionValues);
-        // setIsLoading(false);
       } else {
         setErrorMessage('msg.errorMessage');
         setCycleDataOptions([{ label: '', value: '' }]);
-        // setIsLoading(false);
       }
     };
 
@@ -62,12 +59,10 @@ function HomePage() {
   }, [versionData]);
 
   const handleCycle = async (e) => {
-    // setIsLoading(true);
     const data = await apiService.fetchOsdData('osd', e, null);
     setJsonData(data.data);
     setCycleData(e);
     setShow(false);
-    // setIsLoading(false);
   };
 
   const renderMessageResponse = () => (

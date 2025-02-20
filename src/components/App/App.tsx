@@ -28,7 +28,7 @@ function App() {
   const docs = { tooltip: headerTip, url: headerURL };
   const toolTip = { skao, mode };
   const version = process.env.VERSION;
-  const osd_title = t('text.observatoryStaticData');
+  const osdTitle = t('text.observatoryStaticData');
   const theStorage = {
     help,
     helpToggle,
@@ -45,13 +45,13 @@ function App() {
         <Header
           docs={docs}
           testId="headerId"
-          title={osd_title}
+          title={osdTitle}
           toolTip={toolTip}
           storage={theStorage}
         />
         {/* Example of the spacer being used to shift content from behind the Header component */}
         <Spacer size={HEADER_HEIGHT} axis={SPACER_VERTICAL} />
-        <HomePage data-testid="routing" />
+        <HomePage data-testid="homePage" />
         {/* Example of the spacer being used to stop content from being hidden behind the Footer component */}
         <Spacer size={FOOTER_HEIGHT} axis={SPACER_VERTICAL} />
         {/* Footer container: Even distribution of the children is built in */}

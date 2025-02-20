@@ -18,6 +18,17 @@ module.exports = () => {
 
     resolve: {
       extensions: ['.tsx', '.ts', '.jsx', '.js', '.json'],
+      fallback: {
+        assert: false,
+        util: false,
+        crypto: false,
+        vm: false,
+        net: false,
+        tls: false,
+        stream: false,
+        zlib: false,
+        buffer: require.resolve('buffer'),
+      },
     },
 
     devServer: {
@@ -60,6 +71,12 @@ module.exports = () => {
     devtool: 'source-map',
 
     plugins: [
+      new webpack.ProvidePlugin({
+        Buffer: ['buffer', 'Buffer'],
+      }),
+      new webpack.ProvidePlugin({
+        process: 'process/browser',
+      }),
       new webpack.DefinePlugin({
         'process.env.VERSION': JSON.stringify(process.env.npm_package_version),
       }),
