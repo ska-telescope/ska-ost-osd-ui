@@ -29,7 +29,7 @@ function App() {
   const [show, setShow] = useState(true);
   const [cycleDataOptions, setCycleDataOptions] = useState([{ label: '', value: '' }]);
   const [cycleData, setCycleData] = useState();
-  const [versionData, setVersionData] = useState('');
+  const [versionData, setVersionData] = useState(null);
   const [successMessage, setMessage] = useState('');
   const [displayMessageElement, setDisplayMessageElement] = useState(false);
 
@@ -53,7 +53,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (versionData !== '') {
+    if (versionData !== null) {
       const interval = setInterval(async () => {
         const response = await apiService.fetchOsdData('osd', null, versionData);
         if (response.status === 200) {
@@ -62,25 +62,11 @@ function App() {
           setTimeout(() => {
             setDisplayMessageElement(false);
           }, 5000);
+          setVersionData(null);
           clearInterval(interval);
         } else {
           setIsLoading(false);
         }
-        // try {
-        //   const response = await apiService.fetchOsdData('osd', null, versionData);
-        //   if (response.status === 200) {
-        //     setMessage('msg.releaseVersion');
-        //     setDisplayMessageElement(true);
-        //     setTimeout(() => {
-        //       setDisplayMessageElement(false);
-        //     }, 5000);
-        //     clearInterval(interval);
-        //   }
-        // } catch (error) {
-        //   throw error;
-        // } finally {
-        //   setIsLoading(false);
-        // }
       }, 3000);
     }
   }, [versionData]);
@@ -104,7 +90,7 @@ function App() {
 
   const handleCycle = async (e) => {
     setIsLoading(true);
-    const data = await apiService.fetchOsdData('osd', e);
+    const data = await apiService.fetchOsdData('osd', e, null);
     setJsonData(data.data);
     setCycleData(e);
     setShow(false);

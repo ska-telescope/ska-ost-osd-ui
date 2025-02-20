@@ -48,7 +48,7 @@ const apiService = {
     const baseUrl = apiService.baseURL();
     const url = `${baseUrl}/${path}`;
 
-    const source = osd_version === '' ? 'file' : 'car';
+    const source = osd_version === null ? 'file' : 'car';
 
     try {
       const response = await axios.get(`${url}`, {
