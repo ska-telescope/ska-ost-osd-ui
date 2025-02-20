@@ -5,7 +5,8 @@ import {
   ButtonVariantTypes,
   ButtonColorTypes,
   InfoCard,
-  InfoCardColorTypes
+  InfoCardColorTypes,
+  InfoCardVariantTypes
 } from '@ska-telescope/ska-gui-components';
 import {
   Box,
@@ -211,6 +212,7 @@ const JsonEditor: React.FC<JsonEditorProps> = ({ initialData, onSave, onRelease 
       color={InfoCardColorTypes.Success}
       message={t(successMessage)}
       testId="successStatusMsg"
+      variant={InfoCardVariantTypes.Filled}
     />
   );
 

@@ -9,7 +9,8 @@ import {
   SPACER_VERTICAL,
   DropDown,
   InfoCard,
-  InfoCardColorTypes
+  InfoCardColorTypes,
+  InfoCardVariantTypes
 } from '@ska-telescope/ska-gui-components';
 import { storageObject } from '@ska-telescope/ska-gui-local-storage';
 import theme from '../../services/theme/theme';
@@ -63,8 +64,7 @@ function App() {
           setDisplayMessageElement(true);
           setTimeout(() => {
             setDisplayMessageElement(false);
-          }, 5000);
-          setVersionData(null);
+          }, 3000);
           clearInterval(interval);
         } else {
           setIsLoading(false);
@@ -103,9 +103,10 @@ function App() {
     <InfoCard
       minHeight="15px"
       fontSize={16}
-      color={InfoCardColorTypes.Success}
-      message={t(successMessage)}
+      color={versionData != null ? InfoCardColorTypes.Info : InfoCardColorTypes.Success}
+      message={t(successMessage, { version: versionData })}
       testId="successStatusMsg"
+      variant={InfoCardVariantTypes.Filled}
     />
   );
 
@@ -127,9 +128,6 @@ function App() {
             />
             {/* Example of the spacer being used to shift content from behind the Header component */}
             <Spacer size={HEADER_HEIGHT} axis={SPACER_VERTICAL} />
-            <div style={{ position: 'absolute', zIndex: 2 }}>
-              {displayMessageElement ? renderMessageResponse() : ''}
-            </div>
             {show ? (
               <Box sx={{ p: 2, width: 250 }}>
                 <DropDown
@@ -168,6 +166,9 @@ function App() {
                 }}
               />
             )}
+            <div style={{ position: 'absolute', zIndex: 2 }}>
+              {displayMessageElement ? renderMessageResponse() : ''}
+            </div>
             {/* Example of the spacer being used to stop content from being hidden behind the Footer component */}
             <Spacer size={FOOTER_HEIGHT} axis={SPACER_VERTICAL} />
             {/* Footer container: Even distribution of the children is built in */}

@@ -67,7 +67,7 @@
   },
   "msg": {
     "errorMessage": "Error please check cycle API",
-    "preRelease": "Release has started, please check after few minute for release version",
-    "releaseVersion": "Release version is "
+    "preRelease": "Release has started, new version will be published soon.",
+    "releaseVersion": "New release version {{version}} was successfully published."
   }
 }
