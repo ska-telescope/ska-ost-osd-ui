@@ -1,8 +1,11 @@
+default:
+  image: node:23-slim
+
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
   KUBE_HOST: 'https://k8s.stfc.skao.int'
   a11y_urls: $KUBE_HOST/$KUBE_NAMESPACE/osd
-  JS_NODE_VERSION: 21
+  JS_NODE_VERSION: 23
   TEST_IMAGE: cypress/browsers:node-20.12.2-chrome-124.0.6367.60-1-ff-125.0.2-edge-124.0.2478.51-1
 
 stages:
@@ -28,13 +31,13 @@ js-test:
 
 #Install basic dependencies using yarn
 install_dependencies:
-  image: node:${JS_NODE_VERSION}
   stage: dependencies
   tags:
     - k8srunner
   before_script:
     - rm -rf node_modules
   script:
+    - npm config set registry https://registry.npmjs.org/
     - yarn install --immutable
   cache:
     paths:
