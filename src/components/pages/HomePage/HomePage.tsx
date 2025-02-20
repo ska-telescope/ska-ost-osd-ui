@@ -13,6 +13,7 @@ import { findThirdKey } from '../../utils';
 
 function HomePage() {
   console.log('qqqqqqqqqqqq')
+  console.log('home page call');
   const { t } = useTranslation('translations');
   const [jsonData, setJsonData] = useState({});
   const [show, setShow] = useState(true);
