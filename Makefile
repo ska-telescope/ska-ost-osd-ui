@@ -24,9 +24,6 @@ JS_COMMAND_RUNNER ?= yarn
 JS_TEST_COMMAND ?= cypress
 JS_TEST_DEFAULT_SWITCHES = run --coverage.enabled=true --reporter=junit --reporter=default --coverage.reportsDirectory=$(JS_BUILD_REPORTS_DIRECTORY) --outputFile=$(JS_BUILD_REPORTS_DIRECTORY)/unit-tests.xml
 
-js-pre-e2e-test:
-	mkdir -p build/reports
-	mkdir -p build/.nyc_output
 
 # include core makefile targets for release management
 -include .make/base.mk
@@ -36,8 +33,6 @@ js-pre-e2e-test:
 -include .make/js.mk
 -include .make/xray.mk
 
-XRAY_TEST_RESULT_FILE ?= ctrf/ctrf-report.json
-XRAY_EXECUTION_CONFIG_FILE ?= tests/xray-config.json
 # For the test, dev and integration environment, use the freshly built image in the GitLab registry
 
 ENV_CHECK := $(shell echo $(CI_ENVIRONMENT_SLUG) | egrep 'test|dev|integration')

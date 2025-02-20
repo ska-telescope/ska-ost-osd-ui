@@ -26,13 +26,6 @@ js-test:
     - 'make help | grep js-test'
     - make js-install-reinstall ## needed to re-install cypress
 
-js-e2e-test:
-  variables:
-    KUBE_HOST: 'http://ingress-nginx-controller-lb-stfc-techops-production-cicd.ingress-nginx.svc.techops.internal.skao.int'
-  rules:
-    - exists:
-        - tests/cypress/**/*.tsx
-
 #Install basic dependencies using yarn
 install_dependencies:
   image: node:${JS_NODE_VERSION}
@@ -124,15 +117,6 @@ pages:
     paths:
       - public
     expire_in: 30 days
-
-xray-publish:
-  variables:
-    XRAY_TEST_RESULT_FILE: ctrf/ctrf-report.json
-  rules:
-    - if: '$CI_COMMIT_REF_NAME == "main"'
-      when: always
-    - if: '$CI_COMMIT_REF_NAME != "main"'
-      when: manual
 
 ########################## OSD SPECIFIC STUFF BELOW HERE #################################
 
