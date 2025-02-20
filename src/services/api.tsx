@@ -26,7 +26,7 @@ function handleAxiosError(error: object) {
 }
 
 const apiService = {
-  baseURL: () => window.env?.BACKEND_URL,
+  baseURL: () => 'https://k8s.stfc.skao.int/dev-ska-ost-osd-ui-test-deploy/osd/api/v3', //window.env?.BACKEND_URL,
 
   fetchOsdCycleData: async (path): Promise<any> => {
     const baseUrl = apiService.baseURL();
