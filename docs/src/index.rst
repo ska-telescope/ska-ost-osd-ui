@@ -1,27 +1,69 @@
-Welcome to ska-ost-osd-ui's documentation
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+SKAO OSO Observation Execution Tool
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This project is the User Interface for the Observatory Static Data (OSD). In its simplest form OSD consists of 
-a set of science domain configuration files that are required by the OSO tools. These configuration files hold 
-slowly changing information that is used to configure the science domain behavior of each tool. 
-E.g. tools such as the PPT and ODT can use the information for constructing GUIs and validating setups, 
-the Planning Tool can use it to inform itself of the capabilities available. The idea of OSD is to provide a 
-single source of truth for these data.
+
+The Observation Execution Tool UI (OET UI) is  a web Interface towards a Scheduling tool MVP which is a user-friendly UI for selection and execution of an SBD on a specific subarray.
+
+For instructions on developing the OET UI, see the `README <https://gitlab.com/ska-telescope/oso/ska-ost-osd-ui/-/blob/main/README.md>`_
+
+A REST layer makes the Python API for the script execution engine available
+via REST over HTTP. This project also contains a command line client to allow
+users to submit script execution requests to a remote OET backend.
+
+.. admonition:: REACT_APP_USE_LOCAL_DATA
+    
+    This is an option to turn on/off the API call and instead use mocked data.
+
+.. figure:: /images/osoWorkFlow.jpg
+   :width: 100%
+   :align: center
+   :alt: Image of OSO Work Flow
+
+|
 
 .. toctree::
-   :maxdepth: 1
-   :caption: Releases
+    :maxdepth: 2
+    :caption: General
+    :hidden:
 
-   CHANGELOG.rst
+    Overview.rst
+
+.. toctree::
+   :maxdepth: 2
+   :caption: DEPLOYING AND CONFIGURING
+   :hidden:
+   
+   
+   DuringDevelopment
+   RunningBuilding
+   deployment_to_kubernetes.rst
+   
+
 
 
 .. toctree::
    :maxdepth: 2
-   :caption: Application Internals/Developer Docs
+   :caption: User Guide
+   :hidden:
 
-   developer/Overview
-   developer/Installation
-   developer/Requirements
-   developer/DuringDevelopment
-   developer/RunningBuilding
-   developer/Testing
+   OSDBackground
+   HowTo
+   UserQuestions
+   UserTroubleShooting
+
+   
+.. toctree::
+   :maxdepth: 2
+   :caption: Application Internals/Developer Docs
+   :hidden:
+
+   Requirements
+   Installation
+   Testing
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Releases
+   :hidden:
+
+   CHANGELOG.rst

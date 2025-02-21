@@ -1,5 +1,5 @@
-Running and Building the Application
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Running / Building the Application
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Scripts for running, testing, and building the application are provided as part of the standard configuration. These are run using YARN and listed in the scripts section of the package.json file.
 
@@ -32,22 +32,3 @@ From the project directory, you can run any of the following:
 - `> yarn audit`
 
   Checks the dependencies to see if there are any vulnerabilities.  
-
-### Running the application inside a container
-
-There are two ways that this can be done as below:
-
-1. Run using docker compose
-
-```
- docker-compose up -d
-```
-
-2. build the docker file in the root directory and run the container exposing port 8090.
-
-```
- docker build -t ska-ost-osd-ui .
- docker run -p 8090:8090 ska-ost-osd-ui
-```
-
-The project will then be accessible at the url http://localhost:8090/
