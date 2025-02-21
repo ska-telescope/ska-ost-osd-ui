@@ -36,9 +36,7 @@ function HomePage() {
   };
 
   useEffect(() => {
-    console.log('home page call');
     const loadData = async () => {
-      // for now this will work but we have to handle if data is not coming
       const response = await apiService.fetchOsdCycleData('cycle');
       if (response.status === 200 && response.data) {
         response.data.cycles.map((cycle) => {
@@ -76,12 +74,10 @@ function HomePage() {
   }, [versionData]);
 
   const handleCycle = async (e) => {
-    // setIsLoading(true);
     const data = await apiService.fetchOsdData('osd', e, null);
     setJsonData(data.data);
     setCycleData(e);
     setShow(false);
-    // setIsLoading(false);
   };
 
   const renderMessageResponse = () => (
@@ -118,7 +114,6 @@ function HomePage() {
             try {
               await apiService.saveOsdData('osd', cycleData, data, array_assembly);
             } catch (error) {
-              // Error will be propagated to the error boundary
               throw error;
             }
           }}
@@ -129,7 +124,6 @@ function HomePage() {
                 setVersionData(response?.data?.version);
               }
             } catch (error) {
-              // Error will be propagated to the error boundary
               throw error;
             }
           }}
