@@ -6,6 +6,6 @@ if (language === 'English') {
   translation = enTranslations;
 }
 
-describe('Edit OSD Data success senario', () => {
+describe('Edit OSD Data success scenario', () => {
   it('Should Edit OSD Data', () => {});
 });

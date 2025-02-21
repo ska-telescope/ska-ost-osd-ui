@@ -97,7 +97,7 @@ function HomePage() {
         <Box sx={{ p: 2, width: 250 }}>
           <DropDown
             options={cycleDataOptions}
-            testId="field-type-select"
+            testId="fieldTypeSelect"
             value={cycleData}
             setValue={(e) => handleCycle(e)}
             label={t('label.cycleField')}
@@ -107,7 +107,7 @@ function HomePage() {
         </Box>
       ) : (
         <JsonEditor
-          data-testid="json-editor"
+          data-testid="JsonEditor"
           initialData={jsonData}
           onSave={async (data) => {
             const array_assembly = findThirdKey(data);
