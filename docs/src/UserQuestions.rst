@@ -16,6 +16,6 @@ FAQs for the Minimal Viable Product (MVP)
 
    User will be able to release all saved changes done by the user by clicking on 'RELEASE ALL CHANGES' button.
 
-.. admonition:: Who should I contact if I encounter technical difficulties or have questions about OET UI?
+.. admonition:: Who should I contact if I encounter technical difficulties or have questions about OSD UI?
    
    User can connect on slack channel like #team-nakshatra and #help-oso for any queries.

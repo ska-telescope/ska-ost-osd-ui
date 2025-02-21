@@ -1,18 +1,14 @@
-SKAO OSO Observation Execution Tool
+SKAO OST Observatory Static Data UI
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
-The Observation Execution Tool UI (OET UI) is  a web Interface towards a Scheduling tool MVP which is a user-friendly UI for selection and execution of an SBD on a specific subarray.
+This project is the User Interface for the Observatory Static Data (OSD). In its simplest form OSD consists of a set of science domain configuration files that are required by the OSO tools. These configuration files hold slowly changing information that is used to configure the science domain behavior of each tool. E.g. tools such as the PPT and ODT can use the information for constructing GUIs and validating setups, the Planning Tool can use it to inform itself of the capabilities available. The idea of OSD is to provide a single source of truth for these data.
 
-For instructions on developing the OET UI, see the `README <https://gitlab.com/ska-telescope/oso/ska-ost-osd-ui/-/blob/main/README.md>`_
+For instructions on developing the OSD UI, see the `README <https://gitlab.com/ska-telescope/ost/ska-ost-osd-ui/-/blob/main/README.md>`_
 
-A REST layer makes the Python API for the script execution engine available
-via REST over HTTP. This project also contains a command line client to allow
-users to submit script execution requests to a remote OET backend.
+For instructions on rest api for OSD backend, see the `REST API <https://developer.skao.int/projects/ska-ost-osd/en/latest/api/osd/guide.html#endpoints>`_
 
-.. admonition:: REACT_APP_USE_LOCAL_DATA
-    
-    This is an option to turn on/off the API call and instead use mocked data.
+
 
 .. figure:: /images/osoWorkFlow.jpg
    :width: 100%
