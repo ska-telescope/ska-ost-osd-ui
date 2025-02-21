@@ -11,7 +11,7 @@ rm -f $OUTPUT_FILE
 # Add assignment
 ENV_STRING="window.env = {"
 
-for varname in "BACKEND_URL" "BASE_URL" "REACT_APP_USE_LOCAL_DATA" "BACKEND_URL_OET" "ODA_URL"; do
+for varname in "BACKEND_URL" "BASE_URL" "REACT_APP_USE_LOCAL_DATA"; do
   # Read value of current variable if exists as Environment variable
   value=$(printf '%s\n' "${!varname}")
   # Exit with error if environment variable not defined
