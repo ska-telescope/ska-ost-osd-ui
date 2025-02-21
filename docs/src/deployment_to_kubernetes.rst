@@ -1,7 +1,7 @@
 Deployment To Kubernetes
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The full production system will consist of the OSD accessing OSD REST API which connects with a PostgreSQL instance.
+The full production system will consist of the OSD accessing OSD REST API.
 
 The umbrella Helm chart can then be deployed with
 

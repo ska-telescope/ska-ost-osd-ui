@@ -9,14 +9,6 @@ For instructions on developing the OSD UI, see the `README <https://gitlab.com/s
 For instructions on rest api for OSD backend, see the `REST API <https://developer.skao.int/projects/ska-ost-osd/en/latest/api/osd/guide.html#endpoints>`_
 
 
-
-.. figure:: /images/osoWorkFlow.jpg
-   :width: 100%
-   :align: center
-   :alt: Image of OSO Work Flow
-
-|
-
 .. toctree::
     :maxdepth: 2
     :caption: General
