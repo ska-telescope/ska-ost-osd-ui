@@ -26,7 +26,7 @@ function handleAxiosError(error: object) {
 }
 
 const apiService = {
-  baseURL: () => 'https://k8s.stfc.skao.int/dev-ska-ost-osd-nak-1089-remove-existing-tmdata/osd/api/v3',
+  baseURL: () => window.env?.BACKEND_URL,
 
   fetchOsdCycleData: async (path): Promise<any> => {
     const baseUrl = apiService.baseURL();
@@ -93,9 +93,10 @@ const apiService = {
     }
   },
 
-  releaseOsdData: async (path, cycleData): Promise<any> => {
+  releaseOsdData: async (path, cycleData?): Promise<any> => {
     const baseUrl = apiService.baseURL();
-    const url = `${baseUrl}/${path}cycle_id=${cycleData}`;
+    const checkCycleId = cycleData === null ? '' : `cycle_id=${cycleData}`;
+    const url = `${baseUrl}/${path}${checkCycleId}`;
 
     try {
       const response = await axios.post(`${url}`, {
