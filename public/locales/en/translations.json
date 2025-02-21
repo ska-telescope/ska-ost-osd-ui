@@ -6,16 +6,56 @@
   "intlNumber": "{{val, number}}",
   "label": {
     "button": {
-      "telescopeToggle": "Telescope Toggle"
+      "telescopeToggle": "Telescope Toggle",
+      "editChanges": "Edit Changes",
+      "saveAllChanges": "Save All Changes",
+      "cancel": "Cancel",
+      "ok": "OK",
+      "save": "Save Changes",
+      "close": "Close",
+      "addField": "Add Field",
+      "add": "Add",
+      "release": "Release All Changes"
     },
     "number": "Number Label",
-    "text": "Text Label"
+    "text": "Text Label",
+    "cycleField": "Please select cycle id",
+    "selectedCycle": "Current selected cycle"
+  },
+  "dialog": {
+    "editJson": "Edit JSON",
+    "confirmSave": "Confirm Save Changes",
+    "confirmRelease": "Confirm Release",
+    "addNewField": "Add New Field",
+    "messages": {
+      "confirmSave": "Are you sure you want to save changes?",
+      "confirmRelease": "Are you sure you want to release the changes?",
+      "invalidJson": "Invalid JSON format"
+    },
+    "fields": {
+      "fieldName": "Field Name",
+      "fieldType": "Field Type",
+      "value": "Value",
+      "jsonObject": "JSON Object",
+      "values": "Values (comma-separated)",
+      "releaseVersion": "Release Version"
+    },
+    "types": {
+      "singleValue": "Single Value",
+      "array": "Array",
+      "object": "Object"
+    },
+    "help": {
+      "array": "Enter comma-separated values",
+      "object": "Enter valid JSON object"
+    }
   },
   "text": {
     "row1": "It is hoped that this is used as a basis for new REACT applications for the SKAO",
     "row2": "A few basic components have been added as examples, as well as the MUI grid which can be used for component layout",
     "row3": "For information on the available gui-components, click on the documentation link in the header",
-    "title": "WELCOME"
+    "title": "WELCOME",
+    "observatoryStaticData": "Observatory Static Data"
   },
   "toolTip": {
     "button": {
@@ -25,5 +65,10 @@
       "skao": "SKAO WebSite",
       "telescopeToggle": "Switch between available telescopes"
     }
+  },
+  "msg": {
+    "errorMessage": "Error please check cycle API",
+    "preRelease": "Release has started, new version will be published soon.",
+    "releaseVersion": "New release version {{version}} was successfully published."
   }
 }
