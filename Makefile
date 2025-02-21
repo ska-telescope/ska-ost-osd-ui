@@ -8,7 +8,6 @@ RELEASE_NAME ?= test
 
 # The default OSD_BACKEND_URL points to the umbrella chart OSD back-end deployment
 BACKEND_URL ?= $(KUBE_HOST)/$(KUBE_NAMESPACE)/osd/api/v3
-REACT_APP_USE_LOCAL_DATA = false
 
 
 K8S_CHART_PARAMS += \
@@ -47,7 +46,10 @@ K8S_CHART_PARAMS += --set global.cluster_domain="cluster.local"
 endif
 
 set-dev-env-vars:
-	BASE_URL="/" BACKEND_URL=$(BACKEND_URL) ENVJS_FILE=./public/env.js ./nginx_env_config.sh
+	BASE_URL="/" BACKEND_URL=$(BACKEND_URL) ENVJS_FILE=./public/env.js ./scripts/write_env_js.sh
+
+set-absolute-paths:
+	BASE_URL="/" INDEX_FILE=./dist/index.html ./scripts/set_absolute_paths.sh
 
 js-do-test:
 	@mkdir -p $(JS_BUILD_REPORTS_DIRECTORY)
