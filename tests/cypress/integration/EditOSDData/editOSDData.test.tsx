@@ -8,9 +8,9 @@ if (language === 'English') {
 
 
 
-describe('Sending SBD in Ready to OET for execution to check success senario', () => {
+describe('Edit OSD Data success senario', () => {
   it(
-    'Should send SBD in Ready to OET for execution which gets completed',
+    'Should Edit OSD Data',
     () => {
 
     },
