@@ -22,3 +22,4 @@ COPY nginx_env_config.sh .
 COPY nginx_env_config.sh /docker-entrypoint.d/
 
 CMD ["nginx", "-g", "daemon off;"]
+
