@@ -1,7 +1,6 @@
-# SKA OSO SHIFT LOG TOOL UI
+# SKA OST OSD UI
 
-This project is the User Interface for the SHIFT LOG TOOL. The Shift Log Tool (OSD) is envisioned as both an “on-line” tool, used in real-time by the operators at the two telescope sites, and as an “off-line” tool,
-used at any of the three SKA sites. Its intention is to collate and then provide access to a record of the major events occurring during an operator’s shift.
+This project is the User Interface for the Observatory Static Data (OSD). In its simplest form OSD consists of a set of science domain configuration files that are required by the OSO tools. These configuration files hold slowly changing information that is used to configure the science domain behavior of each tool. E.g. tools such as the PPT and ODT can use the information for constructing GUIs and validating setups, the Planning Tool can use it to inform itself of the capabilities available. The idea of OSD is to provide a single source of truth for these data.
 
 ## Quickstart
 
@@ -48,8 +47,8 @@ Run `yarn lint` to lint the code.
 
 ## Deploying to Kubernetes
 
-The full production system will consist of the OSD UI using the OSD Services, which are
-configured to connect to the OSD REST API which connects with a PostgreSQL instance.
+The full production system will consist of the SLT UI using the SLT Services, which are
+configured to connect to the SLT REST API which connects with a PostgreSQL instance.
 To deploy all of these services, run:
 
 ```

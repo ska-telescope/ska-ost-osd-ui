@@ -1,13 +1,13 @@
 import React from 'react';
 import { Routes, Route, BrowserRouter as Router } from 'react-router-dom';
-import HomePage from '../pages/HomePage/HomePage';
+import App from '../App/App';
 
 export const Routing = () => {
   const basename = window.env?.BASE_URL;
   return (
     <Router basename={basename}>
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route path="/" element={<App />} />
       </Routes>
     </Router>
   );
