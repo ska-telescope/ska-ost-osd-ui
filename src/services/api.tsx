@@ -94,7 +94,7 @@ const apiService = {
 
   releaseOsdData: async (path, cycleData?): Promise<any> => {
     const baseUrl = apiService.baseURL();
-    const checkCycleId = cycleData === null ? '' : `cycle_id=${cycleData}`;
+    const checkCycleId = cycleData === null ? 'cycle_id=1' : `cycle_id=${cycleData}`;
     const url = `${baseUrl}/${path}${checkCycleId}`;
 
     try {
