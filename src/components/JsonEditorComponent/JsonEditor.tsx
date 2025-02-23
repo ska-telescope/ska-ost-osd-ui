@@ -6,7 +6,9 @@ import {
   ButtonColorTypes,
   InfoCard,
   InfoCardColorTypes,
-  InfoCardVariantTypes
+  InfoCardVariantTypes,
+  TextEntry,
+  LABEL_POSITION
 } from '@ska-telescope/ska-gui-components';
 import {
   Box,
@@ -31,6 +33,7 @@ interface JsonEditorProps {
   initialData?: JsonObject;
   onSave: (data: JsonObject) => void;
   onRelease: () => void;
+  cycleData: string | number;
 }
 
 //  TODO post discussion
@@ -45,9 +48,8 @@ export const releaseTypeOptions: releaseOptionsType[] = [
   { label: 'Minor', value: 'minor' }
 ];
 
-const JsonEditor: React.FC<JsonEditorProps> = ({ initialData, onSave, onRelease }) => {
+const JsonEditor: React.FC<JsonEditorProps> = ({ initialData, onSave, onRelease, cycleData }) => {
   const { t } = useTranslation('translations');
-
   const [data, setData] = useState<JsonObject>(() => {
     return initialData ? structuredClone(initialData) : {};
   });
@@ -216,6 +218,13 @@ const JsonEditor: React.FC<JsonEditorProps> = ({ initialData, onSave, onRelease 
     />
   );
 
+  // useEffect(() => {
+  //   if (cycleData !== null) {
+  //     setMessage(`${cycleData}`);
+  //     setDisplayMessageElement(true);
+  //   }
+  // }, [cycleData]);
+
   return (
     <Box sx={{ p: 2 }}>
       <Box sx={{ display: 'flex', justifyContent: 'flex-start', gap: 2, mb: 2 }}>
@@ -257,6 +266,22 @@ const JsonEditor: React.FC<JsonEditorProps> = ({ initialData, onSave, onRelease 
             setConfirmDialogOpen(true);
           }}
         />
+        <Box
+          sx={{
+            '& .css-16bevx5-MuiFormControl-root-MuiTextField-root': {
+              marginTop: 0
+            },
+            width: 125
+          }}
+        >
+          <TextEntry
+            label={t('label.selectedCycle')}
+            labelPosition={LABEL_POSITION.CONTAINED}
+            testId="field-name-input"
+            value={cycleData === null ? 'Default' : `Cycle_${cycleData}`}
+            disabled={true}
+          />
+        </Box>
         <Grid item xs={12} sm={12} md={2} />
         <Grid item xs={12} sm={12} md={4}>
           <div style={{ position: 'absolute', zIndex: 2 }}>

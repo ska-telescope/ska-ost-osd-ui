@@ -11,7 +11,7 @@ import {
 import { storageObject } from '@ska-telescope/ska-gui-local-storage';
 import theme from '../../services/theme/theme';
 import Loader from '../Loader/Loader';
-import { Routing } from '../Routing/Routing';
+import Routing from '../Routing/Routing';
 
 const HEADER_HEIGHT = 70;
 const FOOTER_HEIGHT = 20;

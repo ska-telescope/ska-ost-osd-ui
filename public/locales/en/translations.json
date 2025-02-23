@@ -19,7 +19,8 @@
     },
     "number": "Number Label",
     "text": "Text Label",
-    "cycleField": "Please select cycle id"
+    "cycleField": "Please select cycle id",
+    "selectedCycle": "Current selected cycle"
   },
   "dialog": {
     "editJson": "Edit JSON",

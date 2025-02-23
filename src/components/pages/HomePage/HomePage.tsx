@@ -11,31 +11,44 @@ import JsonEditor from '../../JsonEditorComponent/JsonEditor';
 import apiService from '../../../services/api';
 import { findThirdKey } from '../../utils';
 
+interface cycleTypeOptionsType {
+  label: string;
+  value: string;
+}
+
+export const cycleTypeOptions: cycleTypeOptionsType[] = [{ label: 'Default', value: null }];
+
 function HomePage() {
   const { t } = useTranslation('translations');
   const [jsonData, setJsonData] = useState({});
   const [show, setShow] = useState(true);
-  const [cycleDataOptions, setCycleDataOptions] = useState([{ label: '', value: '' }]);
+  const [cycleDataOptions, setCycleDataOptions] = useState([]);
   const [cycleData, setCycleData] = useState();
   const [versionData, setVersionData] = useState(null);
   const [successMessage, setMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [displayMessageElement, setDisplayMessageElement] = useState(false);
 
+  const clearIntervalAfter = (interval) => {
+    setTimeout(function () {
+      clearInterval(interval);
+    }, 180000);
+  };
+
   useEffect(() => {
     const loadData = async () => {
-      // for now this will work but we have to handle if data is not coming
       const response = await apiService.fetchOsdCycleData('cycle');
       if (response.status === 200 && response.data) {
-        const optionValues = response.data.cycles.map((cycle) => {
-          return { label: `Cycle_${cycle}`, value: cycle };
+        response.data.cycles.map((cycle) => {
+          cycleTypeOptions.push({ label: `Cycle_${cycle}`, value: cycle });
         });
-        setCycleDataOptions(optionValues);
-        // setIsLoading(false);
+
+        setCycleDataOptions(cycleTypeOptions);
+        //setIsLoading(false);
       } else {
         setErrorMessage('msg.errorMessage');
-        setCycleDataOptions([{ label: '', value: '' }]);
-        // setIsLoading(false);
+        setCycleDataOptions([{ label: 'Default', value: null }]);
+        //setIsLoading(false);
       }
     };
 
@@ -54,19 +67,17 @@ function HomePage() {
           }, 3000);
           clearInterval(interval);
         } else {
-          // setIsLoading(false);
+          clearIntervalAfter(interval);
         }
       }, 3000);
     }
   }, [versionData]);
 
   const handleCycle = async (e) => {
-    // setIsLoading(true);
     const data = await apiService.fetchOsdData('osd', e, null);
     setJsonData(data.data);
     setCycleData(e);
     setShow(false);
-    // setIsLoading(false);
   };
 
   const renderMessageResponse = () => (
@@ -86,7 +97,7 @@ function HomePage() {
         <Box sx={{ p: 2, width: 250 }}>
           <DropDown
             options={cycleDataOptions}
-            testId="field-type-select"
+            testId="fieldTypeSelect"
             value={cycleData}
             setValue={(e) => handleCycle(e)}
             label={t('label.cycleField')}
@@ -96,14 +107,13 @@ function HomePage() {
         </Box>
       ) : (
         <JsonEditor
-          data-testid="json-editor"
+          data-testid="JsonEditor"
           initialData={jsonData}
           onSave={async (data) => {
             const array_assembly = findThirdKey(data);
             try {
               await apiService.saveOsdData('osd', cycleData, data, array_assembly);
             } catch (error) {
-              // Error will be propagated to the error boundary
               throw error;
             }
           }}
@@ -114,10 +124,10 @@ function HomePage() {
                 setVersionData(response?.data?.version);
               }
             } catch (error) {
-              // Error will be propagated to the error boundary
               throw error;
             }
           }}
+          cycleData={cycleData}
         />
       )}
       <div style={{ position: 'absolute', zIndex: 2 }}>
