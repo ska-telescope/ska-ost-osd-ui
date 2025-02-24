@@ -229,12 +229,13 @@ const JsonEditor: React.FC<JsonEditorProps> = ({
       fontSize={16}
       color={InfoCardColorTypes.Success}
       message={t(successMessage, {
-        version: versionData
+        version: versionData,
       })}
       testId="successStatusMsg"
       variant={InfoCardVariantTypes.Outlined}
     >
       <Link
+        target="_blank"
         color="inherit"
         href="https://gitlab.com/ska-telescope/ost/ska-ost-osd/-/blob/main/tmdata/ska1_mid/mid_capabilities.json?ref_type=heads"
       >
