@@ -38,6 +38,7 @@ interface JsonEditorProps {
   cycleData: string | number;
   setRoute: () => void;
   versionData: string | null;
+  isSuccess: boolean;
 }
 
 //  TODO post discussion
@@ -58,7 +59,8 @@ const JsonEditor: React.FC<JsonEditorProps> = ({
   onRelease,
   cycleData,
   setRoute,
-  versionData
+  versionData,
+  isSuccess
 }) => {
   const navigate = useNavigate();
   const { t } = useTranslation('translations');
@@ -201,9 +203,6 @@ const JsonEditor: React.FC<JsonEditorProps> = ({
         setMessage('msg.preRelease');
         setConfirmDialogOpen(false);
         setDisplayMessageElement(true);
-        setTimeout(() => {
-          setDisplayMessageElement(false);
-        }, 5000);
       } else {
         if (pendingChanges) {
           onSave(pendingChanges);
@@ -230,7 +229,7 @@ const JsonEditor: React.FC<JsonEditorProps> = ({
       color={InfoCardColorTypes.Success}
       message={t(successMessage, { version: versionData })}
       testId="successStatusMsg"
-      variant={InfoCardVariantTypes.Filled}
+      variant={InfoCardVariantTypes.Outlined}
     />
   );
 
@@ -298,7 +297,7 @@ const JsonEditor: React.FC<JsonEditorProps> = ({
             label={t('label.selectedCycle')}
             labelPosition={LABEL_POSITION.CONTAINED}
             testId="field-name-input"
-            value={cycleData === null ? 'Default' : `Cycle_${cycleData}`}
+            value={cycleData === '' ? 'Default' : `Cycle_${cycleData}`}
             disabled={true}
           />
         </Box>
@@ -306,7 +305,7 @@ const JsonEditor: React.FC<JsonEditorProps> = ({
         <Grid item xs={12} sm={12} md={2} />
         <Grid item xs={12} sm={12} md={4}>
           <div style={{ position: 'absolute', zIndex: 2 }}>
-            {displayMessageElement ? renderMessageResponse() : ''}
+            {displayMessageElement && !isSuccess ? renderMessageResponse() : ''}
           </div>
         </Grid>
         <Grid item xs={12} sm={12} md={1} />

@@ -31,17 +31,10 @@ function HomePage(param?) {
   const [errorMessage, setErrorMessage] = useState('');
   const [displayMessageElement, setDisplayMessageElement] = useState(false);
   const [displayFailedMessageElement, setDisplayFailedMessageElement] = useState(false);
+  const [responseStatus, setResponseStatus] = useState(null);
+  const [isSuccess, setIsSuccess] = useState(false);
 
-  const clearIntervalAfter = (interval) => {
-    setTimeout(function () {
-      setMessage('msg.errorReleaseFailed');
-      setDisplayFailedMessageElement(true);
-      setTimeout(() => {
-        setDisplayFailedMessageElement(false);
-      }, 5000);
-      clearInterval(interval);
-    }, 300000);
-  };
+  let interval;
 
   const handleRoute = (p) => {
     setShow(p);
@@ -69,21 +62,38 @@ function HomePage(param?) {
 
   useEffect(() => {
     if (versionData !== null) {
-      const interval = setInterval(async () => {
-        const response = await apiService.fetchOsdData('osd', null, versionData);
-        if (response.status === 200) {
-          setMessage('msg.releaseVersion');
-          setDisplayMessageElement(true);
-          setTimeout(() => {
-            setDisplayMessageElement(false);
-          }, 3000);
-          clearInterval(interval);
-        } else {
-          clearIntervalAfter(interval);
-        }
-      }, 3000);
+      setTimeout(() => {
+        checkVersionRelease();
+      }, 240000);
+    }
+    if (responseStatus !== 200) {
+      setTimeout(() => {
+        clearInterval(interval);
+        setMessage('msg.errorReleaseFailed');
+        setDisplayFailedMessageElement(true);
+        setTimeout(() => {
+          setDisplayFailedMessageElement(false);
+        }, 5000);
+        clearInterval(interval);
+      }, 600000);
     }
   }, [versionData]);
+
+  const checkVersionRelease = () => {
+    interval = setInterval(async () => {
+      const response = await apiService.fetchOsdData('osd', null, versionData);
+      if (response.status === 200) {
+        setResponseStatus(response.status);
+        setMessage('msg.releaseVersion');
+        setDisplayMessageElement(true);
+        setIsSuccess(true);
+        setTimeout(() => {
+          setDisplayMessageElement(false);
+        }, 5000);
+        clearInterval(interval);
+      }
+    }, 60000);
+  };
 
   const handleCycle = async (e) => {
     const data = await apiService.fetchOsdData('osd', e, null);
@@ -100,7 +110,7 @@ function HomePage(param?) {
       color={versionData != null ? InfoCardColorTypes.Info : InfoCardColorTypes.Success}
       message={t(successMessage, { version: versionData })}
       testId="successStatusMsg"
-      variant={InfoCardVariantTypes.Filled}
+      variant={InfoCardVariantTypes.Outlined}
     />
   );
 
@@ -111,7 +121,7 @@ function HomePage(param?) {
       color={InfoCardColorTypes.Error}
       message={t(successMessage, { version: versionData })}
       testId="successStatusMsg"
-      variant={InfoCardVariantTypes.Filled}
+      variant={InfoCardVariantTypes.Outlined}
     />
   );
 
@@ -154,6 +164,7 @@ function HomePage(param?) {
           versionData={versionData}
           cycleData={cycleData}
           setRoute={handleRoute}
+          isSuccess={isSuccess}
         />
       )}
       <div style={{ position: 'absolute', zIndex: 2 }}>
