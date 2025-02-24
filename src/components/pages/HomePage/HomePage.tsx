@@ -62,22 +62,22 @@ function HomePage(param?) {
     if (versionData !== null) {
       setTimeout(() => {
         checkVersionRelease();
-      }, 180000);
+      }, 100);
     }
   }, [versionData]);
 
   const checkVersionRelease = () => {
     interval = setInterval(async () => {
-      const response = await apiService.fetchOsdData('osd', null, versionData);
+      const response = await apiService.fetchOsdData('osd', null, '1.0.0');
       if (response.status === 200) {
         setMessage('msg.releaseVersion');
         setDisplayMessageElement(true);
         setIsSuccess(true);
-        navigate(`/`);
-        navigate(0);
         setTimeout(() => {
           setDisplayMessageElement(false);
-        }, 7000);
+          navigate(`/`);
+          navigate(0);
+        }, 5000);
         clearInterval(interval);
       }
     }, 60000);

@@ -229,7 +229,7 @@ const JsonEditor: React.FC<JsonEditorProps> = ({
       fontSize={16}
       color={InfoCardColorTypes.Success}
       message={t(successMessage, {
-        version: versionData,
+        version: versionData
       })}
       testId="successStatusMsg"
       variant={InfoCardVariantTypes.Outlined}
@@ -308,7 +308,7 @@ const JsonEditor: React.FC<JsonEditorProps> = ({
             label={t('label.selectedCycle')}
             labelPosition={LABEL_POSITION.CONTAINED}
             testId="field-name-input"
-            value={cycleData === '' ? 'Default' : `Cycle_${cycleData}`}
+            value={cycleData === null ? 'Default' : `Cycle_${cycleData}`}
             disabled={true}
           />
         </Box>
