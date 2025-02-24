@@ -15,7 +15,8 @@
       "close": "Close",
       "addField": "Add Field",
       "add": "Add",
-      "release": "Release All Changes"
+      "release": "Release All Changes",
+      "selectCycle": "Home"
     },
     "number": "Number Label",
     "text": "Text Label",
@@ -67,8 +68,10 @@
     }
   },
   "msg": {
+    "errorReleaseFailed": "Release version {{version}} has failed",
     "errorMessage": "Error please check cycle API",
-    "preRelease": "Release has started, new version will be published soon.",
-    "releaseVersion": "New release version {{version}} was successfully published."
+    "preRelease": "Release {{version}} has started through CI/CD pipeline, please wait for 3-5min.",
+    "releaseVersion": "New release version {{version}} was successfully published.",
+    "prereleaselink": "For more detail please visit this page"
   }
 }
