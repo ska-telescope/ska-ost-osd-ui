@@ -15,7 +15,8 @@
       "close": "Close",
       "addField": "Add Field",
       "add": "Add",
-      "release": "Release All Changes"
+      "release": "Release All Changes",
+      "selectCycle": "Home"
     },
     "number": "Number Label",
     "text": "Text Label",
@@ -67,8 +68,9 @@
     }
   },
   "msg": {
+    "errorReleaseFailed": "Release version {{version}} has failed",
     "errorMessage": "Error please check cycle API",
-    "preRelease": "Release has started, new version will be published soon.",
+    "preRelease": "Release version {{version}} has started, new version will be published soon.",
     "releaseVersion": "New release version {{version}} was successfully published."
   }
 }

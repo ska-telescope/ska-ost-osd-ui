@@ -10,6 +10,7 @@ import {
 import JsonEditor from '../../JsonEditorComponent/JsonEditor';
 import apiService from '../../../services/api';
 import { findThirdKey } from '../../utils';
+import { useNavigate } from 'react-router-dom';
 
 interface cycleTypeOptionsType {
   label: string;
@@ -18,7 +19,8 @@ interface cycleTypeOptionsType {
 
 export const cycleTypeOptions: cycleTypeOptionsType[] = [{ label: 'Default', value: null }];
 
-function HomePage() {
+function HomePage(param?) {
+  const navigate = useNavigate();
   const { t } = useTranslation('translations');
   const [jsonData, setJsonData] = useState({});
   const [show, setShow] = useState(true);
@@ -28,11 +30,21 @@ function HomePage() {
   const [successMessage, setMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [displayMessageElement, setDisplayMessageElement] = useState(false);
+  const [displayFailedMessageElement, setDisplayFailedMessageElement] = useState(false);
 
   const clearIntervalAfter = (interval) => {
     setTimeout(function () {
+      setMessage('msg.errorReleaseFailed');
+      setDisplayFailedMessageElement(true);
+      setTimeout(() => {
+        setDisplayFailedMessageElement(false);
+      }, 5000);
       clearInterval(interval);
-    }, 180000);
+    }, 300000);
+  };
+
+  const handleRoute = (p) => {
+    setShow(p);
   };
 
   useEffect(() => {
@@ -75,6 +87,7 @@ function HomePage() {
 
   const handleCycle = async (e) => {
     const data = await apiService.fetchOsdData('osd', e, null);
+    navigate(`/cycle`, { replace: true });
     setJsonData(data.data);
     setCycleData(e);
     setShow(false);
@@ -91,9 +104,20 @@ function HomePage() {
     />
   );
 
+  const renderFailedMessageResponse = () => (
+    <InfoCard
+      minHeight="15px"
+      fontSize={16}
+      color={InfoCardColorTypes.Error}
+      message={t(successMessage, { version: versionData })}
+      testId="successStatusMsg"
+      variant={InfoCardVariantTypes.Filled}
+    />
+  );
+
   return (
     <>
-      {show ? (
+      {param && show ? (
         <Box sx={{ p: 2, width: 250 }}>
           <DropDown
             options={cycleDataOptions}
@@ -127,11 +151,16 @@ function HomePage() {
               throw error;
             }
           }}
+          versionData={versionData}
           cycleData={cycleData}
+          setRoute={handleRoute}
         />
       )}
       <div style={{ position: 'absolute', zIndex: 2 }}>
         {displayMessageElement ? renderMessageResponse() : ''}
+      </div>
+      <div style={{ position: 'absolute', zIndex: 2 }}>
+        {displayFailedMessageElement ? renderFailedMessageResponse() : ''}
       </div>
     </>
   );

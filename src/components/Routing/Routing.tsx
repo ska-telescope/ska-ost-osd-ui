@@ -7,7 +7,8 @@ export const Routing = () => {
   return (
     <Router basename={basename}>
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route path="/" element={<HomePage param={true} />} />
+        <Route path="/cycle" element={<HomePage param={false} />} />
       </Routes>
     </Router>
   );

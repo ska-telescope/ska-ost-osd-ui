@@ -22,18 +22,22 @@ import {
   Grid
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
+import HomeIcon from '@mui/icons-material/Home';
 import AddFieldDialog from '../AddFieldDialogComponent/AddFieldDialog';
 import CloseIcon from '@mui/icons-material/Close';
 import { isValidJson } from '../utils';
 import { JsonObject } from './types';
 import DynamicForm from '../DynamicFormComponent/DynamicForm';
 import ApiErrorDialog from '../ApiErrorDialogComponent/ApiErrorDialog';
+import { useNavigate } from 'react-router-dom';
 
 interface JsonEditorProps {
   initialData?: JsonObject;
   onSave: (data: JsonObject) => void;
   onRelease: () => void;
   cycleData: string | number;
+  setRoute: () => void;
+  versionData: string | null;
 }
 
 //  TODO post discussion
@@ -48,7 +52,15 @@ export const releaseTypeOptions: releaseOptionsType[] = [
   { label: 'Minor', value: 'minor' }
 ];
 
-const JsonEditor: React.FC<JsonEditorProps> = ({ initialData, onSave, onRelease, cycleData }) => {
+const JsonEditor: React.FC<JsonEditorProps> = ({
+  initialData,
+  onSave,
+  onRelease,
+  cycleData,
+  setRoute,
+  versionData
+}) => {
+  const navigate = useNavigate();
   const { t } = useTranslation('translations');
   const [data, setData] = useState<JsonObject>(() => {
     return initialData ? structuredClone(initialData) : {};
@@ -206,27 +218,35 @@ const JsonEditor: React.FC<JsonEditorProps> = ({ initialData, onSave, onRelease,
       setError(err instanceof Error ? err.message : 'Failed to save changes');
     }
   };
+  const handleRoute = () => {
+    setRoute(true);
+    navigate(`/`, { replace: true });
+  };
 
   const renderMessageResponse = () => (
     <InfoCard
       minHeight="15px"
       fontSize={16}
       color={InfoCardColorTypes.Success}
-      message={t(successMessage)}
+      message={t(successMessage, { version: versionData })}
       testId="successStatusMsg"
       variant={InfoCardVariantTypes.Filled}
     />
   );
 
-  // useEffect(() => {
-  //   if (cycleData !== null) {
-  //     setMessage(`${cycleData}`);
-  //     setDisplayMessageElement(true);
-  //   }
-  // }, [cycleData]);
-
   return (
     <Box sx={{ p: 2 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-start', gap: 2, mb: 2 }}>
+        <Button
+          icon={<HomeIcon />}
+          ariaDescription="Button to select cycle"
+          label={t('label.button.selectCycle')}
+          variant={ButtonVariantTypes.Contained}
+          color={ButtonColorTypes.Secondary}
+          testId="selec-cycle-button"
+          onClick={handleRoute}
+        />
+      </Box>
       <Box sx={{ display: 'flex', justifyContent: 'flex-start', gap: 2, mb: 2 }}>
         <Button
           icon={<EditIcon />}
@@ -282,6 +302,7 @@ const JsonEditor: React.FC<JsonEditorProps> = ({ initialData, onSave, onRelease,
             disabled={true}
           />
         </Box>
+
         <Grid item xs={12} sm={12} md={2} />
         <Grid item xs={12} sm={12} md={4}>
           <div style={{ position: 'absolute', zIndex: 2 }}>
