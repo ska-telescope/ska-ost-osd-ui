@@ -19,7 +19,8 @@ import {
   DialogActions,
   TextField,
   IconButton,
-  Grid
+  Grid,
+  Link
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import HomeIcon from '@mui/icons-material/Home';
@@ -227,10 +228,19 @@ const JsonEditor: React.FC<JsonEditorProps> = ({
       minHeight="15px"
       fontSize={16}
       color={InfoCardColorTypes.Success}
-      message={t(successMessage, { version: versionData })}
+      message={t(successMessage, {
+        version: versionData
+      })}
       testId="successStatusMsg"
       variant={InfoCardVariantTypes.Outlined}
-    />
+    >
+      <Link
+        color="inherit"
+        href="https://gitlab.com/ska-telescope/ost/ska-ost-osd/-/blob/main/tmdata/ska1_mid/mid_capabilities.json?ref_type=heads"
+      >
+        For more detail please visit this page
+      </Link>
+    </InfoCard>
   );
 
   return (

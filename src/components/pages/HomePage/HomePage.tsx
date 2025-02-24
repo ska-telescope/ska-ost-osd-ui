@@ -30,8 +30,6 @@ function HomePage(param?) {
   const [successMessage, setMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [displayMessageElement, setDisplayMessageElement] = useState(false);
-  const [displayFailedMessageElement, setDisplayFailedMessageElement] = useState(false);
-  const [responseStatus, setResponseStatus] = useState(null);
   const [isSuccess, setIsSuccess] = useState(false);
 
   let interval;
@@ -64,18 +62,7 @@ function HomePage(param?) {
     if (versionData !== null) {
       setTimeout(() => {
         checkVersionRelease();
-      }, 240000);
-    }
-    if (responseStatus !== 200) {
-      setTimeout(() => {
-        clearInterval(interval);
-        setMessage('msg.errorReleaseFailed');
-        setDisplayFailedMessageElement(true);
-        setTimeout(() => {
-          setDisplayFailedMessageElement(false);
-        }, 5000);
-        clearInterval(interval);
-      }, 600000);
+      }, 180000);
     }
   }, [versionData]);
 
@@ -83,13 +70,14 @@ function HomePage(param?) {
     interval = setInterval(async () => {
       const response = await apiService.fetchOsdData('osd', null, versionData);
       if (response.status === 200) {
-        setResponseStatus(response.status);
         setMessage('msg.releaseVersion');
         setDisplayMessageElement(true);
         setIsSuccess(true);
+        navigate(`/`);
+        navigate(0);
         setTimeout(() => {
           setDisplayMessageElement(false);
-        }, 5000);
+        }, 7000);
         clearInterval(interval);
       }
     }, 60000);
@@ -108,17 +96,6 @@ function HomePage(param?) {
       minHeight="15px"
       fontSize={16}
       color={versionData != null ? InfoCardColorTypes.Info : InfoCardColorTypes.Success}
-      message={t(successMessage, { version: versionData })}
-      testId="successStatusMsg"
-      variant={InfoCardVariantTypes.Outlined}
-    />
-  );
-
-  const renderFailedMessageResponse = () => (
-    <InfoCard
-      minHeight="15px"
-      fontSize={16}
-      color={InfoCardColorTypes.Error}
       message={t(successMessage, { version: versionData })}
       testId="successStatusMsg"
       variant={InfoCardVariantTypes.Outlined}
@@ -169,9 +146,6 @@ function HomePage(param?) {
       )}
       <div style={{ position: 'absolute', zIndex: 2 }}>
         {displayMessageElement ? renderMessageResponse() : ''}
-      </div>
-      <div style={{ position: 'absolute', zIndex: 2 }}>
-        {displayFailedMessageElement ? renderFailedMessageResponse() : ''}
       </div>
     </>
   );
