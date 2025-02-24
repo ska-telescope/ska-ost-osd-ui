@@ -10,6 +10,7 @@ import {
 import JsonEditor from '../../JsonEditorComponent/JsonEditor';
 import apiService from '../../../services/api';
 import { findThirdKey } from '../../utils';
+import { useNavigate } from 'react-router-dom';
 
 interface cycleTypeOptionsType {
   label: string;
@@ -18,7 +19,8 @@ interface cycleTypeOptionsType {
 
 export const cycleTypeOptions: cycleTypeOptionsType[] = [{ label: 'Default', value: null }];
 
-function HomePage() {
+function HomePage(param?) {
+  const navigate = useNavigate();
   const { t } = useTranslation('translations');
   const [jsonData, setJsonData] = useState({});
   const [show, setShow] = useState(true);
@@ -28,11 +30,12 @@ function HomePage() {
   const [successMessage, setMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [displayMessageElement, setDisplayMessageElement] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
-  const clearIntervalAfter = (interval) => {
-    setTimeout(function () {
-      clearInterval(interval);
-    }, 180000);
+  let interval;
+
+  const handleRoute = (p) => {
+    setShow(p);
   };
 
   useEffect(() => {
@@ -57,24 +60,32 @@ function HomePage() {
 
   useEffect(() => {
     if (versionData !== null) {
-      const interval = setInterval(async () => {
-        const response = await apiService.fetchOsdData('osd', null, versionData);
-        if (response.status === 200) {
-          setMessage('msg.releaseVersion');
-          setDisplayMessageElement(true);
-          setTimeout(() => {
-            setDisplayMessageElement(false);
-          }, 3000);
-          clearInterval(interval);
-        } else {
-          clearIntervalAfter(interval);
-        }
-      }, 3000);
+      setTimeout(() => {
+        checkVersionRelease();
+      }, 180000);
     }
   }, [versionData]);
 
+  const checkVersionRelease = () => {
+    interval = setInterval(async () => {
+      const response = await apiService.fetchOsdData('osd', null, versionData);
+      if (response.status === 200) {
+        setMessage('msg.releaseVersion');
+        setDisplayMessageElement(true);
+        setIsSuccess(true);
+        navigate(`/`);
+        navigate(0);
+        setTimeout(() => {
+          setDisplayMessageElement(false);
+        }, 5000);
+        clearInterval(interval);
+      }
+    }, 60000);
+  };
+
   const handleCycle = async (e) => {
     const data = await apiService.fetchOsdData('osd', e, null);
+    navigate(`/cycle`, { replace: true });
     setJsonData(data.data);
     setCycleData(e);
     setShow(false);
@@ -87,13 +98,13 @@ function HomePage() {
       color={versionData != null ? InfoCardColorTypes.Info : InfoCardColorTypes.Success}
       message={t(successMessage, { version: versionData })}
       testId="successStatusMsg"
-      variant={InfoCardVariantTypes.Filled}
+      variant={InfoCardVariantTypes.Outlined}
     />
   );
 
   return (
     <>
-      {show ? (
+      {param && show ? (
         <Box sx={{ p: 2, width: 250 }}>
           <DropDown
             options={cycleDataOptions}
@@ -127,7 +138,10 @@ function HomePage() {
               throw error;
             }
           }}
+          versionData={versionData}
           cycleData={cycleData}
+          setRoute={handleRoute}
+          isSuccess={isSuccess}
         />
       )}
       <div style={{ position: 'absolute', zIndex: 2 }}>
